@@ -1,3 +1,4 @@
+<!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
     Copyright (C) 2011  Mihai Balint
@@ -15,10 +16,5 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.tpt;
+ -->
 
-public interface IMonitor {
-	
-	void setMax(int max);
-	void workComplete();
-}
