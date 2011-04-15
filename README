@@ -14,3 +14,5 @@ Required permissions:
 - internet access - the time are obtained from http://www.ratt.ro/txt
 - sd-card write - a cache with transport line and station information
 is saved on the external storage.
+
+License will be GPL v3
