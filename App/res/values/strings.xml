@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Timisoara Public Transport</string>
+    <string name="app_name">Timisoara Public Transport</string>
+    
+    <string name="upd">Update Times</string>
+    <string name="sel">Select Line</string>
+</resources>

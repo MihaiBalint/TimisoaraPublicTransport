@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+	android:id="@+id/StatusText" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/hello"
+    />
+    
+<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="wrap_content">
+<TableLayout 
+	android:id="@+id/TableLayout" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content">
+	<TableRow>
+		<ProgressBar 
+			android:id="@+id/ProgressBar" 
+			android:layout_width="100pt" 
+			android:layout_height="wrap_content"
+			style="?android:attr/progressBarStyleHorizontal"
+		></ProgressBar>
+	</TableRow>
+</TableLayout>
+</ScrollView>
+
+</LinearLayout>
+
