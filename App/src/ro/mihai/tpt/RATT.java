@@ -28,8 +28,15 @@ import java.net.URL;
 import java.util.List;
 
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Station;
+import ro.mihai.util.FormattedTextReader;
+import ro.mihai.util.IMonitor;
+import ro.mihai.util.NullMonitor;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 public class RATT {
 	private static final String root = "http://www.ratt.ro/txt/";
@@ -72,20 +79,34 @@ public class RATT {
 	public static City loadStoredCityOrDownloadAndCache(Context ctx, IMonitor mon) throws IOException {
 		City c = new City();
 		try {
+			// read the proper cache
 			InputStream in = ctx.openFileInput(cityCacheFileName);
 			c.loadFromFile(in,mon);
 		} catch(FileNotFoundException e) {
-			c = downloadCity(mon);
-			OutputStream os = ctx.openFileOutput(cityCacheFileName, Context.MODE_PRIVATE);
-			c.saveToFile(os);
+			try {
+				// read resources file
+				InputStream in = ctx.getResources().openRawResource(R.raw.citylines);
+				c.loadFromFile(in,mon);
+			} catch(Resources.NotFoundException ex) {
+				// download and parse new stuff
+				c = downloadCity(mon);
+			} finally {
+				OutputStream os = ctx.openFileOutput(cityCacheFileName, Context.MODE_PRIVATE);
+				c.saveToFile(os);
+			} 
 		} catch(SaveFileException e) {
+			// the file must be saved again because it was in an older format
 			OutputStream os = ctx.openFileOutput(cityCacheFileName, Context.MODE_PRIVATE);
 			c.saveToFile(os);
 		}
 		return c;
 	}
 	
-	
+	/**
+	 * Not for running on androids
+	 * @return
+	 * @throws IOException
+	 */
 	public static City loadCachedCityOrDownloadAndCache() throws IOException {
 		City c;
 		File cache = new File(cityCacheFileName);

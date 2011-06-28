@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.tpt;
+package ro.mihai.tpt.model;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -27,8 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.RATT.LineReader;
 import ro.mihai.tpt.RATT.StationReader;
+import ro.mihai.util.FormattedTextReader;
+import ro.mihai.util.IMonitor;
 
 public class City {
 	private List<Station> stations;

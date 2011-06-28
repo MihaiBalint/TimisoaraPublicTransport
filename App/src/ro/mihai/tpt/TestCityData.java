@@ -17,8 +17,39 @@
 */
 package ro.mihai.tpt;
 
-public interface IMonitor {
+import java.io.FileOutputStream;
+import ro.mihai.tpt.model.City;
+import ro.mihai.util.IMonitor;
+import junit.framework.TestCase;
+
+public class TestCityData extends TestCase {
+
+	protected void setUp() throws Exception {
+		super.setUp();
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
 	
-	void setMax(int max);
-	void workComplete();
+	public void testCityData() throws Exception {
+		City c = RATT.downloadCity(new TestMonitor());
+		
+		assertEquals(200, c.getStations().size());
+		
+		c.saveToFile(new FileOutputStream("citylines2.txt"));
+	}
+
+	
+	public static class TestMonitor implements IMonitor {
+		public void workComplete() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		public void setMax(int max) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 }

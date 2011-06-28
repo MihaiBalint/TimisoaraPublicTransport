@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Station;
+import ro.mihai.util.IMonitor;
 
 import android.app.Activity;
 import android.graphics.Color;

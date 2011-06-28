@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.tpt;
+package ro.mihai.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +61,7 @@ public class FormattedTextReader {
 					index = len-str.length();
 			}
 			
-			byte[] b = new byte[1024]; 
+			byte[] b = new byte[16384]; 
 			int red = in.read(b);
 			if (red<0) 
 				return false;

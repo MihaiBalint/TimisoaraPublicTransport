@@ -22,6 +22,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro.mihai.util.FormattedTextReader;
+import ro.mihai.util.HtmlReader;
+import ro.mihai.util.IMonitor;
+
 public abstract class OptValBuilder<T> {
 	private HtmlReader rd;
 	
