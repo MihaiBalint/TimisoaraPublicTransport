@@ -27,4 +27,5 @@
 <string name="selTrams">Tram Lines</string>
 <string name="selTrolleys">Trolleybus Lines</string>
 <string name="selBus">Bus Lines</string>
+<string name="selPathLabel">Select Direction</string>
 </resources>

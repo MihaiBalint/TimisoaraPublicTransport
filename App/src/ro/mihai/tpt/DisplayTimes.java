@@ -31,6 +31,7 @@ import ro.mihai.util.IMonitor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -261,8 +262,9 @@ public class DisplayTimes extends Activity {
     		for(int i=0;i<items.length;i++) 
     			items[i] = pathList.get(i).getNiceName();
 
+    		String title = getString(R.string.selPathLabel) + ": " +selectable.getName();
     		new AlertDialog.Builder(DisplayTimes.this)
-				.setTitle("Pick a color")
+				.setTitle(title)
 				.setItems(items, this)
 				.create()
 				.show();    		

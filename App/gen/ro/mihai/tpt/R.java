@@ -32,6 +32,7 @@ public final class R {
         public static final int hello=0x7f050000;
         public static final int sel=0x7f050003;
         public static final int selBus=0x7f050006;
+        public static final int selPathLabel=0x7f050007;
         public static final int selTrams=0x7f050004;
         public static final int selTrolleys=0x7f050005;
         public static final int upd=0x7f050002;
