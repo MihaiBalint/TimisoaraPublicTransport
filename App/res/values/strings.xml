@@ -24,4 +24,7 @@
     
     <string name="upd">Update Times</string>
     <string name="sel">Select Line</string>
+<string name="selTrams">Tram Lines</string>
+<string name="selTrolleys">Trolleybus Lines</string>
+<string name="selBus">Bus Lines</string>
 </resources>

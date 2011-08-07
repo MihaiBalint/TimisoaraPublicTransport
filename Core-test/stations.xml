@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+Lat. Long. and station IDs, file obtained from:
+
+http://www.ratt.ro/harta/source/stations.xml
+
+referenced from the source of
+http://www.ratt.ro/harta/
+
+referenced from the RATT forums:
+http://www.ratt.ro/forum/index.php?showtopic=1181&view=findpost&p=47350
+
+-->
+<markers>
+	<marker station='A Saguna ' lat='45.757189' lng='21.256016' id_st='3411' />
+	<marker station='A.Guttenbrun_1' lat='45.752346' lng='21.190094' id_st='3648' />
+	<marker station='A.Guttenbrun_2' lat='45.752393' lng='21.189948' id_st='3649' />
+	<marker station='A.Lapusneanu_1' lat='45.758538' lng='21.199703' id_st='3642' />
+	<marker station='A.Lapusneanu_2' lat='45.75864' lng='21.199698' id_st='3643' />
+	<marker station='A.Saguna 1a' lat='45.756697' lng='21.255406' id_st='2827' />
+	<marker station='A.Saguna 1tb' lat='45.748001' lng='21.225647' id_st='2977' />
+	<marker station='AT_Gara de Nord_1' lat='45.750553' lng='21.208256' id_st='4483' />
+	<marker station='AT_Miresei_1' lat='45.76871' lng='21.22039' id_st='4493' />
+	<marker station='AT_Miresei_2' lat='45.769127' lng='21.220148' id_st='4492' />
+	<marker station='AT_Pop de Basesti_1' lat='45.749527' lng='21.202552' id_st='4464' />
+	<marker station='AT_Pop de Basesti_2' lat='45.749551' lng='21.202753' id_st='4465' />
+	<marker station='AT_Reg.Carol_1' lat='45.743531' lng='21.206565' id_st='4502' />
+	<marker station='AT_Reg.Carol_2' lat='45.74369' lng='21.206847' id_st='4501' />
+	<marker station='AT_Torontalului_2' lat='45.772553' lng='21.216675' id_st='4494' />
+	<marker station='Ab-Pod C.Sagului 2' lat='45.722593' lng='21.200647' id_st='4504' />
+	<marker station='Ab_B.Cartan_0' lat='45.76253' lng='21.246971' id_st='4300' />
+	<marker station='Ab_B.Cartan_1' lat='45.762544' lng='21.247021' id_st='4301' />
+	<marker station='Ab_Brancoveanu 1' lat='45.743141' lng='21.2131' id_st='2694' />
+	<marker station='Ab_Brancoveanu_' lat='45.738394' lng='21.215679' id_st='5360' />
+	<marker station='Ab_Bujorilor_' lat='45.723042' lng='21.206969' id_st='2837' />
+	<marker station='Ab_C.Europei 1' lat='45.764498' lng='21.224655' id_st='4491' />
+	<marker station='Ab_C.Europei 2' lat='45.76448' lng='21.224783' id_st='4490' />
+	<marker station='Ab_Catedrala 1' lat='45.750961' lng='21.225094' id_st='2799' />
+	<marker station='Ab_Catedrala 2' lat='45.750925' lng='21.225107' id_st='3200' />
+	<marker station='Ab_Cvar.UMT_0' lat='45.775375' lng='21.2627' id_st='4324' />
+	<marker station='Ab_Cvar.UMT_1' lat='45.775399' lng='21.26267' id_st='4325' />
+	<marker station='Ab_Dambovita' lat='45.732412' lng='21.208529' id_st='2669' />
+	<marker station='Ab_Dambovita_' lat='45.732836' lng='21.208868' id_st='2690' />
+	<marker station='Ab_Gara de Est_0' lat='45.766499' lng='21.245114' id_st='4320' />
+	<marker station='Ab_Gara de Est_1' lat='45.766588' lng='21.245037' id_st='4321' />
+	<marker station='Ab_Gh.Lazar 1' lat='45.760121' lng='21.218534' id_st='4484' />
+	<marker station='Ab_Izlaz_' lat='45.720749' lng='21.203111' id_st='2836' />
+	<marker station='Ab_P-ta I.Maniu 1' lat='45.739499' lng='21.210315' id_st='2691' />
+	<marker station='Ab_P-ta I.Maniu 3' lat='45.739459' lng='21.209783' id_st='2889' />
+	<marker station='Ab_Pod C.Sagului 1' lat='45.722591' lng='21.20074' id_st='4503' />
+	<marker station='Ab_Selgros 1' lat='45.78571' lng='21.218344' id_st='4462' />
+	<marker station='Ab_Selgros 2' lat='45.785818' lng='21.218323' id_st='4463' />
+	<marker station='Ab_U.M.T._0' lat='45.771647' lng='21.255342' id_st='4322' />
+	<marker station='Ab_U.M.T_1' lat='45.771666' lng='21.255281' id_st='4323' />
+	<marker station='Abator' lat='45.719391' lng='21.15168' id_st='2949' />
+	<marker station='Abator p' lat='45.718762' lng='21.14923' id_st='6260' />
+	<marker station='Abator plecare' lat='45.719307' lng='21.151774' id_st='3461' />
+	<marker station='Abator s' lat='45.718745' lng='21.149174' id_st='5960' />
+	<marker station='Aeroport' lat='45.784393' lng='21.283613' id_st='3781' />
+	<marker station='Aeroport Civil' lat='45.810092' lng='21.319194' id_st='3840' />
+	<marker station='Aeroport Civil_II' lat='45.810178' lng='21.319281' id_st='3862' />
+	<marker station='Agronomie 1tb' lat='45.783361' lng='21.219249' id_st='2955' />
+	<marker station='Agronomie 2tb' lat='45.783441' lng='21.218962' id_st='2956' />
+	<marker station='Albastrelelor 1a' lat='45.754502' lng='21.276232' id_st='3403' />
+	<marker station='Albastrelelor 2a' lat='45.754579' lng='21.27629' id_st='3404' />
+	<marker station='Aleea Pad.V' lat='45.773993' lng='21.269356' id_st='6140' />
+	<marker station='Aleea Pad.V_' lat='45.774409' lng='21.26878' id_st='6141' />
+	<marker station='Apateu 1a' lat='45.747277' lng='21.262833' id_st='2844' />
+	<marker station='Apicultorilor 1a' lat='45.721611' lng='21.236828' id_st='4429' />
+	<marker station='B Cartan_II' lat='45.762658' lng='21.247643' id_st='3920' />
+	<marker station='B.A.T.M.A 2 a ' lat='45.71765' lng='21.196543' id_st='2685' />
+	<marker station='B.A.T.M.A. 1 a' lat='45.717804' lng='21.196333' id_st='2675' />
+	<marker station='Baba Dochia ' lat='45.756462' lng='21.255067' id_st='4424' />
+	<marker station='Badea Cartan 1tb' lat='45.762564' lng='21.247925' id_st='3103' />
+	<marker station='Badea Cartan 2tb' lat='45.762365' lng='21.246101' id_st='3104' />
+	<marker station='Balcescu' lat='45.741305' lng='21.224805' id_st='5321' />
+	<marker station='Balcescu_' lat='45.741168' lng='21.224786' id_st='5380' />
+	<marker station='Balcescu_1' lat='45.741708' lng='21.225084' id_st='3662' />
+	<marker station='Balcescu_2' lat='45.741767' lng='21.225152' id_st='3663' />
+	<marker station='BaltaVerde 3' lat='45.757717' lng='21.209105' id_st='4800' />
+	<marker station='BaltaVerde 4' lat='45.757824' lng='21.209227' id_st='4801' />
+	<marker station='Banatim' lat='45.748043' lng='21.253362' id_st='5860' />
+	<marker station='Banatim_3' lat='45.748873' lng='21.252697' id_st='4041' />
+	<marker station='Banatim_4' lat='45.748742' lng='21.252788' id_st='4042' />
+	<marker station='Banatul_1' lat='45.736875' lng='21.197991' id_st='3600' />
+	<marker station='Banatul_2' lat='45.736823' lng='21.197826' id_st='3601' />
+	<marker station='Bastion' lat='45.757733' lng='21.233274' id_st='5940' />
+	<marker station='Bastion s' lat='45.757668' lng='21.233026' id_st='6120' />
+	<marker station='Bastion_s' lat='45.758131' lng='21.233179' id_st='6160' />
+	<marker station='Bobalna ' lat='45.763899' lng='21.276112' id_st='2656' />
+	<marker station='Bobalna 1a' lat='45.763547' lng='21.275587' id_st='3506' />
+	<marker station='Brancoveanu' lat='45.733193' lng='21.219798' id_st='3592' />
+	<marker station='Brancoveanu..' lat='45.742754' lng='21.212533' id_st='2667' />
+	<marker station='Brancoveanu_' lat='45.742163' lng='21.213291' id_st='2701' />
+	<marker station='Brancoveanu_2' lat='45.732686' lng='21.218729' id_st='3593' />
+	<marker station='Brediceanu_1' lat='45.75619' lng='21.221305' id_st='6840' />
+	<marker station='Brediceanu_2' lat='45.756193' lng='21.221162' id_st='6841' />
+	<marker station='Bucla Urseni' lat='45.693326' lng='21.30047' id_st='5640' />
+	<marker station='Bujorilor' lat='45.719413' lng='21.209467' id_st='2729' />
+	<marker station='Bujorilor_' lat='45.719453' lng='21.208806' id_st='2717' />
+	<marker station='Bv L Rebreanu_' lat='45.732091' lng='21.21904' id_st='2705' />
+	<marker station='Bv Sudului_1' lat='45.737298' lng='21.250394' id_st='3582' />
+	<marker station='Bv Sudului_2' lat='45.737158' lng='21.249362' id_st='3583' />
+	<marker station='Bv. Cetatii 1tb' lat='45.763182' lng='21.21028' id_st='3013' />
+	<marker station='Bv. Cetatii 2tb' lat='45.762792' lng='21.211147' id_st='3014' />
+	<marker station='Bv. Sudului 1tb' lat='45.736086' lng='21.249744' id_st='3002' />
+	<marker station='Bv.Sudului(bucla)' lat='45.731391' lng='21.246549' id_st='3005' />
+	<marker station='Bv.Sudului(bucla) 2tb' lat='45.731744' lng='21.247429' id_st='3006' />
+	<marker station='C Popescu 1a' lat='45.75155' lng='21.282986' id_st='3408' />
+	<marker station='C Terra' lat='45.767684' lng='21.2382' id_st='3241' />
+	<marker station='C Torontalului 2a' lat='45.764808' lng='21.224966' id_st='4580' />
+	<marker station='C Torontalului 2a' lat='45.764804' lng='21.224958' id_st='4581' />
+	<marker station='C Torontalului 2a' lat='45.764643' lng='21.224822' id_st='4582' />
+	<marker station='C Torontalului 2a' lat='45.764657' lng='21.224783' id_st='4583' />
+	<marker station='C.E.T. 1a' lat='45.708921' lng='21.193901' id_st='2683' />
+	<marker station='C.I.Nottara_1' lat='45.723795' lng='21.175588' id_st='2927' />
+	<marker station='C.I.Nottara_2' lat='45.723865' lng='21.1755' id_st='2926' />
+	<marker station='C.Martirilor_1' lat='45.738754' lng='21.238459' id_st='3586' />
+	<marker station='C.Martirilor_2' lat='45.738409' lng='21.238014' id_st='3587' />
+	<marker station='C.P.Solventul 1tb.' lat='45.747479' lng='21.19037' id_st='2756' />
+	<marker station='C.P.Solventul 2tb' lat='45.747494' lng='21.190539' id_st='3107' />
+	<marker station='Canton C.F.R_1' lat='45.731199' lng='21.180902' id_st='2922' />
+	<marker station='Canton C.F.R_2' lat='45.731794' lng='21.181124' id_st='2923' />
+	<marker station='Caprioarei 1a' lat='45.753191' lng='21.263584' id_st='2841' />
+	<marker station='Carabusului' lat='45.7637' lng='21.280981' id_st='5480' />
+	<marker station='Carmen Silva' lat='45.752129' lng='21.222783' id_st='5300' />
+	<marker station='Cartier Aeroport' lat='45.79535' lng='21.325253' id_st='3880' />
+	<marker station='Cartier Aeroport II' lat='45.795456' lng='21.325187' id_st='3881' />
+	<marker station='Cefin 1a' lat='45.693521' lng='21.175249' id_st='2682' />
+	<marker station='Chisodei' lat='45.726372' lng='21.208995' id_st='5080' />
+	<marker station='Chisodei' lat='45.720192' lng='21.212414' id_st='2730' />
+	<marker station='Chisodei_' lat='45.726248' lng='21.208976' id_st='5081' />
+	<marker station='Chisodei_' lat='45.720194' lng='21.211627' id_st='2715' />
+	<marker station='Cim. Eroilor 1tb' lat='45.768154' lng='21.226554' id_st='3361' />
+	<marker station='Cim.Eroilor 2tb' lat='45.768392' lng='21.225112' id_st='3362' />
+	<marker station='Circumvalat. 1tb' lat='45.760193' lng='21.218197' id_st='3412' />
+	<marker station='Circumvalat.2tb' lat='45.75991' lng='21.218586' id_st='3413' />
+	<marker station='Circumvalatiunii' lat='45.763152' lng='21.220985' id_st='6181' />
+	<marker station='Circumvalatiunii 2a' lat='45.763167' lng='21.22123' id_st='4486' />
+	<marker station='Cluj 1tb.' lat='45.74345' lng='21.237148' id_st='2716' />
+	<marker station='Cluj 2tb.' lat='45.743613' lng='21.237139' id_st='2718' />
+	<marker station='Comp. Studentesc 1tb' lat='45.748525' lng='21.235473' id_st='2980' />
+	<marker station='Comp. Studentesc 2tb' lat='45.748547' lng='21.235634' id_st='2979' />
+	<marker station='Complex Euro' lat='45.768483' lng='21.235736' id_st='5220' />
+	<marker station='Cv.Sudului 1tb' lat='45.733821' lng='21.248433' id_st='3003' />
+	<marker station='Cv.Sudului 2tb' lat='45.734562' lng='21.248976' id_st='3004' />
+	<marker station='DEP.TROLEIBUZE' lat='45.737181' lng='21.195583' id_st='3520' />
+	<marker station='DN6' lat='45.775844' lng='21.304891' id_st='3820' />
+	<marker station='DN6_II' lat='45.775999' lng='21.304869' id_st='3821' />
+	<marker station='Dacia Service 2tb' lat='45.76988' lng='21.223144' id_st='2952' />
+	<marker station='Dambovita 1a' lat='45.736954' lng='21.197573' id_st='2812' />
+	<marker station='Dambovita 2a' lat='45.736975' lng='21.197986' id_st='2821' />
+	<marker station='Dambovita_3' lat='45.739735' lng='21.195968' id_st='3602' />
+	<marker station='Dambovita_4' lat='45.739824' lng='21.195948' id_st='3620' />
+	<marker station='Deliblata_1' lat='45.746924' lng='21.246503' id_st='3685' />
+	<marker station='Deliblata_2' lat='45.747113' lng='21.246582' id_st='3686' />
+	<marker station='Dep trl.iesire' lat='45.736803' lng='21.196311' id_st='3701' />
+	<marker station='Depou Tache Ionescu' lat='45.763527' lng='21.245644' id_st='4020' />
+	<marker station='Depoul 1 TV' lat='45.76269' lng='21.245992' id_st='4880' />
+	<marker station='Depoul 2 Tv' lat='45.737208' lng='21.193347' id_st='4021' />
+	<marker station='Dermatina ' lat='45.72544' lng='21.202491' id_st='2687' />
+	<marker station='Dermatina_' lat='45.725277' lng='21.203025' id_st='2673' />
+	<marker station='Div 9 Cavalerie' lat='45.768953' lng='21.232554' id_st='3240' />
+	<marker station='Div 9 Cavalerie 2a' lat='45.769212' lng='21.230089' id_st='3255' />
+	<marker station='Div.9 Cavalerie 1tb' lat='45.769583' lng='21.230495' id_st='2964' />
+	<marker station='Domasnean_3' lat='45.733785' lng='21.258248' id_st='3580' />
+	<marker station='Domasnean_4' lat='45.733511' lng='21.25815' id_st='3581' />
+	<marker station='Drubeta _3' lat='45.734886' lng='21.227075' id_st='4431' />
+	<marker station='Drubeta_1' lat='45.735271' lng='21.227022' id_st='3590' />
+	<marker station='Drubeta_2' lat='45.734809' lng='21.226629' id_st='3591' />
+	<marker station='Drubeta_4' lat='45.735251' lng='21.226576' id_st='5160' />
+	<marker station='E.Zola' lat='45.724671' lng='21.217948' id_st='2734' />
+	<marker station='E.Zola_' lat='45.724602' lng='21.217432' id_st='2713' />
+	<marker station='Eternitatii' lat='45.718067' lng='21.203792' id_st='2723' />
+	<marker station='Eternitatii_' lat='45.718108' lng='21.203506' id_st='2719' />
+	<marker station='F-ca de Zahar_1' lat='45.721115' lng='21.158213' id_st='2947' />
+	<marker station='F-ca de Zahar_2' lat='45.720957' lng='21.158257' id_st='2948' />
+	<marker station='Fac Electro 1a' lat='45.747988' lng='21.225321' id_st='3743' />
+	<marker station='Fac Electro_' lat='45.747825' lng='21.225814' id_st='3741' />
+	<marker station='Fac de Mecanica_' lat='45.745607' lng='21.225584' id_st='5400' />
+	<marker station='Fac. de Mecanica' lat='45.745505' lng='21.22544' id_st='5320' />
+	<marker station='Ferma 6 1a' lat='45.757029' lng='21.272644' id_st='3500' />
+	<marker station='Ferma 6 1a' lat='45.756957' lng='21.272615' id_st='2659' />
+	<marker station='Ferma 6 2a' lat='45.757074' lng='21.272763' id_st='2660' />
+	<marker station='Ferma 6 2a' lat='45.7572' lng='21.27237' id_st='3501' />
+	<marker station='G.Alexandrescu 1tb' lat='45.766698' lng='21.195229' id_st='3019' />
+	<marker station='G.Alexandrescu 2tb' lat='45.766588' lng='21.195093' id_st='3020' />
+	<marker station='G.Alexandrescu_1' lat='45.75765' lng='21.196016' id_st='3644' />
+	<marker station='G.Alexandrescu_2' lat='45.75776' lng='21.196089' id_st='3645' />
+	<marker station='Gara de Est 1a' lat='45.767804' lng='21.245103' id_st='3245' />
+	<marker station='Gara de Nord' lat='45.750097' lng='21.206629' id_st='6820' />
+	<marker station='Gara de Nord 2tb' lat='45.750579' lng='21.208533' id_st='3106' />
+	<marker station='Gara de Sud ' lat='45.716764' lng='21.20289' id_st='4421' />
+	<marker station='Garaj Auto' lat='45.74706' lng='21.252295' id_st='4022' />
+	<marker station='Gelu 1tb.' lat='45.748457' lng='21.196632' id_st='2759' />
+	<marker station='Gelu 2tb.' lat='45.748685' lng='21.196482' id_st='2760' />
+	<marker station='Gh.Domasnean' lat='45.732879' lng='21.258395' id_st='4427' />
+	<marker station='Gh.Domasnean_' lat='45.733939' lng='21.259184' id_st='5920' />
+	<marker station='Gh.Lazar' lat='45.760006' lng='21.218278' id_st='6180' />
+	<marker station='Gh.Ranetti_1' lat='45.732753' lng='21.213621' id_st='3594' />
+	<marker station='Gh.Ranetti_2' lat='45.732408' lng='21.213184' id_st='3595' />
+	<marker station='Giarmata Vii 1' lat='45.800325' lng='21.292762' id_st='6142' />
+	<marker station='Giarmata Vii 2p' lat='45.797249' lng='21.296243' id_st='6145' />
+	<marker station='Giarmata Vii 2s' lat='45.796922' lng='21.30241' id_st='6146' />
+	<marker station='Giarmata Vii1_' lat='45.800577' lng='21.291915' id_st='6144' />
+	<marker station='H Continental' lat='45.755304' lng='21.233377' id_st='5260' />
+	<marker station='Hector' lat='45.756524' lng='21.234045' id_st='5240' />
+	<marker station='Herculane' lat='45.722105' lng='21.215929' id_st='2733' />
+	<marker station='Herculane_' lat='45.721971' lng='21.21545' id_st='2714' />
+	<marker station='Herodot 1a' lat='45.749976' lng='21.263113' id_st='2843' />
+	<marker station='Holdelor 1a' lat='45.775465' lng='21.238331' id_st='3248' />
+	<marker station='I.C.Bratianu ' lat='45.753355' lng='21.228979' id_st='2976' />
+	<marker station='I.I.de la Brad 1tb.' lat='45.780186' lng='21.23492' id_st='2793' />
+	<marker station='I.I.de la Brad 2tb.' lat='45.780185' lng='21.234553' id_st='2794' />
+	<marker station='ILSA 1tb.' lat='45.761433' lng='21.243862' id_st='2808' />
+	<marker station='Ialomita' lat='45.76622' lng='21.304018' id_st='5780' />
+	<marker station='Ialomita_' lat='45.766351' lng='21.304423' id_st='5800' />
+	<marker station='Ialomitei' lat='45.763657' lng='21.293902' id_st='2652' />
+	<marker station='Ianova 1' lat='45.829997' lng='21.413506' id_st='6020' />
+	<marker station='Ianova 1_' lat='45.830017' lng='21.413029' id_st='6021' />
+	<marker station='Ianova 2S' lat='45.836707' lng='21.415019' id_st='5980' />
+	<marker station='Ianova 2p' lat='45.836926' lng='21.413442' id_st='6100' />
+	<marker station='Iepurelui' lat='45.754745' lng='21.251496' id_st='2828' />
+	<marker station='Iepurelui_' lat='45.754668' lng='21.25181' id_st='2839' />
+	<marker station='Iokai Mor' lat='45.753429' lng='21.280133' id_st='3406' />
+	<marker station='Iosif Vucan ' lat='45.758974' lng='21.2585' id_st='3400' />
+	<marker station='Ismail' lat='45.759848' lng='21.279639' id_st='5460' />
+	<marker station='Iulius Mall 1tb.' lat='45.764996' lng='21.225775' id_st='2784' />
+	<marker station='Iulus Mall 1a' lat='45.76478' lng='21.228679' id_st='3226' />
+	<marker station='Iulus Mall 2a' lat='45.765578' lng='21.231144' id_st='3260' />
+	<marker station='Izlaz' lat='45.725438' lng='21.214199' id_st='5060' />
+	<marker station='Izlaz_' lat='45.725392' lng='21.213748' id_st='5061' />
+	<marker station='Jiul 1tb.' lat='45.751721' lng='21.216259' id_st='2772' />
+	<marker station='Jiul 2tb.' lat='45.751938' lng='21.216645' id_st='2773' />
+	<marker station='L. Rebreanu_' lat='45.73242' lng='21.209882' id_st='4060' />
+	<marker station='L.Rebreanu ' lat='45.733262' lng='21.219313' id_st='2739' />
+	<marker station='L.Rebreanu_1' lat='45.732787' lng='21.209136' id_st='3596' />
+	<marker station='L.Rebreanu_2' lat='45.732506' lng='21.20837' id_st='3597' />
+	<marker station='Lalelelor ' lat='45.762072' lng='21.261366' id_st='3508' />
+	<marker station='Levantica 1a' lat='45.751637' lng='21.263416' id_st='2842' />
+	<marker station='Lic L. Calderon' lat='45.754363' lng='21.243784' id_st='2829' />
+	<marker station='Lic L. Calderon_' lat='45.754285' lng='21.243878' id_st='2830' />
+	<marker station='Lic. Auto_' lat='45.727095' lng='21.181178' id_st='5965' />
+	<marker station='Liceul Auto' lat='45.727267' lng='21.181153' id_st='5964' />
+	<marker station='Liceul Auto_1' lat='45.728179' lng='21.180794' id_st='2925' />
+	<marker station='Liceul Auto_2' lat='45.728221' lng='21.180647' id_st='2924' />
+	<marker station='Lidia' lat='45.732373' lng='21.227616' id_st='4980' />
+	<marker station='Lidia_' lat='45.731965' lng='21.22798' id_st='4981' />
+	<marker station='Liege' lat='45.772809' lng='21.21604' id_st='6000' />
+	<marker station='Liege 1tb' lat='45.775822' lng='21.221249' id_st='2950' />
+	<marker station='Liege 2a' lat='45.775346' lng='21.221579' id_st='4496' />
+	<marker station='Liege 2tb.' lat='45.774638' lng='21.221391' id_st='2951' />
+	<marker station='Liege 3tb' lat='45.774861' lng='21.221257' id_st='2960' />
+	<marker station='Lugojului' lat='45.774987' lng='21.301234' id_st='5841' />
+	<marker station='Lugojului_' lat='45.774947' lng='21.301823' id_st='5842' />
+	<marker station='Luncani 1a' lat='45.75721' lng='21.278827' id_st='2663' />
+	<marker station='M.C-tin Prezan 1tb.' lat='45.731523' lng='21.238203' id_st='2728' />
+	<marker station='M.C-tin Prezan 2tb.' lat='45.731869' lng='21.237482' id_st='2732' />
+	<marker station='M.Eminescu 1tb' lat='45.752729' lng='21.232639' id_st='2975' />
+	<marker station='Macilor_1' lat='45.758602' lng='21.203233' id_st='3640' />
+	<marker station='Macilor_2' lat='45.758713' lng='21.203255' id_st='3641' />
+	<marker station='Madona_1' lat='45.755247' lng='21.192001' id_st='3646' />
+	<marker station='Madona_2' lat='45.755369' lng='21.191809' id_st='3647' />
+	<marker station='Mangalia 1a' lat='45.738649' lng='21.206519' id_st='2810' />
+	<marker station='Mangalia 2a' lat='45.738546' lng='21.20641' id_st='2822' />
+	<marker station='Mart.I.Stanciu 1tb.' lat='45.734658' lng='21.237685' id_st='2724' />
+	<marker station='Mart.I.Stanciu 2tb.' lat='45.73461' lng='21.237849' id_st='2726' />
+	<marker station='Martirilor 1tb.' lat='45.738232' lng='21.238115' id_st='2720' />
+	<marker station='Martirilor 2tb.' lat='45.739' lng='21.238443' id_st='2722' />
+	<marker station='Matasarilor ' lat='45.763784' lng='21.262543' id_st='3507' />
+	<marker station='Matasarilor 1a' lat='45.763754' lng='21.26263' id_st='3481' />
+	<marker station='Memorandului' lat='45.738689' lng='21.225095' id_st='5140' />
+	<marker station='Memorandului_' lat='45.738745' lng='21.225184' id_st='5141' />
+	<marker station='Metro 1a' lat='45.700715' lng='21.182176' id_st='2680' />
+	<marker station='Metro 1b' lat='45.700563' lng='21.182375' id_st='5520' />
+	<marker station='Metro 2' lat='45.793954' lng='21.185735' id_st='6003' />
+	<marker station='Metro_2' lat='45.793912' lng='21.185808' id_st='6800' />
+	<marker station='Moldovei ' lat='45.763632' lng='21.287723' id_st='2653' />
+	<marker station='Moldovei 1a' lat='45.763489' lng='21.287703' id_st='2650' />
+	<marker station='Mosnita Noua1' lat='45.719583' lng='21.317356' id_st='5720' />
+	<marker station='Mosnita Noua1_' lat='45.720584' lng='21.317715' id_st='5721' />
+	<marker station='Mosnita Noua2' lat='45.718738' lng='21.322901' id_st='5680' />
+	<marker station='Mosnita Noua2_' lat='45.719057' lng='21.323088' id_st='5580' />
+	<marker station='Mosnita Noua3' lat='45.720585' lng='21.328286' id_st='5681' />
+	<marker station='Mosnita Noua3_' lat='45.721169' lng='21.327211' id_st='5700' />
+	<marker station='Mosnita Noua4' lat='45.725759' lng='21.33163' id_st='5701' />
+	<marker station='Mosnita Noua4_' lat='45.726051' lng='21.330018' id_st='5702' />
+	<marker station='Mosnita Veche' lat='45.734092' lng='21.333053' id_st='5600' />
+	<marker station='Moteletul' lat='45.72242' lng='21.299738' id_st='5760' />
+	<marker station='Moteletul_' lat='45.723505' lng='21.300215' id_st='5761' />
+	<marker station='Mures' lat='45.728563' lng='21.237128' id_st='5282' />
+	<marker station='Mures' lat='45.729902' lng='21.219057' id_st='2736' />
+	<marker station='Mures' lat='45.728689' lng='21.237293' id_st='5283' />
+	<marker station='Mures_' lat='45.729959' lng='21.218788' id_st='2707' />
+	<marker station='Muzeul Satului' lat='45.778266' lng='21.267839' id_st='4341' />
+	<marker station='Muzicescu' lat='45.724844' lng='21.236668' id_st='5280' />
+	<marker station='Muzicescu' lat='45.724744' lng='21.236789' id_st='5281' />
+	<marker station='Olimpia_1' lat='45.745139' lng='21.241361' id_st='3683' />
+	<marker station='Olimpia_2' lat='45.745312' lng='21.241451' id_st='3684' />
+	<marker station='Opre Gogu_1' lat='45.736397' lng='21.188502' id_st='2921' />
+	<marker station='Opre Gogu_2' lat='45.736488' lng='21.188501' id_st='2920' />
+	<marker station='Otniel' lat='45.720793' lng='21.310189' id_st='5740' />
+	<marker station='Otniel_' lat='45.721878' lng='21.310608' id_st='5741' />
+	<marker station='P-ta 700 1tb.' lat='45.756705' lng='21.224793' id_st='2781' />
+	<marker station='P-ta 700 2tb' lat='45.756322' lng='21.223122' id_st='3720' />
+	<marker station='P-ta 700 3tb' lat='45.757946' lng='21.224563' id_st='3007' />
+	<marker station='P-ta 700 4tb' lat='45.757911' lng='21.22442' id_st='3008' />
+	<marker station='P-ta A.Iancu 1tb' lat='45.764503' lng='21.205448' id_st='3015' />
+	<marker station='P-ta A.Iancu 2tb' lat='45.764389' lng='21.205289' id_st='3016' />
+	<marker station='P-ta C.Europei 1tb' lat='45.764944' lng='21.225488' id_st='2965' />
+	<marker station='P-ta C.Europei 2tb' lat='45.763229' lng='21.225683' id_st='2966' />
+	<marker station='P-ta Crucii_1' lat='45.741822' lng='21.232431' id_st='3664' />
+	<marker station='P-ta Crucii_2' lat='45.741962' lng='21.23248' id_st='3680' />
+	<marker station='P-ta I.Maniu' lat='45.738513' lng='21.209719' id_st='2668' />
+	<marker station='P-ta L. da Vinci ' lat='45.749004' lng='21.235337' id_st='2806' />
+	<marker station='P-ta Mocioni' lat='45.745971' lng='21.215977' id_st='2695' />
+	<marker station='P-ta Mocioni_' lat='45.745649' lng='21.215296' id_st='2666' />
+	<marker station='P-ta P Sandor 1a' lat='45.727946' lng='21.18074' id_st='2818' />
+	<marker station='P-ta Traian p' lat='45.757464' lng='21.24922' id_st='6880' />
+	<marker station='P-ta de Gros 1tb' lat='45.765984' lng='21.191824' id_st='3021' />
+	<marker station='P-ta de Gros 2tb' lat='45.765922' lng='21.191926' id_st='3022' />
+	<marker station='PITT' lat='45.795847' lng='21.172663' id_st='6001' />
+	<marker station='Pacii' lat='45.733889' lng='21.184326' id_st='6040' />
+	<marker station='Pacii 1a' lat='45.731691' lng='21.188717' id_st='2815' />
+	<marker station='Pacii 2a' lat='45.731576' lng='21.188719' id_st='2820' />
+	<marker station='Pacii_' lat='45.733735' lng='21.184539' id_st='6041' />
+	<marker station='Parc Doina_1' lat='45.74447' lng='21.222238' id_st='3660' />
+	<marker station='Parc Doina_2' lat='45.744443' lng='21.222395' id_st='3661' />
+	<marker station='Parc Logistic' lat='45.707749' lng='21.320338' id_st='5660' />
+	<marker station='Parc Logistic_' lat='45.708037' lng='21.318688' id_st='5661' />
+	<marker station='Pasaj C.F.' lat='45.763413' lng='21.180217' id_st='5200' />
+	<marker station='Pavlov' lat='45.723588' lng='21.226328' id_st='5020' />
+	<marker station='Pavlov_' lat='45.723201' lng='21.226098' id_st='5021' />
+	<marker station='Peco 1a' lat='45.713399' lng='21.192672' id_st='2679' />
+	<marker station='Peco 2a' lat='45.713292' lng='21.192948' id_st='2684' />
+	<marker station='Pestalozzi_' lat='45.753993' lng='21.240588' id_st='2838' />
+	<marker station='Petru si Pavel 1a' lat='45.776678' lng='21.233755' id_st='4428' />
+	<marker station='Petru si Pavel 1tb' lat='45.776942' lng='21.233589' id_st='2962' />
+	<marker station='Petru si Pavel 2tb' lat='45.776769' lng='21.23332' id_st='2963' />
+	<marker station='Pindului ' lat='45.748165' lng='21.258159' id_st='2846' />
+	<marker station='Pod C. Sagului' lat='45.722102' lng='21.199636' id_st='5340' />
+	<marker station='Pod Ghiroda' lat='45.762729' lng='21.304028' id_st='5540' />
+	<marker station='Pod Ghiroda s' lat='45.762781' lng='21.303728' id_st='6121' />
+	<marker station='Pod M Saguna 1a' lat='45.747972' lng='21.225225' id_st='2809' />
+	<marker station='Podgoriei' lat='45.725551' lng='21.17806' id_st='5962' />
+	<marker station='Podgoriei_' lat='45.725632' lng='21.17856' id_st='5963' />
+	<marker station='Polona' lat='45.721706' lng='21.163967' id_st='5961' />
+	<marker station='Polona_1' lat='45.721988' lng='21.163458' id_st='2946' />
+	<marker station='Polona_2' lat='45.722035' lng='21.163686' id_st='2945' />
+	<marker station='Pomiculturii 1a' lat='45.772996' lng='21.231595' id_st='3280' />
+	<marker station='Pomiculturii 1tb' lat='45.772806' lng='21.231842' id_st='3281' />
+	<marker station='Pop de Basesti 1tb' lat='45.749614' lng='21.202588' id_st='3120' />
+	<marker station='Pop de Basesti 2tb.' lat='45.749651' lng='21.202246' id_st='2764' />
+	<marker station='Popa Sapca 1a' lat='45.760793' lng='21.232873' id_st='3225' />
+	<marker station='Popa Sapca 2a' lat='45.760431' lng='21.232629' id_st='3224' />
+	<marker station='Porumbescu' lat='45.738803' lng='21.21601' id_st='2740' />
+	<marker station='Porumbescu_' lat='45.739434' lng='21.220137' id_st='5361' />
+	<marker station='Prefatim' lat='45.714955' lng='21.213791' id_st='4820' />
+	<marker station='Prefatim_' lat='45.714558' lng='21.212859' id_st='4840' />
+	<marker station='Prezan (bucla)' lat='45.731845' lng='21.240931' id_st='3041' />
+	<marker station='Prieteniei' lat='45.763567' lng='21.28519' id_st='5481' />
+	<marker station='Prieteniei ' lat='45.763686' lng='21.285153' id_st='2654' />
+	<marker station='Primaria Ghiroda' lat='45.770699' lng='21.302582' id_st='5820' />
+	<marker station='Primaria Ghiroda_' lat='45.770641' lng='21.303176' id_st='5840' />
+	<marker station='Progresul' lat='45.723931' lng='21.221853' id_st='5040' />
+	<marker station='Progresul_' lat='45.723834' lng='21.221493' id_st='5041' />
+	<marker station='R.Carol' lat='45.744683' lng='21.211937' id_st='2741' />
+	<marker station='Rampa Colonistilor' lat='45.696417' lng='21.312085' id_st='5641' />
+	<marker station='Rampa Colonistilor_' lat='45.697323' lng='21.310964' id_st='5642' />
+	<marker station='Rascoala 1907_1' lat='45.720807' lng='21.171228' id_st='2929' />
+	<marker station='Rascoala 1907_2' lat='45.721157' lng='21.171403' id_st='2928' />
+	<marker station='Razboieni_1' lat='45.75112' lng='21.189992' id_st='3650' />
+	<marker station='Razboieni_2' lat='45.751238' lng='21.189834' id_st='3651' />
+	<marker station='Real 3' lat='45.785003' lng='21.313146' id_st='6240' />
+	<marker station='Real 3_' lat='45.78463' lng='21.312653' id_st='6241' />
+	<marker station='Real Practiker' lat='45.706421' lng='21.187073' id_st='5501' />
+	<marker station='Real Practiker_' lat='45.705206' lng='21.185996' id_st='5500' />
+	<marker station='Regele Carol_3' lat='45.744931' lng='21.211147' id_st='2888' />
+	<marker station='Regina Maria 1a' lat='45.752407' lng='21.22195' id_st='4420' />
+	<marker station='Regina Maria 1tb' lat='45.753192' lng='21.222406' id_st='3102' />
+	<marker station='Regina Maria 2tb' lat='45.752908' lng='21.220818' id_st='3105' />
+	<marker station='Remetea Mare 1' lat='45.778551' lng='21.365436' id_st='6026' />
+	<marker station='Remetea Mare 1_' lat='45.778871' lng='21.364087' id_st='6027' />
+	<marker station='Remetea Mare 2' lat='45.779366' lng='21.375862' id_st='6024' />
+	<marker station='Remetea Mare 2_' lat='45.77962' lng='21.373176' id_st='6025' />
+	<marker station='Remetea Mare 3' lat='45.781723' lng='21.381253' id_st='6022' />
+	<marker station='Remetea Mare 3_' lat='45.781809' lng='21.380545' id_st='6023' />
+	<marker station='Remus Radulet 1tb' lat='45.770312' lng='21.223168' id_st='2961' />
+	<marker station='Renasterii 1tb.' lat='45.763774' lng='21.25592' id_st='2823' />
+	<marker station='Renasterii 2tb.' lat='45.763799' lng='21.25541' id_st='2824' />
+	<marker station='Ronat_1' lat='45.748943' lng='21.189686' id_st='3653' />
+	<marker station='Ronat_2' lat='45.749006' lng='21.189494' id_st='3652' />
+	<marker station='Rudolf Walter 1a' lat='45.754352' lng='21.269537' id_st='3401' />
+	<marker station='Rudolf Walter 2a' lat='45.754604' lng='21.269247' id_st='3402' />
+	<marker station='Salcamilor_1' lat='45.736634' lng='21.231149' id_st='3588' />
+	<marker station='Salcamilor_2' lat='45.736179' lng='21.230746' id_st='3589' />
+	<marker station='Samuil Micu 1tb' lat='45.763515' lng='21.25178' id_st='3160' />
+	<marker station='Samuil Micu 2tb' lat='45.763535' lng='21.25161' id_st='3161' />
+	<marker station='Scoala Plopi 1a' lat='45.750097' lng='21.279727' id_st='3420' />
+	<marker station='Snagov_' lat='45.736675' lng='21.217128' id_st='2703' />
+	<marker station='Sp Judetean_1' lat='45.738408' lng='21.241108' id_st='3584' />
+	<marker station='Sp Judetean_2' lat='45.738205' lng='21.240653' id_st='3585' />
+	<marker station='Sp.Judetean' lat='45.738028' lng='21.242238' id_st='4860' />
+	<marker station='Sp.Judetean 2tb' lat='45.738749' lng='21.240694' id_st='3000' />
+	<marker station='Spartacus ' lat='45.763752' lng='21.281138' id_st='2655' />
+	<marker station='Stefan Cel Mare ' lat='45.7503' lng='21.25274' id_st='2847' />
+	<marker station='Str.Cluj_1' lat='45.74359' lng='21.236978' id_st='3681' />
+	<marker station='Str.Cluj_2' lat='45.743771' lng='21.237102' id_st='3682' />
+	<marker station='Stuparilor 1a' lat='45.773037' lng='21.245825' id_st='3247' />
+	<marker station='Stuparilor 2a' lat='45.772855' lng='21.245918' id_st='3250' />
+	<marker station='T.Grozavescu ' lat='45.7545' lng='21.233958' id_st='2706' />
+	<marker station='T.Grozavescu 1a' lat='45.754741' lng='21.2337' id_st='3220' />
+	<marker station='T.Grozavescu 2a' lat='45.754641' lng='21.233929' id_st='3221' />
+	<marker station='T.Grozavescu p' lat='45.754499' lng='21.234286' id_st='6200' />
+	<marker station='Tb_A.Popovici 2' lat='45.759112' lng='21.236616' id_st='2968' />
+	<marker station='Tb_Baader 1' lat='45.762521' lng='21.244425' id_st='4100' />
+	<marker station='Tb_Bastion 1' lat='45.758026' lng='21.234058' id_st='4000' />
+	<marker station='Tb_Gara  Nord 1' lat='45.750421' lng='21.20806' id_st='2768' />
+	<marker station='Tb_Ghe.Baritiu 1' lat='45.748997' lng='21.199574' id_st='2672' />
+	<marker station='Tb_Ghe.Baritiu 2' lat='45.748975' lng='21.199391' id_st='2671' />
+	<marker station='Tb_Oituz 2' lat='45.758591' lng='21.2323' id_st='2967' />
+	<marker station='Tb_P-ta Marasti 1' lat='45.759237' lng='21.227754' id_st='3060' />
+	<marker station='Tb_P-ta Marasti 2' lat='45.759431' lng='21.228545' id_st='3080' />
+	<marker station='Tb_Pol.Jud.Timis 1' lat='45.760452' lng='21.241072' id_st='2798' />
+	<marker station='Tb_Pol.Jud.Timis 2.' lat='45.760935' lng='21.241909' id_st='2800' />
+	<marker station='Tepes Voda' lat='45.760138' lng='21.277237' id_st='2664' />
+	<marker station='Tepes Voda 1a' lat='45.760038' lng='21.277202' id_st='3505' />
+	<marker station='Timis 1tb' lat='45.761999' lng='21.213537' id_st='3011' />
+	<marker station='Timis 2tb' lat='45.761746' lng='21.21392' id_st='3012' />
+	<marker station='Tineretului 1tb' lat='45.76972' lng='21.269319' id_st='2973' />
+	<marker station='Tineretului 2tb' lat='45.7694' lng='21.269819' id_st='2974' />
+	<marker station='Torac ' lat='45.746027' lng='21.260574' id_st='2845' />
+	<marker station='Torontalului 1tb' lat='45.772431' lng='21.216537' id_st='2957' />
+	<marker station='Transilvania_1' lat='45.733753' lng='21.20257' id_st='3598' />
+	<marker station='Transilvania_2' lat='45.733834' lng='21.202043' id_st='3599' />
+	<marker station='Transilvania_3' lat='45.733687' lng='21.202282' id_st='5120' />
+	<marker station='Tv-Mures' lat='45.729568' lng='21.227226' id_st='5000' />
+	<marker station='Tv-Mures_' lat='45.729114' lng='21.227494' id_st='5001' />
+	<marker station='Tv_3 August 1' lat='45.756726' lng='21.244929' id_st='3172' />
+	<marker station='Tv_3 August 2' lat='45.756839' lng='21.244849' id_st='3173' />
+	<marker station='Tv_Amforei 1' lat='45.76544' lng='21.21287' id_st='3544' />
+	<marker station='Tv_Amforei 2' lat='45.765249' lng='21.213062' id_st='3545' />
+	<marker station='Tv_B.Cartan 1' lat='45.762847' lng='21.247424' id_st='3253' />
+	<marker station='Tv_B.Cartan 2' lat='45.762532' lng='21.247756' id_st='3254' />
+	<marker station='Tv_BaltaVerde 1' lat='45.75782' lng='21.209361' id_st='3548' />
+	<marker station='Tv_BaltaVerde 2' lat='45.757702' lng='21.209485' id_st='3549' />
+	<marker station='Tv_Banatim 1' lat='45.748632' lng='21.253065' id_st='3561' />
+	<marker station='Tv_Banatim 2' lat='45.748742' lng='21.253538' id_st='3560' />
+	<marker station='Tv_Catedrala 1' lat='45.751227' lng='21.223939' id_st='4640' />
+	<marker station='Tv_Catedrala 2' lat='45.751465' lng='21.223596' id_st='3163' />
+	<marker station='Tv_Cetatii  2' lat='45.762934' lng='21.210813' id_st='3547' />
+	<marker station='Tv_Cetatii 1' lat='45.763243' lng='21.210643' id_st='3546' />
+	<marker station='Tv_Ciarda R 1' lat='45.729217' lng='21.269094' id_st='3573' />
+	<marker station='Tv_Ciarda R 2' lat='45.729398' lng='21.269082' id_st='3574' />
+	<marker station='Tv_Circumv 1' lat='45.756551' lng='21.216904' id_st='3552' />
+	<marker station='Tv_Circumv 2' lat='45.75659' lng='21.217045' id_st='3553' />
+	<marker station='Tv_Continental 1' lat='45.755619' lng='21.232036' id_st='3168' />
+	<marker station='Tv_Continental 2' lat='45.755778' lng='21.233958' id_st='3169' />
+	<marker station='Tv_Crizantem 2' lat='45.742062' lng='21.201448' id_st='2883' />
+	<marker station='Tv_Crizantem_1' lat='45.741771' lng='21.201166' id_st='2882' />
+	<marker station='Tv_Dambovita 1' lat='45.740009' lng='21.196248' id_st='2880' />
+	<marker station='Tv_Dambovita 2' lat='45.740253' lng='21.196086' id_st='2881' />
+	<marker station='Tv_Detergenti 1' lat='45.743883' lng='21.254821' id_st='4720' />
+	<marker station='Tv_Detergenti 2' lat='45.7437' lng='21.255543' id_st='3563' />
+	<marker station='Tv_Domasnean 1' lat='45.733873' lng='21.25863' id_st='3566' />
+	<marker station='Tv_Domasnean 2' lat='45.733865' lng='21.259284' id_st='3567' />
+	<marker station='Tv_Economu 1' lat='45.765171' lng='21.260551' id_st='3176' />
+	<marker station='Tv_Economu 2' lat='45.765462' lng='21.260396' id_st='3177' />
+	<marker station='Tv_Electrica 1' lat='45.770014' lng='21.251749' id_st='2763' />
+	<marker station='Tv_Electrica 2' lat='45.769845' lng='21.25187' id_st='2765' />
+	<marker station='Tv_Electrotim 1' lat='45.732627' lng='21.260208' id_st='3568' />
+	<marker station='Tv_Electrotim 2' lat='45.732754' lng='21.260473' id_st='3569' />
+	<marker station='Tv_F de Bere 1' lat='45.755039' lng='21.249101' id_st='3554' />
+	<marker station='Tv_F de Bere 2' lat='45.755074' lng='21.249242' id_st='3556' />
+	<marker station='Tv_Gara  Est 1' lat='45.766582' lng='21.244923' id_st='2766' />
+	<marker station='Tv_Gara  Est 2' lat='45.766459' lng='21.245017' id_st='2767' />
+	<marker station='Tv_Gara  Nord 1' lat='45.750287' lng='21.207498' id_st='3243' />
+	<marker station='Tv_Gara  Nord 2' lat='45.750427' lng='21.207472' id_st='3244' />
+	<marker station='Tv_I Maniu 1' lat='45.743361' lng='21.206564' id_st='2886' />
+	<marker station='Tv_I Maniu 2' lat='45.743721' lng='21.2072' id_st='2887' />
+	<marker station='Tv_IOT 1' lat='45.730474' lng='21.26493' id_st='3571' />
+	<marker station='Tv_IOT 2' lat='45.73049' lng='21.265187' id_st='3572' />
+	<marker station='Tv_Lalelelor 1' lat='45.762073' lng='21.260484' id_st='2748' />
+	<marker station='Tv_Lalelelor 2' lat='45.76213' lng='21.260269' id_st='2749' />
+	<marker station='Tv_Libertatii 1' lat='45.755844' lng='21.227831' id_st='3166' />
+	<marker station='Tv_Libertatii 2' lat='45.755994' lng='21.227522' id_st='3167' />
+	<marker station='Tv_M.Basarab 1' lat='45.76789' lng='21.21667' id_st='3542' />
+	<marker station='Tv_M.Basarab 2' lat='45.767652' lng='21.216822' id_st='3543' />
+	<marker station='Tv_Mangalia 1' lat='45.742606' lng='21.203697' id_st='2884' />
+	<marker station='Tv_Mangalia 2' lat='45.742829' lng='21.204092' id_st='2885' />
+	<marker station='Tv_Mecatim 1' lat='45.739471' lng='21.256556' id_st='3564' />
+	<marker station='Tv_Mecatim 2' lat='45.738976' lng='21.257334' id_st='3565' />
+	<marker station='Tv_Mendeleev 1' lat='45.756861' lng='21.213651' id_st='3550' />
+	<marker station='Tv_Mendeleev 2' lat='45.756908' lng='21.213752' id_st='3551' />
+	<marker station='Tv_Meteo 1' lat='45.771969' lng='21.259648' id_st='2754' />
+	<marker station='Tv_Meteo 2' lat='45.77187' lng='21.259658' id_st='2755' />
+	<marker station='Tv_Mocioni 1' lat='45.746343' lng='21.21551' id_st='2708' />
+	<marker station='Tv_Mocioni 2' lat='45.746521' lng='21.215416' id_st='2710' />
+	<marker station='Tv_P Turcesc 1' lat='45.756861' lng='21.255378' id_st='2735' />
+	<marker station='Tv_P Turcesc 2' lat='45.756946' lng='21.255657' id_st='2738' />
+	<marker station='Tv_P-ta 700 1' lat='45.756214' lng='21.223034' id_st='3164' />
+	<marker station='Tv_P-ta 700 2' lat='45.75634' lng='21.22263' id_st='3165' />
+	<marker station='Tv_P-ta Maria 1' lat='45.74861' lng='21.219132' id_st='4920' />
+	<marker station='Tv_P-ta Maria 2' lat='45.748818' lng='21.219055' id_st='3181' />
+	<marker station='Tv_P-ta Maria 3' lat='45.748527' lng='21.21887' id_st='2727' />
+	<marker station='Tv_P-ta Traian 1' lat='45.75749' lng='21.249183' id_st='3174' />
+	<marker station='Tv_P-ta Traian 2' lat='45.757612' lng='21.249176' id_st='3175' />
+	<marker station='Tv_Prefectura 1' lat='45.755574' lng='21.238547' id_st='3170' />
+	<marker station='Tv_Prefectura 2' lat='45.75585' lng='21.238735' id_st='3171' />
+	<marker station='Tv_R Carol 1' lat='45.745068' lng='21.211034' id_st='2702' />
+	<marker station='Tv_R Carol 2' lat='45.745246' lng='21.211639' id_st='2704' />
+	<marker station='Tv_Sarmiseg 1' lat='45.759026' lng='21.258105' id_st='2745' />
+	<marker station='Tv_Sarmiseg 2' lat='45.759085' lng='21.257973' id_st='2747' />
+	<marker station='Tv_Spumotim 1' lat='45.736431' lng='21.257624' id_st='4700' />
+	<marker station='Tv_Spumotim 2' lat='45.736506' lng='21.258226' id_st='4701' />
+	<marker station='Tv_Torontal 1' lat='45.769007' lng='21.219849' id_st='3540' />
+	<marker station='Tv_Torontal 2' lat='45.76907' lng='21.220171' id_st='4680' />
+	<marker station='Tv_U.M.T - gara' lat='45.77174' lng='21.255907' id_st='3249' />
+	<marker station='Tv_U.M.T 1' lat='45.771738' lng='21.255955' id_st='2757' />
+	<marker station='Tv_V.Babes 1' lat='45.768578' lng='21.260591' id_st='2752' />
+	<marker station='Tv_V.Babes 2' lat='45.768642' lng='21.260376' id_st='2753' />
+	<marker station='U.M.T._2 plecare' lat='45.771559' lng='21.255353' id_st='3340' />
+	<marker station='U.M.T_2' lat='45.771532' lng='21.255297' id_st='2761' />
+	<marker station='U.T.T. 1tb' lat='45.778483' lng='21.220546' id_st='2953' />
+	<marker station='U.T.T. 2tb' lat='45.778228' lng='21.220396' id_st='2954' />
+	<marker station='UM Aeroport' lat='45.798503' lng='21.33117' id_st='3860' />
+	<marker station='UM Aeroport II' lat='45.798632' lng='21.331056' id_st='3861' />
+	<marker station='UZINA DE APA' lat='45.755946' lng='21.263723' id_st='5420' />
+	<marker station='Univ D. Cantemir_' lat='45.750288' lng='21.237686' id_st='2833' />
+	<marker station='Univ de Vest ' lat='45.747981' lng='21.230711' id_st='2807' />
+	<marker station='Univ de Vest_' lat='45.747854' lng='21.231268' id_st='2826' />
+	<marker station='Urseni' lat='45.694356' lng='21.306778' id_st='5601' />
+	<marker station='Urseni_' lat='45.695799' lng='21.30554' id_st='5620' />
+	<marker station='Uzina de apa' lat='45.756855' lng='21.263337' id_st='3405' />
+	<marker station='Uzina de apa 2a' lat='45.756486' lng='21.263507' id_st='2840' />
+	<marker station='Uzinei' lat='45.760193' lng='21.260185' id_st='5440' />
+	<marker station='Uzinei 1a' lat='45.760185' lng='21.259798' id_st='3482' />
+	<marker station='Uzinei 2 a' lat='45.760077' lng='21.260427' id_st='2665' />
+	<marker station='Uzinei 3a' lat='45.760223' lng='21.259638' id_st='3483' />
+	<marker station='V Carlova 2a' lat='45.753022' lng='21.259817' id_st='3410' />
+	<marker station='V Parvan 2a' lat='45.754008' lng='21.240503' id_st='2832' />
+	<marker station='V Simionescu 1a' lat='45.729047' lng='21.184814' id_st='2816' />
+	<marker station='V. Parvan' lat='45.753934' lng='21.240153' id_st='2831' />
+	<marker station='V.Economu 1tb' lat='45.765277' lng='21.260543' id_st='2971' />
+	<marker station='V.Economu 2tb' lat='45.765408' lng='21.260364' id_st='2972' />
+	<marker station='V.Simionescu 2a' lat='45.72894' lng='21.184773' id_st='2819' />
+	<marker station='Valisoara 1 a' lat='45.755898' lng='21.275641' id_st='2661' />
+	<marker station='Valisoara 2 a' lat='45.75623' lng='21.275625' id_st='2662' />
+	<marker station='Valisoara 2a' lat='45.756259' lng='21.275594' id_st='3503' />
+	<marker station='Vaslui 1a' lat='45.733641' lng='21.191752' id_st='2813' />
+	<marker station='Vaslui 2a' lat='45.733632' lng='21.191957' id_st='2814' />
+	<marker station='Veteranilor' lat='45.728342' lng='21.205069' id_st='4760' />
+	<marker station='Veteranilor.' lat='45.729231' lng='21.204634' id_st='5100' />
+	<marker station='Veteranilor..' lat='45.729178' lng='21.204534' id_st='5101' />
+	<marker station='Veteranilor_' lat='45.728879' lng='21.206182' id_st='4780' />
+	<marker station='Victor Hugo' lat='45.724905' lng='21.217983' id_st='5180' />
+	<marker station='Victor Hugo_' lat='45.724353' lng='21.217421' id_st='5181' />
+	<marker station='Vuk Karadjic 1tb' lat='45.765227' lng='21.202757' id_st='3017' />
+	<marker station='Vuk Karadjic 2tb' lat='45.76516' lng='21.202381' id_st='3018' />
+</markers>

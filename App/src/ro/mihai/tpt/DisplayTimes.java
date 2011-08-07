@@ -24,12 +24,15 @@ import java.util.List;
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.util.IMonitor;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -43,7 +46,8 @@ import android.widget.TextView;
 public class DisplayTimes extends Activity {
 	private static City city = null;
 	private TableLayout tbl;
-	private Line selectedLine;
+	private Path selectedPath;
+	private ViewState state;
 	private String err;
 	
     /** Called when the activity is first created. */
@@ -52,22 +56,53 @@ public class DisplayTimes extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         tbl = (TableLayout)findViewById(R.id.TableLayout);
-        
         ProgressBar b = (ProgressBar)findViewById(R.id.ProgressBar);
-        
-        
+        state = ViewState.Loading;
         new Thread(new LoadFile(b)).start();
     }
     
-    private View spacer() {
-		View spacer = new View(this);
-		spacer.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 2));		
-		spacer.setBackgroundColor(Color.argb(200, 226, 226, 226));
-		return spacer;
-	}
+    @Override
+    public void onBackPressed() {
+		if(state.shouldBackToAndroid()) {
+			super.onBackPressed();
+			return;
+		}
+		
+		showSelectLinesView();
+		selectedPath = null;
+    }
+    
+    private void update(Update u) {
+        if(selectedPath==null) return; 
+		int ec = 0;
+		ShowLineTimes lt = new ShowLineTimes(u);
+		Path sel = selectedPath;
+		for(Station s:sel.getStationsByPath()) {
+			if(sel!=selectedPath) break;
+			sel.startUpdate(s);
+			this.runOnUiThread(lt);
+			ec = sel.updateStation(ec, s);
+		}
+		sel.updateSort();
+		this.runOnUiThread(new ShowLineTimes(u)); // make sure it refreshes
+    }
+    
+    private void showLineTimesView(Update update) {
+        if(selectedPath==null) return;
+        state = ViewState.SubView;
+    	
+    	tbl.removeAllViews();
+        tbl.addView(LineTimesView.timeHeadView(this,selectedPath, update));
+        tbl.addView(LineTimesView.spacer(this));
+    	List<TableRow> rows = LineTimesView.timeView(selectedPath,this);
+    	for(TableRow r : rows)
+    		tbl.addView(r);
+    }
     
     private View selectLine(Line... lines) {
     	LinearLayout ll = new LinearLayout(this);
+    	ll.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	ll.setGravity(Gravity.CENTER);
     	
     	for(Line line : lines) {
         	Button ls = new Button(this);
@@ -79,57 +114,100 @@ public class DisplayTimes extends Activity {
     	return ll;
     }
     
-    private View buttons() {
-    	LinearLayout ll = new LinearLayout(this);
-    	
-    	Button upd = new Button(this);
-    	upd.setText(R.string.upd);
-    	upd.setOnClickListener(new Update());
-    	ll.addView(upd);
+    private class ShowTramsView implements OnClickListener { public void onClick(View v) { showTramLinesView(); }}    
+    private void showTramLinesView() {
+        state = ViewState.SubView;
+    	tbl.removeAllViews();
 
-    	Button sel = new Button(this);
-    	sel.setText(R.string.sel);
-    	sel.setOnClickListener(new SelectLines());
-    	ll.addView(sel);
+    	tbl.addView(selectLine(
+    		city.getLine("Tv1"), 
+    		city.getLine("Tv2"), 
+    		city.getLine("Tv4"), 
+    		city.getLine("Tv5"), 
+    		city.getLine("Tv6") 
+    	));
     	
-    	if(selectedLine!=null) {
-    		TextView t = new TextView(this);
-			t.setTextSize(18);
-			t.setText("  "+selectedLine.getName());
-			ll.addView(t);
-    	}
-    		
+    	tbl.addView(selectLine(
+    		city.getLine("Tv7a"), 
+    		city.getLine("Tv7b"), 
+    		city.getLine("Tv8"), 
+    		city.getLine("Tv9") 
+    	));
+    }
+
+    private class ShowTrolleyView implements OnClickListener { public void onClick(View v) { showTrolleyLinesView(); }}    
+    private void showTrolleyLinesView() {
+        state = ViewState.SubView;
+    	tbl.removeAllViews();
+    	
+    	tbl.addView(selectLine(
+    		city.getLine("Tb11"), 
+    		city.getLine("Tb14"), 
+    		city.getLine("Tb15"), 
+    		city.getLine("Tb16") 
+    	));
+
+    	tbl.addView(selectLine(
+    		city.getLine("Tb17"), 
+    		city.getLine("Tb18"), 
+    		city.getLine("Tb19") 
+    	));
+    }
+    
+    private class ShowBusView implements OnClickListener { public void onClick(View v) { showBusLinesView(); }}    
+    private void showBusLinesView() {
+        state = ViewState.SubView;
+    	tbl.removeAllViews();
+    	
+    	tbl.addView(selectLine(
+    		city.getLine("E1"), 
+    		city.getLine("E2"), 
+    		city.getLine("E3"), 
+    		city.getLine("E4")
+    	));
+    	tbl.addView(selectLine(
+        	city.getLine("E5"), 
+    		city.getLine("E6"), 
+    		city.getLine("E7"), 
+    		city.getLine("E8") 
+    	));
+    	tbl.addView(selectLine(
+    		city.getLine("3"), 
+    		city.getLine("13"), 
+    		city.getLine("21"), 
+    		city.getLine("28") 
+    	));
+    	tbl.addView(selectLine(
+        	city.getLine("32a"), 
+    		city.getLine("33"), 
+    		city.getLine("40"), 
+    		city.getLine("46") 
+    	));
+    	tbl.addView(selectLine(
+    		city.getLine("M24"), 
+    		city.getLine("M30"), 
+    		city.getLine("M35"), 
+    		city.getLine("M36") 
+    	));
+    	
+    }
+    
+    private View category(int labelResId, OnClickListener action) {
+    	LinearLayout ll = new LinearLayout(this);
+    	ll.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	ll.setGravity(Gravity.CENTER);
+    	Button b = new Button(this);
+    	b.setWidth(200);
+    	b.setHeight(60);
+    	b.setText(labelResId);
+    	b.setOnClickListener(action);
+    	ll.addView(b);
     	return ll;
     }
     
-    private void update() {
-        if(selectedLine==null) return; 
-		int ec = 0;
-		ShowLineTimes lt = new ShowLineTimes();
-		Line sel = selectedLine;
-		for(Station s:sel.getSortedStations()) {
-			if(sel!=selectedLine) break;
-			sel.startUpdate(s);
-			this.runOnUiThread(lt);
-			ec = sel.updateStation(ec, s);
-		}
-		sel.updateSort();
-		this.runOnUiThread(new ShowLineTimes()); // make sure it refreshes
-    }
-    
-    private void showLineTimesView() {
-    	tbl.removeAllViews();
-        tbl.addView(buttons());
-        tbl.addView(spacer());
-        if(selectedLine!=null) {
-        	List<TableRow> rows = selectedLine.timeView(this);
-        	for(TableRow r : rows)
-        		tbl.addView(r);
-        }
-    }
-    
-    
+    private class ShowSelectLineView implements Runnable { public void run() { showSelectLinesView(); } }
     private void showSelectLinesView() {
+    	state = ViewState.EntryView;
     	if(err!=null) {
     		TextView status = (TextView)findViewById(R.id.StatusText);
     		status.setText(err);
@@ -142,73 +220,10 @@ public class DisplayTimes extends Activity {
     		city.getLine("E7"), 
     		city.getLine("E8") 
     	));
-    	tbl.addView(selectLine(
-        	city.getLine("Tb14"), 
-    		city.getLine("Tb15"), 
-    		city.getLine("Tb16"), 
-    		city.getLine("Tb19") 
-    	));
-    	tbl.addView(selectLine(
-        	city.getLine("Tb11"), 
-    		city.getLine("Tb17"), 
-    		city.getLine("Tb18") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("Tv7a"), 
-    		city.getLine("Tv7b"), 
-    		city.getLine("Tv9"), 
-    		city.getLine("Tv9b") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("Tv1"), 
-    		city.getLine("Tv2"), 
-    		city.getLine("Tv3b"), 
-    		city.getLine("Tv4"), 
-    		city.getLine("Tv5") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("Tv6"), 
-    		city.getLine("Tv8"), 
-    		city.getLine("5"), 
-    		city.getLine("3"), 
-    		city.getLine("3a") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("E2"), 
-    		city.getLine("E3"), 
-    		city.getLine("E4"), 
-    		city.getLine("E6"), 
-    		city.getLine("E7b") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("M22"), 
-    		city.getLine("M22a"), 
-    		city.getLine("M22b"), 
-    		city.getLine("M27") 
-    	));
-        tbl.addView(selectLine(
-    		city.getLine("M30"), 
-    		city.getLine("M35"), 
-    		city.getLine("M36")
-    	));
-    	tbl.addView(selectLine(
-        	city.getLine("13"), 
-    		city.getLine("21"), 
-    		city.getLine("26"), 
-    		city.getLine("26a"), 
-    		city.getLine("26b") 
-    	));
-    	tbl.addView(selectLine(
-    		city.getLine("28"),
-            city.getLine("32"), 
-            city.getLine("32a"), 
-        	city.getLine("40") 
-    	));
-        tbl.addView(selectLine(
-    		city.getLine("44"), 
-    		city.getLine("44a"), 
-    		city.getLine("46") 
-    	));
+    	tbl.addView(LineTimesView.whiteSpace(this,10));
+    	tbl.addView(category(R.string.selTrams, new ShowTramsView()));
+    	tbl.addView(category(R.string.selBus, new ShowBusView()));
+    	tbl.addView(category(R.string.selTrolleys, new ShowTrolleyView()));
     }
     
     private class Update implements OnClickListener, Runnable {
@@ -220,39 +235,62 @@ public class DisplayTimes extends Activity {
     		new Thread(this).start();
     	}
     	public void run() {
-    		update();
+    		update(this);
     		running = false;
     	}
     }
-    private class SelectLines implements OnClickListener {
-    	public void onClick(View v) {
-    		showSelectLinesView();
-    	}
-    }
-    private class SelectOneLine implements OnClickListener {
+
+    private class SelectOneLine implements OnClickListener, DialogInterface.OnClickListener {
     	private Line selectable;
+    	private List<Path> pathList;
+    	
     	public SelectOneLine(Line selectable) {
     		this.selectable = selectable;
     	}
     	public void onClick(View v) {
-    		selectedLine = selectable;
-    		showLineTimesView();
+    		pathList = new ArrayList<Path>(selectable.getPaths());
+    		assert( !pathList.isEmpty() );
+    		
+    		if(pathList.size()==1) { // only one path?
+    			onClick(null, 0);
+    			return;
+    		}
+    		
+    		final CharSequence[] items = new CharSequence[pathList.size()];
+    		
+    		for(int i=0;i<items.length;i++) 
+    			items[i] = pathList.get(i).getNiceName();
+
+    		new AlertDialog.Builder(DisplayTimes.this)
+				.setTitle("Pick a color")
+				.setItems(items, this)
+				.create()
+				.show();    		
     	}
+    	
+	    public void onClick(DialogInterface dialog, int item) {
+	    	selectedPath = pathList.get(item);
+    		showLineTimesView(new Update());
+	    }
+    	
     }
     
     private class ShowLineTimes implements Runnable {
-    	private long last=0;;
+    	private long last=0;
+    	private Update u;
+    	
+    	public ShowLineTimes(Update u) {
+    		this.u = u;
+		}
+    	
 		public void run() {
 			long crt = System.currentTimeMillis(); 
 			if(crt>last && (crt-last)<500) return;
 			last = crt;
-			showLineTimesView(); 
+			showLineTimesView(u); 
 		}
 	}
 
-    private class ShowSelectLineView implements Runnable {
-		public void run() { showSelectLinesView(); }
-	}
     
     
     private class LoadFile implements Runnable, IMonitor {
@@ -267,7 +305,7 @@ public class DisplayTimes extends Activity {
 		public void run() {
 	        try {
 	        	if (null==city)
-	        		city = RATT.loadStoredCityOrDownloadAndCache(DisplayTimes.this, this);
+	        		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(DisplayTimes.this, this);
 	        } catch(IOException e) {
 	        	err = "Err: "+e.getMessage();
 	        	city = new City();
