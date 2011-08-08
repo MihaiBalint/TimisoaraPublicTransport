@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -112,4 +113,14 @@ public class LineTimesView {
 		spacer.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, height));		
 		return spacer;
 	}
+    
+    public static View copyright(Context ctx) {
+    	TextView copy = new TextView(ctx);
+    	copy.setText("(c) 2011 Mihai Balint, Kriszti Cseh");
+    	copy.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	copy.setGravity(Gravity.CENTER);
+    	
+		return copy;
+	}
+    
 }

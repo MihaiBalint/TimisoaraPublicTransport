@@ -225,6 +225,8 @@ public class DisplayTimes extends Activity {
     	tbl.addView(category(R.string.selTrams, new ShowTramsView()));
     	tbl.addView(category(R.string.selBus, new ShowBusView()));
     	tbl.addView(category(R.string.selTrolleys, new ShowTrolleyView()));
+    	
+    	tbl.addView(LineTimesView.copyright(this));
     }
     
     private class Update implements OnClickListener, Runnable {
