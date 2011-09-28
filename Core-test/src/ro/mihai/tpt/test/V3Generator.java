@@ -26,7 +26,8 @@ public class V3Generator extends TestCase {
 
 	public void testGenerator() throws Exception {
 		// InputStream inp = new FileInputStream("Lines Stations and Junctions - Timisoara Public Transport.csv");
-		InputStream inp = new FileInputStream("linestations3.csv");
+		// InputStream inp = new FileInputStream("linestations3.csv");
+		InputStream inp = new FileInputStream("linestations-20110928.csv");
 		CSVReader rd = new CSVReader(new InputStreamReader(inp));
 		String[] row;
 		City c = new City();
@@ -36,6 +37,18 @@ public class V3Generator extends TestCase {
 		
 		rd.readNext(); // ignore header row
 		while(null!=(row=rd.readNext())) {
+			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
+				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
+			) continue; 
+			
+			if(row.length<12) {
+				String d = "";
+				for(String s:row)
+					d += " " + s;
+				System.out.println("Len: "+row.length+" data: "+d);
+			}
+				
+			
 			if("true".equalsIgnoreCase(row[9])) continue;
 			
 			Station st = stMap.get(row[2]);
@@ -74,7 +87,7 @@ public class V3Generator extends TestCase {
 		c.setStations(new ArrayList<Station>(stMap.values()));
 		c.setJunctions(new ArrayList<Junction>(jMap.values()));
 		
-		/*
+		/* * /
 		for(Line l : c.getLines()) {
 			l.pathMerge();
 			assert(l.getPaths().size()==1 || l.getPaths().size()==2);
@@ -85,7 +98,7 @@ public class V3Generator extends TestCase {
 		}
 		
 		printCSV(c);
-		*/
+		/* */
 		
 		String fileName = "citylines.dat";
 		FileOutputStream fos = new FileOutputStream(fileName); 
@@ -113,8 +126,11 @@ public class V3Generator extends TestCase {
 		assertEquals(2,c.getLine("33").getPaths().size());
 		
 		for(Line l : c.getLines()) {
-			if(l.getPaths().size() > 2)
+			if(l.getPaths().size() > 2) {
 				System.out.println(l.getName());
+				for(Path p: l.getPaths())
+					System.out.println("\t"+p.getName());
+			}
 			assertTrue(l.getPaths().size() <= 2);
 		}
 	}

@@ -31,7 +31,6 @@ import ro.mihai.util.IMonitor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -179,7 +178,6 @@ public class DisplayTimes extends Activity {
     		city.getLine("28") 
     	));
     	tbl.addView(selectLine(
-        	city.getLine("32a"), 
     		city.getLine("33"), 
     		city.getLine("40"), 
     		city.getLine("46") 

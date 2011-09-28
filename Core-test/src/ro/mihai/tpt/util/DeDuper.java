@@ -1,4 +1,4 @@
-package ro.mihai.tpt.test;
+package ro.mihai.tpt.util;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

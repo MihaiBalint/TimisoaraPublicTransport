@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 
-import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
 
@@ -116,7 +115,7 @@ public class LineTimesView {
     
     public static View copyright(Context ctx) {
     	TextView copy = new TextView(ctx);
-    	copy.setText("(c) 2011 Mihai Balint, Kriszti Cseh");
+    	copy.setText("(c) 2011 Mihai Balint, Kriszti Cseh,\n Portan Cosmin, Florin B.");
     	copy.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	copy.setGravity(Gravity.CENTER);
     	
