@@ -1,4 +1,4 @@
-LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,JunctionName,Lat,Long,Invalid,Verified,Verification Date,Goodle Maps Link
+LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,JunctionName,Lat,Long,Invalid,Verified,Verification Date,Goodle Maps Link,Info comments
 1207,3,3106,Gara de Nord 2tb,Gara de Nord (Lic. Auto),Gara,Gara,45.750569,21.207921,,,07.08.2011,"http://maps.google.com/maps?q=Gara_de_Nord_2tb@45.750569,21.207921"
 1207,3,4464,AT_Pop de Basesti_1,Strada Pop de Basesti / Autogara SuperImposer (Lic. Auto),Autogara SuperImposer,Pop de Basesti,45.749527,21.202552,,,07.08.2011,"http://maps.google.com/maps?q=AT_Pop_de_Basesti_1@45.749527,21.202552"
 1207,3,4502,AT_Reg.Carol_1,B-dul Iuliu Maniu / Autogara / Iosefin (Lic. Auto),Autogara,Autogara,45.743778,21.206403,,,07.08.2011,"http://maps.google.com/maps?q=AT_Reg_Carol_1@45.743778,21.206403"
@@ -120,7 +120,8 @@ LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,Ju
 1546,32,2695,P-ta Mocioni,Piata Mocioni / Sinaia (Mocioni),Sinaia,Sinaia,45.745971,21.215977,,,07.08.2011,"http://maps.google.com/maps?q=P_ta_Mocioni@45.745971,21.215977"
 
 LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,JunctionName,Lat,Long,Invalid,Verified,Verification Date,Goodle Maps Link
-1046,33,3200,Ab_Catedrala 2,Catedrala Mitropolitana (Real),Catedrala,Catedrala,45.750925,21.225107,TRUE,,07.08.2011,"http://maps.google.com/maps?q=Ab_Catedrala_2@45.750925,21.225107"
+1046,33,3200,Ab_Catedrala 2,Catedrala Mitropolitana - disabled see info in column N (Real),Catedrala,Catedrala,45.750925,21.225107,TRUE,,07.08.2011,"http://maps.google.com/maps?q=Ab_Catedrala_2@45.750925,21.225107","disabled since it has no time estimate on the ratt website, we are using the other one"
+1046,33,2799,Ab_Catedrala 1,Catedrala Mitropolitana (Real),Catedrala,Catedrala,45.750961,21.225094,,,07.08.2011,"http://maps.google.com/maps?q=Ab_Catedrala_1@45.750961,21.225094",related to above
 1046,33,2666,P-ta Mocioni_,Piata Mocioni / Sinaia (Real),Sinaia,Siania,45.745649,21.215296,,,07.08.2011,"http://maps.google.com/maps?q=P_ta_Mocioni_@45.745649,21.215296"
 1046,33,2667,Brancoveanu..,Strada Brancoveanu (Real),Brancoveanu,Brancoveanu,45.742754,21.212533,,,07.08.2011,"http://maps.google.com/maps?q=Brancoveanu__@45.742754,21.212533"
 1046,33,2668,P-ta I.Maniu,Piata Iuliu Maniu (Real),P-ta I. Maniu,P-ta I. Maniu,45.738513,21.209719,,,07.08.2011,"http://maps.google.com/maps?q=P_ta_I_Maniu@45.738513,21.209719"
@@ -301,7 +302,8 @@ LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,Ju
 1928,E6,2965,P-ta C.Europei 1tb,Piata Consiliul Europei / Iulius Mall (P-ta Consiliul Europei),Iulius Mall,Iulius Mall,45.764944,21.225488,,,07.08.2011,"http://maps.google.com/maps?q=P_ta_C_Europei_1tb@45.764944,21.225488"
 
 LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,JunctionName,Lat,Long,Invalid,Verified,Verification Date,Goodle Maps Link
-2026,E7,6200,T.Grozavescu p,Strada Traian Grozavescu / Posta Mare (FZB),Posta Mare,Posta Mare,45.754499,21.234286,,,07.08.2011,"http://maps.google.com/maps?q=T_Grozavescu_p@45.754499,21.234286"
+2026,E7,6200,T.Grozavescu p,Strada Traian Grozavescu / Posta - disabled see column N (FZB),Posta Mare,Posta Mare,45.754499,21.234286,TRUE,,07.08.2011,"http://maps.google.com/maps?q=T_Grozavescu_p@45.754499,21.234286","disabled since it has no time estimate on the ratt website, we are using the other one"
+2026,E7,2706,T.Grozavescu,Strada Traian Grozavescu / Posta Mare (FZB),Posta Mare,Posta Mare,45.7545,21.233958,,,07.08.2011,"http://maps.google.com/maps?q=T_Grozavescu@45.754500,21.233958"
 2026,E7,2806,P-ta L. da Vinci,Piata Leonadro da Vinci (FZB),P-ta L. da Vinci,P-ta L. da Vinci,45.749004,21.235337,,,07.08.2011,"http://maps.google.com/maps?q=P_ta_L__da_Vinci@45.749004,21.235337"
 2026,E7,2807,Univ de Vest,Universitatea de Vest (FZB),Univ. de Vest,Univ. de Vest,45.747981,21.230711,,,07.08.2011,"http://maps.google.com/maps?q=Univ_de_Vest@45.747981,21.230711"
 2026,E7,2809,Pod M Saguna 1a,Facultatea de electrotehnica / Pod Andrei Saguna (FZB),A. Saguna,Facultatea de electro.,45.747972,21.225225,,,07.08.2011,"http://maps.google.com/maps?q=Pod_M_Saguna_1a@45.747972,21.225225"
