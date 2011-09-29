@@ -44,11 +44,8 @@ public class TestCityData extends TestCase {
 	}
 	
 	public void test_CityUpdateAndRegressions() throws Exception {
-		// City c = RATT.downloadCity(new TestMonitor());
+		//City c = RATT.downloadCity(new TestMonitor());
 		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache();
-		
-		c.saveToFile(new FileOutputStream(JavaCityLoader.cityCacheFileName));
-		System.out.println(c.linesAndStationsToString());
 		
 		ArrayList<String> names = new ArrayList<String>();
 		for(INamedEntity s : c.getLines()) names.add(s.getName());
@@ -75,44 +72,6 @@ public class TestCityData extends TestCase {
 
 		assertEquals(597, c.getStations().size());
 	}
-	
-	public void testCityCSVUpdate() throws Exception {
-		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache();
-		RATT.addLatLongCoords(c, new FileInputStream("stations.xml"));
-		
-		PrintStream csv = new PrintStream(new FileOutputStream("linestations.csv"));
-		csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
-		
-		ArrayList<String> names = new ArrayList<String>();
-		for(INamedEntity s : c.getLines()) names.add(s.getName());
-		Collections.sort(names);
-		
-		
-		for(String name : names) {
-			Line l = c.getLine(name);
-			for(Station s:l.getStations()) {
-				csv.println(
-					l.getId()+						"," + 
-					"\""+l.getName().trim()+"\"" +	"," +
-					s.getId()+						"," +
-					"\""+s.getName().trim()+"\"" +	"," +
-					"\"\""+ 						"," + // FriendlyStationName
-					"\"\""+ 						"," + // ShortStationName
-					"\"\""+ 						"," + // JunctionName
-					s.getLat()+ 					"," +
-					s.getLng()+						"," +
-					"\"\""+ 						"," + // Invalid
-					"\"\""+ 						"," + // Verified
-					"\"\""+ 						"," + // Verif. date
-					"\"\""  					 		  // maps link
-					
-				);
-			}
-		}
-		csv.close();
-	}
-	
-
 	
 	public static class TestMonitor implements IMonitor {
 		public void workComplete() {

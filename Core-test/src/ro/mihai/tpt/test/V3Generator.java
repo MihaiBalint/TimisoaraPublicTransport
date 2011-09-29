@@ -27,7 +27,7 @@ public class V3Generator extends TestCase {
 	public void testGenerator() throws Exception {
 		// InputStream inp = new FileInputStream("Lines Stations and Junctions - Timisoara Public Transport.csv");
 		// InputStream inp = new FileInputStream("linestations3.csv");
-		InputStream inp = new FileInputStream("linestations-20110928.csv");
+		InputStream inp = new FileInputStream("linestations.csv");
 		CSVReader rd = new CSVReader(new InputStreamReader(inp));
 		String[] row;
 		City c = new City();
@@ -37,18 +37,6 @@ public class V3Generator extends TestCase {
 		
 		rd.readNext(); // ignore header row
 		while(null!=(row=rd.readNext())) {
-			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
-				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
-			) continue; 
-			
-			if(row.length<12) {
-				String d = "";
-				for(String s:row)
-					d += " " + s;
-				System.out.println("Len: "+row.length+" data: "+d);
-			}
-				
-			
 			if("true".equalsIgnoreCase(row[9])) continue;
 			
 			Station st = stMap.get(row[2]);

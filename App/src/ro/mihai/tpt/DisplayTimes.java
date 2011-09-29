@@ -108,6 +108,7 @@ public class DisplayTimes extends Activity {
         	Button ls = new Button(this);
         	ls.setText("  "+line.getName()+"  ");
         	ls.setOnClickListener(new SelectOneLine(line));
+        	ls.setHeight(40);
         	ll.addView(ls);
     	}
     	
@@ -178,6 +179,7 @@ public class DisplayTimes extends Activity {
     		city.getLine("28") 
     	));
     	tbl.addView(selectLine(
+        	city.getLine("32"), 
     		city.getLine("33"), 
     		city.getLine("40"), 
     		city.getLine("46") 
@@ -197,7 +199,7 @@ public class DisplayTimes extends Activity {
     	ll.setGravity(Gravity.CENTER);
     	Button b = new Button(this);
     	b.setWidth(200);
-    	b.setHeight(60);
+    	b.setHeight(50);
     	b.setText(labelResId);
     	b.setOnClickListener(action);
     	ll.addView(b);
@@ -212,6 +214,19 @@ public class DisplayTimes extends Activity {
     		status.setText(err);
     	}
     	tbl.removeAllViews();
+    	// 4,2,   33,40,   14,15
+    	tbl.addView(selectLine(
+    		city.getLine("33"), 
+    		city.getLine("Tv4"), 
+    		city.getLine("Tv2") 
+    	));
+    	tbl.addView(selectLine(
+    		city.getLine("40"), 
+    		city.getLine("Tb14"), 
+    		city.getLine("Tb15") 
+    	));
+    	
+    	/*
     	tbl.addView(selectLine(
     		city.getLine("33"), 
     		city.getLine("E1"), 
@@ -219,6 +234,8 @@ public class DisplayTimes extends Activity {
     		city.getLine("E7"), 
     		city.getLine("E8") 
     	));
+    	/**/
+    	
     	tbl.addView(LineTimesView.whiteSpace(this,10));
     	tbl.addView(category(R.string.selTrams, new ShowTramsView()));
     	tbl.addView(category(R.string.selBus, new ShowBusView()));

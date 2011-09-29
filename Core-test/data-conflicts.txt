@@ -1,0 +1,142 @@
+
+Row too short: (6), 1546, 32, , Bujorilor, Strada Bujorilor (Mocioni), Bujorilor.
+Nice     name conflict: <33/2667> <Strada Brancoveanu> or <32/2667> <Strada Brancoveanu / B-dul 16 Dec. 1989 - statie temporara>
+Nice     name conflict: <33/2668> <Piata Iuliu Maniu> or <32/2668> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <33/2691> <Piata Iuliu Maniu> or <32/2691> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E1/2668> <Piata Iuliu Maniu> or <32/2668> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E5/2668> <Piata Iuliu Maniu> or <32/2668> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E5/2691> <Piata Iuliu Maniu> or <32/2691> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E7/2691> <Piata Iuliu Maniu> or <32/2691> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E8/2668> <Piata Iuliu Maniu> or <32/2668> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <M36/2691> <Piata Iuliu Maniu> or <32/2691> <Piata Iuliu Maniu - statie temporara>
+Nice     name conflict: <E5/2667> <Strada Brancoveanu / 16 Decembrie> or <32/2667> <Strada Brancoveanu / B-dul 16 Dec. 1989 - statie temporara>
+Nice     name conflict: <E7/2667> <Strada Brancoveanu / 16 Decembrie> or <32/2667> <Strada Brancoveanu / B-dul 16 Dec. 1989 - statie temporara>
+Nice     name conflict: <M36/2667> <Brancoveanu / 16 Decembrie> or <32/2667> <Strada Brancoveanu / B-dul 16 Dec. 1989 - statie temporara>
+
+Nice     name conflict: <E4/3104> <Badea Cartan / Take Ionescu> or <46/3104> <Piata Badea Cartan>
+Nice     name conflict: <E5/4760> <Piata Veteranilor / Calea Sagului> or <33/4760> <Piata Veteranilor>
+Nice     name conflict: <E5/4780> <Piata Veteranilor / Calea Sagului> or <33/4780> <Piata Veteranilor>
+Nice     name conflict: <E5/2694> <Strada 16 Decembrie 1989 / Brancoveanu> or <32/2694> <Strada Brancoveanu>
+Nice     name conflict: <E7/2821> <Strada Banatul / Depoul de troleibuze> or <3/2821> <B-dul Dambovita / Strada Banatul / Dep. Troleibuze>
+Nice     name conflict: <E7/2694> <Strada 16 Decembrie 1989 / Brancoveanu> or <32/2694> <Strada Brancoveanu>
+Nice     name conflict: <E8/2828> <Strada Iepurelui / Ciclop> or <21/2828> <Strada Iepurelui>
+Nice     name conflict: <E8/4760> <Piata Veteranilor / Calea Sagului> or <33/4760> <Piata Veteranilor>
+Nice     name conflict: <E8/4780> <Piata Veteranilor / Calea Sagului> or <33/4780> <Piata Veteranilor>
+Nice     name conflict: <E8/2839> <Strada Iepurelui / Ciclop> or <21/2839> <Strada Iepurelui>
+Nice     name conflict: <M30/2971> <Gen. V. Economu / Calea Lugojului> or <E4/2971> <Piata Gen. V. Economu / Calea Lugojului>
+Nice     name conflict: <M30/2972> <V. Economu / Calea Lugojului> or <E4/2972> <Piata Gen. V. Economu / Calea Lugojului>
+Nice     name conflict: <M30/3104> <Piata Badea Cartan / Take Ionescu> or <46/3104> <Piata Badea Cartan>
+Nice     name conflict: <M35/2971> <Gen. V. Economu / Calea Lugojului> or <E4/2971> <Piata Gen. V. Economu / Calea Lugojului>
+Nice     name conflict: <M35/2972> <Gen. V. Economu / Calea Lugojului> or <E4/2972> <Piata Gen. V. Economu / Calea Lugojului>
+Nice     name conflict: <M35/3104> <Piata Badea Cartan / Take Ionescu> or <46/3104> <Piata Badea Cartan>
+Nice     name conflict: <M36/2812> <Banatul / Depoul de troleibuze> or <E7/2812> <Strada Banatul / Depoul de troleibuze>
+Nice     name conflict: <M36/2821> <Banatul / Depoul de troleibuze> or <3/2821> <B-dul Dambovita / Strada Banatul / Dep. Troleibuze>
+Nice     name conflict: <Tb11/2772> <Str. Jiul> or <E3/2772> <Jiul>
+Nice     name conflict: <Tb11/3104> <Pata Badea Cartan / Take Ionescu> or <46/3104> <Piata Badea Cartan>
+Nice     name conflict: <Tb11/2773> <Str. Jiul> or <E3/2773> <Jiul>
+Nice     name conflict: <Tb14/2772> <Str. Jiul> or <E3/2772> <Jiul>
+Nice     name conflict: <Tb14/2964> <Str. Divizia 9 Cavalerie / Calea Lipovei> or <E2/2964> <Divizia 9 Cavalerie / Calea Lipovei>
+Nice     name conflict: <Tb14/3281> <Str. Pomiculturii> or <E2/3281> <Strada Pomiculturii>
+Nice     name conflict: <Tb14/2963> <Str. Sfintii Apostoli Petru si Pavel> or <40/2963> <Strada Sfintii Apostoli Petru si Pavel / Calea Lipovei>
+Nice     name conflict: <Tb14/3280> <Str. Pomiculturii> or <40/3280> <Strada Pomiculturii>
+Nice     name conflict: <Tb14/3255> <Str. Divizia 9 Cavalerie / Calea Lipovei> or <40/3255> <Strada Divizia 9 Cavalerie / Calea Lipovei>
+Nice     name conflict: <Tb14/2773> <Str. Jiul> or <E3/2773> <Jiul>
+Nice     name conflict: <Tb15/2718> <Str. Cluj> or <E2/2718> <Strada Cluj>
+Nice     name conflict: <Tb15/2720> <Cl. Martirilor> or <E3/2720> <Calea Martirilor>
+Nice     name conflict: <Tb15/2724> <Str. Martir Ioan Stanciu> or <E3/2724> <Strada Martir Ioan Stanciu>
+Nice     name conflict: <Tb15/2726> <Str. Martir Ioan Stanciu> or <E3/2726> <Strada Martir Ioan Stanciu>
+Nice     name conflict: <Tb15/2722> <Cl. Martirilor> or <E3/2722> <Calea Martirilor>
+Nice     name conflict: <Tb15/2716> <Str. Cluj> or <E2/2716> <Strada Cluj>
+Nice     name conflict: <Tb15/2706> <Str. Traian Grozavescu / Posta Mare> or <E7/2706> <Strada Traian Grozavescu / Posta Mare>
+Nice     name conflict: <Tb16/2716> <Str. Cluj> or <E2/2716> <Strada Cluj>
+Nice     name conflict: <Tb16/2718> <Str. Cluj> or <E2/2718> <Strada Cluj>
+Nice     name conflict: <Tb16/2706> <Str. Traian Grozavescu / Posta Mare> or <E7/2706> <Strada Traian Grozavescu / Posta Mare>
+Nice     name conflict: <Tb17/2951> <Str. Liege> or <E1/2951> <Strada Liege>
+Nice     name conflict: <Tb17/4000> <Punctele Cardinale / Bastion> or <Tb11/4000> <Bastion>
+Nice     name conflict: <Tb17/2798> <Politia Judeteana Timis> or <Tb11/2798> <Politia Judetului Timis>
+Nice     name conflict: <Tb17/2800> <Politia Judeteana Timis> or <Tb11/2800> <Politia Judetului Timis>
+Nice     name conflict: <Tb17/2967> <Punctele Cardinale / Str. Oituz> or <Tb11/2967> <Punctele Cardinale / Popa Sapca>
+Nice     name conflict: <Tb17/2961> <Str. Remus Radulet> or <E1/2961> <Strada Remus Radulet>
+Nice     name conflict: <Tb17/2950> <Str. Liege> or <E1/2950> <Strada Liege>
+Nice     name conflict: <Tb18/3120> <Str. Pop de Basesti / Autogara Super Imposer> or <Tb11/3120> <Str. Pop de Basesti / Autogara SuperImposer>
+Nice     name conflict: <Tb18/2772> <Str. Jiul> or <E3/2772> <Jiul>
+Nice     name conflict: <Tb18/2781> <Piata TM 700> or <Tb11/2781> <Piata 700>
+Nice     name conflict: <Tb18/2961> <Str. Remus Radulet> or <E1/2961> <Strada Remus Radulet>
+Nice     name conflict: <Tb18/2957> <Str. Liege / Calea Torontalului> or <E6/2957> <Strada Liege / Calea Torontalului>
+Nice     name conflict: <Tb18/4493> <Str. Miresei / Calea Torontalului> or <E6/4493> <Strada Miresei>
+Nice     name conflict: <Tb18/3720> <Piata TM 700> or <Tb11/3720> <Piata 700 / Business Center>
+Nice     name conflict: <Tb18/2773> <Str. Jiul> or <E3/2773> <Jiul>
+Nice     name conflict: <Tb18/2764> <Str. Pop de Basesti / Autogara Super Imposer> or <Tb11/2764> <Str. Pop de Basesti / Autogara SuperImposer>
+Nice     name conflict: <Tb19/2716> <Str. Cluj> or <E2/2716> <Strada Cluj>
+Nice     name conflict: <Tb19/2720> <Cl. Martirilor> or <E3/2720> <Calea Martirilor>
+Nice     name conflict: <Tb19/2724> <Str. Martir Ioan Stanciu> or <E3/2724> <Strada Martir Ioan Stanciu>
+Nice     name conflict: <Tb19/2726> <Str. Martir Ioan Stanciu> or <E3/2726> <Strada Martir Ioan Stanciu>
+Nice     name conflict: <Tb19/2722> <Cl. Martirilor> or <E3/2722> <Calea Martirilor>
+Nice     name conflict: <Tb19/2718> <Str. Cluj> or <E2/2718> <Strada Cluj>
+Nice     name conflict: <Tv2/3165> <Piata TM 700> or <Tv1/3165> <Piata 700>
+Nice     name conflict: <Tv4/3554> <Fabrica de Bere Timisoreana> or <21/3554> <Fabrica de Bere>
+Nice     name conflict: <Tv4/3556> <Fabrica de Bere Timisoreana> or <21/3556> <Fabrica de Bere>
+Nice     name conflict: <Tv4/3165> <Piata TM 700> or <Tv1/3165> <Piata 700>
+Nice     name conflict: <Tv5/3554> <Fabrica de Bere Timisoreana> or <21/3554> <Fabrica de Bere>
+Nice     name conflict: <Tv6/3556> <Fabrica de Bere Timisoreana> or <21/3556> <Fabrica de Bere>
+Nice     name conflict: <Tv6/3165> <Piata TM 700> or <Tv1/3165> <Piata 700>
+Nice     name conflict: <Tv9/3602> <Dambovita> or <3/3602> <B-dul Dambovita / Dep. Tramvaie>
+Nice     name conflict: <Tv9/3620> <Dambovita> or <3/3620> <B-dul Dambovita / Dep. Tramvaie>
+
+
+Short    name conflict: <E4/3104> <Take Ionescu> or <46/3104> <Badea Cartan>
+Short    name conflict: <E5/2675> <Petrom> or <33/2675> <BATMA>
+Short    name conflict: <E5/2685> <Petrom> or <33/2685> <BATMA>
+Short    name conflict: <E7/2821> <Dep. de troleibuze> or <3/2821> <Dep. Troleibuze>
+Short    name conflict: <E7/2691> <P-ta Iuliu Maniu> or <32/2691> <P-ta I. Maniu>
+Short    name conflict: <E8/4424> <Printul Turcesc> or <21/4424> <Baba Dochia>
+Short    name conflict: <E8/4424> <Printul Turcesc> or <21/4424> <Baba Dochia>
+Short    name conflict: <M30/3104> <Take Ionescu> or <46/3104> <Badea Cartan>
+Short    name conflict: <M35/3104> <Take Ionescu> or <46/3104> <Badea Cartan>
+Short    name conflict: <M36/2812> <Dambovita> or <E7/2812> <Dep. de troleibuze>
+Short    name conflict: <M36/2821> <Banatul> or <3/2821> <Dep. Troleibuze>
+Short    name conflict: <M36/2691> <P-ta Iuliu Maniu> or <32/2691> <P-ta I. Maniu>
+Short    name conflict: <Tb11/3104> <Take Ionescu> or <46/3104> <Badea Cartan>
+Short    name conflict: <Tb14/2964> <Div. 9 Cavalerie> or <E2/2964> <Div. 9 Cav.>
+Short    name conflict: <Tb14/2963> <Petru si Pavel> or <40/2963> <Sf. Ap. Petru si Pavel>
+Short    name conflict: <Tb14/3255> <Div. 9 Cavalerie> or <40/3255> <Div. 9 Cav.>
+Short    name conflict: <Tb15/2724> <Ioan Stanciu> or <E3/2724> <I. Stanciu>
+Short    name conflict: <Tb15/2726> <Ioan Stanciu> or <E3/2726> <I. Stanciu>
+Short    name conflict: <Tb17/2951> <Liege> or <E1/2951> <str. Liege>
+Short    name conflict: <Tb17/2798> <Politie> or <Tb11/2798> <Politia>
+Short    name conflict: <Tb17/2800> <Politie> or <Tb11/2800> <Politia>
+Short    name conflict: <Tb17/2967> <Oituz> or <Tb11/2967> <Punctele Cardinale>
+Short    name conflict: <Tb17/2950> <Liege> or <E1/2950> <str. Liege>
+Short    name conflict: <Tb18/3120> <Pop de Basesti> or <Tb11/3120> <Autogara SuperImposer>
+Short    name conflict: <Tb18/3102> <Regina Maria> or <Tb11/3102> <P-ta Regina Maria>
+Short    name conflict: <Tb18/2781> <P-ta 700> or <Tb11/2781> <Piata 700>
+Short    name conflict: <Tb18/2961> <Remus Radulet> or <E1/2961> <Miresei>
+Short    name conflict: <Tb18/2957> <Torontalului / Liege> or <E6/2957> <Torontalului>
+Short    name conflict: <Tb18/4493> <Torontalului / Miresei> or <E6/4493> <Miresei>
+Short    name conflict: <Tb18/3720> <P-ta 700> or <Tb11/3720> <Piata 700>
+Short    name conflict: <Tb18/3105> <Regina Maria> or <Tb11/3105> <P-ta Regina Maria>
+Short    name conflict: <Tb18/2764> <Pop de Basesti> or <Tb11/2764> <Autogara SuperImposer>
+Short    name conflict: <Tb19/2724> <Ioan Stanciu> or <E3/2724> <I. Stanciu>
+Short    name conflict: <Tb19/3041> <Versului> or <Tb15/3041> <Bucla Versului>
+Short    name conflict: <Tb19/3041> <Versului> or <Tb15/3041> <Bucla Versului>
+Short    name conflict: <Tb19/2726> <Ioan Stanciu> or <E3/2726> <I. Stanciu>
+Short    name conflict: <Tv2/3165> <Piata 700> or <Tv1/3165> <P-ta 700>
+Short    name conflict: <Tv2/3181> <Piata Maria> or <Tv1/3181> <P-ta Maria>
+Short    name conflict: <Tv4/3554> <F-ca de Bere> or <21/3554> <F-ca de bere>
+Short    name conflict: <Tv4/3556> <F-ca de Bere> or <21/3556> <F-ca de bere>
+Short    name conflict: <Tv4/3165> <Piata 700> or <Tv1/3165> <P-ta 700>
+Short    name conflict: <Tv5/3554> <F-ca de Bere> or <21/3554> <F-ca de bere>
+Short    name conflict: <Tv6/3181> <Piata Maria> or <Tv1/3181> <P-ta Maria>
+Short    name conflict: <Tv6/3556> <F-ca de Bere> or <21/3556> <F-ca de bere>
+Short    name conflict: <Tv6/3165> <Piata 700> or <Tv1/3165> <P-ta 700>
+
+
+Junction name conflict: <Tv6/3542> <San Marzano> or <Tv4/3542> <Cetatii>
+Junction name conflict: <Tv6/3546> <Cetatii> or <Tv4/3546> <Ghe. Lazar>
+Junction name conflict: <Tv6/3547> <Cetatii> or <Tv4/3547> <Ghe. Lazar>
+Junction name conflict: <Tv6/3543> <San Marzano> or <Tv4/3543> <Cetatii>
+
+Junction name conflict: <Tv7a/3660> <Doja> or <Tv6/3660> <Parcul Doja>
+Junction name conflict: <Tv7b/3661> <Doja> or <Tv5/3661> <Parcul Doja>
+Junction name conflict: <Tv8/3660> <Doja> or <Tv6/3660> <Parcul Doja>
+Junction name conflict: <Tv8/3661> <Doja> or <Tv5/3661> <Parcul Doja>

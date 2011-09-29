@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.List;
 
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Junction;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.util.FormattedTextReader;
@@ -99,7 +100,10 @@ public class RATT {
 		public StationReader(FormattedTextReader in) { super(in); }
 		public StationReader(URL url) throws IOException { super(url); }
 		
-		protected Station create(String val, String opt) { return new Station(val,opt); }
+		protected Station create(String val, String opt) {
+			Station s = new Station(val,opt); 
+			return s; 
+		}
 	}
 
 	public static class LineReader extends OptValBuilder<Line> {

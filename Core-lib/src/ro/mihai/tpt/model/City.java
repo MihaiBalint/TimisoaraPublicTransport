@@ -77,8 +77,9 @@ public class City {
 		Line l = lineMap.get(id);
 		if(null==l) {
 			l = new Line(id,name);
-			if (singlePath)
+			if (singlePath) {
 				l.addPath(new Path(l,""));
+			}
 			lineMap.put(id, l);
 		}
 		return l;
