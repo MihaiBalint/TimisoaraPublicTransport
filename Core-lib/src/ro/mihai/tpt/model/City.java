@@ -23,25 +23,24 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.*;
 
 import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.RATT.LineReader;
 import ro.mihai.tpt.RATT.StationReader;
 import ro.mihai.util.FormattedTextReader;
 import ro.mihai.util.IMonitor;
+import ro.mihai.util.DetachableStream;
 
-public class City {
+public class City implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private DataVersion version;
 	private Map<String, Station> stations;
 	private Map<String,Line> lineMap;
 	private Map<String, Junction> junctionMap;
 	
-	private DataInputStream in;
+	private DetachableStream in;
 	private long lineResStart, stationResStart;
 	
 	public City() {
@@ -111,6 +110,12 @@ public class City {
 		return getOrCreateLine("F"+fakeLines, name, true);
 	}
 	
+	public Line getLineById(String lineId) throws IOException {
+		Line l = lineMap.get(lineId);
+		if(null==l) throw new IOException();
+		return l;
+	}
+	
 	public Station getStation(String id) {
 		return stations.get(id);
 	}
@@ -148,7 +153,7 @@ public class City {
 		byte[] b;
 		
 		DataOutputStream os = new DataOutputStream(out);
-		os.write("CityLineCache = 3.0.0;".getBytes());
+		os.write("CityLineCache = 4.0.0;".getBytes());
 
 		ByteArrayOutputStream lineResBuf = new ByteArrayOutputStream();
 		DataOutputStream lnRes = new DataOutputStream(lineResBuf);
@@ -197,36 +202,41 @@ public class City {
 		os.close();
 	}
 	
-	public void loadFromFile(InputStream is,IMonitor mon) throws IOException {
-		in = new DataInputStream(is);
-		byte sig[] = new byte[22];
-		int r=0;
-		while(r<sig.length) {
-			int rd = in.read(sig);
-			if (rd<0) throw new IOException("Failed to read signature before stream ended.");
-			r+=rd;
+	public DetachableStream getDetachableInputStream() {
+		return in;
+	}
+	
+	public void loadFromStream(DetachableStream in, IMonitor mon) throws IOException {
+		String sigStr;
+		try {
+			sigStr = in.readFixedLengthString(22);
+		} catch(IOException e) {
+			throw new IOException("Failed to read signature before stream ended.");
 		}
-		String sigStr = new String(sig);
+
 		if(!sigStr.startsWith("CityLineCache = "))
 			throw new IOException("Signature expected, something else found, assuming wrong file.");
 		if(sigStr.contains("1.0.0")) {
-			loadFromFile1Rest(mon, new FormattedTextReader(in));
+			version = DataVersion.Version1;
+			loadFromFile1Rest(mon, new FormattedTextReader(in.getInputStream()));
 			throw new SaveFileException();
 		} else if(sigStr.contains("2.0.0")) {
-			loadFromFile2Rest(mon, in);
+			version = DataVersion.Version2;
+			loadFromFile2Rest(mon, in.getInputStream());
 			throw new SaveFileException();
-		} 
-		assert(sigStr.contains("3.0.0"));
+		} else if(sigStr.contains("3.0.0")) {
+			version = DataVersion.Version3;
+		} else {
+			assert(sigStr.contains("4.0.0"));
+			version = DataVersion.Version4;
+		}
+		this.in = in;
 		
-		int bc;
-		byte[] b;
 		int lineCount = in.readInt();
 		for(int i=0;i<lineCount;i++) {
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String id = new String(b);
+			String id = in.readString();
 
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String name = new String(b);
+			String name = in.readString();
 			
 			Line l = new Line(id, name, in.readInt(), this);
 			lineMap.put(id, l);
@@ -236,8 +246,7 @@ public class City {
 		stations = new HashMap<String, Station>();
 		mon.setMax(stationCount);
 		for(int i=0;i<stationCount;i++) {
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String id = new String(b);
+			String id = in.readString();
 			
 			Station s = new Station(id, in.readInt(), this);
 			stations.put(s.getId(), s);
@@ -252,27 +261,12 @@ public class City {
 		
 		in.mark(lnResSize+stResSize);
 	}
-	
-	private void sureSkip(long p) throws IOException {
-		int errs = 3;
-		while(p>0) {
-			long sp = in.skip(p);
-			if(sp>0)
-				p -= sp;
-			else if(sp==0) {
-				if(errs<=0)
-					throw new IOException("Skip returned zero too many times.");
-				errs --;
-			} else
-				throw new IOException("Skip returned negative.");
-		}
-	}
-	
+		
 	public synchronized void loadStationResources(Station s) {
 		try {
 			in.reset();
-			sureSkip(stationResStart+s.getResId());
-			s.readResources(in);
+			in.sureSkip(stationResStart+s.getResId());
+			s.readResources(in, version);
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -281,13 +275,14 @@ public class City {
 	public synchronized void loadLineResources(Line l) {
 		try {
 			in.reset();
-			sureSkip(lineResStart+l.getResId());
-			l.readResources(in);
+			in.sureSkip(lineResStart+l.getResId());
+			l.readResources(in, version);
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
+	@Deprecated
 	public void loadFromFile1(InputStream in,IMonitor mon) throws IOException {
 		FormattedTextReader rd = new FormattedTextReader(in);
 		String version = rd.readString("CityLineCache = ", ";");
@@ -296,6 +291,7 @@ public class City {
 		loadFromFile1Rest(mon, rd);
 	}
 
+	@Deprecated
 	private void loadFromFile1Rest(IMonitor mon, FormattedTextReader rd) throws IOException {
 		StationReader str = new StationReader(rd);
 		int stationCount = Integer.parseInt(rd.readString("StationCount = ", ";"));
@@ -318,6 +314,7 @@ public class City {
 		}
 	}
 	
+	@Deprecated
 	private void loadFromFile2Rest(IMonitor mon, DataInputStream in) throws IOException {
 		int bc;
 		byte[] b;
@@ -330,7 +327,7 @@ public class City {
 			String name = new String(b);
 			Line l = new Line(id,name);
 			l.addPath(new Path(l,"")); 
-			// Ver 2.0.0 does not support multiple paths per line, only a single one
+			// Ver 2.0.0 does not suppor`t multiple paths per line, only a single one
 			lineMap.put(id, l);
 		}
 		
@@ -350,7 +347,8 @@ public class City {
 				bc = in.readInt(); b = new byte[bc]; in.readFully(b);
 				
 				Line l = lineMap.get(new String(b));
-				l.getFirstPath().concatenate(s);
+				Path p = l.getFirstPath(); 
+				p.concatenate(s);
 				s.addLine(l);
 			}
 			stations.put(s.getId(), s);

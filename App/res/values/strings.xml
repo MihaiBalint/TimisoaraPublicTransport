@@ -19,7 +19,7 @@
 */
  -->
 <resources>
-    <string name="hello">Timisoara Public Transport</string>
+    <string name="loading">Loading...</string>
     <string name="app_name">Timisoara Public Transport</string>
     
     <string name="upd">Update Times</string>

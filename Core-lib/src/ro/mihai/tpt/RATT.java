@@ -22,14 +22,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Junction;
-import ro.mihai.tpt.model.Line;
-import ro.mihai.tpt.model.Station;
-import ro.mihai.util.FormattedTextReader;
-import ro.mihai.util.IMonitor;
-import ro.mihai.util.NullMonitor;
-import ro.mihai.util.StationsXMLReader;
+import ro.mihai.tpt.model.*;
+import ro.mihai.util.*;
 
 public class RATT {
 	private static final String root = "http://www.ratt.ro/txt/";
@@ -122,7 +116,8 @@ public class RATT {
 		
 		protected Line create(String val, String opt) {
 			Line l = c.getOrCreateLine(val, opt, true);
-			l.getFirstPath().concatenate(st);
+			Path p = l.getFirstPath(); 
+			p.concatenate(st);
 			st.addLine(l);
 			return l; 
 		}

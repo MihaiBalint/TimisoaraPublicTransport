@@ -17,18 +17,21 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Station implements INamedEntity {
+import ro.mihai.util.DetachableStream;
+
+public class Station implements INamedEntity, Serializable {
+	private static final long serialVersionUID = 1L;
 	private long resId;
 	private boolean loaded;
 	private City city;
 	private String name, id;
-	private Set<Line> lines;
+	private List<Line> lines;
 	private Junction junction;
 	private String lat, lng;
 	private String niceName, shortName;
@@ -38,13 +41,13 @@ public class Station implements INamedEntity {
 		this.resId = resId;
 		this.city = city;
 		this.loaded = false;
-		this.lines = new HashSet<Line>();
+		this.lines = new ArrayList<Line>(2);
 	}
 
 	public Station(String id, String name) {
 		this(id,-1, null);
 		this.loaded = true;
-		this.lines = new HashSet<Line>();
+		this.lines = new ArrayList<Line>(2);
 		this.name = name;
 	}
 
@@ -57,10 +60,11 @@ public class Station implements INamedEntity {
 	}
 	
 	public void addLine(Line l) {
-		lines.add(l);
+		if (!lines.contains(l))
+			lines.add(l);
 	}
 	
-	public Set<Line> getLines() {
+	public List<Line> getLines() {
 		return lines;
 	}	
 	
@@ -138,27 +142,22 @@ public class Station implements INamedEntity {
 		return junction!=null && junction.getName()!=null && junction.getName().trim().length() > 0;
 	}
 	
-	protected void readResources(DataInputStream res) throws IOException {
-		int bc;
-		byte[] b;
-		
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.name = new String(b);
-		
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.niceName = new String(b);
+	protected void readResources(DetachableStream res, DataVersion version) throws IOException {
+		this.name = res.readString();
+		this.niceName = res.readString();
+		this.shortName = res.readString();
+		this.junction = city.getOrCreateJunction(res.readString());
+		this.lat = res.readString();
 
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.shortName = new String(b);
-
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.junction = city.getOrCreateJunction(new String(b));
+		this.lng = res.readString();
 		
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.lat = new String(b);
-
-		bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-		this.lng = new String(b);
+		if (version.lessThan(DataVersion.Version4)) return;
+		
+		int lineCount = res.readInt();
+		for(int i=0;i<lineCount;i++) {
+			String lineId = res.readString();
+			lines.add(city.getLineById(lineId));
+		}
 	}
 	
 	protected void writeResources(DataOutputStream res) throws IOException {
@@ -181,6 +180,12 @@ public class Station implements INamedEntity {
 		res.writeInt(b.length); res.write(b);
 
 		b = getLng().getBytes();
-		res.writeInt(b.length); res.write(b);		
+		res.writeInt(b.length); res.write(b);
+		
+		res.writeInt(lines.size());
+		for(Line l : lines) {
+			b = l.getId().getBytes();
+			res.writeInt(b.length); res.write(b);
+		}
 	}
 }

@@ -1,12 +1,11 @@
 package ro.mihai.tpt;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import ro.mihai.tpt.model.City;
+import ro.mihai.util.DetachableStream;
 import ro.mihai.util.NullMonitor;
 
 public class JavaCityLoader {
@@ -22,7 +21,7 @@ public class JavaCityLoader {
 		File cache = new File(cityCacheFileName);
 		if(cache.isFile() && cache.exists() && cache.canRead()) {
 			c = new City();
-			c.loadFromFile(new BufferedInputStream(new FileInputStream(cache)), new NullMonitor());
+			c.loadFromStream(new DetachableStream.FromFile(cityCacheFileName), new NullMonitor());
 		} else {
 			c = RATT.downloadCity(new NullMonitor());
 			c.saveToFile(new FileOutputStream(cache));

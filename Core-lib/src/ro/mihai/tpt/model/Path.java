@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +19,8 @@ import java.util.Set;
 import ro.mihai.tpt.RATT;
 import static ro.mihai.util.Formatting.*;
 
-public class Path {
+public class Path implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name, niceName;
 	private List<Segment> segments;
 	private Line line;
@@ -271,8 +273,9 @@ public class Path {
 	 * 
 	 */
 	
-	private class StationTimesComp implements Comparator<Station> {
-		
+	private class StationTimesComp implements Comparator<Station>, Serializable {
+		private static final long serialVersionUID = 1L;
+
 		public int compare(Station s1, Station s2) {
 			String 
 				t11 = times1.get(s1),

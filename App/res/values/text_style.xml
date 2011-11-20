@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 	<style name="ButtonText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item> <!-- fill_parent -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_colors</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+    <style name="CategoryButton">
+        <item name="android:layout_width">65pt</item>
+        <item name="android:layout_height">25pt</item>
+    </style>
+
+    <style name="LineButton">
+        <item name="android:layout_width">30pt</item>
+        <item name="android:layout_height">15pt</item>
+        <item name="android:background">@drawable/state_button_wide</item>
+        <item name="android:textColor">@color/text_colors</item>
+        <item name="android:textSize">9pt</item>
+    </style>
+</resources>

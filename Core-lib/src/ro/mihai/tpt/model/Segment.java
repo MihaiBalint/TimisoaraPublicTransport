@@ -1,6 +1,9 @@
 package ro.mihai.tpt.model;
 
-public class Segment {
+import java.io.Serializable;
+
+public class Segment implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Station from, to;
 	private int[] duration; // in seconds
 	

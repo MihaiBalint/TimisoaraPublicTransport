@@ -17,16 +17,19 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Line implements INamedEntity {
+import ro.mihai.util.DetachableStream;
+
+public class Line implements INamedEntity, Serializable {
+	private static final long serialVersionUID = 1L;
 	private long resId;
 	private boolean loaded;
 	private City city;
@@ -115,27 +118,22 @@ public class Line implements INamedEntity {
 		load();
 	}
 	
-	protected void readResources(DataInputStream res) throws IOException {
-		int bc;
-		byte[] b;
-		
+	protected void readResources(DetachableStream res, DataVersion version) throws IOException {
 		int pathCount = res.readInt();
 		for(int i=0;i<pathCount;i++) {
-			bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-			String pathName = new String(b);
+			String pathName = res.readString();
 
-			bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-			String pathNiceName = new String(b);
+			String pathNiceName = res.readString();
 			
 			Path p = new Path(this, pathName);
 			p.setNiceName(pathNiceName);
 			
 			int stationCount = res.readInt();
 			for(int j=0;j<stationCount;j++) {
-				bc = res.readInt(); b = new byte[bc]; res.readFully(b);
-				String stationId = new String(b);
+				String stationId = res.readString();
 				
-				p.concatenate(city.getStation(stationId));
+				Station s = city.getStation(stationId);
+				p.concatenate(s);
 			}
 			addPath(p);
 		}

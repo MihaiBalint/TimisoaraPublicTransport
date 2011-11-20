@@ -1,0 +1,9 @@
+
+*** Bugs
+- On Rotate and AutoRotate Handsets the app swithces to the home screen
+- Fix station nice names, short names and junction names in the Google docs data file
+-  
+
+*** Features
+- Implement estimation for stations other then the ones provided by the RATT server
+- Use junction information to 

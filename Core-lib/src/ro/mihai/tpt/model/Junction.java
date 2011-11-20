@@ -1,9 +1,11 @@
 package ro.mihai.tpt.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Junction {
+public class Junction implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Set<Station> stations;
 	
