@@ -104,10 +104,10 @@ public class ViewTimes extends CityActivity {
 			int ec = 0;
 			UpdateView viewUpdater = new UpdateView();
 			for(Station s: path.getStationsByPath()) {
+				if(!running.get()) return;
 				path.startUpdate(s);
 				runOnUiThread(viewUpdater);
 				ec = path.updateStation(ec, s);
-				if(!running.get()) return;
 			}
 			killUpdate();
 			runOnUiThread(new UpdateView());
@@ -120,6 +120,8 @@ public class ViewTimes extends CityActivity {
 		
 		public void killUpdate() {
 			running.set(false);
+			for(Station s: path.getStationsByPath()) 
+				path.clearUpdate(s);
 		}
 	}
 	

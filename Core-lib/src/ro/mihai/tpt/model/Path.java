@@ -114,6 +114,10 @@ public class Path implements Serializable {
 	public void startUpdate(Station s) {
 		putErr(s, "upd");
 	}
+	public void clearUpdate(Station s) {
+		if (errs.get(s).equals("upd"))
+			putErr(s, "");
+	}
 	
 	public int updateStation(int ec, Station s) {
 		try {
