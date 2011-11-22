@@ -24,6 +24,7 @@
     a { color: #00c9ff; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
+    .icon { float: left; margin: 0px 10px 10px 0px; height: 112px; }
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
@@ -33,6 +34,9 @@
 <body>
   <div id="container">
 
+    <div class="icon">
+	<img src="icon.png">
+    </div>
     <div class="download">
       <a href="APK-QR.png">
         <img border="0" width="60" src="APK-QR.png"></a>
@@ -43,12 +47,10 @@
       <a href="http://github.com/MihaiBalint/TimisoaraPublicTransport/tarball/master">
         <img border="0" width="60" src="http://github.com/images/modules/download/tar.png"></a>
     </div>
-
     <h2>
     <a href="http://github.com/MihaiBalint/TimisoaraPublicTransport">Timisoara</a> <br/>
     <a href="http://github.com/MihaiBalint/TimisoaraPublicTransport">Public</a> <br/>
     <a href="http://github.com/MihaiBalint/TimisoaraPublicTransport">Transport</a> <br/>
-      <span class="small">by <a href="http://github.com/MihaiBalint">MihaiBalint</a></span>
     </h2>
 
     <div class="description">
@@ -75,10 +77,24 @@ is saved on the external storage.<br/>
 
 <hr/>
 <h4>Version History</h4>
+beta 1.3<br/>
+- major restructuring of android-specific code<br/>
+- new high-contrast graphics<br/>
+- fix rotate/auto-rotate bug that caused the app to jump to home-screen<br/>
+
 beta 1.2<br/>
 - updated line data, now complete for all lines (thanks Cristi and Cosmin)<br/>
 - updated icon (thanks Florin)<br/>
 - removed non-existent bus line from selection screen<br/>
+- screen shots - main screen, trams, busses, select direction, updating times for selected line:
+<br/>
+<a href="2-main-screen.png"><img src="2-main-screen.png" height="50px"/></a>
+<a href="2-trams-screen.png"><img src="2-trams-screen.png" height="50px" /></a>
+<a href="2-busses-screen.png"><img src="2-buses-screen.png" height="50px" /></a>
+<a href="2-direction-screen.png"><img src="2-direction-screen.png" height="50px" /></a>
+<a href="2-updating.png"><img src="2-updating.png" height="50px" /></a>
+<a href="2-updated.png"><img src="2-updated.png" height="50px" /></a>
+
 
 <br/> 
 beta 1.1<br/>
@@ -96,18 +112,8 @@ beta 1.0<br/>
 
 <hr/>
 <h4>Screen shots:</h4>
-
-Main Screen, Trams, Busses: 
+N/A for the latest version - will be updated soon, please check-out version 1.2 screen shots in the mean time.
 <br/>
-<img src="2-main-screen.png" />
-<img src="2-trams-screen.png" />
-<img src="2-buses-screen.png" />
-<br/><br/>
-Select direction, updating times for selected line: 
-<br/>
-<img src="2-direction-screen.png" />
-<img src="2-updating.png" />
-<img src="2-updated.png" />
 
 <br/><br/>
 
