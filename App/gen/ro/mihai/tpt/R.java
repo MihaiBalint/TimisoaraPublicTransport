@@ -56,18 +56,16 @@ public final class R {
     }
     public static final class id {
         public static final int MainView=0x7f080000;
-        public static final int PathLabel=0x7f08001f;
-        public static final int ProgressBar=0x7f08002e;
+        public static final int ProgressBar=0x7f08002d;
         public static final int ScrollView01=0x7f080001;
-        public static final int Spacer=0x7f080020;
+        public static final int Spacer=0x7f08001f;
         public static final int StationLabel=0x7f080031;
-        public static final int StationStatus=0x7f080033;
-        public static final int StationStatusRow=0x7f080030;
-        public static final int StationTime=0x7f080032;
-        public static final int StationTimesTable=0x7f080021;
-        public static final int StatusText=0x7f08002f;
+        public static final int StationStatusRow=0x7f08002f;
+        public static final int StationTime=0x7f080030;
+        public static final int StationTimesTable=0x7f08001e;
+        public static final int StatusText=0x7f08002e;
         public static final int TableLayout=0x7f080002;
-        public static final int UpdateButton=0x7f08001e;
+        public static final int UpdateButton=0x7f080020;
         public static final int b13=0x7f08000c;
         public static final int b21=0x7f08000d;
         public static final int b28=0x7f08000e;
@@ -88,22 +86,22 @@ public final class R {
         public static final int bM30=0x7f080014;
         public static final int bM35=0x7f080015;
         public static final int bM36=0x7f080016;
-        public static final int bTb11=0x7f080029;
+        public static final int bTb11=0x7f080028;
         public static final int bTb14=0x7f080019;
         public static final int bTb15=0x7f08001a;
-        public static final int bTb16=0x7f08002a;
-        public static final int bTb17=0x7f08002b;
-        public static final int bTb18=0x7f08002c;
-        public static final int bTb19=0x7f08002d;
-        public static final int bTv1=0x7f080022;
+        public static final int bTb16=0x7f080029;
+        public static final int bTb17=0x7f08002a;
+        public static final int bTb18=0x7f08002b;
+        public static final int bTb19=0x7f08002c;
+        public static final int bTv1=0x7f080021;
         public static final int bTv2=0x7f080018;
         public static final int bTv4=0x7f080017;
-        public static final int bTv5=0x7f080023;
-        public static final int bTv6=0x7f080024;
-        public static final int bTv7a=0x7f080025;
-        public static final int bTv7b=0x7f080026;
-        public static final int bTv8=0x7f080027;
-        public static final int bTv9=0x7f080028;
+        public static final int bTv5=0x7f080022;
+        public static final int bTv6=0x7f080023;
+        public static final int bTv7a=0x7f080024;
+        public static final int bTv7b=0x7f080025;
+        public static final int bTv8=0x7f080026;
+        public static final int bTv9=0x7f080027;
         public static final int bus_button=0x7f08001c;
         public static final int tram_button=0x7f08001b;
         public static final int trolleybus_button=0x7f08001d;
@@ -127,12 +125,13 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050001;
         public static final int loading=0x7f050000;
-        public static final int sel=0x7f050003;
-        public static final int selBus=0x7f050006;
-        public static final int selPathLabel=0x7f050007;
-        public static final int selTrams=0x7f050004;
-        public static final int selTrolleys=0x7f050005;
+        public static final int sel=0x7f050004;
+        public static final int selBus=0x7f050007;
+        public static final int selPathLabel=0x7f050008;
+        public static final int selTrams=0x7f050005;
+        public static final int selTrolleys=0x7f050006;
         public static final int upd=0x7f050002;
+        public static final int upd_error=0x7f050003;
     }
     public static final class style {
         public static final int ButtonText=0x7f060000;

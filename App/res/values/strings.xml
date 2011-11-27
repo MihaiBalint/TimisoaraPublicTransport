@@ -23,9 +23,11 @@
     <string name="app_name">Timisoara Public Transport</string>
     
     <string name="upd">Update Times</string>
+    <string name="upd_error">Update could not complete. Some network connection errors have been encountered.</string>
+    
     <string name="sel">Select Line</string>
-<string name="selTrams">Tram Lines</string>
-<string name="selTrolleys">Trolleybus Lines</string>
-<string name="selBus">Bus Lines</string>
-<string name="selPathLabel">Select Direction</string>
+	<string name="selTrams">Tram Lines</string>
+	<string name="selTrolleys">Trolleybus Lines</string>
+	<string name="selBus">Bus Lines</string>
+	<string name="selPathLabel">Select Direction</string>
 </resources>

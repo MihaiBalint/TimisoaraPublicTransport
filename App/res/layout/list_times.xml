@@ -24,36 +24,33 @@
     android:layout_height="fill_parent"
     android:background="#000000"
     >
-    <LinearLayout
-    	android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
-    	<Button android:id="@+id/UpdateButton"
-	    	android:layout_width="26pt" 
-			android:layout_height="22pt"
-			android:background="@drawable/upd_button" 
-    	/>
-    	<TextView android:id="@+id/PathLabel"
-	    	android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="5pt"
-   			android:text="33 (Catedrala)"
-    		android:textSize="12px"
-    		android:textColor="#FFFFFF"
-    	/>
-    </LinearLayout>
-    <View android:id="@+id/Spacer"
-		android:layout_width="fill_parent" 
-		android:layout_height="1pt"
-		android:background="#D0808080"
-    ></View>
 	<ScrollView 
 		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
 		<TableLayout 
 			android:id="@+id/StationTimesTable" 
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
 		/>
 	</ScrollView>
+    <View android:id="@+id/Spacer"
+		android:layout_width="fill_parent" 
+		android:layout_height="1pt"
+		android:background="#D0808080"
+    ></View>
+    <LinearLayout
+    	android:layout_width="fill_parent" 
+		android:layout_height="wrap_content">
+    	<Button android:id="@+id/UpdateButton"
+	    	android:layout_width="fill_parent" 
+			android:layout_height="22pt"
+			android:background="#000000"
+			android:drawableLeft="@drawable/upd_button"
+   			android:text="33 (Catedrala)"
+    		android:textSize="7pt"
+    		android:textColor="#FFFFFF"
+    	/>
+    </LinearLayout>
 </LinearLayout>
 

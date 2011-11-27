@@ -24,6 +24,8 @@ import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,11 +54,10 @@ public class ViewTimes extends CityActivity {
     	
 		path = AndroidSharedObjects.instance().getLinePath();
 		
+    	String labelText = path.getLine().getName()+" ("+path.getNiceName()+")";
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
-    	
-    	String label = path.getLine().getName()+" ("+path.getNiceName()+")";
-    	((TextView)findViewById(R.id.PathLabel)).setText(label);
+    	update.setText(labelText);
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -76,22 +77,23 @@ public class ViewTimes extends CityActivity {
 			int rowLayout;
 			if ("upd".equals(status))
 				rowLayout = R.layout.times_station_updating;
-			else if (status.length() > 0)
+			else if (status.length() > 0) {
 				rowLayout = R.layout.times_station_err;
-			else
+				updater.setHasErrors();
+			} else
 				rowLayout = R.layout.times_station;
 			
 	    	View timesRow = inflater.inflate(rowLayout, timesTable, false);
 	    	
 	    	TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 			String label = s.getNicestNamePossible(); 
-	    	stationLabel.setText(label.substring(0,Math.min(30, label.length())));
+	    	stationLabel.setText("|"+label.substring(0,Math.min(30, label.length())));
 	    	
 	    	TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-	    	stationTime.setText("|"+path.getTime1(s));
+	    	stationTime.setText(path.getTime1(s));
 
-	    	TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
-	    	stationStatus.setText(status);
+	    	// TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
+	    	// stationStatus.setText(status);
 	    	
 	    	timesTable.addView(timesRow);
 		}
@@ -99,6 +101,7 @@ public class ViewTimes extends CityActivity {
 	
 	private class UpdateTimes implements Runnable, OnClickListener {
 		private AtomicBoolean running = new AtomicBoolean(false);
+		private AtomicBoolean hasErrors = new AtomicBoolean(false);
 		
 		public void run() {
 			int ec = 0;
@@ -111,6 +114,8 @@ public class ViewTimes extends CityActivity {
 			}
 			killUpdate();
 			runOnUiThread(new UpdateView());
+			if (hasErrors.compareAndSet(true, false))
+				runOnUiThread(new ReportError());
 		}
 		
 		public void onClick(View v) {
@@ -123,6 +128,10 @@ public class ViewTimes extends CityActivity {
 			for(Station s: path.getStationsByPath()) 
 				path.clearUpdate(s);
 		}
+		
+		public void setHasErrors() {
+			hasErrors.set(true);
+		}
 	}
 	
     private class UpdateView implements Runnable {
@@ -134,5 +143,19 @@ public class ViewTimes extends CityActivity {
 			last = crt;
 			inflateTable();
 		}
-	}	
+	}
+    
+    private class ReportError implements Runnable, DialogInterface.OnClickListener {
+    	public void run() {
+			new AlertDialog.Builder(ViewTimes.this)
+				.setMessage(R.string.upd_error)
+				.setPositiveButton("Ok", this)
+				.create()
+				.show();
+		}
+    	
+		public void onClick(DialogInterface dialog, int which) {
+			// NOP
+		}
+    }
 }
