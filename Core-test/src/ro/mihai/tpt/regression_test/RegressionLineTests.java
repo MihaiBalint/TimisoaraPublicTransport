@@ -1,5 +1,9 @@
 package ro.mihai.tpt.regression_test;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import junit.framework.TestCase;
@@ -48,9 +52,15 @@ public class RegressionLineTests extends TestCase {
 
 	
 	public static void addTests(TestSuite suite, City cActual, City cExpected) {
-		for(Line l : cExpected.getLines()) {
+		LinkedHashSet<String> lineNames = new LinkedHashSet<String>();
+		for(Line l : cExpected.getLines()) 
+			lineNames.add(l.getName());
+		for(Line l : cActual.getLines()) 
+			lineNames.add(l.getName());
+		
+		for(String lineName : lineNames) {
 			for(String t : RegressionTests.testMethods(RegressionLineTests.class))
-				suite.addTest(new RegressionLineTests(t, cActual, cExpected, l.getName()));
+				suite.addTest(new RegressionLineTests(t, cActual, cExpected, lineName));
 		}
 	}
 }

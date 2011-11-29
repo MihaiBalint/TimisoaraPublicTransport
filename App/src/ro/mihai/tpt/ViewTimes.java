@@ -87,7 +87,8 @@ public class ViewTimes extends CityActivity {
 	    	
 	    	TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 			String label = s.getNicestNamePossible(); 
-	    	stationLabel.setText("|"+label.substring(0,Math.min(30, label.length())));
+			// label = label.substring(0,Math.min(30, label.length()));
+	    	stationLabel.setText("|"+label);
 	    	
 	    	TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 	    	stationTime.setText(path.getTime1(s));

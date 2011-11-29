@@ -61,6 +61,14 @@
 			android:text=" E6 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bE7"
 			android:text=" E7 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bE7b"
+			android:text=" E7b "/>
+	</LinearLayout>
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		>
 		<Button	style="@style/LineButton" android:id="@+id/bE8"
 			android:text=" E8 "/>
 	</LinearLayout>
@@ -109,8 +117,6 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		>
-		<Button	style="@style/LineButton" android:id="@+id/bM24"
-			android:text=" M24 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bM30"
 			android:text=" M30 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bM35"

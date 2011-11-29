@@ -64,7 +64,7 @@ public class RegressionTests {
 		for(Map.Entry<String, T> a : actualMap.entrySet()) {
 			if (expectedMap.containsKey(a.getKey())) {
 				T e = expectedMap.get(a.getKey());
-				if(!a.getValue().getName().equals(e.getName()))
+				if(!a.getValue().getName().trim().equals(e.getName().trim()))
 					renamed.add(e.getId());
 				continue;
 			}

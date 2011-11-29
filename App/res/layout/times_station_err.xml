@@ -37,5 +37,7 @@
 		android:textColor="#FFFFFFFF"
   		android:text="Arta textila"
    		android:textSize="6.5pt"
+   		android:singleLine="true"
+   		android:ellipsize="marquee"
    	/>
 </TableRow>

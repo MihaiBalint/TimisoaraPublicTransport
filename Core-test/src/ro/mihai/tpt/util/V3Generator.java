@@ -37,7 +37,10 @@ public class V3Generator extends TestCase {
 		
 		rd.readNext(); // ignore header row
 		while(null!=(row=rd.readNext())) {
-			if("true".equalsIgnoreCase(row[9])) continue;
+			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
+				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
+				|| (row.length>9 && row[9].equalsIgnoreCase("true")) // ignore invalid rows 
+			) continue;
 			
 			Station st = stMap.get(row[2]);
 			
@@ -100,7 +103,6 @@ public class V3Generator extends TestCase {
 		c1.loadFromStream(fis, new NullMonitor());
 		for(Station s:c1.getStations())
 			s.getName();
-		fis.close();
 		
 		assertTrue(c.getStations().size() > 0);
 		assertEquals(c.getStations().size(), 	c1.getStations().size());
@@ -113,6 +115,9 @@ public class V3Generator extends TestCase {
 
 		assertEquals(c.getLine("33").getPaths().size(), c1.getLine("33").getPaths().size());
 		assertEquals(2,c.getLine("33").getPaths().size());
+
+		assertEquals(c.getLine("32").getPaths().size(), c1.getLine("32").getPaths().size());
+		assertEquals(2,c.getLine("32").getPaths().size());
 		
 		for(Line l : c.getLines()) {
 			if(l.getPaths().size() > 2) {
@@ -122,6 +127,8 @@ public class V3Generator extends TestCase {
 			}
 			assertTrue(l.getPaths().size() <= 2);
 		}
+		// stream must stay open for certain stuff
+		fis.close();
 	}
 	
 	private static boolean nonEmpty(String s) {
