@@ -27,6 +27,7 @@
 		android:layout_width="30pt" 
 		android:layout_height="wrap_content"
 		android:textColor="#FFFFFFFF"
+		android:gravity="right"
   		android:text="3min"
    		android:textSize="7.5pt"
    	/>
