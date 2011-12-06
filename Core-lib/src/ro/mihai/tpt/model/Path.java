@@ -28,8 +28,9 @@ public class Path implements Serializable {
 
 	private List<Station> stationsByPath;
 	private List<Station> stationsByTime;
+	private Map<Station,Estimate> est;
 	
-	private Map<Station,String> times1, times2, errs;
+	//private Map<Station,String> times1, times2, errs;
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
 	public Path(Line line, String name) {
@@ -38,11 +39,7 @@ public class Path implements Serializable {
 		this.segments = new ArrayList<Segment>();
 		this.stationsByPath = new ArrayList<Station>();
 		this.stationsByTime = new ArrayList<Station>();
-		
-		this.times1 = new HashMap<Station, String>();
-		this.times2 = new HashMap<Station, String>();
-		this.errs = new HashMap<Station, String>();
-		
+		this.est = new HashMap<Station, Estimate>();
 	}
 	
 	public String getName() {
@@ -85,9 +82,7 @@ public class Path implements Serializable {
 	private void addStation(Station s) {
 		stationsByPath.add(s);
 		stationsByTime.add(s);
-		times1.put(s, "update");	
-		times2.put(s, "update");	
-		errs.put(s, "");	
+		est.put(s, new Estimate(this, s, stationsByPath.size()-1));
 	}
 	
 
@@ -98,6 +93,10 @@ public class Path implements Serializable {
 		return stationsByTime;
 	}
 	
+	public Estimate getEstimate(Station s) {
+		return est.get(s);
+	}
+	
 	/*
 	 * 
 	 */
@@ -105,69 +104,38 @@ public class Path implements Serializable {
 	public void updateAllStations() {
 		int ec = 0;
 		for(Station s:stationsByTime) {
-			startUpdate(s);
+			est.get(s).startUpdate();
 			ec = updateStation(ec, s);
 		}
-		updateSort(); 
+		ArrayList<Station> newSort = new ArrayList<Station>(stationsByTime);
+		Collections.sort(newSort, timesComp);
+		stationsByTime = newSort;
 	}
 
-	public void startUpdate(Station s) {
-		putErr(s, "upd");
-	}
-	public void clearUpdate(Station s) {
-		if (errs.get(s).equals("upd"))
-			putErr(s, "");
+	public void clearAllUpdates() {
+		for(Estimate e:est.values())
+			e.clearUpdate();
 	}
 	
 	public int updateStation(int ec, Station s) {
+		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
 				String[] t = RATT.downloadTimes(line, s);
-				putTime(s, t[0], t[1]);
-			} else  
-				putErr(s, "upd-canceled");
-		} catch(IOException e) {
-			putErr(s,"io-err");
+				e.putTime(t[0], t[1]);
+			} else
+				e.putErr("upd-canceled");
+		} catch(IOException exc) {
+			e.putErr("io-err");
 			ec++;
 		}
 		return ec;
 	}
 
-	public void updateSort() {
-		ArrayList<Station> newSort = new ArrayList<Station>(stationsByTime);
-		Collections.sort(newSort, timesComp);
-		stationsByTime = newSort;
-	}
-	
 	/*
 	 * 
 	 */
 	
-	private synchronized void putErr(Station s, String err) {
-		errs.put(s, err);
-	}
-
-	private synchronized void putTime(Station s, String t1, String t2) {
-		times1.put(s,t1);
-		times2.put(s,t2);
-		errs.put(s, "");
-	}
-	
-	public synchronized String getTime1(Station s) {
-		return formatTime(times1.get(s));
-	} 
-
-	public synchronized String getTime2(Station s) {
-		return formatTime(times2.get(s));
-	} 
-	
-	public synchronized String getErrs(Station s) {
-		return errs.get(s);
-	}
-	
-	/*
-	 * 
-	 */
 	public void reOrder() {
 		try {
 			stationCheck();
@@ -225,7 +193,6 @@ public class Path implements Serializable {
 		this.stationsByPath = new ArrayList<Station>();
 		this.stationsByTime = new ArrayList<Station>();
 		
-		Iterator<Station> it = stationsByPath.iterator();
 		while(null!=(l=br.readLine())) {
 			
 			for(Station s:stations) {
@@ -258,12 +225,13 @@ public class Path implements Serializable {
 		ArrayList<String> times = new ArrayList<String>();
 		for(Station s:stationsByTime) {
 			StringBuilder b = new StringBuilder();
+			Estimate e = est.get(s);
 			b.append(s.getName());
 			b.append(" - \t");
-			b.append(formatTime(times1.get(s)));
+			b.append(formatTime(e.getTimes1()));
 			b.append(", \t");
-			b.append(formatTime(times2.get(s)));
-			String er = errs.get(s);
+			b.append(formatTime(e.getTimes2()));
+			String er = e.getErr();
 			if(er.length()>0) {
 				b.append("\t - ");
 				b.append(er);
@@ -281,18 +249,21 @@ public class Path implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		public int compare(Station s1, Station s2) {
+			Estimate e1 = est.get(s1);
+			Estimate e2 = est.get(s2);
+			
 			String 
-				t11 = times1.get(s1),
-				t12 = times2.get(s1),
-				t21 = times1.get(s2),
-				t22 = times2.get(s2);
+				t11 = e1.getTimes1(),
+				t12 = e1.getTimes2(),
+				t21 = e2.getTimes1(),
+				t22 = e2.getTimes2();
 			int c1 = compareTimes(t11, t21);
 			if(c1!=0) return c1;
 			
 			int c2 = compareTimes(t12, t22);
 			if(c2!=0) return c2;
 			
-			int c3 = errs.get(s1).compareTo(errs.get(s2)); 
+			int c3 = e1.getErr().compareTo(e2.getErr()); 
 			if(c3!=0) return c3;
 			
 			return s1.getName().compareTo(s2.getName());

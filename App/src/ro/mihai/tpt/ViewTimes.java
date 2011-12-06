@@ -17,6 +17,7 @@
 */
 package ro.mihai.tpt;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.R;
@@ -72,12 +73,14 @@ public class ViewTimes extends CityActivity {
 
 	private void inflateTable() {
 		timesTable.removeAllViews();
-		for(Station s: path.getStationsByPath()) {
-			String status = path.getErrs(s);
+		List<Station> stations = path.getStationsByPath();
+		int index = 0;
+		for(Station s: stations) {
+			Estimate est = path.getEstimate(s);
 			int rowLayout;
-			if ("upd".equals(status))
+			if (est.isUpdating())
 				rowLayout = R.layout.times_station_updating;
-			else if (status.length() > 0) {
+			else if (est.hasErrors()) {
 				rowLayout = R.layout.times_station_err;
 				updater.setHasErrors();
 			} else
@@ -91,12 +94,16 @@ public class ViewTimes extends CityActivity {
 	    	stationLabel.setText("|"+label);
 	    	
 	    	TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-	    	stationTime.setText(path.getTime1(s));
+	    	stationTime.setText(est.getTimes1());
 
 	    	// TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
 	    	// stationStatus.setText(status);
 	    	
 	    	timesTable.addView(timesRow);
+	    	if (est.isVehicleHere()) {
+	    		timesTable.addView(inflater.inflate(R.layout.times_station_vehicle, timesTable, false));
+	    	}
+	    	index++;
 		}
 	}
 	
@@ -109,7 +116,7 @@ public class ViewTimes extends CityActivity {
 			UpdateView viewUpdater = new UpdateView();
 			for(Station s: path.getStationsByPath()) {
 				if(!running.get()) return;
-				path.startUpdate(s);
+				path.getEstimate(s).startUpdate();
 				runOnUiThread(viewUpdater);
 				ec = path.updateStation(ec, s);
 			}
@@ -126,8 +133,7 @@ public class ViewTimes extends CityActivity {
 		
 		public void killUpdate() {
 			running.set(false);
-			for(Station s: path.getStationsByPath()) 
-				path.clearUpdate(s);
+			path.clearAllUpdates();
 		}
 		
 		public void setHasErrors() {

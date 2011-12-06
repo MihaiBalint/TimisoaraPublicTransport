@@ -116,6 +116,7 @@ public final class R {
         public static final int times_station=0x7f030006;
         public static final int times_station_err=0x7f030007;
         public static final int times_station_updating=0x7f030008;
+        public static final int times_station_vehicle=0x7f030009;
     }
     public static final class raw {
         public static final int citylines=0x7f040000;
