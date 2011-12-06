@@ -1,0 +1,11 @@
+# built application files
+*.ap_
+
+# Java class files
+*.class
+
+# generated files
+App/
+Core-lib/
+Core-test/
+keystore/
