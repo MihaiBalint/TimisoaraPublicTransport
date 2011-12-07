@@ -44,10 +44,10 @@ public class Estimate implements Serializable {
 	}
 
 	public Calendar getEstimate1() {
-		return parseEstimate(times1, updateTimeMilis);
+		return parseEstimate(getTimes1(), updateTimeMilis);
 	}
 	public Calendar getEstimate2() {
-		return parseEstimate(times1, updateTimeMilis);
+		return parseEstimate(getTimes2(), updateTimeMilis);
 	}
 
 	public String getErr() {
@@ -90,13 +90,11 @@ public class Estimate implements Serializable {
 	private static Calendar parseEstimate(String time, long updateTimeMilis) {
 		Calendar timeOfUpdate = Calendar.getInstance();
 		timeOfUpdate.setTimeInMillis(updateTimeMilis);
-		String[] ids = TimeZone.getAvailableIDs();
-		TimeZone tz = TimeZone.getTimeZone("Europe/Bucharest");
-		ids.toString();
-		Calendar est = Calendar.getInstance(tz);
+		Calendar est = Calendar.getInstance(TimeZone.getTimeZone("Europe/Bucharest"));
 		time = time.trim();
 		if (time.endsWith("min")) {
-			String minString = time.substring(0, time.length()-3);
+			int endIndex = time.endsWith(" min") ? time.length()-4 : time.length()-3;
+			String minString = time.substring(0, endIndex);
 			try {
 				est.add(Calendar.MINUTE, Integer.parseInt(minString));
 				return est;
@@ -107,7 +105,7 @@ public class Estimate implements Serializable {
 			return null;
 		} else if (time.equals(">>")) {
 			return est;
-		} else if (time.charAt(2)==':') {
+		} else if (time.length()>=5 && time.charAt(2)==':') {
 			String hourString = time.substring(0,2);
 			String minString = time.substring(3);
 			try {
