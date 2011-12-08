@@ -94,15 +94,15 @@ public class ViewTimes extends CityActivity {
 	    	stationLabel.setText("|"+label);
 	    	
 	    	TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-	    	stationTime.setText(est.getTimes1());
+	    	stationTime.setText(est.estimateTimeString());
 
 	    	// TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
 	    	// stationStatus.setText(status);
 	    	
-	    	timesTable.addView(timesRow);
 	    	if (est.isVehicleHere()) {
 	    		timesTable.addView(inflater.inflate(R.layout.times_station_vehicle, timesTable, false));
 	    	}
+	    	timesTable.addView(timesRow);
 	    	index++;
 		}
 	}

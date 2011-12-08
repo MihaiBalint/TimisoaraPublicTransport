@@ -36,17 +36,24 @@ public class Estimate implements Serializable {
 		this.err = "";
 	}
 	
-	public String getTimes1() {
+	public String estimateTimeString() {
+		return getTimes1();
+	}
+	private Calendar estimateTime() {
+		return getEstimate1();
+	}
+	
+	String getTimes1() {
 		return formatTime(times1);
 	}
-	public String getTimes2() {
+	String getTimes2() {
 		return formatTime(times2);
 	}
 
-	public Calendar getEstimate1() {
+	private Calendar getEstimate1() {
 		return parseEstimate(getTimes1(), updateTimeMilis);
 	}
-	public Calendar getEstimate2() {
+	private Calendar getEstimate2() {
 		return parseEstimate(getTimes2(), updateTimeMilis);
 	}
 
@@ -72,15 +79,15 @@ public class Estimate implements Serializable {
 			return true;
 		List<Station> stations = path.getStationsByPath();
 		
-		if(stationIndex>=stations.size()-1) // last station
+		if(stationIndex==0) // first station
 			return false;
 		
-		Estimate next = path.getEstimate(stations.get(stationIndex+1));
+		Estimate prev = path.getEstimate(stations.get(stationIndex-1));
 		Calendar 
-			thisEst = getEstimate1(),
-			nextEst = next.getEstimate1();
-		if (thisEst==null || nextEst==null) return false;
-		if (thisEst.after(nextEst))
+			thisEst = estimateTime(),
+			prevEst = prev.estimateTime();
+		if (thisEst==null || prevEst==null) return false;
+		if (prevEst.after(thisEst))
 			return true;
 		
 		return false;
