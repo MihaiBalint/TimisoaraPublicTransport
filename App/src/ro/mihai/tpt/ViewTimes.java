@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.conf.PathStationsSelection;
+import ro.mihai.tpt.conf.StationPathsSelection;
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
@@ -40,7 +42,7 @@ public class ViewTimes extends CityActivity {
 	private TableLayout timesTable;
 	private LayoutInflater inflater;
 	private City city;
-	private Path path;
+	private PathStationsSelection path;
 	private UpdateTimes updater;
 
 	/** Called when the activity is first created. */
@@ -53,12 +55,12 @@ public class ViewTimes extends CityActivity {
     	city = getCity();
     	city.getClass();
     	
-		path = AndroidSharedObjects.instance().getLinePath();
+    	path = new PathStationsSelection(AndroidSharedObjects.instance().getLinePath());
+    	path.selectAllStations();
 		
-    	String labelText = path.getLine().getName()+" ("+path.getNiceName()+")";
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
-    	update.setText(labelText);
+    	update.setText(path.getLabel());
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -73,38 +75,52 @@ public class ViewTimes extends CityActivity {
 
 	private void inflateTable() {
 		timesTable.removeAllViews();
-		List<Station> stations = path.getStationsByPath();
-		int index = 0;
-		for(Station s: stations) {
-			Estimate est = path.getEstimate(s);
-			int rowLayout;
-			if (est.isUpdating())
-				rowLayout = R.layout.times_station_updating;
-			else if (est.hasErrors()) {
-				rowLayout = R.layout.times_station_err;
-				updater.setHasErrors();
-			} else
-				rowLayout = R.layout.times_station;
-			
-	    	View timesRow = inflater.inflate(rowLayout, timesTable, false);
-	    	
-	    	TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
-			String label = s.getNicestNamePossible(); 
-			// label = label.substring(0,Math.min(30, label.length()));
-	    	stationLabel.setText("|"+label);
-	    	
-	    	TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-	    	stationTime.setText(est.estimateTimeString());
+		List<StationPathsSelection> stations = path.getStations();
 
-	    	// TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
-	    	// stationStatus.setText(status);
-	    	
+		for(StationPathsSelection sel: stations) {
+			Station s = sel.getStation();
+			Estimate est = path.getEstimate(s);
+			
 	    	if (est.isVehicleHere()) {
 	    		timesTable.addView(inflater.inflate(R.layout.times_station_vehicle, timesTable, false));
 	    	}
-	    	timesTable.addView(timesRow);
-	    	index++;
+	    	timesTable.addView(newStationEstimateView(est, s.getNicestNamePossible()));
+	    	
+	    	for(Path connection : sel.getConnections()) {
+	    		est = connection.getEstimate(s);
+	    		String label = connection.getLine().getName()+" ("+connection.getNiceName()+")";
+
+	    		timesTable.addView(newConnectionEstimateView(est, label));
+	    	}
 		}
+	}
+
+	private View newStationEstimateView(Estimate est, String label) {
+		int rowLayout;
+		if (est.isUpdating())
+			rowLayout = R.layout.times_station_updating;
+		else if (est.hasErrors()) {
+			rowLayout = R.layout.times_station_err;
+			updater.setHasErrors();
+		} else
+			rowLayout = R.layout.times_station;
+		
+		View timesRow = inflater.inflate(rowLayout, timesTable, false);
+		
+		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
+		stationLabel.setText("|"+label);
+		
+		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
+		stationTime.setText(est.estimateTimeString());
+
+		// TextView stationStatus = (TextView)timesRow.findViewById(R.id.StationStatus);
+		// stationStatus.setText(status);
+		return timesRow;
+	}
+
+	private View newConnectionEstimateView(Estimate est, String label) {
+		// TODO create own view
+		return newStationEstimateView(est, label);
 	}
 	
 	private class UpdateTimes implements Runnable, OnClickListener {
@@ -114,16 +130,26 @@ public class ViewTimes extends CityActivity {
 		public void run() {
 			int ec = 0;
 			UpdateView viewUpdater = new UpdateView();
-			for(Station s: path.getStationsByPath()) {
+			for(StationPathsSelection sel: path.getStations()) {
 				if(!running.get()) return;
-				path.getEstimate(s).startUpdate();
-				runOnUiThread(viewUpdater);
-				ec = path.updateStation(ec, s);
+				Station s = sel.getStation();
+				ec = update(ec, viewUpdater, path.getPath(), s);
+				for(Path connection : sel.getConnections()) {
+					if(!running.get()) return;
+					ec = update(ec, viewUpdater, connection, s);
+				}
 			}
 			killUpdate();
 			runOnUiThread(new UpdateView());
 			if (hasErrors.compareAndSet(true, false))
 				runOnUiThread(new ReportError());
+		}
+
+		private int update(int ec, UpdateView viewUpdater, Path path, Station s) {
+			path.getEstimate(s).startUpdate();
+			runOnUiThread(viewUpdater);
+			ec = path.updateStation(ec, s);
+			return ec;
 		}
 		
 		public void onClick(View v) {
