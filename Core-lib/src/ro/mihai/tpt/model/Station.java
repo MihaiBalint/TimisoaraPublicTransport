@@ -147,6 +147,7 @@ public class Station implements INamedEntity, Serializable {
 		this.niceName = res.readString();
 		this.shortName = res.readString();
 		this.junction = city.getOrCreateJunction(res.readString());
+		this.junction.addStation(this);
 		this.lat = res.readString();
 
 		this.lng = res.readString();

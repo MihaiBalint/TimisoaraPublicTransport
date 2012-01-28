@@ -18,6 +18,7 @@
 package ro.mihai.tpt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import ro.mihai.tpt.model.*;
@@ -36,11 +37,17 @@ public class SelectLinePath implements OnClickListener, DialogInterface.OnClickL
 	private Class<?> activity;
 	
 	public SelectLinePath(Activity parent, Class<?> activity, City city, Line selectable) {
+		this(parent, activity, city, selectable, selectable.getPaths());
+	}
+
+	public SelectLinePath(Activity parent, Class<?> activity, City city, Line selectable, Collection<Path> pathList) {
 		this.selectable = selectable;
 		this.city = city;
 		this.parent = parent;
 		this.activity = activity;
+		this.pathList = new ArrayList<Path>(pathList);
 	}
+	
 	public void onClick(View v) {
 		pathList = new ArrayList<Path>(selectable.getPaths());
 		assert( !pathList.isEmpty() );

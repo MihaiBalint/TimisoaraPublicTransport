@@ -85,8 +85,9 @@ public class PathStationsSelection {
 		
 		for(StationPathsSelection sel : stations) {
 			Station s = sel.getStation();
+			
 			for(Station o : p.getStationsByPath())
-				if (o.getJunctionName().equalsIgnoreCase(s.getJunctionName()))
+				if (o.getJunction() == s.getJunction())
 					sel.addConnection(o, p);
 		}
 	}

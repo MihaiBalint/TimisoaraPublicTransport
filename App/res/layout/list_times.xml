@@ -19,11 +19,11 @@
 */
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:background="#000000"
-    >
+    android:orientation="vertical" >
+
 	<ScrollView 
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
@@ -39,18 +39,30 @@
 		android:layout_height="1pt"
 		android:background="#D0808080"
     ></View>
+
     <LinearLayout
-    	android:layout_width="fill_parent" 
-		android:layout_height="wrap_content">
-    	<Button android:id="@+id/UpdateButton"
-	    	android:layout_width="fill_parent" 
-			android:layout_height="22pt"
-			android:background="#000000"
-			android:drawableLeft="@drawable/upd_button"
-   			android:text="33 (Catedrala)"
-    		android:textSize="7pt"
-    		android:textColor="#FFFFFF"
-    	/>
-    </LinearLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right" >
+
+    	<Button
+    	    android:id="@+id/UpdateButton"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="22pt"
+    	    android:background="#000000"
+    	    android:drawableLeft="@drawable/upd_button"
+    	    android:text="33 (Catedrala)"
+    	    android:textColor="#FFFFFF"
+    	    android:textSize="7pt" />
+
+    	<Button
+    	    android:id="@+id/ConnectionsButton"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="22pt"
+    	    android:layout_marginLeft="10pt"
+    	    android:background="#000000"
+    	    android:drawableLeft="@drawable/con_button" />
+
+    	</LinearLayout>
 </LinearLayout>
 

@@ -17,7 +17,12 @@
 */
 package ro.mihai.tpt;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.R;
@@ -63,9 +68,13 @@ public class ViewTimes extends CityActivity {
     	path = new PathStationsSelection(AndroidSharedObjects.instance().getLinePath());
     	path.selectAllStations();
 		queue = new UpdateQueue();
+		
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
     	update.setText(path.getLabel());
+
+    	Button connections = (Button)findViewById(R.id.ConnectionsButton);
+    	connections.setOnClickListener(new SelectConnections());
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -240,6 +249,41 @@ public class ViewTimes extends CityActivity {
 		}
 	}
     
+    private class SelectConnections implements OnClickListener, DialogInterface.OnClickListener {
+    	private List<Path> pathList;
+    	
+		public void onClick(View v) {
+			pathList = new ArrayList<Path>();
+		   	Set<Path> connections = new LinkedHashSet<Path>();
+	    	for(StationPathsSelection sel : path.getStations()) {
+	    		for(Station s:sel.getStation().getJunction().getStations())
+	    			for(Line l:s.getLines())
+	    				for(Path p:l.getPaths())
+	    					if (p!=path.getPath() && p.getStationsByPath().contains(s))
+	    						connections.add(p);
+	    	}
+	    	pathList.addAll(connections);
+			final CharSequence[] items = new CharSequence[connections.size()];
+	    					
+	    	Iterator<Path> it = connections.iterator();
+			for(int i=0;i<items.length;i++) {
+				Path p = it.next();
+				items[i] = p.getLine().getName() + " > " + p.getNiceName();
+			}
+
+			new AlertDialog.Builder(ViewTimes.this)
+				.setTitle(getString(R.string.selConnections))
+				.setItems(items, this)
+				.create()
+				.show();
+		}
+
+		public void onClick(DialogInterface dialog, int which) {
+	    	path.addConnections(pathList.get(which));
+	    	runOnUiThread(new UpdateView());
+		}
+    }
+    
     private class ReportError implements Runnable, DialogInterface.OnClickListener {
     	public void run() {
 			new AlertDialog.Builder(ViewTimes.this)
@@ -256,9 +300,10 @@ public class ViewTimes extends CityActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.times_menu, menu);
-        return true;
+    	return super.onCreateOptionsMenu(menu);
+        // MenuInflater inflater = getMenuInflater();
+        // inflater.inflate(R.menu.times_menu, menu);
+        // return true;
     }    
     
     @Override
@@ -266,7 +311,7 @@ public class ViewTimes extends CityActivity {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.select_connections:
-            showSelectConnections();
+            //showSelectConnections();
             return true;
         case R.id.view_map:
             //showHelp();
@@ -276,8 +321,4 @@ public class ViewTimes extends CityActivity {
         }
     }
     
-    public void showSelectConnections() {
-    	path.addConnections(city.getLine("33").getFirstPath());
-    	runOnUiThread(new UpdateView());
-    }
 }

@@ -22,4 +22,12 @@ public class Junction implements Serializable {
 		return name;
 	}
 	
+	public void addStation(Station s) {
+		stations.add(s);
+	}
+	
+	public Set<Station> getStations() {
+		return stations;
+	}
+	
 }

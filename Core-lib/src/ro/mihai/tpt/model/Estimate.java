@@ -71,11 +71,12 @@ public class Estimate implements Serializable {
 	}
 	
 	private TimeEstimate estimateTime() {
-		if (this.type.isGPS())
+		if (this.type.isGPS() || this.type.isNotNone())
 			return getEstimate1();
 		if (this.type.isNone())
 			return new TimeEstimate(getTimes1(), null);
-
+		
+		// TODO Deprecated
 		List<Station> stations = path.getStationsByPath();
 
 		for(int i=stationIndex-1;i>=0;i--) {
@@ -183,9 +184,9 @@ public class Estimate implements Serializable {
 		timeOfUpdate.setTimeInMillis(updateTimeMilis);
 		Calendar est = Calendar.getInstance(TimeZone.getTimeZone("Europe/Bucharest"));
 		time = time.trim();
-		if (time.endsWith("min")) {
-			int endIndex = time.endsWith(" min") ? time.length()-4 : time.length()-3;
-			String minString = time.substring(0, endIndex);
+		if (time.endsWith("min") || time.endsWith("min.")) {
+			int endIndex = time.endsWith("min.") ? time.length()-4 : time.length()-3;
+			String minString = time.substring(0, endIndex).trim();
 			try {
 				est.add(Calendar.MINUTE, Integer.parseInt(minString));
 				return est;
