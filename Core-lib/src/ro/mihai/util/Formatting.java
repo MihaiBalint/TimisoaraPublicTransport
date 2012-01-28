@@ -31,4 +31,17 @@ public class Formatting {
 		}
 	}
 	
+	public static boolean isMinutes(String str) {
+		if (null==str) return false;
+		str = str.trim().toLowerCase();
+		if (!str.endsWith("min.")) return false;
+		String n = str.substring(0,str.indexOf("min.")).trim();
+		return isInteger(n);
+	}
+	
+	public static String parseMinutes(String str) {
+		str = str.trim().toLowerCase();
+		return str.substring(0,str.indexOf("min.")).trim();
+	}
+	
 }

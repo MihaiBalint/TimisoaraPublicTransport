@@ -41,17 +41,28 @@ public class Estimate implements Serializable {
 		// this.updateTimeMilis = System.currentTimeMillis();
 	}
 	
+	public Station getStation() {
+		return station;
+	}
+	
+	public Path getPath() {
+		return path;
+	}
+	
 	public void putTime(String t1, String t2) {
 		this.updateTimeMilis = System.currentTimeMillis();
-		this.times1 = t1;
-		this.times2 = t2;
+		this.times1 = t1!=null ? t1.trim() : "";
+		this.times2 = t2!=null ? t2.trim() : "";
 		this.err = "";
 		
 		if (t1!=null && t1.trim().length()==5 && t1.charAt(2)==':') 
 			this.type = EstimateType.Scheduled;
-		else if(">>".equals(times1) || isInteger(times1))
+		else if(">>".equals(times1) || isInteger(times1)) 
 			this.type = EstimateType.GPS;
-		else
+		else if(isMinutes(times1)) {
+			this.type = EstimateType.GPS;
+			this.times1 = parseMinutes(times1);
+		} else
 			this.type = EstimateType.None;
 	}
 	

@@ -17,25 +17,74 @@
 */
 package ro.mihai.tpt.conf;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
 
 public class StationPathsSelection {
 	private Station station;
-	private Set<Path> connections;
+	private List<Node> connections;
 	
 	public StationPathsSelection(Station station) {
 		this.station = station;
-		this.connections = new TreeSet<Path>();
+		this.connections = new ArrayList<Node>();
 	}
 
 	public Station getStation() {
 		return station;
 	}
-	public Set<Path> getConnections() {
+	
+	public void clearAllUpdates() {
+		for(Node connection : this.getConnections())
+			connection.path.getEstimate(connection.station).clearUpdate();
+	}
+		
+	public List<Node> getConnections() {
 		return connections;
 	}
+	
+	public void addConnection(Station s, Path p) {
+		Node n = new Node(s,p);
+		if (!this.connections.contains(n))
+			this.connections.add(n);
+	}
+	
+	public void clearConnections() {
+		connections.clear();
+	}
+	
+	public static class Node {
+		public Station station;
+		public Path path;
+		
+		public Node(Station station, Path path) {
+			this.station = station;
+			this.path = path;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + path.hashCode();
+			result = prime * result + station.hashCode();
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Node other = (Node) obj;
+			return path == other.path && station == other.station;
+		}
+		
+	}
+	
 }

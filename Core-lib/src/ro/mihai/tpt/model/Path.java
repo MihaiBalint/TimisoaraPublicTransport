@@ -25,12 +25,10 @@ public class Path implements Serializable {
 	private List<Segment> segments;
 	private Line line;
 	
-
 	private List<Station> stationsByPath;
 	private List<Station> stationsByTime;
 	private Map<Station,Estimate> est;
 	
-	//private Map<Station,String> times1, times2, errs;
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
 	public Path(Line line, String name) {

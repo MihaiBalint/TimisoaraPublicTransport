@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
     Copyright (C) 2011  Mihai Balint
@@ -17,18 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
- -->
-<resources>
-    <string name="loading">Loading...</string>
-    <string name="app_name">Timisoara Public Transport</string>
-    
-    <string name="upd">Update Times</string>
-    <string name="upd_error">Update could not complete. Some network connection errors have been encountered.</string>
-    
-    <string name="sel">Select Line</string>
-	<string name="selTrams">Tram Lines</string>
-	<string name="selTrolleys">Trolleybus Lines</string>
-	<string name="selBus">Bus Lines</string>
-	<string name="selPathLabel">Select Direction</string>
-	<string name="selConnections">Select Connections</string>
-</resources>
+package ro.mihai.tpt;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class UpdateQueue implements Runnable {
+	private Queue<Runnable> queue = new LinkedList<Runnable>();
+
+	public synchronized void add(Runnable r) {
+		if (queue.contains(r))
+			return;
+		queue.add(r);
+	}
+	
+	public synchronized void run() {
+		for(Runnable r:queue)
+			r.run();
+		queue.clear();
+	}
+}

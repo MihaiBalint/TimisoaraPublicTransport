@@ -57,12 +57,10 @@ public class PathStationsSelection {
 	}
 	public void clearAllUpdates() {
 		path.clearAllUpdates();
-		for(StationPathsSelection sel : stations) {
-			Station s = sel.getStation();
-			for(Path connection : sel.getConnections())
-				connection.getEstimate(s).clearUpdate();
-		}
+		for(StationPathsSelection sel : stations)
+			sel.clearAllUpdates();
 	}
+
 	public String getLabel() {
 		return path.getLine().getName()+" ("+path.getNiceName()+")";
 	}
@@ -75,6 +73,22 @@ public class PathStationsSelection {
 		List<Station> stations = path.getStationsByPath();
 		for(Station s : stations)
 			this.stations.add(new StationPathsSelection(s));
+	}
+	
+	public void clearConnections() {
+		for(StationPathsSelection sel : stations) 
+			sel.clearConnections();
+	}
+	
+	public void addConnections(Path p) {
+		if (p==path) return;
+		
+		for(StationPathsSelection sel : stations) {
+			Station s = sel.getStation();
+			for(Station o : p.getStationsByPath())
+				if (o.getJunctionName().equalsIgnoreCase(s.getJunctionName()))
+					sel.addConnection(o, p);
+		}
 	}
 	
 }

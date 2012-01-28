@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/select_connections"
+          android:title="@string/selConnections" />
+    <item android:id="@+id/view_map"
+          android:title="Map" />
+    
+    <!--  
+    <item android:id="@+id/new_game"
+          android:icon="@drawable/ic_new_game"
+          android:title="@string/new_game" />
+    <item android:id="@+id/help"
+          android:icon="@drawable/ic_help"
+          android:title="@string/help" />
+    -->
+</menu>
