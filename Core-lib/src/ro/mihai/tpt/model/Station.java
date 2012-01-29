@@ -25,11 +25,8 @@ import java.util.List;
 
 import ro.mihai.util.DetachableStream;
 
-public class Station implements INamedEntity, Serializable {
+public class Station extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
-	private long resId;
-	private boolean loaded;
-	private City city;
 	private String name, id;
 	private List<Line> lines;
 	private Junction junction;
@@ -37,26 +34,19 @@ public class Station implements INamedEntity, Serializable {
 	private String niceName, shortName;
 	
 	public Station(String id, long resId, City city) {
+		super(resId, city);
 		this.id = id;
-		this.resId = resId;
-		this.city = city;
-		this.loaded = false;
 		this.lines = new ArrayList<Line>(2);
 	}
 
 	public Station(String id, String name) {
 		this(id,-1, null);
-		this.loaded = true;
 		this.lines = new ArrayList<Line>(2);
 		this.name = name;
 	}
 
 	public String getId() {
 		return id;
-	}
-	
-	public long getResId() {
-		return resId;
 	}
 	
 	public void addLine(Line l) {
@@ -67,16 +57,6 @@ public class Station implements INamedEntity, Serializable {
 	public List<Line> getLines() {
 		return lines;
 	}	
-	
-	private synchronized void load() {
-		if (loaded) return;
-		city.loadStationResources(this);
-		loaded = true;
-	}
-	private void ensureLoaded() {
-		if (loaded) return;
-		load();
-	}
 	
 	public String getName() {
 		ensureLoaded();
@@ -142,29 +122,30 @@ public class Station implements INamedEntity, Serializable {
 		return junction!=null && junction.getName()!=null && junction.getName().trim().length() > 0;
 	}
 	
-	protected void readResources(DetachableStream res, DataVersion version) throws IOException {
-		this.name = res.readString();
-		this.niceName = res.readString();
-		this.shortName = res.readString();
-		this.junction = city.getOrCreateJunction(res.readString());
+	protected void loadLazyResources(DetachableStream lazy, DataVersion version) throws IOException {
+		this.name = lazy.readString();
+		this.niceName = lazy.readString();
+		this.shortName = lazy.readString();
+		this.junction = city.getJunctionById(lazy.readInt());
 		this.junction.addStation(this);
-		this.lat = res.readString();
+		this.lat = lazy.readString();
 
-		this.lng = res.readString();
+		this.lng = lazy.readString();
 		
 		if (version.lessThan(DataVersion.Version4)) return;
 		
-		int lineCount = res.readInt();
+		int lineCount = lazy.readInt();
 		for(int i=0;i<lineCount;i++) {
-			String lineId = res.readString();
+			String lineId = lazy.readString();
 			lines.add(city.getLineById(lineId));
 		}
 	}
 	
-	protected void writeResources(DataOutputStream res) throws IOException {
+	private void persistLazy(DataOutputStream res) throws IOException {
 		ensureLoaded();
 		byte[] b;
 		
+		// lazy station resources
 		b = getName().getBytes();
 		res.writeInt(b.length); res.write(b);
 		
@@ -174,8 +155,7 @@ public class Station implements INamedEntity, Serializable {
 		b = getShortName().getBytes();
 		res.writeInt(b.length); res.write(b);
 
-		b = getJunctionName().getBytes();
-		res.writeInt(b.length); res.write(b);
+		res.writeInt(junction.getId());
 
 		b = getLat().getBytes();
 		res.writeInt(b.length); res.write(b);
@@ -188,5 +168,25 @@ public class Station implements INamedEntity, Serializable {
 			b = l.getId().getBytes();
 			res.writeInt(b.length); res.write(b);
 		}
+	}
+	
+	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
+		byte[] b;
+		
+		// eager station resources
+		b = id.getBytes();
+		eager.writeInt(b.length); eager.write(b);
+
+		eager.writeInt(lazyId); 
+		
+		// lazy station resources
+		persistLazy(lazy);
+		lazy.flush();
+	}
+	
+	public static Station loadEager(DetachableStream eager, City city) throws IOException {
+		String id = eager.readString();
+		
+		return new Station(id, eager.readInt(), city);
 	}
 }

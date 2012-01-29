@@ -93,7 +93,7 @@ public class DeDuper {
 				}
 				if(nonEmpty(row[6])) {
 					if (newStation) 
-						st.setJunction(new Junction(selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help)));
+						st.setJunction(new Junction(selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help), null));
 				}
 				if(nonEmpty(row[7]) || nonEmpty(row[8])) {
 					if (newStation) 

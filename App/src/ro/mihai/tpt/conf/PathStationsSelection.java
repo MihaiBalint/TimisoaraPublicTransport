@@ -62,7 +62,7 @@ public class PathStationsSelection {
 	}
 
 	public String getLabel() {
-		return path.getLine().getName()+" ("+path.getNiceName()+")";
+		return path.getLabel();
 	}
 
 	public void clearSelection() {

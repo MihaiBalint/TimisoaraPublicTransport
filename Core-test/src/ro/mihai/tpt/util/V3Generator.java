@@ -54,7 +54,7 @@ public class V3Generator extends TestCase {
 				String jName = nonEmpty(row[6]) ? row[6].trim() : st.getShortName();
 				Junction j = jMap.get(jName);
 				if(null==j) {
-					j = new Junction(jName);
+					j = new Junction(jName, c);
 					jMap.put(jName, j);
 				}
 				st.setJunction(j);

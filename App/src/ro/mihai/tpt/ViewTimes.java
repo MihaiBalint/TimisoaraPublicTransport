@@ -18,7 +18,6 @@
 package ro.mihai.tpt;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -38,7 +37,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -166,7 +164,6 @@ public class ViewTimes extends CityActivity {
 		private AtomicBoolean hasErrors = new AtomicBoolean(false);
 		
 		public void run() {
-			// XXX
 			int ec = 0, index = 0;
 			for(StationPathsSelection sel: path.getStations()) {
 				if(!running.get()) return;
@@ -215,14 +212,6 @@ public class ViewTimes extends CityActivity {
 			return ec;
 		}
 		
-		@Deprecated
-		private int update(int ec, UpdateView viewUpdater, Path path, Station s) {
-			path.getEstimate(s).startUpdate();
-			runOnUiThread(viewUpdater);
-			ec = path.updateStation(ec, s);
-			return ec;
-		}
-		
 		public void onClick(View v) {
 			if (running.compareAndSet(false, true)) 
 				new Thread(this).start();
@@ -268,7 +257,7 @@ public class ViewTimes extends CityActivity {
 	    	Iterator<Path> it = connections.iterator();
 			for(int i=0;i<items.length;i++) {
 				Path p = it.next();
-				items[i] = p.getLine().getName() + " > " + p.getNiceName();
+				items[i] = p.getLabel();
 			}
 
 			new AlertDialog.Builder(ViewTimes.this)

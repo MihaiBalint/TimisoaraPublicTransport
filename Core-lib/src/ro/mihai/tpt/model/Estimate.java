@@ -73,37 +73,9 @@ public class Estimate implements Serializable {
 	private TimeEstimate estimateTime() {
 		if (this.type.isGPS() || this.type.isNotNone())
 			return getEstimate1();
-		if (this.type.isNone())
-			return new TimeEstimate(getTimes1(), null);
 		
-		// TODO Deprecated
-		List<Station> stations = path.getStationsByPath();
-
-		for(int i=stationIndex-1;i>=0;i--) {
-			Estimate prevGPS = path.getEstimate(stations.get(i));
-			if(prevGPS.type.isGPS()) {
-				long d1 = path.milisecondsBetween(prevGPS.station, this.station);
-				// P(t-k) = e
-				// T(t) = e + d + thistime-prevtime
-				long delta = this.updateTimeMilis - prevGPS.updateTimeMilis;
-				Calendar est = prevGPS.estimateTime().asTime;
-				est.add(Calendar.MILLISECOND, (int)(d1+delta));
-				
-				Calendar upd = Calendar.getInstance(), u1 = Calendar.getInstance();
-				u1.setTimeInMillis(this.updateTimeMilis);
-				upd.set(Calendar.SECOND, 0);
-				upd.set(Calendar.MINUTE, u1.get(Calendar.MINUTE));
-				upd.set(Calendar.HOUR_OF_DAY, u1.get(Calendar.HOUR_OF_DAY));
-				
-				delta = est.getTimeInMillis() - upd.getTimeInMillis();
-				int minutes = (int)(delta / 60000);
-				
-				String estAsString = minutes==0 ? ">>" : formatMinutes(minutes);
-				return new TimeEstimate(estAsString, est);
-			}
-		}
-		
-		return getEstimate1();
+		assert(this.type.isNone());
+		return new TimeEstimate(getTimes1(), null);
 	}
 	
 	public EstimateType getEstimateType() {

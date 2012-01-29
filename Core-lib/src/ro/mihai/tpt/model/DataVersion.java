@@ -6,7 +6,8 @@ public enum DataVersion implements Serializable {
 	Version1, 
 	Version2,
 	Version3,
-	Version4;
+	Version4,
+	Version5;
 	
 	public boolean lessThan(DataVersion other) {
 		return this.ordinal() < other.ordinal();

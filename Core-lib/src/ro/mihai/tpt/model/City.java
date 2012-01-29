@@ -38,14 +38,13 @@ public class City implements Serializable {
 	private DataVersion version;
 	private Map<String, Station> stations;
 	private Map<String,Line> lineMap;
-	private Map<String, Junction> junctionMap;
+	private Map<Integer, Junction> junctionMap;
 	
 	private DetachableStream in;
-	private long lineResStart, stationResStart;
 	
 	public City() {
 		this.lineMap = new HashMap<String, Line>();
-		this.junctionMap = new HashMap<String, Junction>();
+		this.junctionMap = new HashMap<Integer, Junction>();
 	}
 	
 	public Collection<Line> getLines() {
@@ -66,9 +65,9 @@ public class City implements Serializable {
 	}
 
 	public void setJunctions(List<Junction> junctions) {
-		this.junctionMap = new HashMap<String, Junction>();
+		this.junctionMap = new HashMap<Integer, Junction>();
 		for(Junction j:junctions)
-			this.junctionMap.put(j.getName(), j);
+			this.junctionMap.put(j.getId(), j);
 	}
 
 	
@@ -84,13 +83,8 @@ public class City implements Serializable {
 		return l;
 	}
 	
-	protected Junction getOrCreateJunction(String name) {
-		Junction j = junctionMap.get(name);
-		if(null==j) {
-			j = new Junction(name);
-			junctionMap.put(name, j);
-		}
-		return j;
+	protected Junction getJunctionById(int id) {
+		return junctionMap.get(id);
 	}
 	
 	public Collection<Station> getStations() {
@@ -150,56 +144,52 @@ public class City implements Serializable {
 	
 	
 	public void saveToFile(OutputStream out) throws IOException {
-		byte[] b;
-		
 		DataOutputStream os = new DataOutputStream(out);
 		os.write("CityLineCache = 4.0.0;".getBytes());
 
-		ByteArrayOutputStream lineResBuf = new ByteArrayOutputStream();
-		DataOutputStream lnRes = new DataOutputStream(lineResBuf);
-		
-		os.writeInt(lineMap.size());
-		for(Line l:lineMap.values()) {
-			// line resources
-			int resId = lineResBuf.size();
-			l.writeResources(lnRes);
-			lnRes.flush();
-			
-			b = l.getId().getBytes();
-			os.writeInt(b.length); os.write(b);
-			
-			b = l.getName().getBytes();
-			os.writeInt(b.length); os.write(b);
+		// collections of entities are stored in blocks
+		// each collection is split in two parts 
+		// (a) a mandatory information part - loaded at startup 
+		// (b) a deferred loading part - loaded as needed
 
-			os.writeInt(resId);
-		}
-		
-		ByteArrayOutputStream stationResBuf = new ByteArrayOutputStream();
-		DataOutputStream stRes = new DataOutputStream(stationResBuf);
-		
-		os.writeInt(stations.size());
-		for(Station s: stations.values()) {
-			// station resources
-			int resId = stationResBuf.size();
-			s.writeResources(stRes);
-			stRes.flush();
-			
-			b = s.getId().getBytes();
-			os.writeInt(b.length); os.write(b);
+		ByteArrayOutputStream eagerBuf, lazyBuf = new ByteArrayOutputStream();
+		DataOutputStream lazyRes = new DataOutputStream(lazyBuf);
 
-			os.writeInt(resId); 
-		}
+		eagerBuf = new ByteArrayOutputStream();
+		persistCollection(lineMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
+		os.writeInt(1);
+		os.writeInt(eagerBuf.size());
+		os.write(eagerBuf.toByteArray());
 		
-		// the data indexe
-		os.writeInt(lineResBuf.size());
-		os.writeInt(stationResBuf.size());
-		
-		// the data
-		os.write(lineResBuf.toByteArray());
-		os.write(stationResBuf.toByteArray());
+		eagerBuf = new ByteArrayOutputStream();
+		persistCollection(stations.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
+		os.writeInt(1);
+		os.writeInt(eagerBuf.size());
+		os.write(eagerBuf.toByteArray());
+
+		eagerBuf = new ByteArrayOutputStream();
+		persistCollection(junctionMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
+		os.writeInt(1);
+		os.writeInt(eagerBuf.size());
+		os.write(eagerBuf.toByteArray());
+
+		os.writeInt(2);
+		os.writeInt(lazyBuf.size());
+		os.write(lazyBuf.toByteArray());
 		
 		os.flush();
 		os.close();
+	}
+	
+	private <T extends PersistentEntity> void persistCollection(Collection<T> items, DataOutputStream eager, DataOutputStream lazy, ByteArrayOutputStream lazyBuf) throws IOException {
+		eager.writeInt(items.size());
+		for(T s: items) {
+			// station resources
+			s.persist(eager, lazy, lazyBuf.size());
+			lazy.flush();
+		}
+		eager.flush();
+		
 	}
 	
 	public DetachableStream getDetachableInputStream() {
@@ -228,55 +218,56 @@ public class City implements Serializable {
 			version = DataVersion.Version3;
 		} else {
 			assert(sigStr.contains("4.0.0"));
-			version = DataVersion.Version4;
+			version = DataVersion.Version5;
 		}
 		this.in = in;
+		int blType, blLength;
 		
+		blType = in.readInt();
+		blLength = in.readInt();
 		int lineCount = in.readInt();
 		for(int i=0;i<lineCount;i++) {
-			String id = in.readString();
-
-			String name = in.readString();
-			
-			Line l = new Line(id, name, in.readInt(), this);
-			lineMap.put(id, l);
+			Line l = Line.loadEager(in, this);
+			lineMap.put(l.getId(), l);
 		}
 
+		blType = in.readInt();
+		blLength = in.readInt();
 		int stationCount = in.readInt();
 		stations = new HashMap<String, Station>();
 		mon.setMax(stationCount);
 		for(int i=0;i<stationCount;i++) {
-			String id = in.readString();
-			
-			Station s = new Station(id, in.readInt(), this);
+			Station s = Station.loadEager(in, this);
 			stations.put(s.getId(), s);
 			mon.workComplete();
 		}
-		
-		int lnResSize = in.readInt();
-		int stResSize = in.readInt();
-		
-		lineResStart = 0;
-		stationResStart = lnResSize;
-		
-		in.mark(lnResSize+stResSize);
-	}
-		
-	public synchronized void loadStationResources(Station s) {
-		try {
-			in.reset();
-			in.sureSkip(stationResStart+s.getResId());
-			s.readResources(in, version);
-		} catch(IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
-	public synchronized void loadLineResources(Line l) {
+		blType = in.readInt();
+		blLength = in.readInt();
+		int junctionCount = in.readInt();
+		for(int i=0;i<junctionCount;i++) {
+			Junction s = Junction.loadEager(in, this);
+			junctionMap.put(s.getId(), s);
+		}
+
+		while (blType!=2) {
+			blType = in.readInt();
+			blLength = in.readInt();
+			if (blType==2) break;
+			in.sureSkip(blLength);
+		}
+
+		if (blType!=2) 
+			throw new IOException("Failed to read deferred resource data before stream ended.");
+		
+		in.mark(blLength);
+	}
+		
+	public synchronized void loadLazyResources(PersistentEntity s, long resId) {
 		try {
 			in.reset();
-			in.sureSkip(lineResStart+l.getResId());
-			l.readResources(in, version);
+			in.sureSkip(resId);
+			s.loadLazyResources(in, version);
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}

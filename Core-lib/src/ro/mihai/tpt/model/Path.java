@@ -83,6 +83,9 @@ public class Path implements Serializable {
 		est.put(s, new Estimate(this, s, stationsByPath.size()-1));
 	}
 	
+	public String getLabel() {
+		return line.getName()+" >> "+getNiceName();
+	}	
 
 	public List<Station> getStationsByPath() {
 		return stationsByPath;
@@ -199,16 +202,6 @@ public class Path implements Serializable {
 					concatenate(s);
 			}
 		}
-	}
-	
-	long milisecondsBetween(Station s1, Station s2) {
-		// TODO currently this relies on times2 estimate - it should be changed
-		// to some real data
-		Estimate e1 = est.get(s1);
-		Estimate e2 = est.get(s2);
-		long t1 = e1.getEstimate2().getTimeInMillis();
-		long t2 = e2.getEstimate2().getTimeInMillis();
-		return Math.abs(t1 - t2) + Math.abs(e1.updateDelta(e2));
 	}
 	
 	private void orderCheck() throws IOException, NoSuchElementException {

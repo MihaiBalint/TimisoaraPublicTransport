@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TPT-Core-lib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/Users/mihai/Workspace/Library/opencsv-1.8.jar"/>
+	<classpathentry kind="lib" path="/home/mihai/workspace/Library/opencsv-1.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
