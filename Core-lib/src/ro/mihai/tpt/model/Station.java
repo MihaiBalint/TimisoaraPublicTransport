@@ -55,6 +55,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	}
 	
 	public List<Line> getLines() {
+		ensureLoaded();
 		return lines;
 	}	
 	
@@ -127,14 +128,13 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		this.niceName = lazy.readString();
 		this.shortName = lazy.readString();
 		this.junction = city.getJunctionById(lazy.readInt());
-		this.junction.addStation(this);
 		this.lat = lazy.readString();
 
 		this.lng = lazy.readString();
 		
 		if (version.lessThan(DataVersion.Version4)) return;
-		
 		int lineCount = lazy.readInt();
+		System.out.println("Reading station: "+name+", "+lineCount+" lines");
 		for(int i=0;i<lineCount;i++) {
 			String lineId = lazy.readString();
 			lines.add(city.getLineById(lineId));

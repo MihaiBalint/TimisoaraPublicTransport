@@ -58,6 +58,7 @@ public class V3Generator extends TestCase {
 					jMap.put(jName, j);
 				}
 				st.setJunction(j);
+				j.addStation(st);
 				
 				if(nonEmpty(row[7]) && nonEmpty(row[8])) 
 					st.setCoords(row[7].trim(), row[8].trim());

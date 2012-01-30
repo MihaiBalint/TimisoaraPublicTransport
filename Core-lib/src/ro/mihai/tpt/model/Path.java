@@ -291,5 +291,15 @@ public class Path implements Serializable {
 
 			return t1.compareTo(t2);
 		}
-	}	
+	}
+	
+	public static class LabelComparator implements Comparator<Path> {
+
+		@Override
+		public int compare(Path p1, Path p2) {
+			return p1.getLabel().compareTo(p2.getLabel());
+		}
+		
+	}
+	
 }

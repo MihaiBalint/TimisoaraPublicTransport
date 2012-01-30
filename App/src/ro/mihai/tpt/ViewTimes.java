@@ -19,9 +19,9 @@ package ro.mihai.tpt;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.R;
@@ -243,7 +243,7 @@ public class ViewTimes extends CityActivity {
     	
 		public void onClick(View v) {
 			pathList = new ArrayList<Path>();
-		   	Set<Path> connections = new LinkedHashSet<Path>();
+		   	Set<Path> connections = new TreeSet<Path>(new Path.LabelComparator());
 	    	for(StationPathsSelection sel : path.getStations()) {
 	    		for(Station s:sel.getStation().getJunction().getStations())
 	    			for(Line l:s.getLines())
