@@ -113,13 +113,13 @@
 	</LinearLayout>
 	
 	<TextView
-		android:text="(c) 2011 Mihai Balint, Kriszti Cseh,"
+		android:text="(c) 2011-2012 Various authors"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:gravity="center"/>
 	<TextView
-		android:text="Portan Cosmin, Florin B."
+		android:text="Press menu to see credits."
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"

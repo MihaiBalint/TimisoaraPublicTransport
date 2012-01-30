@@ -22,7 +22,11 @@ import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.StartActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 
 public class ViewCategories extends CityActivity {
@@ -46,4 +50,25 @@ public class ViewCategories extends CityActivity {
     	findViewById(R.id.bTv2).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv2")));
     	findViewById(R.id.bTv4).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv4")));
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.about_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.app_credits:
+        	startActivity(new Intent(this, ViewCredits.class));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
+
 }
