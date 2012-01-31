@@ -115,6 +115,8 @@ public class RATT {
 		}
 		
 		protected Line create(String val, String opt) {
+			if (opt.startsWith(" [0]  ") || opt.startsWith(" [1]  "))
+				opt = opt.substring(6);
 			Line l = c.getOrCreateLine(val, opt, true);
 			Path p = l.getFirstPath(); 
 			p.concatenate(st);

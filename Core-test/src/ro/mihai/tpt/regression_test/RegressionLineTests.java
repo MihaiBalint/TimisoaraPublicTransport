@@ -1,13 +1,13 @@
 package ro.mihai.tpt.regression_test;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import static ro.mihai.tpt.regression_test.BlackListed.*;
 
 /**
  * This file's sole purpose is to identify changes 
@@ -27,7 +27,7 @@ public class RegressionLineTests extends TestCase {
 		this.lineName = lineName;
 	}
 	
-	public void testLine_StationCount() {
+	public void disabled_testLine_StationCount() {
 		Line expected = cExpected.getLine(lineName); 
 		Line actual = cActual.getLine(lineName);
 		
@@ -42,7 +42,8 @@ public class RegressionLineTests extends TestCase {
 		Line actual = cActual.getLine(lineName);
 		
 		assertEquals("",
-			RegressionTests.diffEntities(expected.getStations(), actual.getStations()),"");
+			RegressionTests.diffEntities(expected.getStations(), actual.getStations(),
+					blExpectedLineStations(lineName), blActualLineStations(lineName)),"");
 	}
 	
 	@Override
@@ -54,9 +55,11 @@ public class RegressionLineTests extends TestCase {
 	public static void addTests(TestSuite suite, City cActual, City cExpected) {
 		LinkedHashSet<String> lineNames = new LinkedHashSet<String>();
 		for(Line l : cExpected.getLines()) 
-			lineNames.add(l.getName());
+			if (!isIdListed(l, blExpectedLines))
+				lineNames.add(l.getName());
 		for(Line l : cActual.getLines()) 
-			lineNames.add(l.getName());
+			if (!isIdListed(l, blActualLines))
+				lineNames.add(l.getName());
 		
 		for(String lineName : lineNames) {
 			for(String t : RegressionTests.testMethods(RegressionLineTests.class))

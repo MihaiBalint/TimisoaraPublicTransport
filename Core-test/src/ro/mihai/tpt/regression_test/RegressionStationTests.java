@@ -4,6 +4,8 @@ import ro.mihai.tpt.model.City;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import static ro.mihai.tpt.regression_test.BlackListed.*;
+
 /**
  * This file's sole purpose is to identify changes 
  * within the RATT web site: line/station renaming or 
@@ -28,7 +30,7 @@ public class RegressionStationTests extends TestCase {
 	}
 	public void testLines() {
 		assertEquals("",
-			RegressionTests.diffEntities(cExpected.getLines(), cActual.getLines()),"");
+			RegressionTests.diffEntities(cExpected.getLines(), cActual.getLines(), blExpectedLines, blActualLines),"");
 	}
 
 	

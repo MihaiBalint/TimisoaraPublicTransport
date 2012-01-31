@@ -84,7 +84,7 @@ public class Path implements Serializable {
 	}
 	
 	public String getLabel() {
-		return line.getName()+" >> "+getNiceName();
+		return line.getName()+">"+getNiceName();
 	}	
 
 	public List<Station> getStationsByPath() {

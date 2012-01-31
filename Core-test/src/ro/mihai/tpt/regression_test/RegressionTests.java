@@ -44,10 +44,20 @@ public class RegressionTests {
 	} 
 
 	public static <T extends INamedEntity> String diffEntities(Collection<T> expected, Collection<T> actual) {
+		return diffEntities(expected, actual, new ArrayList<T>(), new ArrayList<T>());
+	}
+
+	public static <T extends INamedEntity> String diffEntities(Collection<T> expected, Collection<T> actual, 
+			Collection<? extends INamedEntity> bl_expected, Collection<? extends INamedEntity> bl_actual) {
+		
 		TreeMap<String,T> expectedMap = new TreeMap<String, T>(), actualMap = new TreeMap<String, T>();
 		
-		for(T s : expected) expectedMap.put(s.getId(),s);
-		for(T s : actual) actualMap.put(s.getId(),s);
+		for(T s : expected) 
+			if (!BlackListed.isIdListed(s, bl_expected)) 
+				expectedMap.put(s.getId(),s);
+		for(T s : actual) 
+			if (!BlackListed.isIdListed(s, bl_actual)) 
+				actualMap.put(s.getId(),s);
 		
 		// are expected but not actual
 		Collection<T> onlyExpected = new ArrayList<T>();
