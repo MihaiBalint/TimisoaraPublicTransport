@@ -1,7 +1,8 @@
 
 *** Bugs
-- selected connections disappear when rotating device
-- E1 stations need checking
+- selected connections disappear when rotating device - fixed
+- E1 stations need checking - posted on forums
+- empty junction name issues might cause wierd behaviour
 
 *** Features
 - inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)

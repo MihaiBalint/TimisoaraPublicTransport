@@ -63,8 +63,7 @@ public class ViewTimes extends CityActivity {
     	city = getCity();
     	city.getClass();
     	
-    	path = new PathStationsSelection(AndroidSharedObjects.instance().getLinePath());
-    	path.selectAllStations();
+    	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
 		
     	Button update = (Button)findViewById(R.id.UpdateButton);

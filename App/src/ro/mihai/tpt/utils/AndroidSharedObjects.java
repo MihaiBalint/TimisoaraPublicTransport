@@ -17,11 +17,13 @@
 */
 package ro.mihai.tpt.utils;
 
+import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.*;
 
 public class AndroidSharedObjects {
 	private City city;
 	private Path linePath;
+	private PathStationsSelection pathSelection;
 
 	public City getCity() {
 		return city;
@@ -30,11 +32,16 @@ public class AndroidSharedObjects {
 		this.city = city;
 	}
 	
+	public PathStationsSelection getPathSelection() {
+		return pathSelection;
+	}
 	public Path getLinePath() {
 		return linePath;
 	}
 	public void setLinePath(Path linePath) {
 		this.linePath = linePath;
+		this.pathSelection = new PathStationsSelection(linePath);
+		this.pathSelection.selectAllStations();
 	}
 	
 	
