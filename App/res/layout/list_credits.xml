@@ -43,6 +43,12 @@
 
 	
 	<TextView
+		android:text="App Version 2.0-RC1"
+		android:background="#A0402020"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:gravity="center"/>
+	<TextView
 		android:text="(c) 2011-2012 Mihai Balint, Kriszti Cseh,"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
