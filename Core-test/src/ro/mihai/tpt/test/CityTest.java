@@ -68,4 +68,21 @@ public class CityTest {
 		assertEquals(4, a2.getLines().size());
 	}
 	
+	@Test
+	public void test_empty_junction() {
+		for (Junction j:c.getJunctions())
+			assertNotNull("Junction name should not be null", j.getName());
+		
+		for (Junction j:c.getJunctions())
+			assertTrue("Junction name should not be empty", j.getName().length()>0);
+
+		for (Junction j:c.getJunctions())
+			assertTrue("Junction should contain at least one station", j.getStations().size() > 0);
+	}
+
+	@Test
+	public void test_all_stations_have_junction() {
+		for (Station s:c.getStations())
+			assertNotNull("Junction name should not be null", s.getJunction());
+	}
 }

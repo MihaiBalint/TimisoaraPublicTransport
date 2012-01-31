@@ -18,6 +18,7 @@
 package ro.mihai.tpt;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -244,11 +245,27 @@ public class ViewTimes extends CityActivity {
 			pathList = new ArrayList<Path>();
 		   	Set<Path> connections = new TreeSet<Path>(new Path.LabelComparator());
 	    	for(StationPathsSelection sel : path.getStations()) {
+	    		// (1) the paths passing through this exact same station
+	    		Set<Line> stationLines = new HashSet<Line>(sel.getStation().getLines());
+    			for(Line l:stationLines)
+    				for(Path p:l.getPaths())
+    					if (p!=path.getPath() && p.getStationsByPath().contains(sel.getStation()))
+    						connections.add(p);
+    			// (2) not the empty junction (contains unrelated stations)
+    			// Note that right now we actually do not have a junction with an empty name
+    			// So the correct way of doing this would be to actually check that the distance 
+    			// between sel.getStation() and any of sel.getStation().getJunction().getStations()
+    			// is smaller than some given constant
+    			if (sel.getStation().getJunctionName().trim().length() == 0)
+	    			continue;
+    			// (3) the paths passing through the stations of the junction
 	    		for(Station s:sel.getStation().getJunction().getStations())
-	    			for(Line l:s.getLines())
-	    				for(Path p:l.getPaths())
-	    					if (p!=path.getPath() && p.getStationsByPath().contains(s))
-	    						connections.add(p);
+	    			if (s!=sel.getStation()) 
+	    				for(Line l:s.getLines())
+	    					if (!stationLines.contains(l))
+	    						for(Path p:l.getPaths())
+	    							if (p!=path.getPath() && p.getStationsByPath().contains(s))
+	    								connections.add(p);
 	    	}
 	    	pathList.addAll(connections);
 			final CharSequence[] items = new CharSequence[connections.size()];
