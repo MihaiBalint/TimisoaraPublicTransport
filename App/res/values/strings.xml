@@ -32,4 +32,11 @@
 	<string name="selPathLabel">Select Direction</string>
 	<string name="selConnections">Select Connections</string>
 	<string name="appCredits">Author Credits</string>
+
+	<string name="lblTrams">Trams</string>
+	<string name="lblTrolleys">Trolleys</string>
+	<string name="lblBus">City Buses</string>
+	<string name="lblExpress">Express Buses</string>
+	<string name="lblMetro">Metro Buses</string>
+	<string name="lblOther">Other connections</string>
 </resources>

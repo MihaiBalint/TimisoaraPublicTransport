@@ -1,15 +1,17 @@
 
 *** Bugs
-- E1 stations need checking - posted on forums
-- empty junction name issues might cause wierd behavior - like showing too many connections
-	- partially done, what we actually need is a distance filter to drop too-far-away stations
 
 *** Features
-- connection selection list is too long, needs intermediate steps (favorites, trams, busses, trolleys)
 - inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)
 - tot din meniu adaugarea unui help care sa explice fiecare tip de timp afisat (cca / min/ ora). Eu am citit forumul si stiu dar nu tot fac/ ar trebui sa faca asta.
 - adaugarea aplicatiei in market (am colegi/prieteni care sunt interesati si e mult mai simplu sa-i faci "reclama" si sa o dai jos de pe market)
 - ar mai fi si altele legate de utilizarea GPS/ maps dar deja e full-time job, si nu e cazul sa ne intindem.
+
+
+*** In progress
+- E1 stations need checking - posted on forums - updated, checked, needs fix server-side
+- empty junction name issues might cause wierd behavior - like showing too many connections
+	- partially done, what we actually need is a distance filter to drop too-far-away stations
 
 
 *** Complete
@@ -17,3 +19,4 @@
 dau seama de numarul versiunii si e mai greu de raportat bug-uri
 - selected connections disappear when rotating device - fixed
 - on the times screen, the update times and show connections buttons don't play nice - fixed
+- connection selection list is too long, needs intermediate steps (favorites, trams, busses, trolleys) - fixed

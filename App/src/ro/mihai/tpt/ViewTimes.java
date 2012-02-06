@@ -32,6 +32,8 @@ import ro.mihai.tpt.conf.StationPathsSelection.Node;
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
+import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.util.LineKind;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -72,7 +74,7 @@ public class ViewTimes extends CityActivity {
     	update.setText(path.getLabel());
 
     	Button connections = (Button)findViewById(R.id.ConnectionsButton);
-    	connections.setOnClickListener(new SelectConnections());
+    	connections.setOnClickListener(new SelectConnectionKinds());
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -238,11 +240,11 @@ public class ViewTimes extends CityActivity {
 		}
 	}
     
-    private class SelectConnections implements OnClickListener, DialogInterface.OnClickListener {
-    	private List<Path> pathList;
+    private class SelectConnectionKinds implements OnClickListener, DialogInterface.OnClickListener {
+    	private List<List<Path>> pathList;
     	
 		public void onClick(View v) {
-			pathList = new ArrayList<Path>();
+			pathList = new ArrayList<List<Path>>();
 		   	Set<Path> connections = new TreeSet<Path>(new Path.LabelComparator());
 	    	for(StationPathsSelection sel : path.getStations()) {
 	    		// (1) the paths passing through this exact same station
@@ -267,14 +269,27 @@ public class ViewTimes extends CityActivity {
 	    							if (p!=path.getPath() && p.getStationsByPath().contains(s))
 	    								connections.add(p);
 	    	}
-	    	pathList.addAll(connections);
-			final CharSequence[] items = new CharSequence[connections.size()];
+	    	
+	    	List<String> labels = new ArrayList<String>();
+	    	for(LineKind k : LineKind.values()) {
+	    		List<Path> paths = new ArrayList<Path>();
+	    		for(Path p:connections)
+	    			if (k==p.getLine().getKind())
+	    				paths.add(p);
+	    		if(paths.size()>0) {
+	    			// add all paths for this connection type
+	    			pathList.add(paths);
+	    			labels.add(  paths.size()>1 
+	    				? getString(LineKindUtils.getLabelId(k)) // more than one? give generic label
+	    				: paths.get(0).getLabel()); // single one? use it's own label
+	    		}
+	    	}
+	    	
+			final CharSequence[] items = new CharSequence[labels.size()];
 	    					
-	    	Iterator<Path> it = connections.iterator();
-			for(int i=0;i<items.length;i++) {
-				Path p = it.next();
-				items[i] = p.getLabel();
-			}
+	    	Iterator<String> it = labels.iterator();
+			for(int i=0;i<items.length;i++) 
+				items[i] = it.next();
 
 			new AlertDialog.Builder(ViewTimes.this)
 				.setTitle(getString(R.string.selConnections))
@@ -283,6 +298,39 @@ public class ViewTimes extends CityActivity {
 				.show();
 		}
 
+		public void onClick(DialogInterface dialog, int which) {
+			List<Path> connections = pathList.get(which);
+			if (connections.size() > 1) {
+				// more than one to select
+				final CharSequence[] items = new CharSequence[connections.size()];
+				
+		    	Iterator<Path> it = connections.iterator();
+				for(int i=0;i<items.length;i++) {
+					Path p = it.next();
+					items[i] = p.getLabel();
+				}
+
+				new AlertDialog.Builder(ViewTimes.this)
+					.setTitle(getString(R.string.selConnections))
+					.setItems(items, new SelectConnections(connections))
+					.create()
+					.show();
+				
+			} else {
+				// a single connection of this type, no use popping a new dialog
+		    	path.addConnections(connections.get(0));
+		    	runOnUiThread(new UpdateView());
+			}
+		}
+    }
+    
+    private class SelectConnections implements DialogInterface.OnClickListener {
+    	private List<Path> pathList;
+    	
+    	public SelectConnections(List<Path> pathList) {
+    		this.pathList = pathList;
+		}
+    	
 		public void onClick(DialogInterface dialog, int which) {
 	    	path.addConnections(pathList.get(which));
 	    	runOnUiThread(new UpdateView());
