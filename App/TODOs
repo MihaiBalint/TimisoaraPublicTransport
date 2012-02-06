@@ -3,6 +3,7 @@
 - E1 stations need checking - posted on forums
 - empty junction name issues might cause wierd behavior - like showing too many connections
 	- partially done, what we actually need is a distance filter to drop too-far-away stations
+- on the times screen, the update times and show connections buttons don't play nice
 
 *** Features
 - inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)

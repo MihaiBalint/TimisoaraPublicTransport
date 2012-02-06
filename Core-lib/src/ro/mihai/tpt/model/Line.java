@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ro.mihai.util.DetachableStream;
+import ro.mihai.util.LineKind;
 
 public class Line extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -45,6 +46,9 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		this(id,name,-1,null);
 	}
 	
+	public LineKind getKind() {
+		return LineKind.getKind(this);
+	}
 	
 	public Path getPath(String name) {
 		ensureLoaded();		

@@ -24,7 +24,8 @@ public class DeDuper {
 	public static void main(String[] args) throws Exception {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
 		// InputStream inp = new URL(csvURL).openStream();
-		String fileName = "linestations-20111129-3.csv";
+		// String fileName = "linestations-20111129-3.csv";
+		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20120201-1.csv";
 		InputStream inp = new FileInputStream(fileName);
 		Helper help = new Helper(fileName);
 		

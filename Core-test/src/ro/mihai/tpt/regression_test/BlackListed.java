@@ -72,10 +72,16 @@ public class BlackListed implements INamedEntity {
 		if(blActualLineStations==null) {
 			blActualLineStations = new HashMap<String, Collection<BlackListed>>();
 			blActualLineStations.put("33", Arrays.asList(new BlackListed[]{
-				bl("3200", "Ab_Catedrala 2") 
+				bl("3200", "Ab_Catedrala 2") // does not have time estimates
 			}));
 			blActualLineStations.put("E7", Arrays.asList(new BlackListed[]{
-				bl("6200", "T.Grozavescu p") 
+				bl("6200", "T.Grozavescu p") // does not have time estimates
+			}));
+			blActualLineStations.put("Tb11", Arrays.asList(new BlackListed[]{
+				bl("2808", "ILSA 1tb.") // Optional station, removed from app by Cristi
+			}));
+			blActualLineStations.put("28", Arrays.asList(new BlackListed[]{
+				bl("2664", "Titeica") // suprapunere cu alta statie - Cristi
 			}));
 		}
 		Collection<BlackListed> r = blActualLineStations.get(lineName);
