@@ -47,19 +47,28 @@
 
     	<Button
     	    android:id="@+id/UpdateButton"
-    	    android:layout_width="wrap_content"
+    	    android:layout_width="0dip"
+    	    android:layout_weight="14"
     	    android:layout_height="22pt"
+    	    android:gravity="center_vertical"
+    	    android:layout_gravity="left"
     	    android:background="#000000"
     	    android:drawableLeft="@drawable/upd_button"
-    	    android:text="33 (Catedrala)"
+    	    android:text="33>Ion ionescu de la brad"
+    	    android:ellipsize="marquee"
     	    android:textColor="#FFFFFF"
     	    android:textSize="7pt" />
-
+		<View
+    	    android:layout_width="0dip"
+    	    android:layout_weight="1"
+    	    android:layout_height="22pt"
+    	    android:background="#000000" />
     	<Button
     	    android:id="@+id/ConnectionsButton"
-    	    android:layout_width="wrap_content"
+    	    android:layout_weight="5"
+    	    android:layout_width="0dip"
     	    android:layout_height="22pt"
-    	    android:layout_marginLeft="10pt"
+    	    android:layout_marginLeft="0pt"
     	    android:background="#000000"
     	    android:drawableLeft="@drawable/con_button" />
 
