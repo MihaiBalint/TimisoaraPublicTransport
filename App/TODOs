@@ -10,8 +10,6 @@
 
 *** In progress
 - E1 stations need checking - posted on forums - updated, checked, needs fix server-side
-- empty junction name issues might cause wierd behavior - like showing too many connections
-	- partially done, what we actually need is a distance filter to drop too-far-away stations
 
 
 *** Complete
@@ -20,3 +18,8 @@ dau seama de numarul versiunii si e mai greu de raportat bug-uri
 - selected connections disappear when rotating device - fixed
 - on the times screen, the update times and show connections buttons don't play nice - fixed
 - connection selection list is too long, needs intermediate steps (favorites, trams, busses, trolleys) - fixed
+- Due to junction name clashes, some stations show as connected when in reality they are far away
+	- empty junction name issues might cause wierd behavior - like showing too many connections
+	- partially done, what we actually need is a distance filter to drop too-far-away stations
+ 	- fixed, stations farther than 200m not show as connections
+ 	

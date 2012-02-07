@@ -10,6 +10,7 @@ import org.junit.Test;
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.model.*;
 import ro.mihai.util.LineKind;
+import sun.security.util.DisabledAlgorithmConstraints;
 
 public class CityTest {
 	private City c;
@@ -152,5 +153,89 @@ public class CityTest {
 		assertTrue(c.getLine("40").getKind().isBus());
 		assertTrue(c.getLine("46").getKind().isBus());
 		assertOthersNotKind(LineKind.BUS);
+	}
+	
+	@Test
+	public void test_missing_coords() {
+		String errors = "";
+		for(Station s:c.getStations()) {
+			if(s.getLat().trim().isEmpty() || s.getLng().trim().isEmpty()) 
+				errors += s.getId()+" "+s.getNiceName()+" Lat:"+s.getLat()+" Lng:"+s.getLng()+"\n";
+		}
+		assertEquals("Following stations are missing coords:", "", errors);
+	}
+
+	@Test
+	public void test_coords_usability() {
+		String errors = "";
+		for(Station s:c.getStations()) {
+			try {
+				// don't care for missing coords
+				if(s.getLat().trim().isEmpty() || s.getLng().trim().isEmpty()) continue;
+				Double.parseDouble(s.getLat());
+				Double.parseDouble(s.getLng());
+			} catch(NumberFormatException e) {
+				errors += s.getId()+" "+s.getNiceName()+" Lat:"+s.getLat()+" Lng:"+s.getLng()+"\n";
+			}
+		}
+		assertEquals("Following stations have unparsable coords:", "", errors);
+	}
+
+	@Test
+	public void test_known_distance() {
+		Station s33 = c.getLine("33").getPath("Real").getStationsByPath().get(0);
+		for(Station s:s33.getJunction().getStations()) {
+			System.out.println(s.getId()+":"+s.getNiceName()+" - "+s.getLat()+"-"+s.getLng());
+			for(Line l:s.getLines())
+				System.out.println("\t"+l.getId()+":"+l.getName());
+				
+		}
+		printDistance(c.getStation("4640"), c.getStation("3163"));
+		printDistance(c.getStation("2799"), c.getStation("5300"));
+		printDistance(c.getStation("2799"), c.getStation("3200"));
+		printDistance(c.getStation("5300"), c.getStation("3200"));
+
+		printDistance(c.getStation("4640"), c.getStation("2799"));
+		assertEquals(3,s33.getJunction().getStations().size());
+	}
+
+	public static void printDistance(Station a, Station b) {
+		System.out.println("Distance: "+(long)a.distanceTo(b) + "m");
+		System.out.println("    "+a.getId()+":"+a.getNiceName()+" - "+a.getLat()+"-"+a.getLng());
+		for(Line l:a.getLines())
+			System.out.println("\t"+l.getId()+":"+l.getName());
+		System.out.println("    "+b.getId()+":"+b.getNiceName()+" - "+b.getLat()+"-"+b.getLng());
+		for(Line l:b.getLines())
+			System.out.println("\t"+l.getId()+":"+l.getName());
+		
+	}
+ 	
+	@Test
+	public void test_junction_station_coords() {
+		double dsum=0, dcount=0;
+		String e500="", e1000="", ep1000="";
+		for(Junction j:c.getJunctions()) 
+			for(Station a:j.getStations()) {
+				if(a.getLat().trim().isEmpty() || a.getLng().trim().isEmpty()) continue;				
+				for(Station b:j.getStations()) {
+					if(b.getLat().trim().isEmpty() || b.getLng().trim().isEmpty()) continue;
+					if(a==b) continue;
+					
+					double d = a.distanceTo(b);
+					dsum+=d;
+					dcount+=1;
+					String err = "In "+j.getName()+", "+
+							a.getId()+":"+a.getNiceName() +" and "+
+							b.getId()+":"+b.getNiceName() +" are "+(long)d+"m appart\n";
+					if(d > 1000) 
+						ep1000 += err;
+					else if(d > 500)
+						e1000 += err;
+					else if(d > 200)
+						e500 += err;
+				}
+			}
+		System.out.println("Average dist between stations is: "+(dsum/dcount));
+		assertEquals("Following junctions have stations that are too far appart:", "", ep1000+e1000+e500);
 	}
 }

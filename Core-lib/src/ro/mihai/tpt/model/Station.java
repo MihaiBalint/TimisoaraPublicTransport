@@ -134,7 +134,6 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		
 		if (version.lessThan(DataVersion.Version4)) return;
 		int lineCount = lazy.readInt();
-		System.out.println("Reading station: "+name+", "+lineCount+" lines");
 		for(int i=0;i<lineCount;i++) {
 			String lineId = lazy.readString();
 			lines.add(city.getLineById(lineId));
@@ -189,4 +188,27 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		
 		return new Station(id, eager.readInt(), city);
 	}
+	
+	public int distanceTo(Station b) {
+		Station a = this;
+		if (a.getLat().length()==0 || a.getLng().length()==0 || 
+			a.getLat().length()==0 || a.getLng().length()==0 )
+			return -1;
+		
+		try {
+			double lat1 = Double.parseDouble(a.getLat())*Math.PI/180;
+			double lat2 = Double.parseDouble(b.getLat())*Math.PI/180;
+			double lon1 = Double.parseDouble(a.getLng())*Math.PI/180;
+			double lon2 = Double.parseDouble(b.getLng())*Math.PI/180;
+			
+			double R = 6371; // km
+			double d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+			                  Math.cos(lat1)*Math.cos(lat2) *
+			                  Math.cos(lon2-lon1)) * R;	
+			return (int)(d*1000); // m
+		} catch(NumberFormatException e) {
+			return -1;
+		}
+	}
+	
 }
