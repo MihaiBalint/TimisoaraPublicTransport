@@ -88,7 +88,8 @@ public class PathStationsSelection {
 			
 			for(Station o : p.getStationsByPath())
 				if (o.getJunction() == s.getJunction())
-					sel.addConnection(o, p);
+					if(s.distanceTo(o) < Constants.MAX_CONNECTION_DIST)
+						sel.addConnection(o, p);
 		}
 	}
 	

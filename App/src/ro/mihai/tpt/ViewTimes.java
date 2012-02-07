@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.conf.Constants;
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection.Node;
@@ -274,7 +275,7 @@ public class ViewTimes extends CityActivity {
 	    									haveDistance = true;
 	    									dist = selStation.distanceTo(s);
 	    								}
-	    								if (dist<200)
+	    								if (dist < Constants.MAX_CONNECTION_DIST)
 	    									connections.add(p);
 	    							}
 	    		}
