@@ -17,6 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
+import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.model.City;
 
 import android.app.Activity;
@@ -27,8 +28,21 @@ public class CityActivity extends Activity {
 	protected final City getCity() {
 		if(null==city) {
 			city = AndroidSharedObjects.instance().getCity();
+			if (null==city) {
+				// this happens a few times, I don't know how
+				// they are able to start the activity without first 
+				// going through to LoadCity but they are.
+				reboot();
+				finish();
+			}
 			((AndroidDetachableStream)city.getDetachableInputStream()).setContext(this);
 		}
 		return city;
+	}
+	
+	protected void reboot() {
+		// I've seen this a f
+    	new StartActivity(this, LoadCity.class)
+		.start();
 	}
 }

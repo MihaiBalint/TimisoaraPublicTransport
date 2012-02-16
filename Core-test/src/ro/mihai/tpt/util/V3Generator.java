@@ -67,9 +67,15 @@ public class V3Generator extends TestCase {
 				
 				stMap.put(row[2], st);
 			}
+			if(row[1]!=null && row[1].startsWith("Tv9b")) {
+				System.out.println("Tv9b station "+st.getName());
+			}
 			Line l = c.getOrCreateLine(row[0].trim(), row[1].trim(), false);
 			Path p = l.getPath(nnp[1]);
 			if (null==p) {
+				if(row[1]!=null && row[1].startsWith("Tv9b")) {
+					System.out.println("making path: "+nnp[1]);
+				}
 				p = new Path(l, nnp[1]);
 				p.setNiceName(nnp[1]);
 				l.addPath(p);
@@ -79,6 +85,9 @@ public class V3Generator extends TestCase {
 		}
 		c.setStations(new ArrayList<Station>(stMap.values()));
 		c.setJunctions(new ArrayList<Junction>(jMap.values()));
+		
+		assertEquals(2,c.getLine("Tv9b").getPaths().size());
+		
 		
 		/* * /
 		for(Line l : c.getLines()) {
@@ -119,6 +128,9 @@ public class V3Generator extends TestCase {
 
 		assertEquals(c.getLine("32").getPaths().size(), c1.getLine("32").getPaths().size());
 		assertEquals(2,c.getLine("32").getPaths().size());
+
+		assertEquals(c.getLine("Tv9b").getPaths().size(), c1.getLine("Tv9b").getPaths().size());
+		assertEquals(2,c.getLine("Tv9b").getPaths().size());
 		
 		for(Line l : c.getLines()) {
 			if(l.getPaths().size() > 2) {

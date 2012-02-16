@@ -18,5 +18,5 @@
 package ro.mihai.tpt.conf;
 
 public class Constants {
-	public static int MAX_CONNECTION_DIST = 225; // 225 meters
+	public static int MAX_CONNECTION_DIST = 150; // 150 meters
 }

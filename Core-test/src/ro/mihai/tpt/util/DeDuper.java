@@ -25,7 +25,7 @@ public class DeDuper {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
 		// InputStream inp = new URL(csvURL).openStream();
 		// String fileName = "linestations-20111129-3.csv";
-		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20120207.csv";
+		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20120215.csv";
 		InputStream inp = new FileInputStream(fileName);
 		Helper help = new Helper(fileName);
 		
@@ -46,6 +46,7 @@ public class DeDuper {
 		dec2.add("Linie personal");
 		
 		Map<String, Station> stMap = new HashMap<String, Station>();
+		Map<String, Junction> juMap = new HashMap<String, Junction>();
 		Map<String, String> traceMap = new HashMap<String, String>();
 		List<String[]> data = new ArrayList<String[]>();
 		
@@ -92,9 +93,17 @@ public class DeDuper {
 					if (newStation) 
 						st.setShortName(selectName("Please select the shortest name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help.getShort(st.getId())));
 				}
-				if(nonEmpty(row[6])) {
-					if (newStation) 
-						st.setJunction(new Junction(selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help), null));
+				if (newStation) {
+					if(!nonEmpty(row[6])) 
+						row[6]=nonEmpty(row[5])?row[5]:"";
+					String juName = selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help); 
+					Junction j = juMap.get(juName);
+					if (null==j) {
+						j = new Junction(juName, null);
+						juMap.put(juName, j);
+					}
+					st.setJunction(j);
+					j.addStation(st);
 				}
 				if(nonEmpty(row[7]) || nonEmpty(row[8])) {
 					if (newStation) 
@@ -103,6 +112,28 @@ public class DeDuper {
 			}
 			rd.close();
 		}
+		
+		// Junction merger
+		Set<String> checked = new HashSet<String>();
+		for(Station a:stMap.values()) 
+			for(Station b:stMap.values()) {
+				if (a==b) continue;
+				String pair = a.getId()+"-"+b.getId();
+				if (checked.contains(pair)) continue;
+				
+				checked.add(pair);
+				checked.add(b.getId()+"-"+a.getId());
+				if(nonEmpty(a.getLat()) && nonEmpty(a.getLng()) && nonEmpty(b.getLat()) && nonEmpty(b.getLng())) {
+					int d = a.distanceTo(b);
+					
+					if (d>=225 && a.getJunctionName().equals(b.getJunctionName())) {
+						// TODO in same junction, but too far
+					} else if (d<125 && !a.getJunctionName().equals(b.getJunctionName())) {
+						// TODO in different junctions, but too close
+						selectJunctionMerger(a, b, d);
+					}
+				}
+			}
 		
 		PrintStream csv = new PrintStream(new FileOutputStream("linestations.csv"));
 		//csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
@@ -196,6 +227,50 @@ public class DeDuper {
 		} catch(NumberFormatException e) {
 			return out.trim();
 		}
+	}
+	
+	private static void selectJunctionMerger(Station a, Station b, int dist) {
+		String message = 
+				"The following junctions will be merged because they have stations that are near each-other.\n";
+		List<Station> stations = new ArrayList<Station>();
+		stations.add(a); stations.add(b);
+		message+="Distance "+dist+"m";
+		for(Station s : stations)
+			message += "\n    "+s.getId()+"-"+s.getName()+"-"+s.getNiceName();
+		message+="\nSelect a name for the merged junction\n";				
+
+		
+		List<Junction> opts = new ArrayList<Junction>();
+		for(Station s : stations)
+			opts.add(s.getJunction());
+		
+		for(int i=0;i<opts.size();i++) {
+			Junction junction = opts.get(i);
+			String junctionStations="";
+			if (junction.getStations().size()<10) 
+				for(Station s:junction.getStations()) {
+					junctionStations+="\n    "+s.getId()+"-"+s.getName()+"-"+s.getNiceName();
+				}
+			else
+				junctionStations+="\n    "+junction.getStations().size()+" stations.";
+			message += "\n " + i +". ---"+junction.getName()+"---"+junctionStations;
+		}
+		
+		
+		String out = javax.swing.JOptionPane.showInputDialog(message);
+		String name;
+		try {
+			name = opts.get(Integer.parseInt(out)).getName().trim();
+		} catch(NumberFormatException e) {
+			name = out.trim();
+		}
+		Junction merged = new Junction(name, null);
+		merged.getStations().addAll(stations);
+		for(Junction j:opts)
+			if (nonEmpty(j.getName()))
+				merged.getStations().addAll(j.getStations());
+		for(Station s:merged.getStations())
+			s.setJunction(merged);
 	}
 	
 	private static void selectCoords(String msg, Station st, Helper help) {

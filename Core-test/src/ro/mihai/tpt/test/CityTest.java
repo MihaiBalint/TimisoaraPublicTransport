@@ -3,6 +3,8 @@ package ro.mihai.tpt.test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,6 @@ import org.junit.Test;
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.model.*;
 import ro.mihai.util.LineKind;
-import sun.security.util.DisabledAlgorithmConstraints;
 
 public class CityTest {
 	private City c;
@@ -92,6 +93,16 @@ public class CityTest {
 		for(Line l : c.getLines()) 
 			if (!kind.contains(l.getName()))
 				assertTrue(l.getKind() != kind);
+	}
+
+	@Test
+	public void test_Tv9() {
+		Line tv9 = c.getLine("Tv9b");
+		assertTrue(tv9.getKind().isTram());
+		assertTrue(tv9.getPaths().size()>0);
+		for(Path p : tv9.getPaths())
+			assertTrue(p.getStationsByPath().size()>0);
+		assertEquals(2,tv9.getPaths().size());
 	}
 	
 	@Test
@@ -184,20 +195,47 @@ public class CityTest {
 	@Test
 	public void test_known_distance() {
 		Station s33 = c.getLine("33").getPath("Real").getStationsByPath().get(0);
-		for(Station s:s33.getJunction().getStations()) {
-			System.out.println(s.getId()+":"+s.getNiceName()+" - "+s.getLat()+"-"+s.getLng());
-			for(Line l:s.getLines())
-				System.out.println("\t"+l.getId()+":"+l.getName());
-				
-		}
-		printDistance(c.getStation("4640"), c.getStation("3163"));
-		printDistance(c.getStation("2799"), c.getStation("5300"));
-		printDistance(c.getStation("2799"), c.getStation("3200"));
-		printDistance(c.getStation("5300"), c.getStation("3200"));
+		
+		assertEquals(5,s33.getJunction().getStations().size());
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("4640")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("3163")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("2799")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("5300")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("3200")));
 
-		printDistance(c.getStation("4640"), c.getStation("2799"));
-		assertEquals(3,s33.getJunction().getStations().size());
+		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv1")));
+		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv2")));
+		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv5")));
+		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv1")));
+		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv2")));
+		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv6")));
+		assertTrue(c.getStation("4640").distanceTo(c.getStation("3163")) < 40); // 33
+		
+		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
+		assertTrue(c.getStation("5300").getLines().contains(c.getLine("E3")));		
+		assertTrue(c.getStation("2799").distanceTo(c.getStation("5300")) < 230); // 221
+		
+		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
+		assertTrue(c.getStation("3200").getLines().contains(c.getLine("E3")));
+		assertTrue(c.getStation("2799").distanceTo(c.getStation("3200")) < 10); // 4
+		
+		assertTrue(c.getStation("5300").getLines().contains(c.getLine("E3")));
+		assertTrue(c.getStation("3200").getLines().contains(c.getLine("E3")));
+		assertTrue(c.getStation("5300").distanceTo(c.getStation("3200")) < 230); // 224
+
+		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv1")));
+		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
+		assertTrue(c.getStation("4640").distanceTo(c.getStation("2799")) < 120); // 112
 	}
+	
+	@Test
+	public void test_known_distance_Arta_textila() {
+		Station s33 = c.getLine("33").getPath("Real").getStationsByPath().get(4);
+		for(Station s : s33.getJunction().getStations()) {
+			System.out.println(""+s.getId()+":"+s.getNiceName());
+		}
+	}
+	
 
 	public static void printDistance(Station a, Station b) {
 		System.out.println("Distance: "+(long)a.distanceTo(b) + "m");
@@ -206,12 +244,12 @@ public class CityTest {
 			System.out.println("\t"+l.getId()+":"+l.getName());
 		System.out.println("    "+b.getId()+":"+b.getNiceName()+" - "+b.getLat()+"-"+b.getLng());
 		for(Line l:b.getLines())
-			System.out.println("\t"+l.getId()+":"+l.getName());
-		
+			System.out.println("\t"+l.getId()+":"+l.getName());	
 	}
  	
 	@Test
-	public void test_junction_station_coords() {
+	public void test_junction_stations_too_far() {
+		Set<String> checked = new HashSet<String>();
 		double dsum=0, dcount=0;
 		String e500="", e1000="", ep1000="";
 		for(Junction j:c.getJunctions()) 
@@ -220,7 +258,11 @@ public class CityTest {
 				for(Station b:j.getStations()) {
 					if(b.getLat().trim().isEmpty() || b.getLng().trim().isEmpty()) continue;
 					if(a==b) continue;
+					String pair = a.getId()+"-"+b.getId();
+					if (checked.contains(pair)) continue;
 					
+					checked.add(pair);
+					checked.add(b.getId()+"-"+a.getId());
 					double d = a.distanceTo(b);
 					dsum+=d;
 					dcount+=1;
@@ -237,5 +279,33 @@ public class CityTest {
 			}
 		System.out.println("Average dist between stations is: "+(dsum/dcount));
 		assertEquals("Following junctions have stations that are too far appart:", "", ep1000+e1000+e500);
+	}
+
+	@Test
+	public void test_junction_stations_too_near() {
+		Set<String> checked = new HashSet<String>();
+		String e225="";		
+		String e300="";		
+		for(Station a:c.getStations()) 
+			for(Station b:c.getStations()) {
+				if (a==b) continue;
+				if (a.getJunction().getStations().contains(b)) continue;
+				String pair = a.getId()+"-"+b.getId();
+				if (checked.contains(pair)) continue;
+				
+				checked.add(pair);
+				checked.add(b.getId()+"-"+a.getId());
+				int d = a.distanceTo(b);
+				String err = "Statins should be in junction("+(long)d+"): "+
+						a.getId()+":"+a.getNiceName() +":"+ a.getJunctionName()+", "+
+						b.getId()+":"+b.getNiceName() +":"+ b.getJunctionName()+"\n";
+				if (d<0)
+					continue;
+				else if(d < 225) 
+					e225 += err;
+				else if (d<300)
+					e300 += err;
+			}
+		assertEquals("Following stations should be connected by a junction:", "", e225+e300);
 	}
 }
