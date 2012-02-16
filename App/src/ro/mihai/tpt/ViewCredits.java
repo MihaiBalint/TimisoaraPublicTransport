@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.StartActivity;

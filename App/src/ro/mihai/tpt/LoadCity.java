@@ -20,7 +20,7 @@ package ro.mihai.tpt;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidCityLoader;

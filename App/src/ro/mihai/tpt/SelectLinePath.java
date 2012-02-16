@@ -23,6 +23,7 @@ import java.util.List;
 
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.tpt_light.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

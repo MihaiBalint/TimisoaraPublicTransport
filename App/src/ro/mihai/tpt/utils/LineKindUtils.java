@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 import ro.mihai.util.LineKind;
 
 public class LineKindUtils {

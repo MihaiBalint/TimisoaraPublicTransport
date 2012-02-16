@@ -24,7 +24,7 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.content.res.Resources;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.model.City;
