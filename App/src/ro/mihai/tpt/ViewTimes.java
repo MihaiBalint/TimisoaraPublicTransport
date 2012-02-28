@@ -34,6 +34,7 @@ import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 
 import android.app.AlertDialog;
@@ -366,21 +367,31 @@ public class ViewTimes extends CityActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	return super.onCreateOptionsMenu(menu);
-        // MenuInflater inflater = getMenuInflater();
-        // inflater.inflate(R.menu.times_menu, menu);
-        // return true;
+    	super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.times_menu, menu);
+        return true;
     }    
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.select_connections:
-            //showSelectConnections();
+        case R.id.switch_direction:
+        	Path p = path.getPath();
+        	ArrayList<Path> paths = new ArrayList<Path>(p.getLine().getPaths());
+        	paths.remove(p);
+        	if(paths.size()==1) {
+        		Path opposite = paths.get(0); 
+            	new StartActivity(this.getParent(), ViewTimes.class)
+    	    		.addCity(city)
+    	    		.addLinePath(opposite)
+    	    		.start();
+        	} 
             return true;
         case R.id.view_map:
-            //showHelp();
+        	new StartActivity(this, MapTimes.class)
+        		.start();
             return true;
         default:
             return super.onOptionsItemSelected(item);
