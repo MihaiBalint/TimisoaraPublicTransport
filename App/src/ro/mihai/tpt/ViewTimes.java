@@ -81,6 +81,7 @@ public class ViewTimes extends CityActivity {
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
     	inflateTable();
+    	updater.onClick(null); // start update immediately after starting the activity
     }
     
     public void queueUIUpdate(Runnable r) {
