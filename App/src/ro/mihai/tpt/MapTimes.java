@@ -44,7 +44,7 @@ public class MapTimes extends com.google.android.maps.MapActivity {
 	    mapView.setBuiltInZoomControls(true);	  
 	    
 	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.button_wide_sel);
+	    Drawable drawable = this.getResources().getDrawable(R.drawable.tb15);
 	    PathOverlay itemizedoverlay = new PathOverlay(drawable, this);	
 	    
 	    GeoPoint point = new GeoPoint(19240000,-99120000);

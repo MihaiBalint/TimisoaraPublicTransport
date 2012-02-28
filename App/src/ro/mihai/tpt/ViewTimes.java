@@ -383,7 +383,7 @@ public class ViewTimes extends CityActivity {
         	paths.remove(p);
         	if(paths.size()==1) {
         		Path opposite = paths.get(0); 
-            	new StartActivity(this.getParent(), ViewTimes.class)
+            	new StartActivity(this, ViewTimes.class)
     	    		.addCity(city)
     	    		.addLinePath(opposite)
     	    		.start();

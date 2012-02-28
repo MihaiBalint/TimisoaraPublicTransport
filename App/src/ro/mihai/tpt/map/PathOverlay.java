@@ -36,7 +36,7 @@ public class PathOverlay extends ItemizedOverlay {
 	}
 	
 	public PathOverlay(Drawable defaultMarker, Context context) {
-		super(defaultMarker);
+		super(boundCenterBottom(defaultMarker));
 		mContext = context;
 	}
 	
