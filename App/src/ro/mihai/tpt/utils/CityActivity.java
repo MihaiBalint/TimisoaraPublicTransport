@@ -27,15 +27,20 @@ public class CityActivity extends Activity {
 	
 	protected final City getCity() {
 		if(null==city) {
-			city = AndroidSharedObjects.instance().getCity();
-			if (null==city) {
+			try {
+				city = AndroidSharedObjects.instance().getCity();
+				((AndroidDetachableStream)city.getDetachableInputStream()).setContext(this);
+			} catch(NullPointerException e) {
 				// this happens a few times, I don't know how
 				// they are able to start the activity without first 
 				// going through to LoadCity but they are.
 				reboot();
 				finish();
+				assert(null!=city);
+				assert(null!=city.getDetachableInputStream());
+				city.getClass();
+				city.getDetachableInputStream().getClass();
 			}
-			((AndroidDetachableStream)city.getDetachableInputStream()).setContext(this);
 		}
 		return city;
 	}
