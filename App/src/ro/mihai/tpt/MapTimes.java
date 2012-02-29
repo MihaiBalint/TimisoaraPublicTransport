@@ -42,12 +42,7 @@ public class MapTimes extends com.google.android.maps.MapActivity {
 		try {
 			if(null==city) {
 				city = AndroidSharedObjects.instance().getCity();
-				// this happens when re-entering the app in certain cases.
-				if(null==city) 
-					throw new CityNotLoadedException();
 				AndroidDetachableStream dataStream = ((AndroidDetachableStream)city.getDetachableInputStream());
-				if (null==dataStream)
-					throw new CityNotLoadedException();
 				dataStream.setContext(this);
 			}
 			onCreateCityActivity(savedInstanceState);

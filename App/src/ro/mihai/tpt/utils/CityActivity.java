@@ -29,12 +29,7 @@ public class CityActivity extends Activity {
 	protected final City getCity() throws CityNotLoadedException {
 		if(null==city) {
 			city = AndroidSharedObjects.instance().getCity();
-			// this happens when re-entering the app in certain cases.
-			if(null==city) 
-				throw new CityNotLoadedException();
 			AndroidDetachableStream dataStream = ((AndroidDetachableStream)city.getDetachableInputStream());
-			if (null==dataStream)
-				throw new CityNotLoadedException();
 			dataStream.setContext(this);
 		}
 		return city;

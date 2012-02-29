@@ -25,17 +25,25 @@ public class AndroidSharedObjects {
 	private Path linePath;
 	private PathStationsSelection pathSelection;
 	
-	public City getCity() {
+	public City getCity() throws CityNotLoadedException {
+		if (null==city) 
+			throw new CityNotLoadedException();
+			// this happens when re-entering the app in certain activities.
+	
 		return city;
 	}
 	public void setCity(City city) {
 		this.city = city;
 	}
 	
-	public PathStationsSelection getPathSelection() {
+	public PathStationsSelection getPathSelection() throws CityNotLoadedException {
+		if (null==pathSelection) 
+			throw new CityNotLoadedException();
 		return pathSelection;
 	}
-	public Path getLinePath() {
+	public Path getLinePath() throws CityNotLoadedException {
+		if (null==linePath) 
+			throw new CityNotLoadedException();
 		return linePath;
 	}
 	public void setLinePath(Path linePath) {
