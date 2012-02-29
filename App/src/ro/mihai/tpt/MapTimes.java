@@ -20,6 +20,11 @@ package ro.mihai.tpt;
 import java.util.List;
 
 import ro.mihai.tpt.map.PathOverlay;
+import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.utils.AndroidDetachableStream;
+import ro.mihai.tpt.utils.AndroidSharedObjects;
+import ro.mihai.tpt.utils.CityNotLoadedException;
+import ro.mihai.tpt.utils.StartActivity;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -30,14 +35,30 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 public class MapTimes extends com.google.android.maps.MapActivity {
+	private City city = null;
 	
 	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
+	public final void onCreate(Bundle savedInstanceState) {
+		try {
+			if(null==city) {
+				city = AndroidSharedObjects.instance().getCity();
+				// this happens when re-entering the app in certain cases.
+				if(null==city) 
+					throw new CityNotLoadedException();
+				AndroidDetachableStream dataStream = ((AndroidDetachableStream)city.getDetachableInputStream());
+				if (null==dataStream)
+					throw new CityNotLoadedException();
+				dataStream.setContext(this);
+			}
+			onCreateCityActivity(savedInstanceState);
+		} catch(CityNotLoadedException e) {
+	    	new StartActivity(this, LoadCity.class)
+				.start();
+	    	finish();
+		}
 	}
 	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	private void onCreateCityActivity(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.map_times);
 	    MapView mapView = (MapView) findViewById(R.id.mapview);
@@ -56,6 +77,11 @@ public class MapTimes extends com.google.android.maps.MapActivity {
 	    itemizedoverlay.addOverlay(overlayitem);
 	    itemizedoverlay.addOverlay(overlayitem2);
 	    mapOverlays.add(itemizedoverlay);
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
 	}
 	
 	public int toMicroDeg(int degrees) {

@@ -17,37 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
-import ro.mihai.tpt.conf.PathStationsSelection;
-import ro.mihai.tpt.model.*;
+public class CityNotLoadedException extends Exception {
+	private static final long serialVersionUID = 1L;
 
-public class AndroidSharedObjects {
-	private City city;
-	private Path linePath;
-	private PathStationsSelection pathSelection;
-	
-	public City getCity() {
-		return city;
-	}
-	public void setCity(City city) {
-		this.city = city;
-	}
-	
-	public PathStationsSelection getPathSelection() {
-		return pathSelection;
-	}
-	public Path getLinePath() {
-		return linePath;
-	}
-	public void setLinePath(Path linePath) {
-		this.linePath = linePath;
-		this.pathSelection = new PathStationsSelection(linePath);
-		this.pathSelection.selectAllStations();
-	}
-	
-	
-	private static AndroidSharedObjects shared = new AndroidSharedObjects();
-	
-	public static AndroidSharedObjects instance() {
-		return shared;
-	}
 }

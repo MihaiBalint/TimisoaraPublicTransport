@@ -20,6 +20,7 @@ package ro.mihai.tpt;
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.utils.CityActivity;
+import ro.mihai.tpt.utils.CityNotLoadedException;
 
 import android.os.Bundle;
 import android.view.Window;
@@ -28,7 +29,7 @@ public class ViewBusses extends CityActivity {
 
 	/** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         

@@ -33,6 +33,7 @@ import ro.mihai.tpt.conf.StationPathsSelection.Node;
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
+import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.LineKindUtils;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
@@ -61,7 +62,7 @@ public class ViewTimes extends CityActivity {
 
 	/** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         

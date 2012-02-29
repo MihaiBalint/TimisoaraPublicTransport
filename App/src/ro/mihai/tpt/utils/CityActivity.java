@@ -21,32 +21,42 @@ import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.model.City;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 public class CityActivity extends Activity {
 	private City city = null;
 	
-	protected final City getCity() {
+	protected final City getCity() throws CityNotLoadedException {
 		if(null==city) {
-			try {
-				city = AndroidSharedObjects.instance().getCity();
-				((AndroidDetachableStream)city.getDetachableInputStream()).setContext(this);
-			} catch(NullPointerException e) {
-				// this happens a few times, I don't know how
-				// they are able to start the activity without first 
-				// going through to LoadCity but they are.
-				reboot();
-				finish();
-				assert(null!=city);
-				assert(null!=city.getDetachableInputStream());
-				city.getClass();
-				city.getDetachableInputStream().getClass();
-			}
+			city = AndroidSharedObjects.instance().getCity();
+			// this happens when re-entering the app in certain cases.
+			if(null==city) 
+				throw new CityNotLoadedException();
+			AndroidDetachableStream dataStream = ((AndroidDetachableStream)city.getDetachableInputStream());
+			if (null==dataStream)
+				throw new CityNotLoadedException();
+			dataStream.setContext(this);
 		}
 		return city;
 	}
 	
+	@Override
+	protected final void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		try {
+			this.onCreateCityActivity(savedInstanceState);
+		} catch(CityNotLoadedException e) {
+			reboot();
+			finish();
+		}
+	}
+
+	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
+		// nop
+	}
+
+	
 	protected void reboot() {
-		// I've seen this a f
     	new StartActivity(this, LoadCity.class)
 		.start();
 	}
