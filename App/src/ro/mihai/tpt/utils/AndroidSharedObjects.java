@@ -51,6 +51,10 @@ public class AndroidSharedObjects {
 		this.pathSelection = new PathStationsSelection(linePath);
 		this.pathSelection.selectAllStations();
 	}
+	public void setLinePath(PathStationsSelection pathSelection) {
+		this.linePath = pathSelection.getPath();
+		this.pathSelection = pathSelection;
+	}
 	
 	
 	private static AndroidSharedObjects shared = new AndroidSharedObjects();

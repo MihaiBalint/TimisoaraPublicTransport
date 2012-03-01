@@ -35,7 +35,6 @@ public class ViewCategories extends CityActivity {
 	/** Called when the activity is first created. */
     @Override
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	City c = getCity();

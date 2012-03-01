@@ -63,7 +63,6 @@ public class ViewTimes extends CityActivity {
 	/** Called when the activity is first created. */
     @Override
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	setContentView(R.layout.list_times);
@@ -390,10 +389,14 @@ public class ViewTimes extends CityActivity {
     	    		.start();
         	} 
             return true;
+        /*            
         case R.id.view_map:
         	new StartActivity(this, MapTimes.class)
+        		.addCity(city)
+        		.addLinePath(path)
         		.start();
             return true;
+ 		*/
         default:
             return super.onOptionsItemSelected(item);
         }

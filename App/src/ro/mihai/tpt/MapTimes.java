@@ -19,31 +19,32 @@ package ro.mihai.tpt;
 
 import java.util.List;
 
-import ro.mihai.tpt.map.PathOverlay;
+import ro.mihai.tpt.conf.PathStationsSelection;
+import ro.mihai.tpt.map.ConnectedPathsMap;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.utils.AndroidDetachableStream;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.StartActivity;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 public class MapTimes extends com.google.android.maps.MapActivity {
 	private City city = null;
+	private PathStationsSelection path;
 	
 	@Override
 	public final void onCreate(Bundle savedInstanceState) {
+	    super.onCreate(savedInstanceState);
 		try {
 			if(null==city) {
 				city = AndroidSharedObjects.instance().getCity();
 				AndroidDetachableStream dataStream = ((AndroidDetachableStream)city.getDetachableInputStream());
 				dataStream.setContext(this);
+		    	path = AndroidSharedObjects.instance().getPathSelection();
 			}
 			onCreateCityActivity(savedInstanceState);
 		} catch(CityNotLoadedException e) {
@@ -54,32 +55,18 @@ public class MapTimes extends com.google.android.maps.MapActivity {
 	}
 	
 	private void onCreateCityActivity(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.map_times);
 	    MapView mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);	  
 	    
+	    ConnectedPathsMap pathOverlay = new ConnectedPathsMap(this, path);
+
 	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.tb15);
-	    PathOverlay itemizedoverlay = new PathOverlay(drawable, this);	
-	    
-	    GeoPoint point = new GeoPoint(19240000,-99120000);
-	    OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
-	    
-	    GeoPoint point2 = new GeoPoint(35410000, 139460000);
-	    OverlayItem overlayitem2 = new OverlayItem(point2, "Sekai, konichiwa!", "I'm in Japan!");	    
-	    
-	    itemizedoverlay.addOverlay(overlayitem);
-	    itemizedoverlay.addOverlay(overlayitem2);
-	    mapOverlays.add(itemizedoverlay);
+	    mapOverlays.addAll(pathOverlay.getPaths());
 	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
-	}
-	
-	public int toMicroDeg(int degrees) {
-		return (degrees * 1000000);
 	}
 }

@@ -17,6 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
+import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.*;
 import android.app.Activity;
 import android.content.Intent;
@@ -38,6 +39,11 @@ public class StartActivity implements OnClickListener {
 	}
 	
 	public StartActivity addLinePath(Path p) {
+		AndroidSharedObjects.instance().setLinePath(p);
+		return this;
+	}
+
+	public StartActivity addLinePath(PathStationsSelection p) {
 		AndroidSharedObjects.instance().setLinePath(p);
 		return this;
 	}

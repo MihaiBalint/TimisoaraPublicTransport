@@ -19,31 +19,50 @@ package ro.mihai.tpt.map;
 
 import java.util.ArrayList;
 
+import ro.mihai.tpt.model.Station;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class PathOverlay extends ItemizedOverlay {
+public class SinglePathOverlay extends ItemizedOverlay {
 
-	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+	private ArrayList<OverlayItem> mOverlays;
 	private Context mContext;
 
-	public PathOverlay(Drawable defaultMarker) {
-		super(boundCenterBottom(defaultMarker));
+	public SinglePathOverlay(Context context, int defaultMarkerId) {
+		this(context, context.getResources().getDrawable(defaultMarkerId));
 	}
-	
-	public PathOverlay(Drawable defaultMarker, Context context) {
+
+	public SinglePathOverlay(Context context, Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
 		mContext = context;
+		mOverlays = new ArrayList<OverlayItem>();
 	}
 	
-	public void addOverlay(OverlayItem overlay) {
+	public void addStationOverlay(Station s) {
+		try {
+		    GeoPoint point = new GeoPoint(toMicroDeg(s.getLat()), toMicroDeg(s.getLng()));
+		    addOverlay(new OverlayItem(point, s.getShortName(), s.getNiceName()));	    
+		} catch(NumberFormatException e) {
+			// nop
+		}
+	}
+	
+	 private void addOverlay(OverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
 	}
+
+	public int toMicroDeg(String deg) {
+		return (int)(Double.parseDouble(deg)*1000000);
+	}
+	
+	
 	
 	@Override
 	protected OverlayItem createItem(int i) {
