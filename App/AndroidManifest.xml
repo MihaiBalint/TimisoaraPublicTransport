@@ -25,20 +25,20 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-sdk android:minSdkVersion="4" />
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:testOnly="false">
-        <activity android:name=".LoadCity"
+        <activity android:name="ro.mihai.tpt.LoadCity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewCategories" />
-        <activity android:name=".ViewTrams" />
-        <activity android:name=".ViewBusses" />
-        <activity android:name=".ViewTrolleys" />
-        <activity android:name=".ViewTimes" />
-        <activity android:name=".ViewCredits" />
-        <activity android:name=".MapTimes" />
+        <activity android:name="ro.mihai.tpt.ViewCategories" />
+        <activity android:name="ro.mihai.tpt.ViewTrams" />
+        <activity android:name="ro.mihai.tpt.ViewBusses" />
+        <activity android:name="ro.mihai.tpt.ViewTrolleys" />
+        <activity android:name="ro.mihai.tpt.ViewTimes" />
+        <activity android:name="ro.mihai.tpt.ViewCredits" />
+        <activity android:name="ro.mihai.tpt.MapTimes" />
         <uses-library android:name="com.google.android.maps" android:required="true"/>        
     </application>
 </manifest> 
