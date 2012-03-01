@@ -33,7 +33,9 @@ import ro.mihai.tpt.conf.StationPathsSelection.Node;
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
+import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 
 import android.app.AlertDialog;
@@ -41,6 +43,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -59,8 +62,7 @@ public class ViewTimes extends CityActivity {
 
 	/** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	setContentView(R.layout.list_times);
@@ -80,6 +82,7 @@ public class ViewTimes extends CityActivity {
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
     	inflateTable();
+    	updater.onClick(null); // start update immediately after starting the activity
     }
     
     public void queueUIUpdate(Runnable r) {
@@ -364,22 +367,36 @@ public class ViewTimes extends CityActivity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	return super.onCreateOptionsMenu(menu);
-        // MenuInflater inflater = getMenuInflater();
-        // inflater.inflate(R.menu.times_menu, menu);
-        // return true;
+    	super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.times_menu, menu);
+        return true;
     }    
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.select_connections:
-            //showSelectConnections();
+        case R.id.switch_direction:
+        	Path p = path.getPath();
+        	ArrayList<Path> paths = new ArrayList<Path>(p.getLine().getPaths());
+        	paths.remove(p);
+        	if(paths.size()==1) {
+        		Path opposite = paths.get(0); 
+            	new StartActivity(this, ViewTimes.class)
+    	    		.addCity(city)
+    	    		.addLinePath(opposite)
+    	    		.start();
+        	} 
             return true;
+        /*            
         case R.id.view_map:
-            //showHelp();
+        	new StartActivity(this, MapTimes.class)
+        		.addCity(city)
+        		.addLinePath(path)
+        		.start();
             return true;
+ 		*/
         default:
             return super.onOptionsItemSelected(item);
         }

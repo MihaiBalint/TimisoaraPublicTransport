@@ -32,6 +32,7 @@
 	<string name="selPathLabel">Select Direction</string>
 	<string name="selConnections">Select Connections</string>
 	<string name="appCredits">Author Credits</string>
+	<string name="switch_direction">Switch Direction</string>
 
 	<string name="lblTrams">Trams</string>
 	<string name="lblTrolleys">Trolleys</string>

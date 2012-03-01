@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
-    Copyright (C) 2012  Mihai Balint
+    Copyright (C) 2011  Mihai Balint
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +17,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.tpt;
-
-import ro.mihai.tpt_light.R;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.Window;
-
-public class ViewCredits extends Activity {
-
-	/** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
-    	setContentView(R.layout.list_credits);
-    }
-}
+ -->
+<com.google.android.maps.MapView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:apiKey="0gWvfyGpeY3Y7y5JKwH8Ojv3HKo4K-Sx5JYayRQ"
+/>
+    <!-- android:apiKey="0gWvfyGpeY3ZajiCMNp-bY4P7Pf0TlP75wIp_Iw" -->

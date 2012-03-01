@@ -21,6 +21,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ro.mihai.tpt_light"
       android:versionName="2.4" android:versionCode="17">
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-sdk android:minSdkVersion="7" />
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:testOnly="false">
         <activity android:name=".LoadCity"
                   android:label="@string/app_name">
@@ -35,12 +38,7 @@
         <activity android:name=".ViewTrolleys" />
         <activity android:name=".ViewTimes" />
         <activity android:name=".ViewCredits" />
+        <activity android:name=".MapTimes" />
+        <uses-library android:name="com.google.android.maps" android:required="true"/>        
     </application>
-
-
-
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-<uses-sdk android:minSdkVersion="7" />
-
 </manifest> 
