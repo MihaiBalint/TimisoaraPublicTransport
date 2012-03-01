@@ -20,10 +20,10 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ro.mihai.tpt_light"
-      android:versionName="2.4" android:versionCode="17">
+      android:versionName="2.5" android:versionCode="18">
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-	<uses-sdk android:minSdkVersion="7" />
+	<uses-sdk android:minSdkVersion="4" />
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:testOnly="false">
         <activity android:name=".LoadCity"
                   android:label="@string/app_name">
