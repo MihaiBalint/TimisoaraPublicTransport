@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ro.mihai.tpt.R;
+import ro.mihai.tpt_light.R;
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection.Node;

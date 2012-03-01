@@ -26,6 +26,7 @@ import ro.mihai.tpt.utils.AndroidDetachableStream;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.tpt_light.R;
 
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
