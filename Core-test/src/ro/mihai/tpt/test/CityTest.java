@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.model.*;
+import ro.mihai.tpt.util.TestPrefs;
 import ro.mihai.util.LineKind;
 
 public class CityTest {
@@ -18,7 +19,7 @@ public class CityTest {
 
 	@Before
 	public void setUp() throws IOException {
-		c = JavaCityLoader.loadCachedCityOrDownloadAndCache();
+		c = JavaCityLoader.loadCachedCityOrDownloadAndCache(new TestPrefs());
 	}
 	
 	@Test

@@ -3,6 +3,11 @@
 - junctions need updating
 
 *** Features
+
+De apreciat și auto-refresh-ul. O idee care-mi vine acum cu noul UI e ori să modifici butonul Reload să sugereze și să facă "Switch Direction"; ori să rămână Reload, dar numele traseului (Tv8->AEM) să fie centrat și la atingere să devină "Tv8->Gara".
+
+Aș sugera să pui în meniul contextual și Conexiuni. 
+
 - dar cum am mai intalnit probleme similare, nu ar strica inca un buton cu "raporteaza o problema la situatia timpilor ACUM" ar fi probabil destul de util.
 - Si nu in ultimul rand ar prinde bine un buton care sa iti arate direct situatia pe sensul opus, fara sa mai dai "Back" si apoi sa intri pe al doilea sens (in frig poate fi o aventura pt cei ce dardaie
 
@@ -18,6 +23,10 @@
 
 
 *** Complete
+- Setting for selecting the download url
+- Move to SD-Card
+- 
+
 - daca se adauga meniul din home (ala pt "tasta" de meniu din android) ai putea adauga si un about deoarece nu-mi 
 dau seama de numarul versiunii si e mai greu de raportat bug-uri
 - selected connections disappear when rotating device - fixed

@@ -23,6 +23,7 @@ import java.util.List;
 
 import ro.mihai.tpt.model.*;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.tpt.utils.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -72,6 +73,7 @@ public class SelectLinePath implements OnClickListener, DialogInterface.OnClickL
 	
     public void onClick(DialogInterface dialog, int item) {
     	Path selectedPath = pathList.get(item);
+    	Utils.recordUsePath(parent, selectedPath);
     	new StartActivity(parent, activity)
     		.addCity(city)
     		.addLinePath(selectedPath)

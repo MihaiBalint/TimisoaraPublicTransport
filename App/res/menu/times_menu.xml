@@ -6,7 +6,11 @@
     -->
     
     <item android:id="@+id/switch_direction"
-          android:title="@string/switch_direction" />
+          android:title="@string/switch_direction" 
+          android:icon="@android:drawable/ic_menu_revert"/>
+    <item android:id="@+id/app_settings"
+          android:title="@string/app_settings" 
+          android:icon="@android:drawable/ic_menu_preferences"/>
     
     <!--  
     <item android:id="@+id/new_game"

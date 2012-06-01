@@ -17,18 +17,14 @@
 */
 package ro.mihai.tpt.retired_test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import ro.mihai.tpt.JavaCityLoader;
-import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.INamedEntity;
 import ro.mihai.tpt.model.Line;
-import ro.mihai.tpt.model.Station;
+import ro.mihai.tpt.util.TestPrefs;
 import ro.mihai.util.IMonitor;
 import junit.framework.TestCase;
 
@@ -43,8 +39,9 @@ public class TestCityData extends TestCase {
 	}
 	
 	public void test_CityUpdateAndRegressions() throws Exception {
-		//City c = RATT.downloadCity(new TestMonitor());
-		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache();
+		TestPrefs prefs = new TestPrefs();
+		//City c = RATT.downloadCity(prefs, new TestMonitor());
+		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache(prefs);
 		
 		ArrayList<String> names = new ArrayList<String>();
 		for(INamedEntity s : c.getLines()) names.add(s.getName());

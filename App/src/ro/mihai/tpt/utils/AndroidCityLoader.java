@@ -29,6 +29,7 @@ import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.model.City;
 import ro.mihai.util.IMonitor;
+import ro.mihai.util.IPrefs;
 import ro.mihai.util.NullMonitor;
 
 public class AndroidCityLoader {
@@ -40,7 +41,7 @@ public class AndroidCityLoader {
 		return c;
 	}
 	
-	public static City loadStoredCityOrDownloadAndCache(Context ctx, IMonitor mon) throws IOException {
+	public static City loadStoredCityOrDownloadAndCache(IPrefs prefs, Context ctx, IMonitor mon) throws IOException {
 		City c = new City();
 		try {
 			// read resources file
@@ -51,7 +52,7 @@ public class AndroidCityLoader {
 				c.loadFromStream(new AndroidDetachableStream.FromFile(ctx,cityCacheFileName),mon);
 			} catch(FileNotFoundException e) {
 				// download and parse new stuff
-				c = RATT.downloadCity(mon);
+				c = RATT.downloadCity(prefs, mon);
 			} finally {
 				OutputStream os = ctx.openFileOutput(cityCacheFileName, Context.MODE_PRIVATE);
 				c.saveToFile(os);

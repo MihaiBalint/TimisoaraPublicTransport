@@ -19,14 +19,14 @@ package ro.mihai.tpt;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.*;
 import java.util.List;
 
 import ro.mihai.tpt.model.*;
 import ro.mihai.util.*;
 
 public class RATT {
-	private static final String root = "http://www.ratt.ro/txt/";
+	public static final String root = "http://www.ratt.ro/txt/";
 	
 	private static final String stationIdParamName = "id_statie"; 
 	private static final String lineIdParamName = "id_traseu";
@@ -39,12 +39,12 @@ public class RATT {
 	// ?id_traseu=...&id_statie=...
 	private static final String timesOflinesInStation = "afis_msg.php";
 	
-	public static List<Station> downloadStations(IMonitor mon) throws IOException {
-		return new StationReader(new URL(root+stationList)).readAll(mon);
+	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon) throws IOException {
+		return new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
 	}
 	
-	public static String[] downloadTimes(Line l, Station s) throws IOException {
-		URL url = new URL(root+timesOflinesInStation+"?"+lineIdParamName+"="+l.getId()+"&"+stationIdParamName+"="+s.getId());
+	public static String[] downloadTimes(IPrefs prefs, Line l, Station s) throws IOException {
+		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+l.getId()+"&"+stationIdParamName+"="+s.getId());
 		FormattedTextReader rd = new FormattedTextReader(url.openStream());
 		String lineName = rd.readString("Linia: ", "<br");
 		assert(lineName.equals(l.getName()));
@@ -54,14 +54,14 @@ public class RATT {
 		return new String[]{time1, time2};
 	}
 	
-	public static City downloadCity(IMonitor mon) throws IOException {
+	public static City downloadCity(IPrefs prefs, IMonitor mon) throws IOException {
 		City c = new City();
 		mon.setMax(1200);
-		List<Station> stations = new StationReader(new URL(root+stationList)).readAll(mon);
+		List<Station> stations = new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
 		c.setStations(stations);
 		int cnt = 0;
 		for(Station s : stations) { 
-			new LineReader(c,s, new URL(root+linesInStationList+"?"+stationIdParamName+"="+s.getId())).readAll(new NullMonitor());
+			new LineReader(c,s, new URL(prefs.getBaseUrl()+linesInStationList+"?"+stationIdParamName+"="+s.getId())).readAll(new NullMonitor());
 			cnt++;
 			if((cnt % 10)==0)
 				System.out.println(cnt + "/" + stations.size());

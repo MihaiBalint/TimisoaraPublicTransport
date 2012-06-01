@@ -18,12 +18,15 @@
 package ro.mihai.tpt.utils;
 
 import ro.mihai.tpt.LoadCity;
+import ro.mihai.tpt.Preferences;
 import ro.mihai.tpt.model.City;
+import ro.mihai.util.IPrefs;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
-public class CityActivity extends Activity {
+public class CityActivity extends Activity implements IPrefs {
 	private City city = null;
 	
 	protected final City getCity() throws CityNotLoadedException {
@@ -49,8 +52,34 @@ public class CityActivity extends Activity {
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
 		// nop
 	}
-
 	
+	private static final int REQUEST_CODE_PREFERENCES = 1;
+	protected void launchPrefs() {
+        // When the button is clicked, launch an activity through this intent
+        Intent launchPreferencesIntent = new Intent().setClass(this, Preferences.class);
+
+        // Make it a subactivity so we know when it returns
+        startActivityForResult(launchPreferencesIntent, REQUEST_CODE_PREFERENCES);
+	}
+	
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // The preferences returned if the request code is what we had given
+        // earlier in startSubActivity
+        if (requestCode == REQUEST_CODE_PREFERENCES) 
+        	baseUrl = Utils.readBaseDownloadUrl(this);
+    }
+  
+    private String baseUrl = null;
+    public String getBaseUrl() {
+    	if(baseUrl==null) 
+    		baseUrl = Utils.readBaseDownloadUrl(this);
+		return baseUrl;
+	}
+    
+    
 	protected void reboot() {
     	new StartActivity(this, LoadCity.class)
 		.start();

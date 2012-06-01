@@ -198,7 +198,7 @@ public class ViewTimes extends CityActivity {
 			};
 			est.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(ec, s);
+			ec = path.updateStation(ViewTimes.this, ec, s);
 			queueUIUpdate(upd);
 			return ec;
 		}
@@ -213,7 +213,7 @@ public class ViewTimes extends CityActivity {
 			};
 			est.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(ec, s);
+			ec = path.updateStation(ViewTimes.this, ec, s);
 			queueUIUpdate(upd);
 			return ec;
 		}
@@ -389,6 +389,9 @@ public class ViewTimes extends CityActivity {
     	    		.start();
         	} 
             return true;
+        case R.id.app_settings: 
+        	launchPrefs();
+        	return true;
         /*            
         case R.id.view_map:
         	new StartActivity(this, MapTimes.class)

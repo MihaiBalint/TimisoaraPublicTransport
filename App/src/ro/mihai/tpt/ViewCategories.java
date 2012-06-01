@@ -65,6 +65,10 @@ public class ViewCategories extends CityActivity {
         case R.id.app_credits:
         	startActivity(new Intent(this, ViewCredits.class));
             return true;
+        case R.id.app_settings: {
+        	launchPrefs();
+        	return true;
+        }
         default:
             return super.onOptionsItemSelected(item);
         }

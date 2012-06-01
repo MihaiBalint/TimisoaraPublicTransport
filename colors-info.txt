@@ -1,0 +1,11 @@
+Invert
+Bright -64
+Colorize 83, 100, -18
+
+Artistic->Softglow
+Radius: 10.00
+Brightness: 0.75
+Sharpness: 0.85
+
+Light and Shadow -> Drop shadow
+shadow: x:0, y:0, radius:32, color:#fff0a9, opacity:80 

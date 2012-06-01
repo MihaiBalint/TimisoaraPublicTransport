@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="pref_base_download_url">base_download_url</string>
+	<string name="pref_base_download_url_title">Download URL</string>
+	<string name="pref_base_download_url_summary">The URL address which provides vehicle arrival estimates.</string>
+	<string name="pref_base_download_url_dialog">Choose URL</string>
+	
+    <string-array name="pref_base_download_url_entries">
+        <item>http://www.ratt.ro/txt/</item>
+        <item>http://82.77.146.19/txt/</item>
+    </string-array>
+
+	<string name="pref_base_download_url_default">http://www.ratt.ro/txt/</string>
+    <string-array name="pref_base_download_url_entryvalues">
+        <item>http://www.ratt.ro/txt/</item>
+        <item>http://82.77.146.19/txt/</item>
+    </string-array>
+    
+</resources>

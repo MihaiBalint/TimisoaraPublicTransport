@@ -20,7 +20,8 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ro.mihai.tpt"
-      android:versionName="2.5" android:versionCode="18">
+      android:versionName="2.6" android:versionCode="19"
+      android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-sdk android:minSdkVersion="4" />
@@ -39,6 +40,7 @@
         <activity android:name="ro.mihai.tpt.ViewTimes" />
         <activity android:name="ro.mihai.tpt.ViewCredits" />
         <activity android:name="ro.mihai.tpt.MapTimes" />
+        <activity android:name="ro.mihai.tpt.Preferences" />
         <uses-library android:name="com.google.android.maps" android:required="true"/>        
     </application>
 </manifest> 

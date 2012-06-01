@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import ro.mihai.tpt.RATT;
+import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
 
 public class Path implements Serializable {
@@ -102,11 +103,11 @@ public class Path implements Serializable {
 	 * 
 	 */
 
-	public void updateAllStations() {
+	public void updateAllStations(IPrefs prefs) {
 		int ec = 0;
 		for(Station s:stationsByTime) {
 			est.get(s).startUpdate();
-			ec = updateStation(ec, s);
+			ec = updateStation(prefs, ec, s);
 		}
 		ArrayList<Station> newSort = new ArrayList<Station>(stationsByTime);
 		Collections.sort(newSort, timesComp);
@@ -118,11 +119,11 @@ public class Path implements Serializable {
 			e.clearUpdate();
 	}
 	
-	public int updateStation(int ec, Station s) {
+	public int updateStation(IPrefs prefs, int ec, Station s) {
 		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
-				String[] t = RATT.downloadTimes(line, s);
+				String[] t = RATT.downloadTimes(prefs, line, s);
 				e.putTime(t[0], t[1]);
 			} else
 				e.putErr("upd-canceled");

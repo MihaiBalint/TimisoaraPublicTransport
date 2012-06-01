@@ -12,6 +12,7 @@ import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.INamedEntity;
+import ro.mihai.tpt.util.TestPrefs;
 import ro.mihai.util.NullMonitor;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -20,9 +21,10 @@ public class RegressionTests {
 	
 
 	public static Test suite() throws IOException {
-		City cExpected = JavaCityLoader.loadCachedCityOrDownloadAndCache();
-		//City cActual = JavaCityLoader.loadCachedCityOrDownloadAndCache();
-		City cActual = RATT.downloadCity(new NullMonitor());
+		TestPrefs prefs = new TestPrefs();
+		City cExpected = JavaCityLoader.loadCachedCityOrDownloadAndCache(prefs);
+		//City cActual = JavaCityLoader.loadCachedCityOrDownloadAndCache(prefs);
+		City cActual = RATT.downloadCity(prefs, new NullMonitor());
 		
 		
 		TestSuite suite = new TestSuite("Test for ro.mihai.tpt.test");

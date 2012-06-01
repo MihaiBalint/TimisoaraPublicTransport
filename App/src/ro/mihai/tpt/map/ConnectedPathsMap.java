@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ro.mihai.tpt.LineResources;
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection;
@@ -40,7 +41,7 @@ public class ConnectedPathsMap {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.paths = new HashMap<Line, SinglePathOverlay>();
-		SinglePathOverlay main = new SinglePathOverlay(context, R.drawable.tv4);
+		SinglePathOverlay main = new SinglePathOverlay(context, LineResources.value(path.getPath()).getMapIconId());
 		paths.put(path.getPath().getLine(), main);
 		
 		for(StationPathsSelection sel: path.getStations()) {
@@ -50,7 +51,7 @@ public class ConnectedPathsMap {
 	    		Path connPath = connection.path;
 	    		SinglePathOverlay con = paths.get(connPath.getLine());
 	    		if(null==con) {
-	    			con = new SinglePathOverlay(context, R.drawable.tb14);
+	    			con = new SinglePathOverlay(context, LineResources.value(connPath).getMapIconId());
 	    			paths.put(connPath.getLine(), con);
 	    		}
 	    		con.addStationOverlay(connection.station);

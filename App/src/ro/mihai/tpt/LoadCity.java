@@ -25,15 +25,18 @@ import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidCityLoader;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.tpt.utils.Utils;
 import ro.mihai.util.IMonitor;
+import ro.mihai.util.IPrefs;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class LoadCity extends Activity implements Runnable, IMonitor {
+public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
 	private City city = null;
 	private ProgressBar prgress;
 	private TextView status;
@@ -51,6 +54,10 @@ public class LoadCity extends Activity implements Runnable, IMonitor {
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.loading);
+        
+        // apply pref defaults
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        
 		prgress = (ProgressBar)findViewById(R.id.ProgressBar);
         status = (TextView)findViewById(R.id.StatusText);
         new Thread(this).start();
@@ -59,7 +66,7 @@ public class LoadCity extends Activity implements Runnable, IMonitor {
 	public void run() {
         try {
         	if (null==city)
-        		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(LoadCity.this, this);
+        		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(this, LoadCity.this, this);
         	new StartActivity(this, ViewCategories.class)
         		.addCity(city)
         		.start();
@@ -91,5 +98,12 @@ public class LoadCity extends Activity implements Runnable, IMonitor {
 		runOnUiThread(new Runnable() { public void run() {
 			prgress.setProgress(work);
 		}});
+	}
+
+	private String baseUrl = null;
+	public String getBaseUrl() {
+		if (null==baseUrl)
+			baseUrl = Utils.readBaseDownloadUrl(this);
+		return baseUrl;
 	}
 }
