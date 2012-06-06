@@ -4,17 +4,29 @@
 
 *** Features
 
-De apreciat și auto-refresh-ul. O idee care-mi vine acum cu noul UI e ori să modifici butonul Reload să sugereze și să facă "Switch Direction"; ori să rămână Reload, dar numele traseului (Tv8->AEM) să fie centrat și la atingere să devină "Tv8->Gara".
+* Higher contrast colors in the times screen. 
+* Station times - display the same information as the electronic panels
+* logical overlay map of each line
+   * Overlay multiple lines
+   * Select To/From station
+   * Route planner
+   
+
+De apreciat și auto-refresh-ul. O idee care-mi vine acum cu noul UI e ori să modifici butonul Reload să sugereze 
+și să facă "Switch Direction"; ori să rămână Reload, dar numele traseului (Tv8->AEM) să fie centrat și la atingere 
+să devină "Tv8->Gara".
 
 Aș sugera să pui în meniul contextual și Conexiuni. 
 
-- dar cum am mai intalnit probleme similare, nu ar strica inca un buton cu "raporteaza o problema la situatia timpilor ACUM" ar fi probabil destul de util.
-- Si nu in ultimul rand ar prinde bine un buton care sa iti arate direct situatia pe sensul opus, fara sa mai dai "Back" si apoi sa intri pe al doilea sens (in frig poate fi o aventura pt cei ce dardaie
+- dar cum am mai intalnit probleme similare, nu ar strica inca un buton cu "raporteaza o problema la situatia 
+timpilor ACUM" ar fi probabil destul de util.
+- Si nu in ultimul rand ar prinde bine un buton care sa iti arate direct situatia pe sensul opus, fara sa mai 
+dai "Back" si apoi sa intri pe al doilea sens (in frig poate fi o aventura pt cei ce dardaie
 
 - improve the direction selection box by adding more information: i.e. station succession, major stations   
 - inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)
-- tot din meniu adaugarea unui help care sa explice fiecare tip de timp afisat (cca / min/ ora). Eu am citit forumul si stiu dar nu tot fac/ ar trebui sa faca asta.
-- adaugarea aplicatiei in market (am colegi/prieteni care sunt interesati si e mult mai simplu sa-i faci "reclama" si sa o dai jos de pe market)
+- tot din meniu adaugarea unui help care sa explice fiecare tip de timp afisat (cca / min/ ora). Eu am citit forumul 
+  si stiu dar nu tot fac/ ar trebui sa faca asta.
 - ar mai fi si altele legate de utilizarea GPS/ maps dar deja e full-time job, si nu e cazul sa ne intindem.
 
 
@@ -25,7 +37,10 @@ Aș sugera să pui în meniul contextual și Conexiuni.
 *** Complete
 - Setting for selecting the download url
 - Move to SD-Card
-- 
+ 
+
+- adaugarea aplicatiei in market (am colegi/prieteni care sunt interesati si e mult mai simplu sa-i faci "reclama" si sa 
+  o dai jos de pe market)
 
 - daca se adauga meniul din home (ala pt "tasta" de meniu din android) ai putea adauga si un about deoarece nu-mi 
 dau seama de numarul versiunii si e mai greu de raportat bug-uri

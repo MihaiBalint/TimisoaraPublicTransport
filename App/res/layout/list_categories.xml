@@ -46,11 +46,11 @@
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
 	    >
-		<Button	style="@style/LineButton" android:id="@+id/b33"
+		<Button	style="@style/LineButton" android:id="@+id/opt11"
 			android:text=" 33 "/>
-		<Button	style="@style/LineButton" android:id="@+id/bTv4"
+		<Button	style="@style/LineButton" android:id="@+id/opt12"
 			android:text=" Tv4 "/>
-		<Button	style="@style/LineButton" android:id="@+id/bTv2"
+		<Button	style="@style/LineButton" android:id="@+id/opt13"
 			android:text=" Tv2 "/>
 	</LinearLayout>
 	
@@ -64,11 +64,11 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		>
-		<Button	style="@style/LineButton"  android:id="@+id/b40"
+		<Button	style="@style/LineButton"  android:id="@+id/opt21"
 			android:text=" 40 "/>
-		<Button	style="@style/LineButton"  android:id="@+id/bTb14"
+		<Button	style="@style/LineButton"  android:id="@+id/opt22"
 			android:text=" Tb14 "/>
-		<Button	style="@style/LineButton"  android:id="@+id/bTb15"
+		<Button	style="@style/LineButton"  android:id="@+id/opt23"
 			android:text=" Tb15 "/>
 	</LinearLayout>
 

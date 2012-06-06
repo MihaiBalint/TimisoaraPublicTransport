@@ -17,11 +17,16 @@
 */
 package ro.mihai.tpt;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
+import ro.mihai.tpt.utils.LineKindUtils;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.tpt.utils.Utils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Button;
 
 public class ViewCategories extends CityActivity {
 
@@ -43,12 +49,18 @@ public class ViewCategories extends CityActivity {
     	findViewById(R.id.bus_button).setOnClickListener(new StartActivity(this, ViewBusses.class).addCity(c));
     	findViewById(R.id.trolleybus_button).setOnClickListener(new StartActivity(this, ViewTrolleys.class).addCity(c));
     	
-    	findViewById(R.id.b33).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("33")));
-    	findViewById(R.id.b40).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("40")));
-    	findViewById(R.id.bTb14).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tb14")));
-    	findViewById(R.id.bTb15).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tb15")));
-    	findViewById(R.id.bTv2).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv2")));
-    	findViewById(R.id.bTv4).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv4")));
+    	List<String> sortedNames = Utils.getTopLines(this);
+    	for (String l : LineKindUtils.MOST_USED)
+    		if (!sortedNames.contains(l))
+    			sortedNames.add(l);
+    	int[] ids = {R.id.opt11, R.id.opt12, R.id.opt13, R.id.opt21, R.id.opt22, R.id.opt23};
+    	Iterator<String> nameIt = sortedNames.iterator();
+    	for(int id: ids) {
+    		String name = nameIt.next();
+    		Button btn = (Button)findViewById(id);
+    		btn.setText(" "+name+" ");
+    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine(name)));
+    	}
     }
     
     @Override

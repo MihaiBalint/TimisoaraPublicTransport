@@ -20,13 +20,13 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="#C8644900"
+	android:background="#FFb2ff36"
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content">
    	
    	<TextView android:id="@+id/Spacer"
 		android:layout_height="wrap_content"
-		android:textColor="#FFFFFFFF"
+		android:textColor="#FF000000"
 		android:gravity="right"
   		android:text=""
    		android:textSize="6.5pt"
@@ -34,14 +34,13 @@
     
   	<LinearLayout
    	    android:id="@+id/linearLayout1"
-		android:background="#80606060"
    	    android:layout_width="wrap_content"
    	    android:layout_height="wrap_content">
 
  	   	<TextView android:id="@+id/StationTime"
 			android:layout_width="30pt" 
 			android:layout_height="wrap_content"
-			android:textColor="#FFFFFFFF"
+			android:textColor="#FF000000"
 			android:gravity="left"
 	  		android:text="3min"
 	   		android:textSize="6.5pt"
@@ -51,7 +50,7 @@
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="5pt"
-			android:textColor="#FFFFFFFF"
+			android:textColor="#FF000000"
 			android:gravity="right"
 	  		android:text="33"
 	   		android:textSize="6.5pt"
@@ -59,7 +58,7 @@
 	   	<TextView android:id="@+id/LineArrow"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="#FFFFFFFF"
+			android:textColor="#FF000000"
 			android:gravity="right"
 	  		android:text=" > "
 	   		android:textSize="6.5pt"
@@ -67,7 +66,7 @@
 	   	<TextView android:id="@+id/LineDirection"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="#FFFFFFFF"
+			android:textColor="#FF000000"
 	  		android:text="Arta textila"
 	   		android:textSize="6.5pt"
 	   		android:singleLine="true"

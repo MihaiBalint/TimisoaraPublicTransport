@@ -17,6 +17,11 @@
 */
 package ro.mihai.tpt.utils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.Path;
 import android.content.Context;
@@ -24,6 +29,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Utils {
+	private static final String STATS_PREFIX = "stats-";
 
 	public static String readBaseDownloadUrl(Context ctx) {
 		// Read a sample value they have set
@@ -35,7 +41,7 @@ public class Utils {
 	
 	public static void recordUsePath(Context ctx, Path p) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		String lineKey = "stats-"+p.getLine().getName();
+		String lineKey = STATS_PREFIX+p.getLine().getName();
 		String pathKey = lineKey+"-"+p.getName();
 		int lineStats = sharedPref.getInt(lineKey, 0) + 1;
 		int pathStats = sharedPref.getInt(pathKey, 0) + 1;
@@ -46,4 +52,36 @@ public class Utils {
 			.commit();
 	}
 	
+	public static List<String> getTopLines(Context ctx) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		int prefixLen = STATS_PREFIX.length();
+		ArrayList<String> lines = new ArrayList<String>();
+		for(String key: sharedPref.getAll().keySet())
+			if (key.startsWith(STATS_PREFIX) && key.lastIndexOf("-") < prefixLen) {
+				lines.add(key);
+			}
+		Collections.sort(lines, new UsageComparator(sharedPref));
+		ArrayList<String> sortedNames = new ArrayList<String>();
+		for(String l: lines)
+			sortedNames.add(l.substring(prefixLen));
+		
+		return sortedNames;
+	}
+	
+	
+	private static class UsageComparator implements Comparator<String> {
+		private SharedPreferences usageMap;
+		
+		public UsageComparator(SharedPreferences usageMap) {
+			this.usageMap = usageMap;
+		}
+		
+		private int get(String l) {
+			return usageMap.getInt(l, 0);
+		}
+		
+		public int compare(String l1, String l2) {
+			return get(l1) - get(l2);
+		}
+	}
 }

@@ -21,6 +21,7 @@ import ro.mihai.tpt.R;
 import ro.mihai.util.LineKind;
 
 public class LineKindUtils {
+	public static String[] MOST_USED = {"33", "40", "Tb14", "Tv2", "Tv4", "Tb15"};
 
 	public static int getLabelId(LineKind k) {
 		switch(k) {
@@ -32,4 +33,5 @@ public class LineKindUtils {
 		default: return R.string.lblOther;
 		}
 	}
+	
 }
