@@ -187,6 +187,12 @@ public class DeDuper {
 		csv.close();
 	}
 	
+	private static String showInput(String message) {
+		String selection = javax.swing.JOptionPane.showInputDialog(message); 
+		System.out.println("**********************************\n"+message+"\nChose >>> "+selection+" <<<\n");
+		return selection;
+	}
+	
 	private static String selectName(String msg, String id, Collection<String> options) {
 		List<String> opts = new ArrayList<String>(options);
 		if (opts.size()==1)
@@ -196,12 +202,26 @@ public class DeDuper {
 		for(int i=0;i<opts.size();i++)
 			message += "\n " + i +". ---"+opts.get(i)+"---";
 		
-		String out = javax.swing.JOptionPane.showInputDialog(message);
+		String out = showInput(message);
 		try {
 			return opts.get(Integer.parseInt(out)).trim();
 		} catch(NumberFormatException e) {
 			return out.trim();
 		}
+	}
+	
+	private static String concat(List<String> opts) {
+		String concat = opts.get(0);
+		for(int i=1;i<opts.size();i++) 
+			if (opts.get(i).trim().length() > 0)
+				concat += " / " + opts.get(i);
+		return concat;
+	}
+	
+	private static void addConcat(List<String> opts) {
+		String concat = concat(opts);
+		if (!concat.equals(opts.get(0))) 
+			opts.add(concat);
 	}
 
 	private static String selectJunction(String msg, String id, Helper help) {
@@ -209,20 +229,24 @@ public class DeDuper {
 		if (opts.size()==1)
 			return opts.get(0).trim();
 		
+		addConcat(opts);
+		
 		String message = msg+" #"+id;
 		for(int i=0;i<opts.size();i++) {
 			String junction = opts.get(i);
 			String junctionStations="";
 			Collection<String> junctionStationsList = help.getJunctionStations(junction);
-			if (junctionStationsList.size()<10) 
-				for(String s:junctionStationsList)
-					junctionStations+="\n    "+s;
-			else
-				junctionStations+="\n    "+junctionStationsList.size()+" stations.";
+			if (junctionStationsList!=null) {
+				if (junctionStationsList.size()<10) 
+					for(String s:junctionStationsList)
+						junctionStations+="\n    "+s;
+				else
+					junctionStations+="\n    "+junctionStationsList.size()+" stations.";
+			}
 			message += "\n " + i +". ---"+junction+"---"+junctionStations;
 		}
 		
-		String out = javax.swing.JOptionPane.showInputDialog(message);
+		String out = showInput(message);
 		try {
 			return opts.get(Integer.parseInt(out)).trim();
 		} catch(NumberFormatException e) {
@@ -249,6 +273,7 @@ public class DeDuper {
 			Junction junction = opts.get(i);
 			String junctionStations="";
 			if (junction.getStations().size()<10) 
+				
 				for(Station s:junction.getStations()) {
 					junctionStations+="\n    "+s.getId()+"-"+s.getName()+"-"+s.getNiceName();
 				}
@@ -257,11 +282,21 @@ public class DeDuper {
 			message += "\n " + i +". ---"+junction.getName()+"---"+junctionStations;
 		}
 		
+		List<String> optNames = new ArrayList<String>();
+		for(Junction j : opts)
+			optNames.add(j.getName());
 		
-		String out = javax.swing.JOptionPane.showInputDialog(message);
+		String concat = concat(optNames);
+		if (!concat.equals(optNames.get(0))) {
+			optNames.add(concat);
+			message += "\n " + opts.size() +". ---"+concat+"---";
+		}
+		
+		
+		String out = showInput(message);
 		String name;
 		try {
-			name = opts.get(Integer.parseInt(out)).getName().trim();
+			name = optNames.get(Integer.parseInt(out)).trim();
 		} catch(NumberFormatException e) {
 			name = out.trim();
 		}
@@ -293,7 +328,7 @@ public class DeDuper {
 		message += "\n----------X--M--L-----------------";
 		for(Helper.Coords xc : xml) 
 			message += "\n    ---"+xc+"---";
-		String out = javax.swing.JOptionPane.showInputDialog(message);
+		String out = showInput(message);
 		
 		c = opts.get(Integer.parseInt(out));
 		st.setCoords(c.getLat(), c.getLng());
