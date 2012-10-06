@@ -55,22 +55,14 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		>
-		<Button	style="@style/LineButton" android:id="@+id/bE5"
-			android:text=" E5 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bE6"
 			android:text=" E6 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bE7"
 			android:text=" E7 "/>
-		<Button	style="@style/LineButton" android:id="@+id/bE7b"
-			android:text=" E7b "/>
-	</LinearLayout>
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		>
 		<Button	style="@style/LineButton" android:id="@+id/bE8"
 			android:text=" E8 "/>
+				<Button	style="@style/LineButton" android:id="@+id/bE4b"
+			android:text=" E4b "/>
 	</LinearLayout>
 
 	<View
@@ -106,7 +98,15 @@
 		<Button	style="@style/LineButton" android:id="@+id/b46"
 			android:text=" 46 "/>
 	</LinearLayout>
-
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		>
+		<Button	style="@style/LineButton" android:id="@+id/b33b"
+			android:text=" 33b "/>
+	</LinearLayout>
+	
 	<View
 		android:layout_width="fill_parent"
 		android:layout_height="10pt"

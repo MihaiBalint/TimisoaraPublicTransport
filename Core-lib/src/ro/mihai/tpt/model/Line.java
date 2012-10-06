@@ -117,6 +117,10 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 	public String getName() {
 		return name;
 	}
+	
+	public boolean isFake() {
+		return id.startsWith("F");
+	}
 
 	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
 		int pathCount = res.readInt();

@@ -40,8 +40,8 @@ public class V3Generator extends TestCase {
 			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
 				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
 				|| (row.length>9 && row[9].equalsIgnoreCase("true")) // ignore invalid rows 
+				|| (row.length>1 && row[0].trim().isEmpty() && row[1].trim().isEmpty()) // no id, no line name
 			) continue;
-			
 			Station st = stMap.get(row[2]);
 			
 			String[] nnp = nonEmpty(row[4]) ? parsePara(row[4].trim()) : new String[]{"",""};

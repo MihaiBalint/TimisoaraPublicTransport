@@ -22,8 +22,8 @@ public class CityTest {
 	private List<String> app_lines = Arrays.asList(new String[]{
 			"Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9b",
 			"Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19",
-			"E1","E2","E3", "E4","E5","E6","E7","E7b","E8",
-			"M30","M35","M36", "3","13","21","28","32","33","40","46"});
+			"E1","E2","E3", "E4","E4b","E6","E7","E8",
+			"M30","M35","M36", "3","13","21","28","32","33","33b","40","46"});
 
 	@Before
 	public void setUp() throws IOException {
@@ -34,7 +34,7 @@ public class CityTest {
 	public void test_app_panel_links() {
 		String missingLines = "";
 		for(String line : app_lines)
-			if (c.getLine(line) == null || c.getLine(line).getId().startsWith("F"))
+			if (c.getLine(line) == null || c.getLine(line).isFake())
 				missingLines += "City does not have line "+line+"\n"; 
 		assertEquals("", missingLines);
 	}
@@ -142,7 +142,7 @@ public class CityTest {
 		assertTrue(c.getLine("Tv7a").getKind().isTram());
 		assertTrue(c.getLine("Tv7b").getKind().isTram());
 		assertTrue(c.getLine("Tv8").getKind().isTram());
-		assertTrue(c.getLine("Tv9").getKind().isTram());
+		assertTrue(c.getLine("Tv9b").getKind().isTram());
 		assertOthersNotKind(LineKind.TRAM);
 	}
 
@@ -164,10 +164,9 @@ public class CityTest {
 		assertTrue(c.getLine("E2").getKind().isBusExpress());
 		assertTrue(c.getLine("E3").getKind().isBusExpress());
 		assertTrue(c.getLine("E4").getKind().isBusExpress());
-		assertTrue(c.getLine("E5").getKind().isBusExpress());
+		assertTrue(c.getLine("E4b").getKind().isBusExpress());
 		assertTrue(c.getLine("E6").getKind().isBusExpress());
 		assertTrue(c.getLine("E7").getKind().isBusExpress());
-		assertTrue(c.getLine("E7b").getKind().isBusExpress());
 		assertTrue(c.getLine("E8").getKind().isBusExpress());
 		assertOthersNotKind(LineKind.EXPRESS);
 	}
@@ -191,6 +190,29 @@ public class CityTest {
 		assertTrue(c.getLine("40").getKind().isBus());
 		assertTrue(c.getLine("46").getKind().isBus());
 		assertOthersNotKind(LineKind.BUS);
+	}
+	
+	@Test
+	public void test_city_has_all_kinds() {
+		String missingLines = "";
+		for(LineKind k : LineKind.values())
+			for(String line : k.getLineNames())
+				if (c.getLine(line).isFake())
+					missingLines += "Line not present in city: "+line+"\n";
+		assertEquals("", missingLines);
+	}
+
+	@Test
+	public void test_city_has_unknown_kind() {
+		String missingKinds = "";
+		List<String> knownKinds = new ArrayList<String>();
+		for(LineKind k : LineKind.values())
+			for(String line : k.getLineNames())
+				knownKinds.add(line);
+		for(Line l : c.getLines())
+			if (!knownKinds.contains(l.getName()))
+				missingKinds += "Cinty has line of unknown kind: "+l.getName()+"\n";
+		assertEquals("", missingKinds);
 	}
 	
 	@Test

@@ -3,10 +3,10 @@ package ro.mihai.util;
 import ro.mihai.tpt.model.Line;
 
 public enum LineKind {
-	TRAM("Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9"), 
+	TRAM("Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9b"), 
 	TROLLEY("Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19"), 
-	BUS("3","13","21","28","32","33","40","46"),
-	EXPRESS("E1","E2","E3","E4","E5","E6","E7","E7b","E8"),
+	BUS("3","13","21","28","32","33","33b","40","46"),
+	EXPRESS("E1","E2","E3","E4","E4b","E6","E7","E8"),
 	METRO("M30","M35","M36");
 	
 	private final String[] names;
@@ -29,6 +29,9 @@ public enum LineKind {
 	public boolean isBusMetro() { return this==METRO; }
 	public boolean isBusAny() { return this==METRO || this==EXPRESS || this==BUS; }
 	
+	public String[] getLineNames() {
+		return names;
+	}
 
 	public static LineKind getKind(Line line) {
 		if (TRAM.contains(line.getName())) return TRAM;
