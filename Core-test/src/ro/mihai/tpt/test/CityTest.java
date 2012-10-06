@@ -3,7 +3,10 @@ package ro.mihai.tpt.test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
@@ -16,12 +19,35 @@ import ro.mihai.util.LineKind;
 
 public class CityTest {
 	private City c;
+	private List<String> app_lines = Arrays.asList(new String[]{
+			"Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9b",
+			"Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19",
+			"E1","E2","E3", "E4","E5","E6","E7","E7b","E8",
+			"M30","M35","M36", "3","13","21","28","32","33","40","46"});
 
 	@Before
 	public void setUp() throws IOException {
 		c = JavaCityLoader.loadCachedCityOrDownloadAndCache(new TestPrefs());
 	}
 	
+	@Test
+	public void test_app_panel_links() {
+		String missingLines = "";
+		for(String line : app_lines)
+			if (c.getLine(line) == null || c.getLine(line).getId().startsWith("F"))
+				missingLines += "City does not have line "+line+"\n"; 
+		assertEquals("", missingLines);
+	}
+
+	@Test
+	public void test_app_bus_panel_city_coverage() {
+		String hiddenLines = "";
+		for(Line l : c.getLines())
+			if (!app_lines.contains(l.getName()))
+				hiddenLines += "App does not show line "+l.getName()+"\n"; 
+		assertEquals("", hiddenLines);
+	}
+		
 	@Test
 	public void test_line_33_arta_connections() {
 		Line l33 = c.getLine("33");
@@ -37,7 +63,7 @@ public class CityTest {
 		Path p1 = l33.getPath("Catedrala");
 		assertTrue(p1.getStationsByPath().contains(a1));
 
-		Path p2 = l33.getPath("Real");
+		Path p2 = l33.getPath("Pod C. Sagului");
 		assertTrue(p2.getStationsByPath().contains(a2));
 	}
 
@@ -68,8 +94,8 @@ public class CityTest {
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
 		
-		assertEquals(4, a1.getLines().size());
-		assertEquals(4, a2.getLines().size());
+		assertEquals("33, E1, E8", a1.getLineNames());
+		assertEquals("33, E1, E8", a2.getLineNames());
 	}
 	
 	@Test
@@ -78,10 +104,10 @@ public class CityTest {
 			assertNotNull("Junction name should not be null", j.getName());
 		
 		for (Junction j:c.getJunctions())
-			assertTrue("Junction name should not be empty", j.getName().length()>0);
+			assertTrue("Junction should contain at least one station ("+j.getName()+")", j.getStations().size() > 0);
 
 		for (Junction j:c.getJunctions())
-			assertTrue("Junction should contain at least one station", j.getStations().size() > 0);
+			assertTrue("Junction name should not be empty ("+j.getStations()+")", j.getName().length()>0);
 	}
 
 	@Test
@@ -93,7 +119,7 @@ public class CityTest {
 	private void assertOthersNotKind(LineKind kind) {
 		for(Line l : c.getLines()) 
 			if (!kind.contains(l.getName()))
-				assertTrue(l.getKind() != kind);
+				assertTrue(l.getName()+" is not a "+kind, l.getKind() != kind);
 	}
 
 	@Test
@@ -195,14 +221,16 @@ public class CityTest {
 
 	@Test
 	public void test_known_distance() {
-		Station s33 = c.getLine("33").getPath("Real").getStationsByPath().get(0);
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(0);
 		
-		assertEquals(5,s33.getJunction().getStations().size());
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("4640")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("3105")));
+		assertTrue(s33.getJunction().getStations().contains(c.getStation("3102")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("3163")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("2799")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("5300")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("3200")));
+		assertEquals(7,s33.getJunction().getStations().size());
 
 		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv1")));
 		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv2")));
@@ -231,7 +259,7 @@ public class CityTest {
 	
 	@Test
 	public void test_known_distance_Arta_textila() {
-		Station s33 = c.getLine("33").getPath("Real").getStationsByPath().get(4);
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(4);
 		for(Station s : s33.getJunction().getStations()) {
 			System.out.println(""+s.getId()+":"+s.getNiceName());
 		}
@@ -297,7 +325,7 @@ public class CityTest {
 				checked.add(pair);
 				checked.add(b.getId()+"-"+a.getId());
 				int d = a.distanceTo(b);
-				String err = "Statins should be in junction("+(long)d+"): "+
+				String err = "Stations should be in junction("+(long)d+"): "+
 						a.getId()+":"+a.getNiceName() +":"+ a.getJunctionName()+", "+
 						b.getId()+":"+b.getNiceName() +":"+ b.getJunctionName()+"\n";
 				if (d<0)
