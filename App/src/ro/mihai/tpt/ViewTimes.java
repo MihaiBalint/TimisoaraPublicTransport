@@ -38,8 +38,10 @@ import ro.mihai.tpt.utils.LineKindUtils;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +51,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -72,9 +75,28 @@ public class ViewTimes extends CityActivity {
     	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
 		
+		TextView lineKind = (TextView)findViewById(R.id.LineKind);
+		lineKind.setText(path.getLineKindLabel());
+		
+		TextView lineName = (TextView)findViewById(R.id.LineName);
+		lineName.setText(path.getLineNameLabel());
+		
+		TextView lineDirection1 = (TextView)findViewById(R.id.LineDirection1);
+		lineDirection1.setText(path.getPathLabel(0));
+		
+		TextView lineDirection2 = (TextView)findViewById(R.id.LineDirection2);
+		lineDirection2.setText(path.getPathLabel(1));
+		
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
-    	update.setText(path.getLabel());
+    	update.setText("Update");
+    	
+    	int[] radio_ids = new int[]{R.id.LineDirectionRadio1, R.id.LineDirectionRadio2};
+    	View radio = (View)findViewById(radio_ids[path.getCurrentPath()]);
+    	radio.setBackgroundColor(0xFFb2ff36);
+    	
+    	LinearLayout lineDirectionView = (LinearLayout)findViewById(R.id.LineDirectionView);
+    	lineDirectionView.setOnClickListener(new PathSwitcher());
 
     	Button connections = (Button)findViewById(R.id.ConnectionsButton);
     	connections.setOnClickListener(new SelectConnectionKinds());
@@ -95,7 +117,7 @@ public class ViewTimes extends CityActivity {
     	super.onPause();
     	updater.killUpdate();
     }
-
+    
 	private void inflateTable() {
 		timesTable.removeAllViews();
 		List<StationPathsSelection> stations = path.getStations();
@@ -365,6 +387,21 @@ public class ViewTimes extends CityActivity {
 		}
     }
     
+    private class PathSwitcher implements View.OnClickListener {
+		public void onClick(View v) {
+        	Path p = path.getPath();
+        	ArrayList<Path> paths = new ArrayList<Path>(p.getLine().getPaths());
+        	paths.remove(p);
+        	if(paths.size()==1) {
+        		Path opposite = paths.get(0);
+            	new StartActivity(ViewTimes.this, ViewTimes.class)
+    	    		.addCity(city)
+    	    		.addLinePath(opposite)
+    	    		.replace();
+        	} 
+		}
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
@@ -386,7 +423,7 @@ public class ViewTimes extends CityActivity {
             	new StartActivity(this, ViewTimes.class)
     	    		.addCity(city)
     	    		.addLinePath(opposite)
-    	    		.start();
+    	    		.replace();
         	} 
             return true;
         case R.id.app_settings: 

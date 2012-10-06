@@ -30,7 +30,7 @@
 		android:textColor="#FFFFFFFF"
 		android:gravity="right"
   		android:text=""
-   		android:textSize="6.5pt"
+   		android:textSize="14sp"
    	/>
     
  	<LinearLayout
@@ -46,7 +46,7 @@
 			android:background="#C8C02000"
 			android:gravity="left"
 	  		android:text="3min"
-	   		android:textSize="6.5pt"
+	   		android:textSize="14sp"
 	   	/>
   	    
 	   	<TextView android:id="@+id/LineName"
@@ -56,7 +56,7 @@
 			android:textColor="#FFFFFFFF"
 			android:gravity="right"
 	  		android:text="33"
-	   		android:textSize="6.5pt"
+	   		android:textSize="14sp"
 	   	/>
 	   	<TextView android:id="@+id/LineArrow"
 			android:layout_width="wrap_content" 
@@ -64,14 +64,14 @@
 			android:textColor="#FFFFFFFF"
 			android:gravity="right"
 	  		android:text=" > "
-	   		android:textSize="6.5pt"
+	   		android:textSize="14sp"
 	   	/>
 	   	<TextView android:id="@+id/LineDirection"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:textColor="#FFFFFFFF"
 	  		android:text="Arta textila"
-	   		android:textSize="6.5pt"
+	   		android:textSize="14sp"
 	   		android:singleLine="true"
 	   		android:ellipsize="marquee"
 	   	/>

@@ -20,9 +20,12 @@ package ro.mihai.tpt.model;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,10 +49,18 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		this(id,name,-1,null);
 	}
 	
+	public List<String> getSortedPathNames() {
+		List<String> pathNames = new ArrayList<String>();
+		for(Path p : paths.values())
+			pathNames.add(p.getNiceName());
+		Collections.sort(pathNames);
+		return pathNames;
+	}
+	
 	public String getPathNames() {
 		boolean first = true;
 		String pathNames = "";
-		for(String pathName : paths.keySet())
+		for(String pathName : getSortedPathNames())
 			if (first) {
 				pathNames += pathName;
 				first = false;

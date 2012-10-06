@@ -54,6 +54,7 @@ public class CityActivity extends Activity implements IPrefs {
 	}
 	
 	private static final int REQUEST_CODE_PREFERENCES = 1;
+	public static final int REQUEST_CODE_REPLACE = 99;
 	protected void launchPrefs() {
         // When the button is clicked, launch an activity through this intent
         Intent launchPreferencesIntent = new Intent().setClass(this, Preferences.class);
@@ -65,11 +66,16 @@ public class CityActivity extends Activity implements IPrefs {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // The preferences returned if the request code is what we had given
-        // earlier in startSubActivity
-        if (requestCode == REQUEST_CODE_PREFERENCES) 
+        switch(requestCode) {
+        case REQUEST_CODE_REPLACE: 
+        	this.finish(); 
+        	break;
+        case REQUEST_CODE_PREFERENCES: 
+            // The preferences returned if the request code is what we had given
+            // earlier in startSubActivity
         	baseUrl = Utils.readBaseDownloadUrl(this);
+        	break;
+        }
     }
   
     private String baseUrl = null;

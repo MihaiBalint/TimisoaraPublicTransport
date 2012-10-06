@@ -52,6 +52,12 @@ public class SelectLinePath implements OnClickListener, DialogInterface.OnClickL
 	public void onClick(View v) {
 		pathList = new ArrayList<Path>(selectable.getPaths());
 		assert( !pathList.isEmpty() );
+		onClick(null, 0);
+	}
+
+	public void ask_onClick(View v) {
+		pathList = new ArrayList<Path>(selectable.getPaths());
+		assert( !pathList.isEmpty() );
 		
 		if(pathList.size()==1) { // only one path?
 			onClick(null, 0);

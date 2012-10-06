@@ -48,6 +48,10 @@ public class StartActivity implements OnClickListener {
 		return this;
 	}
 	
+	public void replace() {
+		parent.startActivityForResult(new Intent(parent, activity), CityActivity.REQUEST_CODE_REPLACE);
+	}
+	
 	public void start() {
 		parent.startActivity(new Intent(parent, activity));
 	}

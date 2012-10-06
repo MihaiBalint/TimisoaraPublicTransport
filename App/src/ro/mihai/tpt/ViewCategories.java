@@ -22,6 +22,7 @@ import java.util.List;
 
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.LineKindUtils;
@@ -57,9 +58,14 @@ public class ViewCategories extends CityActivity {
     	Iterator<String> nameIt = sortedNames.iterator();
     	for(int id: ids) {
     		String name = nameIt.next();
+    		Line line = c.getLine(name);
+    		while (line.isFake() && nameIt.hasNext()) {
+    			name = nameIt.next();
+    			line = c.getLine(name);
+    		}
     		Button btn = (Button)findViewById(id);
     		btn.setText(" "+name+" ");
-    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine(name)));
+    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, line));
     	}
     }
     

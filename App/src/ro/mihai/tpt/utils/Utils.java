@@ -81,7 +81,7 @@ public class Utils {
 		}
 		
 		public int compare(String l1, String l2) {
-			return get(l1) - get(l2);
+			return get(l2) - get(l1);
 		}
 	}
 }
