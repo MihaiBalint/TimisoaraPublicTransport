@@ -44,6 +44,24 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		this.lines = new ArrayList<Line>(2);
 		this.name = name;
 	}
+	
+	@Override
+	public String toString() {
+		String lineNames = getLineNames();
+		return "Station: "+id+" - "+getShortName()+"["+lineNames+"]("+Integer.toHexString(hashCode())+")";
+	}
+
+	public String getLineNames() {
+		String lineNames = "";
+		boolean first = true;
+		for(Line line : lines)
+			if (first) {
+				lineNames += line.getName();
+				first = false;
+			} else
+				lineNames += ", "+line.getName();
+		return lineNames;
+	}
 
 	public String getId() {
 		return id;

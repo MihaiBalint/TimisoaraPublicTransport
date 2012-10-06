@@ -46,6 +46,24 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		this(id,name,-1,null);
 	}
 	
+	public String getPathNames() {
+		boolean first = true;
+		String pathNames = "";
+		for(String pathName : paths.keySet())
+			if (first) {
+				pathNames += pathName;
+				first = false;
+			} else
+				pathNames += ", "+pathName;
+		return pathNames;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "Line: "+name+"["+getPathNames()+"]("+Integer.toHexString(hashCode())+")";
+	}
+	
 	public LineKind getKind() {
 		return LineKind.getKind(this);
 	}
