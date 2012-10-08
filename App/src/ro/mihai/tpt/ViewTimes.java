@@ -101,6 +101,7 @@ public class ViewTimes extends CityActivity {
     	connections.setOnClickListener(new SelectConnectionKinds());
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
+    	setDefaultViewFont(timesTable.getRootView());
     	inflater = this.getLayoutInflater();
     	inflateTable();
     	updater.onClick(null); // start update immediately after starting the activity
@@ -157,6 +158,8 @@ public class ViewTimes extends CityActivity {
 		}
 
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
+    	setDefaultViewFont(timesRow);
+		
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
@@ -182,7 +185,8 @@ public class ViewTimes extends CityActivity {
 			rowLayout = R.layout.times_connection;
 
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
-		
+    	setDefaultViewFont(timesRow);
+    	
 		Path connectingPath = est.getPath();
 		
 		TextView lineNameLabel = (TextView)timesRow.findViewById(R.id.LineName);
