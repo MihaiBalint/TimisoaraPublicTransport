@@ -95,10 +95,13 @@ public class CityActivity extends Activity implements IPrefs {
 		.start();
 	}
 	
+	public static Typeface regularFont = null, boldFont = null;
 	public void setDefaultViewFont(View view) {
-		Typeface regular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
-		Typeface bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
-		setViewFont(view, new Typeface[]{regular, bold});
+		if (null==regularFont)
+			regularFont = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+		if (null==boldFont)
+			boldFont = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+		setViewFont(view, new Typeface[]{regularFont, boldFont});
 	}
 	
 	private static final void setViewFont(View view, Typeface[] font) {
