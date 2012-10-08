@@ -45,7 +45,6 @@
 				android:inputType="textCapCharacters"
 	  			android:text="b u s"
 		   		android:textSize="12sp"
-		   		
 		   	/>
     	    <TextView android:id="@+id/LineName"
 				android:layout_width="wrap_content" 

@@ -24,7 +24,11 @@ import ro.mihai.util.IPrefs;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class CityActivity extends Activity implements IPrefs {
 	private City city = null;
@@ -90,4 +94,22 @@ public class CityActivity extends Activity implements IPrefs {
     	new StartActivity(this, LoadCity.class)
 		.start();
 	}
+	
+	public void setDefaultViewFont(View view) {
+		Typeface regular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+		Typeface bold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
+		setViewFont(view, new Typeface[]{regular, bold});
+	}
+	
+	private static final void setViewFont(View view, Typeface[] font) {
+        if (view instanceof TextView) {
+        	TextView text = (TextView) view;
+            text.setTypeface(font[text.getTypeface().getStyle()]);
+        } else if (view instanceof ViewGroup) {
+        	ViewGroup container = (ViewGroup) view;
+    	    int mCount = container.getChildCount();
+    	    for (int i=0; i<mCount; i++) 
+    	    	setViewFont(container.getChildAt(i), font);
+        }
+	}	
 }
