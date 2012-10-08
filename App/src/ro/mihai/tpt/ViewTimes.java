@@ -127,9 +127,6 @@ public class ViewTimes extends CityActivity {
 			Station s = sel.getStation();
 			Estimate est = path.getEstimate(s);
 			
-	    	//if (est.isVehicleHere()) {
-	    	//	timesTable.addView(inflater.inflate(R.layout.times_station_vehicle, timesTable, false));
-	    	//}
 	    	timesTable.addView(newStationEstimateView(est, evenRow));
 	    	evenRow = !evenRow;
 	    	
@@ -245,10 +242,6 @@ public class ViewTimes extends CityActivity {
 			final boolean even = (rowIndex & 1) == 0; // this is zero based, therefore first = even
 			Runnable upd = new Runnable() {
 				public void run() {
-					// ****************************************************************
-					boolean _even = even;
-					int _rowIndex = rowIndex;
-		    		System.out.println(_even+"+"+_rowIndex);
 					timesTable.removeViewAt(rowIndex);
 		    		timesTable.addView(newStationEstimateView(est, even), rowIndex);
 				}
