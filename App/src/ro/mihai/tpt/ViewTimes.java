@@ -92,7 +92,7 @@ public class ViewTimes extends CityActivity {
     	
     	int[] radio_ids = new int[]{R.id.LineDirectionRadio1, R.id.LineDirectionRadio2};
     	View radio = (View)findViewById(radio_ids[path.getCurrentPath()]);
-    	radio.setBackgroundColor(0xFFb2ff36);
+    	radio.setBackgroundResource(R.drawable.checkbox_active);
     	
     	LinearLayout lineDirectionView = (LinearLayout)findViewById(R.id.LineDirectionView);
     	lineDirectionView.setOnClickListener(new PathSwitcher());
