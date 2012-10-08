@@ -28,14 +28,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:layout_marginBottom="10dip"
+        android:layout_marginBottom="5dip"
         android:layout_marginTop="5dip">
 
     	<LinearLayout
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:orientation="vertical"
-        	android:layout_margin="10dip"
+        	android:layout_marginRight="10dip"
+        	android:layout_marginLeft="10dip"
         	android:gravity="center_horizontal">
         	<TextView android:id="@+id/LineKind"
 				android:layout_width="wrap_content" 
@@ -53,6 +54,7 @@
 				android:gravity="center_horizontal"
 				android:textColor="#FFFFFFFF"
 	  			android:text="8"
+	  			android:textStyle="bold"
 		   		android:textSize="36sp"
 		   	/>
     	</LinearLayout>
@@ -75,22 +77,10 @@
         		android:gravity="center_vertical">
         		
 	    	    <View android:id="@+id/LineDirectionRadio1"
-    	    		android:layout_width="15dip"
-					android:layout_height="15dip"
-					android:gravity="left"
-					android:layout_marginLeft="10dip"
-					android:layout_marginRight="5dip"
-	    		    android:background="#FF000000" />
+	    	        style="@style/DirectionRadio"/>
     		    <TextView android:id="@+id/LineDirection1"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content"
-					android:textColor="#FFFFFFFF"
-					android:scrollHorizontally="true"
-					android:ellipsize="end"
-					android:gravity="left"
-					android:lines="1"
+    	            style="@style/DirectionLabel"
 	  				android:text="Directia Pod C. Sagului sdcc ecr erce rcerc"
-		   			android:textSize="20sp"
 			   	/>
 			</LinearLayout>
     	    <View
@@ -105,22 +95,10 @@
         		android:gravity="center_vertical">
         		
 	    	    <View android:id="@+id/LineDirectionRadio2"
-    	    		android:layout_width="15dip"
-					android:layout_height="15dip"
-					android:gravity="left"
-					android:layout_marginLeft="10dip"
-					android:layout_marginRight="5dip"
-	    		    android:background="#FF000000" />
+	    	        style="@style/DirectionRadio"/>
     	        <TextView android:id="@+id/LineDirection2"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content"
-					android:textColor="#FFFFFFFF"
-					android:gravity="left"
-					android:scrollHorizontally="true"
-					android:ellipsize="end"
-					android:lines="1"
+    	            style="@style/DirectionLabel"
 	  				android:text="Directia Catedrala"
-		   			android:textSize="20sp"
 		   			/>
 			</LinearLayout>
     	</LinearLayout>

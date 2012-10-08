@@ -23,7 +23,6 @@ import java.util.List;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
-import ro.mihai.util.LineKind;
 
 public class PathStationsSelection {
 	private Path path;

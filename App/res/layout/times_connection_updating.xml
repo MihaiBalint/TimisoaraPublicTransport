@@ -21,15 +21,12 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
 	android:background="#FFb2ff36"
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content">
+	style="@style/ArrivalTimeRow"
+	>
    	
    	<TextView android:id="@+id/Spacer"
-		android:layout_height="wrap_content"
-		android:textColor="#FF000000"
-		android:gravity="right"
+	    style="@style/ConnectionArrivalTimeSpacer"
   		android:text=""
-   		android:textSize="14sp"
    	/>
     
   	<LinearLayout
@@ -38,39 +35,26 @@
    	    android:layout_height="wrap_content">
 
  	   	<TextView android:id="@+id/StationTime"
-			android:layout_width="30pt" 
-			android:layout_height="wrap_content"
+ 	   	    style="@style/ConnectionArrivalTime"
 			android:textColor="#FF000000"
-			android:gravity="left"
 	  		android:text="3min"
-	   		android:textSize="14sp"
 	   	/>
   	    
 	   	<TextView android:id="@+id/LineName"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
+	   	    style="@style/ConnectionArrivalText"
 			android:layout_marginLeft="5pt"
 			android:textColor="#FF000000"
-			android:gravity="right"
 	  		android:text="33"
-	   		android:textSize="14sp"
 	   	/>
 	   	<TextView android:id="@+id/LineArrow"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
+	   	    style="@style/ConnectionArrivalText"
 			android:textColor="#FF000000"
-			android:gravity="right"
 	  		android:text=" > "
-	   		android:textSize="14sp"
 	   	/>
 	   	<TextView android:id="@+id/LineDirection"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
+	   	    style="@style/ConnectionArrivalText"
 			android:textColor="#FF000000"
 	  		android:text="Arta textila"
-	   		android:textSize="14sp"
-	   		android:singleLine="true"
-	   		android:ellipsize="marquee"
 	   	/>
    	</LinearLayout>
 </TableRow>

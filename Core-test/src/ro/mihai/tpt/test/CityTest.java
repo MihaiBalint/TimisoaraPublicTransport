@@ -20,7 +20,7 @@ import ro.mihai.util.LineKind;
 public class CityTest {
 	private City c;
 	private List<String> app_lines = Arrays.asList(new String[]{
-			"Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9b",
+			"Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9",
 			"Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19",
 			"E1","E2","E3", "E4","E4b","E6","E7","E8",
 			"M30","M35","M36", "3","13","21","28","32","33","33b","40","46"});
@@ -124,7 +124,7 @@ public class CityTest {
 
 	@Test
 	public void test_Tv9() {
-		Line tv9 = c.getLine("Tv9b");
+		Line tv9 = c.getLine("Tv9");
 		assertTrue(tv9.getKind().isTram());
 		assertTrue(tv9.getPaths().size()>0);
 		for(Path p : tv9.getPaths())
@@ -142,7 +142,7 @@ public class CityTest {
 		assertTrue(c.getLine("Tv7a").getKind().isTram());
 		assertTrue(c.getLine("Tv7b").getKind().isTram());
 		assertTrue(c.getLine("Tv8").getKind().isTram());
-		assertTrue(c.getLine("Tv9b").getKind().isTram());
+		assertTrue(c.getLine("Tv9").getKind().isTram());
 		assertOthersNotKind(LineKind.TRAM);
 	}
 
