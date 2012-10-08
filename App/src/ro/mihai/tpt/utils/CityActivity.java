@@ -102,9 +102,14 @@ public class CityActivity extends Activity implements IPrefs {
 	}
 	
 	private static final void setViewFont(View view, Typeface[] font) {
-        if (view instanceof TextView) {
+		if (view == null) {
+			return;
+		} else if (view instanceof TextView) {
         	TextView text = (TextView) view;
-            text.setTypeface(font[text.getTypeface().getStyle()]);
+        	int fontStyle = 0;
+        	if (text.getTypeface() != null)
+        		fontStyle = text.getTypeface().getStyle();
+            text.setTypeface(font[fontStyle]);
         } else if (view instanceof ViewGroup) {
         	ViewGroup container = (ViewGroup) view;
     	    int mCount = container.getChildCount();
