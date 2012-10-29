@@ -8,13 +8,13 @@
     </style>
     
     <style name="CategoryButton">
-        <item name="android:layout_width">65pt</item>
-        <item name="android:layout_height">25pt</item>
+        <item name="android:layout_width">145sp</item>
+        <item name="android:layout_height">55sp</item>
     </style>
 
     <style name="LineButton">
-        <item name="android:layout_width">30pt</item>
-        <item name="android:layout_height">15pt</item>
+        <item name="android:layout_width">65sp</item>
+        <item name="android:layout_height">35sp</item>
         <item name="android:background">@drawable/state_button_wide</item>
         <item name="android:textColor">@color/text_colors</item>
         <item name="android:textSize">9pt</item>
@@ -44,15 +44,8 @@
     <style name="ArrivalTimeRow">
         <item name="android:layout_width">fill_parent</item> 
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:paddingBottom">3dip</item>
+		<item name="android:paddingBottom">0dip</item>
 		<item name="android:gravity">center_vertical</item>
-	</style>
-    <style name="ArrivalTimeRowSep">
-        <item name="android:layout_width">fill_parent</item> 
-		<item name="android:layout_height">1dip</item>
-		<item name="android:layout_weight">1</item>
-		<item name="android:layout_marginBottom">3dip</item>
-		<item name="android:background">#FF404040</item>
 	</style>
 	
     <style name="StationArrivalTime">

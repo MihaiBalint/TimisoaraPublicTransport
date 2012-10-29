@@ -32,13 +32,14 @@
 	<ProgressBar 
 		android:id="@+id/ProgressBar" 
 		android:layout_width="fill_parent" 
-		android:layout_height="10pt"
+		android:layout_height="22dp"
 		style="?android:attr/progressBarStyleHorizontal"
 	></ProgressBar>
 	<TextView  
 		android:id="@+id/StatusText" 
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
+   		android:textSize="18sp"
 	    android:gravity="center" 
 	    android:text="@string/loading"
     ></TextView>

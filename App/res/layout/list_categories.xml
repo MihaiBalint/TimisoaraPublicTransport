@@ -117,12 +117,14 @@
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
+   		android:textSize="18sp"
 		android:gravity="center"/>
 	<TextView
 		android:text="Press menu to see credits."
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
+   		android:textSize="18sp"
 		android:gravity="center"/>
 </TableLayout>
 </ScrollView>

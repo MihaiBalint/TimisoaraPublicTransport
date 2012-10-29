@@ -20,14 +20,13 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="#FFb2ff36"
+	android:background="@drawable/times_row_upd"
 	style="@style/ArrivalTimeRow"
 	>
 	<LinearLayout
        	android:layout_width="fill_parent"
        	android:layout_height="wrap_content"
        	android:orientation="vertical">
-       	<View style="@style/ArrivalTimeRowSep" />
 		<LinearLayout
        		android:layout_width="fill_parent"
        		android:layout_height="wrap_content"

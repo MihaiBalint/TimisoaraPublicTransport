@@ -127,15 +127,14 @@ public class ViewTimes extends CityActivity {
 			Estimate est = path.getEstimate(s);
 			
 	    	timesTable.addView(newStationEstimateView(est, evenRow));
-	    	evenRow = !evenRow;
 	    	
 	    	for(Node connection : sel.getConnections()) {
 	    		Path connectingPath = connection.path;
 	    		est = connectingPath.getEstimate(connection.station);
 
 	    		timesTable.addView(newConnectionEstimateView(est, evenRow));
-		    	evenRow = !evenRow;
 	    	}
+	    	evenRow = !evenRow;
 		}
 	}
 
@@ -162,7 +161,7 @@ public class ViewTimes extends CityActivity {
 		
 		if(alternateBackground) {
 			View tableRow = timesRow.findViewById(R.id.StationStatusRow);
-			tableRow.setBackgroundColor(evenRow ? 0xff282828 : 0xff000000);
+			tableRow.setBackgroundResource(evenRow ? R.drawable.times_row_even : R.drawable.times_row_odd);
 		}
 
 		return timesRow;
@@ -170,13 +169,17 @@ public class ViewTimes extends CityActivity {
 
 	private View newConnectionEstimateView(Estimate est, boolean evenRow) {
 		int rowLayout;
+		boolean alternateBackground = false;
 		if (est.isUpdating())
 			rowLayout = R.layout.times_connection_updating;
 		else if (est.hasErrors()) {
 			rowLayout = R.layout.times_connection_err;
 			updater.setHasErrors();
-		} else
+			alternateBackground = true;
+		} else {
 			rowLayout = R.layout.times_connection;
+			alternateBackground = true;
+		}
 
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
 		
@@ -191,6 +194,11 @@ public class ViewTimes extends CityActivity {
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
 
+		if(alternateBackground) {
+			View tableRow = timesRow.findViewById(R.id.StationStatusRow);
+			tableRow.setBackgroundResource(evenRow ? R.drawable.conn_row_even : R.drawable.conn_row_odd);
+		}
+
 		return timesRow;
 	}
 	
@@ -200,16 +208,18 @@ public class ViewTimes extends CityActivity {
 		
 		public void run() {
 			int ec = 0, index = 0;
+			boolean evenRow = true; // java is zero based, therefore first = even
 			for(StationPathsSelection sel: path.getStations()) {
 				if(!running.get()) return;
 				Station s = sel.getStation();
-				ec = updateStationRowView(ec, index, path.getPath(), s);
+				ec = updateStationRowView(ec, index, evenRow, path.getPath(), s);
 				index++;
 				for(Node connection : sel.getConnections()) {
 					if(!running.get()) return;
-					ec = updateConnectionRowView(ec, index, connection.path, connection.station);
+					ec = updateConnectionRowView(ec, index, evenRow, connection.path, connection.station);
 					index++;
 				}
+				evenRow = !evenRow;
 			}
 			killUpdate();
 			runOnUiThread(new UpdateView());
@@ -217,9 +227,8 @@ public class ViewTimes extends CityActivity {
 				runOnUiThread(new ReportError());
 		}
 
-		private int updateConnectionRowView(int ec, final int rowIndex, Path path, Station s) {
+		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, Path path, Station s) {
 			final Estimate est = path.getEstimate(s);
-			final boolean even = (rowIndex & 1) == 0; // this is zero based, therefore first = even
 			Runnable upd = new Runnable() {
 				public void run() {
 					timesTable.removeViewAt(rowIndex);
@@ -233,9 +242,8 @@ public class ViewTimes extends CityActivity {
 			return ec;
 		}
 
-		private int updateStationRowView(int ec, final int rowIndex, Path path, Station s) {
+		private int updateStationRowView(int ec, final int rowIndex, final boolean even, Path path, Station s) {
 			final Estimate est = path.getEstimate(s);
-			final boolean even = (rowIndex & 1) == 0; // this is zero based, therefore first = even
 			Runnable upd = new Runnable() {
 				public void run() {
 					timesTable.removeViewAt(rowIndex);

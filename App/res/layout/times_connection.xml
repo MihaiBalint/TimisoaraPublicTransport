@@ -20,18 +20,13 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="#80000000"
+	android:background="@drawable/times_row_even"
 	style="@style/ArrivalTimeRow"
 	>
 
-	<TextView android:id="@+id/Spacer"
-	    style="@style/ConnectionArrivalTimeSpacer"
-  		android:text=""
-   	/>
-    
   	<LinearLayout
    	    android:id="@+id/linearLayout1"
-		android:background="#80606060"
+   	    android:layout_marginLeft="20dp"
    	    android:layout_width="wrap_content"
    	    android:layout_height="wrap_content">
 
