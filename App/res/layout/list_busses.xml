@@ -40,6 +40,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
+	    android:layout_marginTop="5dp"
 	    >
 		<Button	style="@style/LineButton" android:id="@+id/bE1"
 			android:text=" E1 "/>
@@ -50,10 +51,12 @@
 		<Button	style="@style/LineButton" android:id="@+id/bE4"
 			android:text=" E4 "/>
 	</LinearLayout>
+	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="5dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/bE6"
 			android:text=" E6 "/>
@@ -65,15 +68,11 @@
 			android:text=" E4b "/>
 	</LinearLayout>
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="10pt"
-	/>
-	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="10dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/b3"
 			android:text=" 3 "/>
@@ -88,6 +87,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="5dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/b32"
 			android:text=" 32 "/>
@@ -98,24 +98,22 @@
 		<Button	style="@style/LineButton" android:id="@+id/b46"
 			android:text=" 46 "/>
 	</LinearLayout>
+	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="5dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/b33b"
 			android:text=" 33b "/>
 	</LinearLayout>
 	
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="10pt"
-	/>
-
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="10dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/bM30"
 			android:text=" M30 "/>

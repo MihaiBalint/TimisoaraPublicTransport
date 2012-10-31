@@ -17,7 +17,7 @@
         <item name="android:layout_height">35sp</item>
         <item name="android:background">@drawable/state_button_wide</item>
         <item name="android:textColor">@color/text_colors</item>
-        <item name="android:textSize">9pt</item>
+        <item name="android:textSize">20sp</item>
     </style>
     
     <!-- Arrival Time styles -->

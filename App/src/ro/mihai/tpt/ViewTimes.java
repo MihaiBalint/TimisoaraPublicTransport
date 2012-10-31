@@ -140,45 +140,34 @@ public class ViewTimes extends CityActivity {
 
 	private View newStationEstimateView(Estimate est, boolean evenRow) {
 		int rowLayout;
-		boolean alternateBackground = false;
-		if (est.isUpdating())
+		if (est.isUpdating()) {
 			rowLayout = R.layout.times_station_updating;
-		else if (est.hasErrors()) {
-			rowLayout = R.layout.times_station_err;
+		} else if (est.hasErrors()) {
+			rowLayout = evenRow ? R.layout.times_station_err_even : R.layout.times_station_err_odd;
 			updater.setHasErrors();
-			alternateBackground = true;
 		} else {
-			rowLayout = R.layout.times_station;
-			alternateBackground = true;
+			rowLayout = evenRow ? R.layout.times_station_even : R.layout.times_station_odd;
 		}
 
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
+		
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
-		
-		if(alternateBackground) {
-			View tableRow = timesRow.findViewById(R.id.StationStatusRow);
-			tableRow.setBackgroundResource(evenRow ? R.drawable.times_row_even : R.drawable.times_row_odd);
-		}
-
 		return timesRow;
 	}
 
 	private View newConnectionEstimateView(Estimate est, boolean evenRow) {
 		int rowLayout;
-		boolean alternateBackground = false;
-		if (est.isUpdating())
+		if (est.isUpdating()) {
 			rowLayout = R.layout.times_connection_updating;
-		else if (est.hasErrors()) {
-			rowLayout = R.layout.times_connection_err;
+		} else if (est.hasErrors()) {
+			rowLayout = evenRow ? R.layout.times_connection_err_even : R.layout.times_connection_err_odd;
 			updater.setHasErrors();
-			alternateBackground = true;
 		} else {
-			rowLayout = R.layout.times_connection;
-			alternateBackground = true;
+			rowLayout = evenRow ? R.layout.times_connection_even : R.layout.times_connection_odd;
 		}
 
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
@@ -193,12 +182,6 @@ public class ViewTimes extends CityActivity {
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
-
-		if(alternateBackground) {
-			View tableRow = timesRow.findViewById(R.id.StationStatusRow);
-			tableRow.setBackgroundResource(evenRow ? R.drawable.conn_row_even : R.drawable.conn_row_odd);
-		}
-
 		return timesRow;
 	}
 	

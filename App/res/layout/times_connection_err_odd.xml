@@ -20,7 +20,7 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="@drawable/times_row_even"
+	android:background="@drawable/conn_row_odd"
 	style="@style/ArrivalTimeRow"
 	>
 
@@ -39,7 +39,7 @@
   	    
 	   	<TextView android:id="@+id/LineName"
 	   	    style="@style/ConnectionArrivalText"
-			android:layout_marginLeft="5pt"
+			android:layout_marginLeft="5dp"
 			android:textColor="#FFFFFFFF"
 	  		android:text="33"
 	   	/>

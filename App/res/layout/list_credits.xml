@@ -36,15 +36,10 @@
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content">
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="5pt"
-	/>
-
-	
 	<TextView
-		android:text="App Version 2.8" 
+		android:text="App Version 2.9" 
 		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
 		android:gravity="center"/>
 	<TextView
 		android:text="(c) 2011-2012 Mihai Balint, Kriszti Cseh,"
@@ -61,7 +56,7 @@
 	
 	<TextView
 		android:text="Special thanks to Sorin for the server-side."
-		android:layout_marginTop="5pt"
+		android:layout_marginTop="5dp"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
@@ -81,7 +76,7 @@
 	
 	<TextView
 		android:text="Open-source software, licensed under GPLv3."
-		android:layout_marginTop="10pt"
+		android:layout_marginTop="10dp"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
@@ -94,6 +89,7 @@
 		android:gravity="center"/>
 	<TextView
 		android:text="https://github.com/MihaiBalint"
+		android:autoLink="web"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
@@ -101,7 +97,7 @@
 
 	<TextView
 		android:text="Join the discussion at:"
-		android:layout_marginTop="10pt"
+		android:layout_marginTop="10dp"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"

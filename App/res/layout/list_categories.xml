@@ -36,15 +36,11 @@
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content">
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="5pt"
-	/>
-
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
+	    android:layout_marginTop="5dp"
 	    >
 		<Button	style="@style/LineButton" android:id="@+id/opt11"
 			android:text=" 33 "/>
@@ -54,15 +50,11 @@
 			android:text=" Tv2 "/>
 	</LinearLayout>
 	
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="8pt"
-	/>
-	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="8dp"
 		>
 		<Button	style="@style/LineButton"  android:id="@+id/opt21"
 			android:text=" 40 "/>
@@ -72,16 +64,11 @@
 			android:text=" Tb15 "/>
 	</LinearLayout>
 
-
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="8pt"
-	/>
-	
 	<LinearLayout 
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" 
 		android:gravity="center"
+	    android:layout_marginTop="8dp"
 		>
 		<Button 
 			style="@style/CategoryButton"

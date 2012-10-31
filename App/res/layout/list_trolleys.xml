@@ -36,15 +36,11 @@
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content">
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="10pt"
-	/>
-
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="center"
+	    android:layout_marginTop="10dp"
 	    >
 		<Button	style="@style/LineButton" android:id="@+id/bTb11"
 			android:text=" Tb11 "/>
@@ -54,15 +50,11 @@
 			android:text=" Tb15 "/>
 	</LinearLayout>
 
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="10pt"
-	/>
-	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+	    android:layout_marginTop="20dp"
 		>
 		<Button	style="@style/LineButton" android:id="@+id/bTb16"
 			android:text=" Tb16 "/>
@@ -73,12 +65,6 @@
 		<Button	style="@style/LineButton" android:id="@+id/bTb19"
 			android:text=" Tb19 "/>
 	</LinearLayout>
-
-
-	<View
-		android:layout_width="fill_parent"
-		android:layout_height="10pt"
-	/>
 </TableLayout>
 </ScrollView>
 

@@ -20,29 +20,23 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="@drawable/times_row_even"
+	android:background="@drawable/times_row_odd"
 	style="@style/ArrivalTimeRow"
 	>
 	<LinearLayout
-       	android:layout_width="fill_parent"
-       	android:layout_height="wrap_content"
-       	android:orientation="vertical">
-		<LinearLayout
-       		android:layout_width="fill_parent"
-       		android:layout_height="wrap_content"
-       		android:orientation="horizontal">
-		    <TextView android:id="@+id/StationTime"
-		   	    style="@style/StationArrivalTime"
-				android:textColor="#FFFFFFFF"
-		  		android:text="3min"
-		   	/>
-		   	<TextView android:id="@+id/StationLabel"
-		   	    style="@style/StationLabel"
-				android:textColor="#FFFFFFFF"
-		  		android:text="Arta textila"
-		   	/>
-		</LinearLayout>
+      		android:layout_width="fill_parent"
+      		android:layout_height="wrap_content"
+      		android:orientation="horizontal">
+	   	<TextView android:id="@+id/StationTime"
+	   	    style="@style/StationArrivalTime"
+			android:textColor="#FFFFFFFF"
+			android:background="#C8C02000"
+	  		android:text="3min"
+	   	/>
+	   	<TextView android:id="@+id/StationLabel"
+	   	    style="@style/StationLabel"
+			android:textColor="#FFFFFFFF"
+	  		android:text="Arta textila"
+	   	/>
 	</LinearLayout>
-	
-
 </TableRow>

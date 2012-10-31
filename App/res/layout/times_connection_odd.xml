@@ -20,10 +20,10 @@
  -->
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" 
 	android:id="@+id/StationStatusRow"
-	android:background="@drawable/times_row_upd"
+	android:background="@drawable/conn_row_odd"
 	style="@style/ArrivalTimeRow"
 	>
-   	
+
   	<LinearLayout
    	    android:id="@+id/linearLayout1"
    	    android:layout_marginLeft="20dp"
@@ -32,24 +32,24 @@
 
  	   	<TextView android:id="@+id/StationTime"
  	   	    style="@style/ConnectionArrivalTime"
-			android:textColor="#FF000000"
+			android:textColor="#FFFFFFFF"
 	  		android:text="3min"
 	   	/>
   	    
 	   	<TextView android:id="@+id/LineName"
 	   	    style="@style/ConnectionArrivalText"
 			android:layout_marginLeft="5dp"
-			android:textColor="#FF000000"
+			android:textColor="#FFFFFFFF"
 	  		android:text="33"
 	   	/>
 	   	<TextView android:id="@+id/LineArrow"
 	   	    style="@style/ConnectionArrivalText"
-			android:textColor="#FF000000"
+			android:textColor="#FFFFFFFF"
 	  		android:text=" > "
 	   	/>
 	   	<TextView android:id="@+id/LineDirection"
 	   	    style="@style/ConnectionArrivalText"
-			android:textColor="#FF000000"
+			android:textColor="#FFFFFFFF"
 	  		android:text="Arta textila"
 	   	/>
    	</LinearLayout>
