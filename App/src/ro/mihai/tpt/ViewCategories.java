@@ -64,6 +64,8 @@ public class ViewCategories extends CityActivity {
     			line = c.getLine(name);
     		}
     		Button btn = (Button)findViewById(id);
+    		if (line.isUnifiedLine7())
+    			name = "Tv7";
     		btn.setText(" "+name+" ");
     		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, line));
     	}

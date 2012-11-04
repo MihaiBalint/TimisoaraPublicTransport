@@ -20,8 +20,9 @@ import ro.mihai.tpt.RATT;
 import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
 
-public class Path implements Serializable {
+public class Path extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
+	private String id;
 	private String name, niceName;
 	private List<Segment> segments;
 	private Line line;
@@ -32,13 +33,19 @@ public class Path implements Serializable {
 	
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
-	public Path(Line line, String name) {
+	public Path(String id, Line line, String name, long resId, City city) {
+		super(resId, city);
+		this.id = id;
 		this.name = name;
 		this.line = line;
 		this.segments = new ArrayList<Segment>();
 		this.stationsByPath = new ArrayList<Station>();
 		this.stationsByTime = new ArrayList<Station>();
 		this.est = new HashMap<Station, Estimate>();
+	}
+	
+	public Path(String id, Line line, String name) {
+		this(id, line, name, -1, null);
 	}
 	
 	public String getName() {
@@ -55,6 +62,10 @@ public class Path implements Serializable {
 	
 	public Line getLine() {
 		return line;
+	}
+
+	public String getId() {
+		return id;
 	}
 	
 	public List<Segment> getSegments() {
@@ -123,7 +134,7 @@ public class Path implements Serializable {
 		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
-				String[] t = RATT.downloadTimes(prefs, line, s);
+				String[] t = RATT.downloadTimes(prefs, id, s.getId());
 				e.putTime(t[0], t[1]);
 			} else
 				e.putErr("upd-canceled");

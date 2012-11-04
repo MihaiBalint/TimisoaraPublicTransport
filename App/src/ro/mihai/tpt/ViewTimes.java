@@ -389,11 +389,8 @@ public class ViewTimes extends CityActivity {
     
     private class PathSwitcher implements View.OnClickListener {
 		public void onClick(View v) {
-        	Path p = path.getPath();
-        	ArrayList<Path> paths = new ArrayList<Path>(p.getLine().getPaths());
-        	paths.remove(p);
-        	if(paths.size()==1) {
-        		Path opposite = paths.get(0);
+    		Path opposite = path.getOppositePath();
+        	if(opposite != null) {
             	new StartActivity(ViewTimes.this, ViewTimes.class)
     	    		.addCity(city)
     	    		.addLinePath(opposite)

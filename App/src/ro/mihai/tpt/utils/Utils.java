@@ -29,7 +29,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Utils {
+	private static final String STATS_VERSION_KEY = "version";
+	private static final int STATS_VERSION = 1;
 	private static final String STATS_PREFIX = "stats-";
+	private static final int STATS_PREFIX_LEN = STATS_PREFIX.length();
 
 	public static String readBaseDownloadUrl(Context ctx) {
 		// Read a sample value they have set
@@ -39,33 +42,65 @@ public class Utils {
 		return sharedPref.getString(ctx.getString(R.string.pref_base_download_url), defaultUrl);
 	}
 	
+	public static String makeLineKey(String lineName) {
+		return STATS_PREFIX+lineName;
+	}
+	public static String makePathKey(String lineName, String pathName) {
+		return STATS_PREFIX+lineName+"-"+pathName;
+	}
+	
 	public static void recordUsePath(Context ctx, Path p) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		String lineKey = STATS_PREFIX+p.getLine().getName();
-		String pathKey = lineKey+"-"+p.getName();
+		String lineKey = makeLineKey(p.getLine().getName());
+		String pathKey = makePathKey(p.getLine().getName(), p.getName());
 		int lineStats = sharedPref.getInt(lineKey, 0) + 1;
 		int pathStats = sharedPref.getInt(pathKey, 0) + 1;
 		
 		sharedPref.edit()
 			.putInt(lineKey, lineStats)
 			.putInt(pathKey, pathStats)
+			.putInt(STATS_VERSION_KEY, STATS_VERSION)
 			.commit();
+	}
+	
+	private static boolean isLineStat(String key) {
+		return key.startsWith(STATS_PREFIX) && key.lastIndexOf("-") < STATS_PREFIX_LEN;
 	}
 	
 	public static List<String> getTopLines(Context ctx) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		int prefixLen = STATS_PREFIX.length();
+		upgradeStats(sharedPref);
 		ArrayList<String> lines = new ArrayList<String>();
 		for(String key: sharedPref.getAll().keySet())
-			if (key.startsWith(STATS_PREFIX) && key.lastIndexOf("-") < prefixLen) {
+			if (isLineStat(key)) {
 				lines.add(key);
 			}
 		Collections.sort(lines, new UsageComparator(sharedPref));
 		ArrayList<String> sortedNames = new ArrayList<String>();
 		for(String l: lines)
-			sortedNames.add(l.substring(prefixLen));
+			sortedNames.add(l.substring(STATS_PREFIX_LEN));
 		
 		return sortedNames;
+	}
+	
+	private static void upgradeStats(SharedPreferences sharedPref) {
+		switch (sharedPref.getInt(STATS_VERSION_KEY, 0)) {
+		case 0: upgrade00to01(sharedPref);
+		}
+	}
+	
+	private static void upgrade00to01(SharedPreferences sharedPref) {
+		String line7a = makeLineKey("Tv7a");
+		String line7b = makeLineKey("Tv7b");
+		String line7 = makeLineKey("Tv7");
+		int tv7a = sharedPref.getInt(line7a, 0);
+		int tv7b = sharedPref.getInt(line7b, 0);
+		sharedPref.edit()
+			.putInt(STATS_VERSION_KEY, 1)
+			.putInt(line7, tv7a+tv7b)
+			.remove(line7a)
+			.remove(line7b)
+			.commit();
 	}
 	
 	

@@ -32,21 +32,15 @@ import java.util.Set;
 import ro.mihai.util.DetachableStream;
 import ro.mihai.util.LineKind;
 
-public class Line extends PersistentEntity implements INamedEntity, Serializable {
+public class Line implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name, id;
+	private String name;
 	private Map<String,Path> paths;
 	private Path first;
 	
-	public Line(String id, String name, long resId, City city) {
-		super(resId, city);
-		this.id = id;
+	public Line(String name) {
 		this.name = name;
 		this.paths = new HashMap<String, Path>();
-	}
-	
-	public Line(String id, String name) {
-		this(id,name,-1,null);
 	}
 	
 	public List<String> getSortedPathNames() {
@@ -122,9 +116,6 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		return all;
 	}
 	
-	public String getId() {
-		return id;
-	}
 	public String getName() {
 		return name;
 	}

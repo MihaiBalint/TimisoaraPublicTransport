@@ -20,6 +20,7 @@ package ro.mihai.tpt.conf;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
@@ -71,24 +72,56 @@ public class PathStationsSelection {
 		default: return "";
 		}
 	}
-
+	
 	public String getLineNameLabel() {
+		if (path.getLine().isUnifiedLine7())
+			return "7";
 		String lineName = path.getLine().getName();
-		if (lineName.startsWith("Tv") || lineName.startsWith("Tb")) 
+		if (lineName.startsWith("Tv") || lineName.startsWith("Tb")) {
 			lineName = lineName.substring(2);
+		}
 		return lineName;
 	}
 	
 	public String getPathLabel(int index) {
-		List<String> pathNames = path.getLine().getSortedPathNames();
+		List<String> pathNames;
+		if(path.getLine().isUnifiedLine7()) {
+			pathNames = new ArrayList<String>();
+			pathNames.add("Dambovita,Iosefin,Balcescu,Mures,Sagului");
+			pathNames.add("Sagului,Mures,Balcescu,Iosefin,Dambovita");
+		} else {
+			pathNames = path.getLine().getSortedPathNames();
+		}
 		if (index<0 || index>= pathNames.size())
 			return "";
 		return "Dir. "+pathNames.get(index);
 	}
 	
+	public Path getOppositePath() {
+		ArrayList<Path> paths;
+		if (path.getLine().isUnifiedLine7()) {
+			City c = path.getLine().getCity();
+			paths = new ArrayList<Path>();
+			paths.add(c.getLine("Tv7a").getFirstPath());
+			paths.add(c.getLine("Tv7b").getFirstPath());
+		} else {
+			paths = new ArrayList<Path>(path.getLine().getPaths());
+		}
+    	paths.remove(path);
+    	if(paths.size()==1) {
+    		return paths.get(0);
+    	} else {
+    		return null;
+    	}
+	}
+	
 	public int getCurrentPath() {
-		List<String> pathNames = path.getLine().getSortedPathNames();
-		return pathNames.indexOf(path.getNiceName());
+		if (path.getLine().isUnifiedLine7()) {
+			return path.getLine().getName().equals("Tv7a") ? 0 : 1;
+		} else {
+			List<String> pathNames = path.getLine().getSortedPathNames();
+			return pathNames.indexOf(path.getNiceName());
+		}
 	}
 
 	public String getLabel() {

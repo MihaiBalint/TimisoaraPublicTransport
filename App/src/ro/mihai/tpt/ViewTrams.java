@@ -40,8 +40,7 @@ public class ViewTrams extends CityActivity {
     	findViewById(R.id.bTv4).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv4")));
     	findViewById(R.id.bTv5).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv5")));
     	findViewById(R.id.bTv6).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv6")));
-    	findViewById(R.id.bTv7a).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv7a")));
-    	findViewById(R.id.bTv7b).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv7b")));
+    	findViewById(R.id.bTv7).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv7a")));
     	findViewById(R.id.bTv8).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv8")));
     	findViewById(R.id.bTv9).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("Tv9")));
     	
