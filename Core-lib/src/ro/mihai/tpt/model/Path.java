@@ -1,33 +1,28 @@
-/*
-    TimisoaraPublicTransport - display public transport information on your device
-    Copyright (C) 2011  Mihai Balint
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
 package ro.mihai.tpt.model;
 
-import static ro.mihai.util.Formatting.formatTime;
-
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 import ro.mihai.tpt.RATT;
 import ro.mihai.util.IPrefs;
+import static ro.mihai.util.Formatting.*;
 
-public class Path implements INamedEntity, Serializable {
+public class Path implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id, name, niceName;
+	private String name, niceName;
 	private List<Segment> segments;
 	private Line line;
 	
@@ -37,8 +32,7 @@ public class Path implements INamedEntity, Serializable {
 	
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
-	public Path(String id, String name, Line line) {
-		this.id = id;
+	public Path(Line line, String name) {
 		this.name = name;
 		this.line = line;
 		this.segments = new ArrayList<Segment>();
@@ -46,18 +40,9 @@ public class Path implements INamedEntity, Serializable {
 		this.stationsByTime = new ArrayList<Station>();
 		this.est = new HashMap<Station, Estimate>();
 	}
-
-	public String getId() {
-		return id;
-	}
-	public boolean isFake() {
-		return id.startsWith("F");
-	}
+	
 	public String getName() {
 		return name;
-	}
-	public String getLineName() {
-		return line.getName();
 	}
 	
 	public String getNiceName() {
@@ -82,7 +67,7 @@ public class Path implements INamedEntity, Serializable {
 		segments.add(s);
 		addStation(s.getTo());
 	}
-	
+
 	private Station temp;
 	public void concatenate(Station s) {
 		if(temp==null) {
@@ -138,7 +123,7 @@ public class Path implements INamedEntity, Serializable {
 		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
-				String[] t = RATT.downloadTimes(prefs, id, s.getId());
+				String[] t = RATT.downloadTimes(prefs, line, s);
 				e.putTime(t[0], t[1]);
 			} else
 				e.putErr("upd-canceled");
@@ -319,4 +304,3 @@ public class Path implements INamedEntity, Serializable {
 	}
 	
 }
-

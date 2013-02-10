@@ -43,11 +43,11 @@ public class RATT {
 		return new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
 	}
 	
-	public static String[] downloadTimes(IPrefs prefs, String lineId, String stationId) throws IOException {
-		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+lineId+"&"+stationIdParamName+"="+stationId);
+	public static String[] downloadTimes(IPrefs prefs, Line l, Station s) throws IOException {
+		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+l.getId()+"&"+stationIdParamName+"="+s.getId());
 		FormattedTextReader rd = new FormattedTextReader(url.openStream());
-		// String lineName = rd.readString("Linia: ", "<br");
-		// TODO read timestamp
+		String lineName = rd.readString("Linia: ", "<br");
+		assert(lineName.equals(l.getName()));
 		String time1 = rd.readString("Sosire1: ", "<");
 		String time2 = rd.readString("Sosire2: ", "<");
 		rd.close();
@@ -117,11 +117,10 @@ public class RATT {
 		protected Line create(String val, String opt) {
 			if (opt.startsWith(" [0]  ") || opt.startsWith(" [1]  "))
 				opt = opt.substring(6);
-			Line l = c.getOrCreateLine(opt);
-			Path p = new Path(val, "", l);
-			l.addPath(p);
+			Line l = c.getOrCreateLine(val, opt, true);
+			Path p = l.getFirstPath(); 
 			p.concatenate(st);
-			st.addLine(p);
+			st.addLine(l);
 			return l; 
 		}
 	}

@@ -126,7 +126,7 @@ public class V3Generator extends TestCase {
 		assertEquals(c.getLine("Tv9").getPaths().size(), c1.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		
-		for(LineMetal l : c.getLines()) {
+		for(Line l : c.getLines()) {
 			if(l.getPaths().size() > 2) {
 				System.out.println(l.getName());
 				for(Path p: l.getPaths())

@@ -1,3 +1,20 @@
+/*
+    TimisoaraPublicTransport - display public transport information on your device
+    Copyright (C) 2011  Mihai Balint
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
 package ro.mihai.tpt.model;
 
 import java.io.DataOutputStream;
@@ -15,32 +32,23 @@ import java.util.Set;
 import ro.mihai.util.DetachableStream;
 import ro.mihai.util.LineKind;
 
-public class Line extends PersistentEntity implements Serializable {
+public class Line extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private Map<String, Path> paths;
+	private String name, id;
+	private Map<String,Path> paths;
 	private Path first;
-
-	public Line(String name, int resId, City city) {
+	
+	public Line(String id, String name, long resId, City city) {
 		super(resId, city);
+		this.id = id;
 		this.name = name;
 		this.paths = new HashMap<String, Path>();
 	}
-
-	public Line(String name, City city) {
-		this(name, -1, city);
+	
+	public Line(String id, String name) {
+		this(id,name,-1,null);
 	}
 	
-	public Line(String name) {
-		this(name, null);
-	}
-	public boolean isFake() {
-		for (Path p : paths.values())
-			if (p.isFake())
-				return true;
-		return false;
-	}
-
 	public List<String> getSortedPathNames() {
 		List<String> pathNames = new ArrayList<String>();
 		for(Path p : paths.values())
@@ -48,7 +56,7 @@ public class Line extends PersistentEntity implements Serializable {
 		Collections.sort(pathNames);
 		return pathNames;
 	}
-
+	
 	public String getPathNames() {
 		boolean first = true;
 		String pathNames = "";
@@ -61,45 +69,39 @@ public class Line extends PersistentEntity implements Serializable {
 		return pathNames;
 	}
 	
-	public Set<Station> getStations() {
-		ensureLoaded();		
-		Set<Station> all = new LinkedHashSet<Station>();
-		for(Path p: paths.values())
-			all.addAll(p.getStationsByPath());
-		return all;
+	
+	@Override
+	public String toString() {
+		return "Line: "+name+"["+getPathNames()+"]("+Integer.toHexString(hashCode())+")";
 	}
 	
 	public LineKind getKind() {
 		return LineKind.getKind(this);
 	}
-
-	@Override
-	public String toString() {
-		return "Line: "+name+"["+getPathNames()+"]("+Integer.toHexString(hashCode())+")";
-	}
-
+	
 	public Path getPath(String name) {
 		ensureLoaded();		
 		return paths.get(name);
 	}
-
+	
 	public Path getFirstPath() {
 		ensureLoaded();		
 		assert(first!=null);
 		return first;
 	}
-
+	
 	public Collection<Path> getPaths() {
 		ensureLoaded();		
 		return paths.values();
 	}
-
+	
 	public void addPath(Path p) {
 		if(paths.isEmpty()) 
 			first = p;
 		paths.put(p.getName(), p);
 	}
-
+	
+	// merges stations from the empty-name-path to the other paths
 	public void pathMerge() {
 		if(getPaths().size()<=1) return;
 		Path tailsPath = getPath(""); 
@@ -110,24 +112,35 @@ public class Line extends PersistentEntity implements Serializable {
 			for(Station s:tailsPath.getStationsByPath())
 				p.concatenate(s);
 		}
+	} 
+	
+	public Set<Station> getStations() {
+		ensureLoaded();		
+		Set<Station> all = new LinkedHashSet<Station>();
+		for(Path p: paths.values())
+			all.addAll(p.getStationsByPath());
+		return all;
 	}
-
+	
+	public String getId() {
+		return id;
+	}
 	public String getName() {
 		return name;
 	}
-
-	/*
-	 * 
-	 */
+	
+	public boolean isFake() {
+		return id.startsWith("F");
+	}
 
 	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
 		int pathCount = res.readInt();
 		for(int i=0;i<pathCount;i++) {
-			String pathId = res.readString();
 			String pathName = res.readString();
+
 			String pathNiceName = res.readString();
 			
-			Path p = new Path(pathId, pathName, this);
+			Path p = new Path(this, pathName);
 			p.setNiceName(pathNiceName);
 			
 			int stationCount = res.readInt();
@@ -147,9 +160,6 @@ public class Line extends PersistentEntity implements Serializable {
 		// lazy line resources
 		lazy.writeInt(paths.size());
 		for(Path p:paths.values()) {
-			b = p.getId().getBytes();
-			lazy.writeInt(b.length); lazy.write(b);
-			
 			b = p.getName().getBytes();
 			lazy.writeInt(b.length); lazy.write(b);
 
@@ -169,6 +179,9 @@ public class Line extends PersistentEntity implements Serializable {
 		byte[] b;
 		
 		// eager line resources
+		b = id.getBytes();
+		eager.writeInt(b.length); eager.write(b);
+		
 		b = name.getBytes();
 		eager.writeInt(b.length); eager.write(b);
 
@@ -178,8 +191,11 @@ public class Line extends PersistentEntity implements Serializable {
 	}
 
 	public static Line loadEager(DetachableStream eager, City city) throws IOException {
+		String id = eager.readString();
+
 		String name = eager.readString();
 		
-		return new Line(name, eager.readInt(), city);
-	}	
+		return new Line(id, name, eager.readInt(), city);
+	}
 }
+

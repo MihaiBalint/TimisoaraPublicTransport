@@ -44,7 +44,7 @@ public class TestCityData extends TestCase {
 		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache(prefs);
 		
 		ArrayList<String> names = new ArrayList<String>();
-		for(Line s : c.getLines()) names.add(s.getName());
+		for(INamedEntity s : c.getLines()) names.add(s.getName());
 		Collections.sort(names);
 		
 		

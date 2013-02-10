@@ -34,7 +34,7 @@ public class CityTest {
 	public void test_app_panel_links() {
 		String missingLines = "";
 		for(String line : app_lines)
-			if (c.getLine(line) == null || c.getLine(line).getFirstPath().isFake())
+			if (c.getLine(line) == null || c.getLine(line).isFake())
 				missingLines += "City does not have line "+line+"\n"; 
 		assertEquals("", missingLines);
 	}
@@ -291,11 +291,11 @@ public class CityTest {
 	public static void printDistance(Station a, Station b) {
 		System.out.println("Distance: "+(long)a.distanceTo(b) + "m");
 		System.out.println("    "+a.getId()+":"+a.getNiceName()+" - "+a.getLat()+"-"+a.getLng());
-		for(Path p:a.getLines())
-			System.out.println("\t"+p.getId()+":"+p.getLineName());
+		for(Line l:a.getLines())
+			System.out.println("\t"+l.getId()+":"+l.getName());
 		System.out.println("    "+b.getId()+":"+b.getNiceName()+" - "+b.getLat()+"-"+b.getLng());
-		for(Path p:b.getLines())
-			System.out.println("\t"+p.getId()+":"+p.getLineName());	
+		for(Line l:b.getLines())
+			System.out.println("\t"+l.getId()+":"+l.getName());	
 	}
  	
 	@Test
