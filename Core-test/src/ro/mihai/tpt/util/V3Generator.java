@@ -70,7 +70,7 @@ public class V3Generator extends TestCase {
 			Line l = c.getOrCreateLine(row[0].trim(), row[1].trim(), false);
 			Path p = l.getPath(nnp[1]);
 			if (null==p) {
-				p = new Path(l, nnp[1]);
+				p = new Path(l, row[0].trim(), nnp[1]);
 				p.setNiceName(nnp[1]);
 				l.addPath(p);
 			}

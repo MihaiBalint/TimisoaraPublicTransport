@@ -22,7 +22,7 @@ import static ro.mihai.util.Formatting.*;
 
 public class Path implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name, niceName;
+	private String id, name, niceName;
 	private List<Segment> segments;
 	private Line line;
 	
@@ -32,13 +32,18 @@ public class Path implements Serializable {
 	
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
-	public Path(Line line, String name) {
+	public Path(Line line, String id, String name) {
+		this.id = id;
 		this.name = name;
 		this.line = line;
 		this.segments = new ArrayList<Segment>();
 		this.stationsByPath = new ArrayList<Station>();
 		this.stationsByTime = new ArrayList<Station>();
 		this.est = new HashMap<Station, Estimate>();
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public String getName() {
@@ -51,6 +56,10 @@ public class Path implements Serializable {
 	
 	public void setNiceName(String niceName) {
 		this.niceName = niceName;
+	}
+	
+	public String getLineName() {
+		return line.getName();
 	}
 	
 	public Line getLine() {
@@ -85,7 +94,7 @@ public class Path implements Serializable {
 	}
 	
 	public String getLabel() {
-		return line.getName()+">"+getNiceName();
+		return getLineName()+">"+getNiceName();
 	}	
 
 	public List<Station> getStationsByPath() {
@@ -144,16 +153,16 @@ public class Path implements Serializable {
 			orderRead();
 			orderCheck();
 		}catch(IOException e) {
-			System.err.println(line.getName() + " ("+name+"): "+e);
+			System.err.println(getLineName() + " ("+name+"): "+e);
 		}catch(NoSuchElementException e) {
-			System.err.println(line.getName() + " ("+name+"): "+e);
+			System.err.println(getLineName() + " ("+name+"): "+e);
 		}catch(AssertionError e) {
-			System.out.println("*** "+line.getName() + " ("+name+"): "+e);
+			System.out.println("*** "+getLineName() + " ("+name+"): "+e);
 		}
 	}
 
 	private void stationCheck() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+line.getName()+" ("+name+").txt")));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
 		String l;
 		Set<String> stations = new HashSet<String>(); 
 		while(null!=(l=br.readLine())) {
@@ -177,15 +186,15 @@ public class Path implements Serializable {
 				stations.remove(st);
 			} else {
 				if(!stationsCopy.contains(st))
-					System.err.println(line.getName()+" ("+name+"): Missing in order: "+st);
+					System.err.println(getLineName()+" ("+name+"): Missing in order: "+st);
 				else
-					System.out.println(line.getName()+" ("+name+"): Duplicated: "+st);
+					System.out.println(getLineName()+" ("+name+"): Duplicated: "+st);
 			}
 		}
 	}
 
 	private void orderRead() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+line.getName()+" ("+name+").txt")));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
 		String l;
 		
 		List<Station> stations = stationsByPath;
@@ -206,7 +215,7 @@ public class Path implements Serializable {
 	}
 	
 	private void orderCheck() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+line.getName()+" ("+name+").txt")));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
 		String l;
 		Iterator<Station> it = stationsByPath.iterator();
 		Station s = it.next();

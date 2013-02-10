@@ -76,7 +76,7 @@ public class City implements Serializable {
 		if(null==l) {
 			l = new Line(id,name);
 			if (singlePath) {
-				l.addPath(new Path(l,""));
+				l.addPath(new Path(l,id,""));
 			}
 			lineMap.put(id, l);
 		}
@@ -317,7 +317,7 @@ public class City implements Serializable {
 			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
 			String name = new String(b);
 			Line l = new Line(id,name);
-			l.addPath(new Path(l,"")); 
+			l.addPath(new Path(l,id,"")); 
 			// Ver 2.0.0 does not suppor`t multiple paths per line, only a single one
 			lineMap.put(id, l);
 		}

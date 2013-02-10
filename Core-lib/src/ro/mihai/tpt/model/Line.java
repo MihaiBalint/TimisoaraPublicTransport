@@ -140,7 +140,7 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 
 			String pathNiceName = res.readString();
 			
-			Path p = new Path(this, pathName);
+			Path p = new Path(this, id, pathName);
 			p.setNiceName(pathNiceName);
 			
 			int stationCount = res.readInt();
