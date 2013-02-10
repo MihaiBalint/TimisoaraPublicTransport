@@ -55,10 +55,10 @@ public class RegressionLineTests extends TestCase {
 	public static void addTests(TestSuite suite, City cActual, City cExpected) {
 		LinkedHashSet<String> lineNames = new LinkedHashSet<String>();
 		for(Line l : cExpected.getLines()) 
-			if (!isIdListed(l, blExpectedLines))
+			if (!isIdListed(l.getFirstPath(), blExpectedLines))
 				lineNames.add(l.getName());
 		for(Line l : cActual.getLines()) 
-			if (!isIdListed(l, blActualLines))
+			if (!isIdListed(l.getFirstPath(), blActualLines))
 				lineNames.add(l.getName());
 		
 		for(String lineName : lineNames) {

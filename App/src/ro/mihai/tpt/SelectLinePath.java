@@ -31,17 +31,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class SelectLinePath implements OnClickListener, DialogInterface.OnClickListener {
-	private Line selectable;
+	private LineMetal selectable;
 	private List<Path> pathList;
 	private City city;
 	private Activity parent;
 	private Class<?> activity;
 	
-	public SelectLinePath(Activity parent, Class<?> activity, City city, Line selectable) {
+	public SelectLinePath(Activity parent, Class<?> activity, City city, LineMetal selectable) {
 		this(parent, activity, city, selectable, selectable.getPaths());
 	}
 
-	public SelectLinePath(Activity parent, Class<?> activity, City city, Line selectable, Collection<Path> pathList) {
+	public SelectLinePath(Activity parent, Class<?> activity, City city, LineMetal selectable, Collection<Path> pathList) {
 		this.selectable = selectable;
 		this.city = city;
 		this.parent = parent;
