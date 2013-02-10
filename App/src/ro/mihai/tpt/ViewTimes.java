@@ -276,7 +276,7 @@ public class ViewTimes extends CityActivity {
     			Station selStation = sel.getStation();
 	    		// (1) the paths passing through this exact same station
 	    		Set<Line> stationLines = new HashSet<Line>(selStation.getLines());
-    			for(Line l:stationLines)
+    			for(LineMetal l:stationLines)
     				for(Path p:l.getPaths())
     					if (p!=path.getPath() && p.getStationsByPath().contains(selStation))
     						connections.add(p);
@@ -292,7 +292,7 @@ public class ViewTimes extends CityActivity {
 	    			boolean haveDistance = false;
 	    			int dist = 0;
 	    			if (s!=selStation) 
-	    				for(Line l:s.getLines())
+	    				for(LineMetal l:s.getLines())
 	    					if (!stationLines.contains(l))
 	    						for(Path p:l.getPaths())
 	    							if (p!=path.getPath() && p.getStationsByPath().contains(s)) {

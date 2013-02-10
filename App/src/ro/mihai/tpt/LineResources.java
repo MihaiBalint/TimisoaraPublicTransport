@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt;
 
-import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.LineMetal;
 import ro.mihai.tpt.model.Path;
 
 public enum LineResources {
@@ -60,7 +60,7 @@ public enum LineResources {
 		return value(path.getLine());
 	}
 	
-	public static LineResources value(Line line) {
+	public static LineResources value(LineMetal line) {
 		return value(line.getName());
 	}
 	

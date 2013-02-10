@@ -28,7 +28,7 @@ import ro.mihai.util.DetachableStream;
 public class Station extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name, id;
-	private List<Line> lines;
+	private List<Path> lines;
 	private Junction junction;
 	private String lat, lng;
 	private String niceName, shortName;
@@ -36,12 +36,12 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	public Station(String id, long resId, City city) {
 		super(resId, city);
 		this.id = id;
-		this.lines = new ArrayList<Line>(2);
+		this.lines = new ArrayList<Path>(2);
 	}
 
 	public Station(String id, String name) {
 		this(id,-1, null);
-		this.lines = new ArrayList<Line>(2);
+		this.lines = new ArrayList<Path>(2);
 		this.name = name;
 	}
 	
@@ -54,7 +54,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	public String getLineNames() {
 		String lineNames = "";
 		boolean first = true;
-		for(Line line : lines)
+		for(Path line : lines)
 			if (first) {
 				lineNames += line.getName();
 				first = false;
@@ -67,12 +67,12 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		return id;
 	}
 	
-	public void addLine(Line l) {
+	public void addLine(Path l) {
 		if (!lines.contains(l))
 			lines.add(l);
 	}
 	
-	public List<Line> getLines() {
+	public List<Path> getLines() {
 		ensureLoaded();
 		return lines;
 	}	
@@ -181,7 +181,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		res.writeInt(b.length); res.write(b);
 		
 		res.writeInt(lines.size());
-		for(Line l : lines) {
+		for(Path l : lines) {
 			b = l.getId().getBytes();
 			res.writeInt(b.length); res.write(b);
 		}
