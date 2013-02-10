@@ -43,11 +43,12 @@ public class RATT {
 		return new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
 	}
 	
-	public static String[] downloadTimes(IPrefs prefs, Line l, Station s) throws IOException {
-		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+l.getId()+"&"+stationIdParamName+"="+s.getId());
+	// public static String[] downloadTimes(IPrefs prefs, Line l, Station s) throws IOException {
+	public static String[] downloadTimes(IPrefs prefs, String pathId, String stationId) throws IOException {
+		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+pathId+"&"+stationIdParamName+"="+stationId);
 		FormattedTextReader rd = new FormattedTextReader(url.openStream());
-		String lineName = rd.readString("Linia: ", "<br");
-		assert(lineName.equals(l.getName()));
+		// String lineName = rd.readString("Linia: ", "<br");
+		// TODO read timestamp
 		String time1 = rd.readString("Sosire1: ", "<");
 		String time2 = rd.readString("Sosire2: ", "<");
 		rd.close();

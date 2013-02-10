@@ -132,7 +132,7 @@ public class Path implements Serializable {
 		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
-				String[] t = RATT.downloadTimes(prefs, line, s);
+				String[] t = RATT.downloadTimes(prefs, id, s.getId());
 				e.putTime(t[0], t[1]);
 			} else
 				e.putErr("upd-canceled");
