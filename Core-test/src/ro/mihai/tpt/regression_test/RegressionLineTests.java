@@ -1,9 +1,11 @@
 package ro.mihai.tpt.regression_test;
 
+import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Path;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -51,14 +53,22 @@ public class RegressionLineTests extends TestCase {
 		return super.getName().replaceFirst("Line_", "_"+lineName+"_");
 	}
 
+	public static boolean notListed(Line l, Collection<BlackListed> list) {
+		// TODO KILL this method
+		for(Path p:l.getPaths())
+			if(!isIdListed(bl(p.getExtId(), l.getName()), list))
+				return true;
+		return false;
+	}
 	
 	public static void addTests(TestSuite suite, City cActual, City cExpected) {
 		LinkedHashSet<String> lineNames = new LinkedHashSet<String>();
+		// TODO Assert paths instead of lines
 		for(Line l : cExpected.getLines()) 
-			if (!isIdListed(l, blExpectedLines))
+			if (!notListed(l, blExpectedLines))
 				lineNames.add(l.getName());
 		for(Line l : cActual.getLines()) 
-			if (!isIdListed(l, blActualLines))
+			if (!notListed(l, blActualLines))
 				lineNames.add(l.getName());
 		
 		for(String lineName : lineNames) {

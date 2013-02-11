@@ -1,5 +1,7 @@
 package ro.mihai.util;
 
+import java.util.Collection;
+
 public class Formatting {
 
 	public static String formatTime(String time) {
@@ -44,4 +46,15 @@ public class Formatting {
 		return str.substring(0,str.indexOf("min.")).trim();
 	}
 	
+	public static <T> String join(String sep, Collection<T> items) {
+		boolean first = true;
+		String result = "";
+		for(T item : items)
+			if (first) {
+				result += item;
+				first = false;
+			} else
+				result += sep+item;
+		return result;
+	}
 }

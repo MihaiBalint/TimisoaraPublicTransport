@@ -240,6 +240,14 @@ public class CityTest {
 		}
 		assertEquals("Following stations have unparsable coords:", "", errors);
 	}
+	
+	public void assertLineInStation(String stationName, String lineName) {
+		HashSet<Line> lines = new HashSet<Line>();
+		Station st = c.getStation(stationName);
+		for(Path p:st.getPaths())
+				lines.add(p.getLine());
+		assertTrue(lines.contains(c.getLine(lineName)));
+	}
 
 	@Test
 	public void test_known_distance() {
@@ -254,28 +262,28 @@ public class CityTest {
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("3200")));
 		assertEquals(7,s33.getJunction().getStations().size());
 
-		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv1")));
-		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv2")));
-		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv5")));
-		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv1")));
-		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv2")));
-		assertTrue(c.getStation("3163").getLines().contains(c.getLine("Tv6")));
+		assertLineInStation("4640", "Tv1");
+		assertLineInStation("4640", "Tv2");
+		assertLineInStation("4640", "Tv5");
+		assertLineInStation("3163", "Tv1");
+		assertLineInStation("3163", "Tv2");
+		assertLineInStation("3163", "Tv6");
 		assertTrue(c.getStation("4640").distanceTo(c.getStation("3163")) < 40); // 33
 		
-		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
-		assertTrue(c.getStation("5300").getLines().contains(c.getLine("E3")));		
+		assertLineInStation("2799", "33");
+		assertLineInStation("5300", "E3");		
 		assertTrue(c.getStation("2799").distanceTo(c.getStation("5300")) < 230); // 221
 		
-		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
-		assertTrue(c.getStation("3200").getLines().contains(c.getLine("E3")));
+		assertLineInStation("2799", "33");
+		assertLineInStation("3200", "E3");
 		assertTrue(c.getStation("2799").distanceTo(c.getStation("3200")) < 10); // 4
 		
-		assertTrue(c.getStation("5300").getLines().contains(c.getLine("E3")));
-		assertTrue(c.getStation("3200").getLines().contains(c.getLine("E3")));
+		assertLineInStation("5300", "E3");
+		assertLineInStation("3200", "E3");
 		assertTrue(c.getStation("5300").distanceTo(c.getStation("3200")) < 230); // 224
 
-		assertTrue(c.getStation("4640").getLines().contains(c.getLine("Tv1")));
-		assertTrue(c.getStation("2799").getLines().contains(c.getLine("33")));
+		assertLineInStation("4640", "Tv1");
+		assertLineInStation("2799", "33");
 		assertTrue(c.getStation("4640").distanceTo(c.getStation("2799")) < 120); // 112
 	}
 	
@@ -291,11 +299,11 @@ public class CityTest {
 	public static void printDistance(Station a, Station b) {
 		System.out.println("Distance: "+(long)a.distanceTo(b) + "m");
 		System.out.println("    "+a.getId()+":"+a.getNiceName()+" - "+a.getLat()+"-"+a.getLng());
-		for(Line l:a.getLines())
-			System.out.println("\t"+l.getId()+":"+l.getName());
+		for(Path p:a.getPaths())
+			System.out.println("\t"+p.getId()+":"+p.getLineName());
 		System.out.println("    "+b.getId()+":"+b.getNiceName()+" - "+b.getLat()+"-"+b.getLng());
-		for(Line l:b.getLines())
-			System.out.println("\t"+l.getId()+":"+l.getName());	
+		for(Path p:b.getPaths())
+			System.out.println("\t"+p.getId()+":"+p.getLineName());	
 	}
  	
 	@Test

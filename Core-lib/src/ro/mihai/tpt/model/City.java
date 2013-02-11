@@ -37,23 +37,30 @@ public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private DataVersion version;
 	private Map<String, Station> stations;
-	private Map<String,Line> lineMap;
+	private Map<String,Line> lineNameMap;
+	private ArrayList<Path> pathIdMap;
+	
 	private Map<Integer, Junction> junctionMap;
 	
 	private DetachableStream in;
 	
 	public City() {
-		this.lineMap = new HashMap<String, Line>();
+		this.lineNameMap = new HashMap<String, Line>();
+		this.pathIdMap = new ArrayList<Path>();
 		this.junctionMap = new HashMap<Integer, Junction>();
 	}
 	
 	public Collection<Line> getLines() {
-		return lineMap.values();
+		return lineNameMap.values();
+	}
+	
+	public Collection<Path> getPaths() {
+		return pathIdMap;
 	}
 	
 	public Collection<String> getLineNamesSorted() {
 		ArrayList<String> names = new ArrayList<String>();
-		for(INamedEntity s : lineMap.values()) names.add(s.getName());
+		for(Line s : lineNameMap.values()) names.add(s.getName());
 		Collections.sort(names);
 		return names;
 	}
@@ -69,18 +76,24 @@ public class City implements Serializable {
 		for(Junction j:junctions)
 			this.junctionMap.put(j.getId(), j);
 	}
-
 	
-	public Line getOrCreateLine(String id, String name, boolean singlePath) {
-		Line l = lineMap.get(id);
-		if(null==l) {
-			l = new Line(id,name);
-			if (singlePath) {
-				l.addPath(new Path(l,id,""));
-			}
-			lineMap.put(id, l);
-		}
+	private Line newLine(String name) {
+		Line l = new Line(name);
+		lineNameMap.put(name, l);
 		return l;
+	}
+
+	public Line getOrCreateLine(String name) {
+		Line l = lineNameMap.get(name);
+		if(null==l) 
+			l = newLine(name);
+		return l;
+	}
+
+	public Path newPath(Line line, String extId, String name) {
+		Path p = new Path(line, pathIdMap.size(), extId, name);
+		pathIdMap.add(p);
+		return p;
 	}
 	
 	protected Junction getJunctionById(int id) {
@@ -95,19 +108,28 @@ public class City implements Serializable {
 		return junctionMap.values();
 	}
 	
-	private int fakeLines = 0;
+	private int fakePaths = 0;
 	public Line getLine(String name) {
-		for(Line l:lineMap.values()) 
-			if(l.getName().equals(name))
-				return l;
-		fakeLines++;
-		return getOrCreateLine("F"+fakeLines, name, true);
+		Line l = lineNameMap.get(name);
+		if(l != null)
+			return l;
+		fakePaths++;
+		l = newLine(name);
+		l.addPath(newPath(l, "F"+fakePaths, ""));
+		return l;
 	}
 	
-	public Line getLineById(String lineId) throws IOException {
-		Line l = lineMap.get(lineId);
+	public Line getLineByName(String lineName) throws IOException {
+		Line l = lineNameMap.get(lineName);
 		if(null==l) throw new IOException();
 		return l;
+	}
+	
+	public Path getPathById(int pathId) throws IOException {
+		Path p = pathIdMap.get(pathId);
+		if(null==p) 
+			throw new IOException();
+		return p;
 	}
 	
 	public Station getStation(String id) {
@@ -116,7 +138,7 @@ public class City implements Serializable {
 	
 	public String linesAndStationsToString() {
 		StringBuilder b = new StringBuilder();
-		for(Line l:lineMap.values()) {
+		for(Line l:lineNameMap.values()) {
 			b.append(l.getName());
 			if(l.getPaths().size() == 1) {
 				b.append(" - ");
@@ -156,7 +178,13 @@ public class City implements Serializable {
 		DataOutputStream lazyRes = new DataOutputStream(lazyBuf);
 
 		eagerBuf = new ByteArrayOutputStream();
-		persistCollection(lineMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
+		persistCollection(lineNameMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
+		os.writeInt(1);
+		os.writeInt(eagerBuf.size());
+		os.write(eagerBuf.toByteArray());
+		
+		eagerBuf = new ByteArrayOutputStream();
+		persistCollection(pathIdMap, new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
 		os.writeInt(1);
 		os.writeInt(eagerBuf.size());
 		os.write(eagerBuf.toByteArray());
@@ -216,9 +244,11 @@ public class City implements Serializable {
 			throw new SaveFileException();
 		} else if(sigStr.contains("3.0.0")) {
 			version = DataVersion.Version3;
-		} else {
-			assert(sigStr.contains("4.0.0"));
+		} else if(sigStr.contains("4.0.0")) {
 			version = DataVersion.Version5;
+		} else {
+			assert(sigStr.contains("5.0.0"));
+			version = DataVersion.Version6;
 		}
 		this.in = in;
 		int blType, blLength;
@@ -228,9 +258,19 @@ public class City implements Serializable {
 		int lineCount = in.readInt();
 		for(int i=0;i<lineCount;i++) {
 			Line l = Line.loadEager(in, this);
-			lineMap.put(l.getId(), l);
+			lineNameMap.put(l.getName(), l);
 		}
 
+		blType = in.readInt();
+		blLength = in.readInt();
+		int pathCount = in.readInt();
+		while(pathIdMap.size()<pathCount)
+			pathIdMap.add(null);
+		for(int i=0;i<pathCount;i++) {
+			Path p = Path.loadEager(in, this);
+			pathIdMap.set(p.getId(), p);
+		}
+		
 		blType = in.readInt();
 		blLength = in.readInt();
 		int stationCount = in.readInt();
@@ -316,10 +356,10 @@ public class City implements Serializable {
 			
 			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
 			String name = new String(b);
-			Line l = new Line(id,name);
-			l.addPath(new Path(l,id,"")); 
+			Line l = newLine(name);
+			Path p = newPath(l,id,"");
+			l.addPath(p); 
 			// Ver 2.0.0 does not suppor`t multiple paths per line, only a single one
-			lineMap.put(id, l);
 		}
 		
 		int stationCount = in.readInt();
@@ -337,10 +377,13 @@ public class City implements Serializable {
 			for(int j=0;j<lineCount;j++) {
 				bc = in.readInt(); b = new byte[bc]; in.readFully(b);
 				
-				Line l = lineMap.get(new String(b));
-				Path p = l.getFirstPath(); 
-				p.concatenate(s);
-				s.addLine(l);
+				String extId = new String(b);
+				for(Path p : pathIdMap)
+					if (p.getExtId().equals(extId)) {
+						p.concatenate(s);
+						s.addPath(p);
+						break;
+					}
 			}
 			stations.put(s.getId(), s);
 			mon.workComplete();

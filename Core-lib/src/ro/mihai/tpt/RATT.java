@@ -118,10 +118,15 @@ public class RATT {
 		protected Line create(String val, String opt) {
 			if (opt.startsWith(" [0]  ") || opt.startsWith(" [1]  "))
 				opt = opt.substring(6);
-			Line l = c.getOrCreateLine(val, opt, true);
-			Path p = l.getFirstPath(); 
+			Line l = c.getOrCreateLine(opt);
+			Path p;
+			if (l.getPaths().isEmpty()) {
+				p = c.newPath(l, val, "");
+				l.addPath(p);
+			} else
+				p = l.getFirstPath();
 			p.concatenate(st);
-			st.addLine(l);
+			st.addPath(p);
 			return l; 
 		}
 	}

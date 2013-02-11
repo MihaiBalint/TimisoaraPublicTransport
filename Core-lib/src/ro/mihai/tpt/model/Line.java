@@ -32,21 +32,20 @@ import java.util.Set;
 import ro.mihai.util.DetachableStream;
 import ro.mihai.util.LineKind;
 
-public class Line extends PersistentEntity implements INamedEntity, Serializable {
+public class Line extends PersistentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name, id;
+	private String name;
 	private Map<String,Path> paths;
 	private Path first;
 	
-	public Line(String id, String name, long resId, City city) {
+	private Line(String name, long resId, City city) {
 		super(resId, city);
-		this.id = id;
 		this.name = name;
 		this.paths = new HashMap<String, Path>();
 	}
 	
-	public Line(String id, String name) {
-		this(id,name,-1,null);
+	public Line(String name) {
+		this(name,-1,null);
 	}
 	
 	public List<String> getSortedPathNames() {
@@ -122,55 +121,31 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		return all;
 	}
 	
-	public String getId() {
-		return id;
-	}
 	public String getName() {
 		return name;
 	}
 	
 	public boolean isFake() {
-		return id.startsWith("F");
+		for (Path p: paths.values())
+			if (p.isFake())
+				return true;
+		return false;
 	}
 
 	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
 		int pathCount = res.readInt();
 		for(int i=0;i<pathCount;i++) {
-			String pathName = res.readString();
-
-			String pathNiceName = res.readString();
-			
-			Path p = new Path(this, id, pathName);
-			p.setNiceName(pathNiceName);
-			
-			int stationCount = res.readInt();
-			for(int j=0;j<stationCount;j++) {
-				String stationId = res.readString();
-				
-				Station s = city.getStation(stationId);
-				p.concatenate(s);
-			}
-			addPath(p);
+			int pathId = res.readInt();
+			addPath(city.getPathById(pathId));
 		}
 	}
 
 
 	private void persistLazy(DataOutputStream lazy) throws IOException {
-		byte[] b;
 		// lazy line resources
 		lazy.writeInt(paths.size());
 		for(Path p:paths.values()) {
-			b = p.getName().getBytes();
-			lazy.writeInt(b.length); lazy.write(b);
-
-			b = p.getNiceName().getBytes();
-			lazy.writeInt(b.length); lazy.write(b);
-			
-			lazy.writeInt(p.getStationsByPath().size());
-			for(Station s:p.getStationsByPath()) {
-				b = s.getId().getBytes();
-				lazy.writeInt(b.length); lazy.write(b);
-			}
+			lazy.writeInt(p.getId());
 		}
 		lazy.flush();
 	}
@@ -179,9 +154,6 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 		byte[] b;
 		
 		// eager line resources
-		b = id.getBytes();
-		eager.writeInt(b.length); eager.write(b);
-		
 		b = name.getBytes();
 		eager.writeInt(b.length); eager.write(b);
 
@@ -191,11 +163,9 @@ public class Line extends PersistentEntity implements INamedEntity, Serializable
 	}
 
 	public static Line loadEager(DetachableStream eager, City city) throws IOException {
-		String id = eager.readString();
-
 		String name = eager.readString();
 		
-		return new Line(id, name, eager.readInt(), city);
+		return new Line(name, eager.readInt(), city);
 	}
 }
 

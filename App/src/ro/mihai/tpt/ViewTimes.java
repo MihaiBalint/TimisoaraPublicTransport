@@ -275,11 +275,11 @@ public class ViewTimes extends CityActivity {
 	    	for(StationPathsSelection sel : path.getStations()) {
     			Station selStation = sel.getStation();
 	    		// (1) the paths passing through this exact same station
-	    		Set<Line> stationLines = new HashSet<Line>(selStation.getLines());
-    			for(Line l:stationLines)
-    				for(Path p:l.getPaths())
-    					if (p!=path.getPath() && p.getStationsByPath().contains(selStation))
-    						connections.add(p);
+	    		Set<Path> stationPaths = new HashSet<Path>(selStation.getPaths());
+	    		Path excludePath = path.getPath();
+				for(Path p:stationPaths)
+					if (p!=excludePath)
+						connections.add(p);
     			// (2) not the empty junction (contains unrelated stations)
     			// Note that right now we actually do not have a junction with an empty name
     			// So the correct way of doing this would be to actually check that the distance 
@@ -289,20 +289,18 @@ public class ViewTimes extends CityActivity {
 	    			continue;
     			// (3) the paths passing through the stations of the junction
 	    		for(Station s:selStation.getJunction().getStations()) {
+	    			if (s==selStation) continue; 
 	    			boolean haveDistance = false;
 	    			int dist = 0;
-	    			if (s!=selStation) 
-	    				for(Line l:s.getLines())
-	    					if (!stationLines.contains(l))
-	    						for(Path p:l.getPaths())
-	    							if (p!=path.getPath() && p.getStationsByPath().contains(s)) {
-	    								if(!haveDistance) {
-	    									haveDistance = true;
-	    									dist = selStation.distanceTo(s);
-	    								}
-	    								if (dist < Constants.MAX_CONNECTION_DIST)
-	    									connections.add(p);
-	    							}
+    				for(Path p:s.getPaths())
+    					if (!stationPaths.contains(p) && p!=excludePath) {
+							if(!haveDistance) {
+								haveDistance = true;
+								dist = selStation.distanceTo(s);
+							}
+							if (dist < Constants.MAX_CONNECTION_DIST)
+								connections.add(p);
+    					}
 	    		}
 	    	}
 	    	

@@ -1,6 +1,24 @@
+/*
+    TimisoaraPublicTransport - display public transport information on your device
+    Copyright (C) 2011-2013  Mihai Balint
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
 package ro.mihai.tpt.model;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,12 +35,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import ro.mihai.tpt.RATT;
+import ro.mihai.util.DetachableStream;
 import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
 
-public class Path implements Serializable {
+public class Path extends PersistentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id, name, niceName;
+	private int id;
+	private String extId, name, niceName;
 	private List<Segment> segments;
 	private Line line;
 	
@@ -32,9 +52,9 @@ public class Path implements Serializable {
 	
 	private final StationTimesComp timesComp = new StationTimesComp();
 	
-	public Path(Line line, String id, String name) {
+	private Path(Line line, int id, long resId, City city) {
+		super(resId, city);
 		this.id = id;
-		this.name = name;
 		this.line = line;
 		this.segments = new ArrayList<Segment>();
 		this.stationsByPath = new ArrayList<Station>();
@@ -42,15 +62,32 @@ public class Path implements Serializable {
 		this.est = new HashMap<Station, Estimate>();
 	}
 	
-	public String getId() {
+	public Path(Line line, int id, String extId, String name) {
+		this(line, id, -1, null);
+		this.name = name;
+		this.extId = extId;
+	}
+	
+	
+	public int getId() {
 		return id;
 	}
 	
+	public String getExtId() {
+		return extId;
+	}
+
+	public boolean isFake() {
+		return extId.startsWith("F");
+	}
+	
 	public String getName() {
+		ensureLoaded();
 		return name;
 	}
 	
 	public String getNiceName() {
+		ensureLoaded();
 		return niceName;
 	}
 	
@@ -66,11 +103,7 @@ public class Path implements Serializable {
 		return line;
 	}
 	
-	public List<Segment> getSegments() {
-		return segments;
-	}
-	
-	public void addSegment(Segment s) {
+	private void addSegment(Segment s) {
 		if(segments.isEmpty()) 
 			addStation(s.getFrom());
 		segments.add(s);
@@ -98,13 +131,16 @@ public class Path implements Serializable {
 	}	
 
 	public List<Station> getStationsByPath() {
+		ensureLoaded();
 		return stationsByPath;
 	}
 	public List<Station> getStationsByTime() {
+		ensureLoaded();
 		return stationsByTime;
 	}
 	
 	public Estimate getEstimate(Station s) {
+		ensureLoaded();
 		return est.get(s);
 	}
 	
@@ -113,6 +149,7 @@ public class Path implements Serializable {
 	 */
 
 	public void updateAllStations(IPrefs prefs) {
+		ensureLoaded();
 		int ec = 0;
 		for(Station s:stationsByTime) {
 			est.get(s).startUpdate();
@@ -124,15 +161,17 @@ public class Path implements Serializable {
 	}
 
 	public void clearAllUpdates() {
+		ensureLoaded();
 		for(Estimate e:est.values())
 			e.clearUpdate();
 	}
 	
 	public int updateStation(IPrefs prefs, int ec, Station s) {
+		ensureLoaded();
 		Estimate e = est.get(s);
 		try {
 			if(ec<3) {
-				String[] t = RATT.downloadTimes(prefs, id, s.getId());
+				String[] t = RATT.downloadTimes(prefs, extId, s.getId());
 				e.putTime(t[0], t[1]);
 			} else
 				e.putErr("upd-canceled");
@@ -148,6 +187,7 @@ public class Path implements Serializable {
 	 */
 	
 	public void reOrder() {
+		ensureLoaded();
 		try {
 			stationCheck();
 			orderRead();
@@ -232,6 +272,7 @@ public class Path implements Serializable {
 	}
 	
 	public List<String> timesToString() {
+		ensureLoaded();
 		ArrayList<String> times = new ArrayList<String>();
 		for(Station s:stationsByTime) {
 			StringBuilder b = new StringBuilder();
@@ -250,6 +291,63 @@ public class Path implements Serializable {
 		}
 		return times;
 	}
+	
+	@Override
+	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
+		this.extId = res.readString();
+		this.name = res.readString();
+		this.niceName = res.readString();
+		
+		int stationCount = res.readInt();
+		for(int j=0;j<stationCount;j++) {
+			String stationId = res.readString();
+			
+			Station s = city.getStation(stationId);
+			concatenate(s);
+		}
+	}
+	
+	private void persistLazy(DataOutputStream lazy) throws IOException {
+		byte[] b;
+		// lazy path resources
+		b = extId.getBytes();
+		lazy.writeInt(b.length); lazy.write(b);
+		
+		b = getName().getBytes();
+		lazy.writeInt(b.length); lazy.write(b);
+
+		b = getNiceName().getBytes();
+		lazy.writeInt(b.length); lazy.write(b);
+		
+		lazy.writeInt(getStationsByPath().size());
+		for(Station s:getStationsByPath()) {
+			b = s.getId().getBytes();
+			lazy.writeInt(b.length); lazy.write(b);
+		}
+		lazy.flush();
+	}	
+
+	@Override
+	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
+		byte[] b;
+		
+		// eager path resources
+		eager.writeInt(id);
+
+		b = getLineName().getBytes();
+		eager.writeInt(b.length); eager.write(b);
+
+		eager.writeInt(lazyId);
+
+		persistLazy(lazy);
+	}
+
+	public static Path loadEager(DetachableStream eager, City city) throws IOException {
+		int pathId = eager.readInt();
+		String lineName = eager.readString();
+		return new Path(city.getLineByName(lineName), pathId, eager.readInt(), city);
+	}
+	
 	
 	/*
 	 * 
@@ -311,5 +409,4 @@ public class Path implements Serializable {
 		}
 		
 	}
-	
 }

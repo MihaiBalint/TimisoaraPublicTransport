@@ -22,26 +22,28 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import ro.mihai.util.DetachableStream;
+import ro.mihai.util.Formatting;
 
 public class Station extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name, id;
-	private List<Line> lines;
+	private List<Path> paths;
 	private Junction junction;
 	private String lat, lng;
 	private String niceName, shortName;
 	
-	public Station(String id, long resId, City city) {
+	private Station(String id, long resId, City city) {
 		super(resId, city);
 		this.id = id;
-		this.lines = new ArrayList<Line>(2);
+		this.paths = new ArrayList<Path>(2);
 	}
 
 	public Station(String id, String name) {
 		this(id,-1, null);
-		this.lines = new ArrayList<Line>(2);
+		this.paths = new ArrayList<Path>(2);
 		this.name = name;
 	}
 	
@@ -52,29 +54,24 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	}
 
 	public String getLineNames() {
-		String lineNames = "";
-		boolean first = true;
-		for(Line line : lines)
-			if (first) {
-				lineNames += line.getName();
-				first = false;
-			} else
-				lineNames += ", "+line.getName();
-		return lineNames;
+		TreeSet<String> lineNameSet = new TreeSet<String>();
+		for(Path path : paths) 
+			lineNameSet.add(path.getLineName());
+		return Formatting.join(", ", lineNameSet);
 	}
 
 	public String getId() {
 		return id;
 	}
 	
-	public void addLine(Line l) {
-		if (!lines.contains(l))
-			lines.add(l);
+	public void addPath(Path p) {
+		if (!paths.contains(p))
+			paths.add(p);
 	}
 	
-	public List<Line> getLines() {
+	public List<Path> getPaths() {
 		ensureLoaded();
-		return lines;
+		return paths;
 	}	
 	
 	public String getName() {
@@ -151,10 +148,10 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		this.lng = lazy.readString();
 		
 		if (version.lessThan(DataVersion.Version4)) return;
-		int lineCount = lazy.readInt();
-		for(int i=0;i<lineCount;i++) {
-			String lineId = lazy.readString();
-			lines.add(city.getLineById(lineId));
+		int pathCount = lazy.readInt();
+		for(int i=0;i<pathCount;i++) {
+			int pathId = lazy.readInt();
+			paths.add(city.getPathById(pathId));
 		}
 	}
 	
@@ -180,10 +177,9 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		b = getLng().getBytes();
 		res.writeInt(b.length); res.write(b);
 		
-		res.writeInt(lines.size());
-		for(Line l : lines) {
-			b = l.getId().getBytes();
-			res.writeInt(b.length); res.write(b);
+		res.writeInt(paths.size());
+		for(Path p : paths) {
+			res.writeInt(p.getId());
 		}
 	}
 	

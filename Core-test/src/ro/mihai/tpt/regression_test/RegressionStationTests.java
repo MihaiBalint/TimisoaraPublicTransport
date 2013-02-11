@@ -1,6 +1,13 @@
 package ro.mihai.tpt.regression_test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.INamedEntity;
+import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Path;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -28,9 +35,24 @@ public class RegressionStationTests extends TestCase {
 			cActual.getLines().size()
 		);
 	}
+	
+	private static Collection<INamedEntity> wrap(Collection<Line> lines) {
+		// TODO Kill me and replace me with path based tests
+		Collection<INamedEntity> wrapLines = new ArrayList<INamedEntity>();
+		for(Line l : lines) {
+			HashSet<String> ids = new HashSet<String>();
+			for(Path p : l.getPaths())
+				if (!ids.contains(p.getId())) {
+					ids.add(p.getExtId());
+					wrapLines.add(bl(l.getFirstPath().getExtId(), l.getName()));
+				}
+		}
+		return wrapLines;
+	}
+	
 	public void testLines() {
 		assertEquals("",
-			RegressionTests.diffEntities(cExpected.getLines(), cActual.getLines(), blExpectedLines, blActualLines),"");
+			RegressionTests.diffEntities(wrap(cExpected.getLines()), wrap(cActual.getLines()), blExpectedLines, blActualLines),"");
 	}
 
 	

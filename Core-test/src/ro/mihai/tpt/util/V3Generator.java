@@ -23,7 +23,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import junit.framework.TestCase;
 
 public class V3Generator extends TestCase {
-
+	
 	public void testGenerator() throws Exception {
 		// InputStream inp = new FileInputStream("Lines Stations and Junctions - Timisoara Public Transport.csv");
 		// InputStream inp = new FileInputStream("linestations3.csv");
@@ -67,15 +67,15 @@ public class V3Generator extends TestCase {
 				
 				stMap.put(row[2], st);
 			}
-			Line l = c.getOrCreateLine(row[0].trim(), row[1].trim(), false);
+			Line l = c.getOrCreateLine(row[1].trim());
 			Path p = l.getPath(nnp[1]);
 			if (null==p) {
-				p = new Path(l, row[0].trim(), nnp[1]);
+				p = c.newPath(l, row[0].trim(), nnp[1]);
 				p.setNiceName(nnp[1]);
 				l.addPath(p);
 			}
 			p.concatenate(st);
-			st.addLine(l);
+			st.addPath(p);
 		}
 		c.setStations(new ArrayList<Station>(stMap.values()));
 		c.setJunctions(new ArrayList<Junction>(jMap.values()));
@@ -107,7 +107,6 @@ public class V3Generator extends TestCase {
 		c1.loadFromStream(fis, new NullMonitor());
 		for(Station s:c1.getStations())
 			s.getName();
-		
 		assertTrue(c.getStations().size() > 0);
 		assertEquals(c.getStations().size(), 	c1.getStations().size());
 		
@@ -160,7 +159,7 @@ public class V3Generator extends TestCase {
 			for(Path p:l.getPaths()) {
 				for(Station s:p.getStationsByPath()) {
 					StringBuilder b = new StringBuilder();
-					b.append(l.getId()); b.append(",");
+					b.append(p.getId()); b.append(",");
 					
 					b.append("\""+checked(l.getName())+"\""); b.append(",");
 					
