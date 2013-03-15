@@ -49,6 +49,7 @@ public class Line extends PersistentEntity implements Serializable {
 	}
 	
 	public List<String> getSortedPathNames() {
+		ensureLoaded();		
 		List<String> pathNames = new ArrayList<String>();
 		for(Path p : paths.values())
 			pathNames.add(p.getNiceName());

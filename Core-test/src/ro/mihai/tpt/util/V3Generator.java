@@ -81,6 +81,7 @@ public class V3Generator extends TestCase {
 		c.setJunctions(new ArrayList<Junction>(jMap.values()));
 		
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
+		assertEquals(2,c.getLine("33").getPaths().size());
 		
 		
 		/* * /
@@ -117,9 +118,11 @@ public class V3Generator extends TestCase {
 		assertEquals(c.getJunctions().size(), 	c1.getJunctions().size());
 
 		assertEquals(c.getLine("33").getPaths().size(), c1.getLine("33").getPaths().size());
+		assertEquals(c.getLine("33").getSortedPathNames(), c1.getLine("33").getSortedPathNames());
 		assertEquals(2,c.getLine("33").getPaths().size());
 
 		assertEquals(c.getLine("32").getPaths().size(), c1.getLine("32").getPaths().size());
+		assertEquals(c.getLine("32").getSortedPathNames(), c1.getLine("32").getSortedPathNames());
 		assertEquals(2,c.getLine("32").getPaths().size());
 
 		assertEquals(c.getLine("Tv9").getPaths().size(), c1.getLine("Tv9").getPaths().size());
