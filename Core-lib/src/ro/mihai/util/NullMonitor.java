@@ -19,7 +19,13 @@ package ro.mihai.util;
 
 public class NullMonitor implements IMonitor {
 
+	int max;
+	public int getMax() {
+		return max;
+	}
+	
 	public void setMax(int max) {
+		this.max = max;
 	}
 
 	public void workComplete() {

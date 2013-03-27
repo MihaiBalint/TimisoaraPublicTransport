@@ -20,5 +20,6 @@ package ro.mihai.util;
 public interface IMonitor {
 	
 	void setMax(int max);
+	int getMax();
 	void workComplete();
 }

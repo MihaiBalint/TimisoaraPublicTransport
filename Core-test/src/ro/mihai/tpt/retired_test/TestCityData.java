@@ -25,7 +25,6 @@ import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.INamedEntity;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.util.TestPrefs;
-import ro.mihai.util.IMonitor;
 import junit.framework.TestCase;
 
 public class TestCityData extends TestCase {
@@ -67,17 +66,5 @@ public class TestCityData extends TestCase {
 		}
 
 		assertEquals(597, c.getStations().size());
-	}
-	
-	public static class TestMonitor implements IMonitor {
-		public void workComplete() {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		public void setMax(int max) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 }

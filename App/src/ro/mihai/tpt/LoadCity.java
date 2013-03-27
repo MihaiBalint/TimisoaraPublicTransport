@@ -40,7 +40,7 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
 	private City city = null;
 	private ProgressBar prgress;
 	private TextView status;
-	private int work, max=-1;
+	private int work, max=-1, workMax;
 	private long last=0;;
 	
 	/** Called when the activity is first created. */
@@ -78,8 +78,14 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
         } 
 	}    
 	
+	public int getMax() {
+		// TODO Auto-generated method stub
+		return workMax;
+	}
 	public void setMax(int max) {
-		prgress.setMax(this.max = (max*105)/100);
+		this.workMax = max;
+		this.max = (max*105)/100;
+		prgress.setMax(this.max);
 	}
 
 	private void setStatus(final String statusText) {
@@ -93,11 +99,13 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
 		if(work>=max) return;
 		
 		long crt = System.currentTimeMillis(); 
-		if(crt>last && (crt-last)<500) return;
-
-		runOnUiThread(new Runnable() { public void run() {
-			prgress.setProgress(work);
-		}});
+		
+		if(crt>last && (crt-last)>=300) {
+			last = crt;
+			runOnUiThread(new Runnable() { public void run() {
+				prgress.setProgress(work);
+			}});
+		}
 	}
 
 	private String baseUrl = null;

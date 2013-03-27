@@ -82,7 +82,7 @@ public class V3Generator extends TestCase {
 		
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("33").getPaths().size());
-		assertEquals(2,c.getLine("Tv7").getPaths().size());
+		//assertEquals(2,c.getLine("Tv7").getPaths().size());
 		
 		
 		/* * /

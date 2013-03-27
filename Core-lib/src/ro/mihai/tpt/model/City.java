@@ -252,6 +252,8 @@ public class City implements Serializable {
 		}
 		this.in = in;
 		int blType, blLength;
+
+		mon.setMax(786);
 		
 		blType = in.readInt();
 		blLength = in.readInt();
@@ -259,6 +261,7 @@ public class City implements Serializable {
 		for(int i=0;i<lineCount;i++) {
 			Line l = Line.loadEager(in, this);
 			lineNameMap.put(l.getName(), l);
+			mon.workComplete();
 		}
 
 		blType = in.readInt();
@@ -269,13 +272,13 @@ public class City implements Serializable {
 		for(int i=0;i<pathCount;i++) {
 			Path p = Path.loadEager(in, this);
 			pathIdMap.set(p.getId(), p);
+			mon.workComplete();
 		}
 		
 		blType = in.readInt();
 		blLength = in.readInt();
 		int stationCount = in.readInt();
 		stations = new HashMap<String, Station>();
-		mon.setMax(stationCount);
 		for(int i=0;i<stationCount;i++) {
 			Station s = Station.loadEager(in, this);
 			stations.put(s.getId(), s);
@@ -285,9 +288,13 @@ public class City implements Serializable {
 		blType = in.readInt();
 		blLength = in.readInt();
 		int junctionCount = in.readInt();
+		assert mon.getMax() == lineCount+pathCount+stationCount+junctionCount: 
+			"Max: "+(lineCount+pathCount+stationCount+junctionCount)+
+			"!="+mon.getMax();
 		for(int i=0;i<junctionCount;i++) {
 			Junction s = Junction.loadEager(in, this);
 			junctionMap.put(s.getId(), s);
+			mon.workComplete();
 		}
 
 		while (blType!=2) {
