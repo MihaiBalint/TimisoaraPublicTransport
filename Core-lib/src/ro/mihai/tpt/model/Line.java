@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +36,15 @@ import ro.mihai.util.LineKind;
 public class Line extends PersistentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private Map<String,Path> paths;
+	private Set<Path> paths;
+	private Map<String,Path> pathNames;
 	private Path first;
 	
 	private Line(String name, long resId, City city) {
 		super(resId, city);
 		this.name = name;
-		this.paths = new HashMap<String, Path>();
+		this.paths = new HashSet<Path>();
+		this.pathNames = new HashMap<String, Path>();
 	}
 	
 	public Line(String name) {
@@ -51,7 +54,7 @@ public class Line extends PersistentEntity implements Serializable {
 	public List<String> getSortedPathNames() {
 		ensureLoaded();		
 		List<String> pathNames = new ArrayList<String>();
-		for(Path p : paths.values())
+		for(Path p : paths)
 			pathNames.add(p.getNiceName());
 		Collections.sort(pathNames);
 		return pathNames;
@@ -81,7 +84,7 @@ public class Line extends PersistentEntity implements Serializable {
 	
 	public Path getPath(String name) {
 		ensureLoaded();		
-		return paths.get(name);
+		return pathNames.get(name);
 	}
 	
 	public Path getFirstPath() {
@@ -92,13 +95,19 @@ public class Line extends PersistentEntity implements Serializable {
 	
 	public Collection<Path> getPaths() {
 		ensureLoaded();		
-		return paths.values();
+		return paths;
+	}
+
+	public void addPath(Path p) {
+		addEagerPath(p);
+		pathNames.put(p.getName(), p);
 	}
 	
-	public void addPath(Path p) {
+	void addEagerPath(Path p) {
 		if(paths.isEmpty()) 
 			first = p;
-		paths.put(p.getName(), p);
+		assert p.getLineName().equals(name);
+		paths.add(p);
 	}
 	
 	// merges stations from the empty-name-path to the other paths
@@ -107,8 +116,9 @@ public class Line extends PersistentEntity implements Serializable {
 		Path tailsPath = getPath(""); 
 		if(tailsPath==null) return;
 		
-		paths.remove("");
-		for(Path p:paths.values()) {
+		paths.remove(tailsPath);
+		pathNames.remove("");
+		for(Path p:paths) {
 			for(Station s:tailsPath.getStationsByPath())
 				p.concatenate(s);
 		}
@@ -117,7 +127,7 @@ public class Line extends PersistentEntity implements Serializable {
 	public Set<Station> getStations() {
 		ensureLoaded();		
 		Set<Station> all = new LinkedHashSet<Station>();
-		for(Path p: paths.values())
+		for(Path p: paths)
 			all.addAll(p.getStationsByPath());
 		return all;
 	}
@@ -127,28 +137,22 @@ public class Line extends PersistentEntity implements Serializable {
 	}
 	
 	public boolean isFake() {
-		for (Path p: paths.values())
+		for (Path p: paths)
 			if (p.isFake())
 				return true;
 		return false;
 	}
 
 	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
-		int pathCount = res.readInt();
-		for(int i=0;i<pathCount;i++) {
-			int pathId = res.readInt();
-			addPath(city.getPathById(pathId));
-		}
+		for(Path p: paths)
+			pathNames.put(p.getName(), p);
 	}
 
 
 	private void persistLazy(DataOutputStream lazy) throws IOException {
-		// lazy line resources
-		lazy.writeInt(paths.size());
-		for(Path p:paths.values()) {
-			lazy.writeInt(p.getId());
+		for(Path p:paths) {
+			assert p.getLineName().equals(name);
 		}
-		lazy.flush();
 	}
 
 	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {

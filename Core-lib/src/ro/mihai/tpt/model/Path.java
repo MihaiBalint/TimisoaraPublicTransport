@@ -78,7 +78,7 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 
 	public boolean isFake() {
-		return extId.startsWith("F");
+		return extId!=null && extId.startsWith("F");
 	}
 	
 	public String getName() {
@@ -333,7 +333,7 @@ public class Path extends PersistentEntity implements Serializable {
 		
 		// eager path resources
 		eager.writeInt(id);
-
+		assert line.getPaths().contains(this);
 		b = getLineName().getBytes();
 		eager.writeInt(b.length); eager.write(b);
 
@@ -345,7 +345,15 @@ public class Path extends PersistentEntity implements Serializable {
 	public static Path loadEager(DetachableStream eager, City city) throws IOException {
 		int pathId = eager.readInt();
 		String lineName = eager.readString();
-		return new Path(city.getLineByName(lineName), pathId, eager.readInt(), city);
+		Line line = city.getLineByName(lineName);
+		Path path = new Path(line, pathId, eager.readInt(), city);
+		line.addEagerPath(path);
+		return path;
+	}
+	
+	@Override
+	public String toString() {
+		return "Path: "+id+"["+getLineName()+"]("+Integer.toHexString(hashCode())+")";
 	}
 	
 	
