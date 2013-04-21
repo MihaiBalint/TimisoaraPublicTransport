@@ -66,7 +66,7 @@ public class PathStationsSelection {
 		case BUS: return "B U S";
 		case EXPRESS: return "E X P R E S S";
 		case TRAM: return "T R A M";
-		case TROLLEY: return "T R O L L E Y";
+		case TROLLEY: return "TROLLEY BUS";
 		case METRO: return "M E T R O";
 		default: return "";
 		}

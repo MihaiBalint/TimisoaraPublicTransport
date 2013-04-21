@@ -37,23 +37,29 @@
 	android:layout_height="wrap_content">
 
 	<TextView
-		android:text="App Version 2.9" 
+		android:text="App Version 2.10" 
 		android:layout_height="wrap_content"
 		android:layout_marginTop="5dp"
 		android:gravity="center"/>
 	<TextView
-		android:text="(c) 2011-2012 Mihai Balint, Kriszti Cseh,"
+		android:text="(c) 2011-2013 Mihai Balint, Kriszti Cseh,"
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:gravity="center"/>
 	<TextView
-		android:text="Catalin Mihut, Portan Cosmin, Florin B."
+		android:text="Bogdan Micalacean, Catalin Mihut."
 		android:background="#A0402020"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:gravity="center"/>
-	
+	<TextView
+		android:text="Portan Cosmin, Florin B."
+		android:background="#A0402020"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:gravity="center"/>
+		
 	<TextView
 		android:text="Special thanks to Sorin for the server-side."
 		android:layout_marginTop="5dp"
