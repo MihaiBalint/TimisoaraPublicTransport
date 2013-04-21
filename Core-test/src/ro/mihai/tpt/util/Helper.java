@@ -60,7 +60,10 @@ public class Helper {
 	public Set<String> getJunctionStations(String jid) { return junctionMap.get(jid); }
 	
 	public Set<Coords> getCoords(String id) { return coords.get(id); }
-	public Set<Coords> getXMLCoords(String id) { return stXMLCoords.get(id); }
+	public Set<Coords> getXMLCoords(String id) { 
+		Set<Coords> xml = stXMLCoords.get(id);
+		return xml != null ? xml : new HashSet<Coords>();
+	}
 	
 	private static <K, T> void add(Map<K,Set<T>> map, K key, T val) {
 		Set<T> n = map.get(key);

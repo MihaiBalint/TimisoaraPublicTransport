@@ -82,7 +82,6 @@ public class V3Generator extends TestCase {
 		
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("33").getPaths().size());
-		//assertEquals(2,c.getLine("Tv7").getPaths().size());
 		
 		
 		/* * /
@@ -133,17 +132,24 @@ public class V3Generator extends TestCase {
 		assertEquals(c.getLine("Tv9").getPaths().size(), c1.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		
+		assertPaths(c,"generated");
+		assertPaths(c1,"saved");
+		// stream must stay open for certain stuff
+		fis.close();
+	}
+
+	private void assertPaths(City c, String descr) {
 		for(Line l : c.getLines()) {
-			if(l.getPaths().size() > 2) {
-				System.out.println(l.getName());
+			if(l.getPaths().size() != 2) {
+				System.out.println("Err("+descr+"): "+l.getName()+" has "+l.getPaths().size()+" paths.");
 				for(Path p: l.getPaths())
 					System.out.println("\t"+p.getName());
 			}
 			assertTrue(l.getPaths().size() <= 2);
 		}
-		// stream must stay open for certain stuff
-		fis.close();
 	}
+	
+	
 	
 	private static boolean nonEmpty(String s) {
 		return s!=null && !s.trim().isEmpty() && !"null".equalsIgnoreCase(s);

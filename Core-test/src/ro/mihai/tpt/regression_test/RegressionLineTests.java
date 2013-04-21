@@ -42,10 +42,13 @@ public class RegressionLineTests extends TestCase {
 	public void testLine_Stations() {
 		Line expected = cExpected.getLine(lineName); 
 		Line actual = cActual.getLine(lineName);
+
+		String diff = RegressionTests.diffEntities(expected.getStations(), actual.getStations(),
+				blExpectedLineStations(lineName), blActualLineStations(lineName)); 
+		if (!diff.isEmpty())
+			System.out.println("\nLine: "+lineName+diff);
 		
-		assertEquals("",
-			RegressionTests.diffEntities(expected.getStations(), actual.getStations(),
-					blExpectedLineStations(lineName), blActualLineStations(lineName)),"");
+		assertEquals("", diff,"");
 	}
 	
 	@Override
@@ -65,10 +68,10 @@ public class RegressionLineTests extends TestCase {
 		LinkedHashSet<String> lineNames = new LinkedHashSet<String>();
 		// TODO Assert paths instead of lines
 		for(Line l : cExpected.getLines()) 
-			if (!notListed(l, blExpectedLines))
+			if (notListed(l, blExpectedLines))
 				lineNames.add(l.getName());
 		for(Line l : cActual.getLines()) 
-			if (!notListed(l, blActualLines))
+			if (notListed(l, blActualLines))
 				lineNames.add(l.getName());
 		
 		for(String lineName : lineNames) {

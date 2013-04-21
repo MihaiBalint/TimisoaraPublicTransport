@@ -68,10 +68,8 @@
 		android:gravity="center"
 	    android:layout_marginTop="20dp"
 		>
-		<Button	style="@style/LineButton" android:id="@+id/bTv7a"
-			android:text=" Tv7a "/>
-		<Button	style="@style/LineButton" android:id="@+id/bTv7b"
-			android:text=" Tv7b "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv7"
+			android:text=" Tv7 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bTv8"
 			android:text=" Tv8 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bTv9"

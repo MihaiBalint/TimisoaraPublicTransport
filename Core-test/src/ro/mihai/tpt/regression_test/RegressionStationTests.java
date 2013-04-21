@@ -42,17 +42,20 @@ public class RegressionStationTests extends TestCase {
 		for(Line l : lines) {
 			HashSet<String> ids = new HashSet<String>();
 			for(Path p : l.getPaths())
-				if (!ids.contains(p.getId())) {
+				if (!ids.contains(p.getExtId())) {
 					ids.add(p.getExtId());
-					wrapLines.add(bl(l.getFirstPath().getExtId(), l.getName()));
+					wrapLines.add(bl(p.getExtId(), l.getName()));
 				}
 		}
 		return wrapLines;
 	}
 	
 	public void testLines() {
-		assertEquals("",
-			RegressionTests.diffEntities(wrap(cExpected.getLines()), wrap(cActual.getLines()), blExpectedLines, blActualLines),"");
+		String diff = RegressionTests.diffEntities(wrap(cExpected.getLines()), wrap(cActual.getLines()), blExpectedLines, blActualLines);
+		if (!diff.isEmpty()) {
+			System.out.println("\nLine ids: "+diff);
+		}
+		assertEquals("", diff,"");
 	}
 
 	

@@ -253,7 +253,7 @@ public class City implements Serializable {
 		this.in = in;
 		int blType, blLength;
 
-		mon.setMax(786);
+		mon.setMax(823);
 		
 		blType = in.readInt();
 		blLength = in.readInt();

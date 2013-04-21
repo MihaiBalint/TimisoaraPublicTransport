@@ -3,11 +3,11 @@ package ro.mihai.util;
 import ro.mihai.tpt.model.Line;
 
 public enum LineKind {
-	TRAM("Tv1","Tv2","Tv4","Tv5","Tv6","Tv7a","Tv7b","Tv8","Tv9"), 
+	TRAM("Tv1","Tv2","Tv4","Tv5","Tv6","Tv7","Tv8","Tv9"), 
 	TROLLEY("Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19"), 
-	BUS("3","13","21","28","32","33","33b","40","46"),
-	EXPRESS("E1","E2","E3","E4","E4b","E6","E7","E8"),
-	METRO("M30","M35","M36");
+	BUS("3","13","13b","21","22","28","32","33","33b","40","46"),
+	EXPRESS("E1","E2","E3","E4","E4b","E6","E7","E8", "E33"),
+	METRO("M30","M35","M36","M44");
 	
 	private final String[] names;
 	

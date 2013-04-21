@@ -42,11 +42,13 @@ public class ViewBusses extends CityActivity {
     	findViewById(R.id.bE4b).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("E4b")));
     	findViewById(R.id.bE6).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("E6")));
     	findViewById(R.id.bE7).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("E7")));
-    	findViewById(R.id.bE8).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("E8")));
+    	findViewById(R.id.bE33).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("E33")));
     	
     	findViewById(R.id.b3).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("3")));
     	findViewById(R.id.b13).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("13")));
+    	findViewById(R.id.b13b).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("13b")));
     	findViewById(R.id.b21).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("21")));
+    	findViewById(R.id.b22).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("22")));
     	findViewById(R.id.b28).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("28")));
 
     	findViewById(R.id.b32).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("32")));
@@ -58,5 +60,6 @@ public class ViewBusses extends CityActivity {
     	findViewById(R.id.bM30).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("M30")));
     	findViewById(R.id.bM35).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("M35")));
     	findViewById(R.id.bM36).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("M36")));
+    	findViewById(R.id.bM44).setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, c.getLine("M44")));
     }
 }

@@ -62,12 +62,26 @@
 			android:text=" E6 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bE7"
 			android:text=" E7 "/>
-		<Button	style="@style/LineButton" android:id="@+id/bE8"
-			android:text=" E8 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bE33"
+			android:text=" E33 "/>
 				<Button	style="@style/LineButton" android:id="@+id/bE4b"
 			android:text=" E4b "/>
 	</LinearLayout>
 
+	<LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+	    android:layout_marginTop="5dp"
+		>
+		<Button	style="@style/LineButton" android:id="@+id/b33"
+			android:text=" 33 "/>
+		<Button	style="@style/LineButton" android:id="@+id/b33b"
+			android:text=" 33b "/>
+		<Button	style="@style/LineButton" android:id="@+id/b22"
+			android:text=" 22 "/>
+			</LinearLayout>
+	
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -78,10 +92,10 @@
 			android:text=" 3 "/>
 		<Button	style="@style/LineButton" android:id="@+id/b13"
 			android:text=" 13 "/>
-		<Button	style="@style/LineButton" android:id="@+id/b21"
+		<Button	style="@style/LineButton" android:id="@+id/b13b"
+			android:text=" 13b "/>
+				<Button	style="@style/LineButton" android:id="@+id/b21"
 			android:text=" 21 "/>
-		<Button	style="@style/LineButton" android:id="@+id/b28"
-			android:text=" 28 "/>
 	</LinearLayout>
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -89,15 +103,15 @@
 		android:gravity="center"
 	    android:layout_marginTop="5dp"
 		>
-		<Button	style="@style/LineButton" android:id="@+id/b32"
+		<Button	style="@style/LineButton" android:id="@+id/b28"
+			android:text=" 28 "/>
+	    <Button	style="@style/LineButton" android:id="@+id/b32"
 			android:text=" 32 "/>
-		<Button	style="@style/LineButton" android:id="@+id/b33"
-			android:text=" 33 "/>
 		<Button	style="@style/LineButton" android:id="@+id/b40"
 			android:text=" 40 "/>
 		<Button	style="@style/LineButton" android:id="@+id/b46"
 			android:text=" 46 "/>
-	</LinearLayout>
+	    	</LinearLayout>
 	
 	<LinearLayout
 		android:layout_width="fill_parent"
@@ -105,8 +119,6 @@
 		android:gravity="center"
 	    android:layout_marginTop="5dp"
 		>
-		<Button	style="@style/LineButton" android:id="@+id/b33b"
-			android:text=" 33b "/>
 	</LinearLayout>
 	
 	<LinearLayout
@@ -121,6 +133,8 @@
 			android:text=" M35 "/>
 		<Button	style="@style/LineButton" android:id="@+id/bM36"
 			android:text=" M36 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bM44"
+			android:text=" M44 "/>
 	</LinearLayout>
 	
 </TableLayout>
