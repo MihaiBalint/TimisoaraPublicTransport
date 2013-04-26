@@ -44,11 +44,12 @@ public class ViewCategories extends CityActivity {
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
-    	City c = getCity();
-    	setContentView(R.layout.list_categories);
-    	findViewById(R.id.tram_button).setOnClickListener(new StartActivity(this, ViewTrams.class).addCity(c));
-    	findViewById(R.id.bus_button).setOnClickListener(new StartActivity(this, ViewBusses.class).addCity(c));
-    	findViewById(R.id.trolleybus_button).setOnClickListener(new StartActivity(this, ViewTrolleys.class).addCity(c));
+    	City city = getCity();
+    	setContentView(R.layout.list_favorites);
+    	addMenuAction();
+    	findViewById(R.id.tram_button).setOnClickListener(new StartActivity(this, ViewTrams.class).addCity(city));
+    	findViewById(R.id.bus_button).setOnClickListener(new StartActivity(this, ViewBusses.class).addCity(city));
+    	findViewById(R.id.trolleybus_button).setOnClickListener(new StartActivity(this, ViewTrolleys.class).addCity(city));
     	
     	List<String> sortedNames = Utils.getTopLines(this);
     	for (String l : LineKindUtils.MOST_USED)
@@ -58,14 +59,14 @@ public class ViewCategories extends CityActivity {
     	Iterator<String> nameIt = sortedNames.iterator();
     	for(int id: ids) {
     		String name = nameIt.next();
-    		Line line = c.getLine(name);
+    		Line line = city.getLine(name);
     		while (line.isFake() && nameIt.hasNext()) {
     			name = nameIt.next();
-    			line = c.getLine(name);
+    			line = city.getLine(name);
     		}
     		Button btn = (Button)findViewById(id);
     		btn.setText(" "+name+" ");
-    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, c, line));
+    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, city, line));
     	}
     }
     

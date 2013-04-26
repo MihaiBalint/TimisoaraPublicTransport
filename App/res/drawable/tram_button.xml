@@ -4,6 +4,6 @@
     android:dither="true">
   <item android:drawable="@drawable/btn_tram_high" android:state_focused="true" />
   <item android:drawable="@drawable/btn_tram_high" android:state_pressed="true" android:state_enabled="true" />
-  <item android:drawable="@drawable/btn_tram_off" android:state_enabled="false" />
+  <item android:drawable="@drawable/btn_tram_sel" android:state_enabled="false" />
   <item android:drawable="@drawable/btn_tram_sel"/> 
 </selector>

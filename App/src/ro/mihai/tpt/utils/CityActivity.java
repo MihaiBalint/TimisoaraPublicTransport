@@ -22,6 +22,7 @@ import ro.mihai.tpt.Preferences;
 import ro.mihai.tpt.model.City;
 import ro.mihai.util.IPrefs;
 
+import ro.mihai.tpt.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -50,6 +51,16 @@ public class CityActivity extends Activity implements IPrefs {
 		} catch(CityNotLoadedException e) {
 			reboot();
 			finish();
+		}
+	}
+	
+	protected void addMenuAction() {
+		findViewById(R.id.menu_button).setOnClickListener(new OpenContextMenu());
+	}
+	
+	private class OpenContextMenu implements View.OnClickListener {
+		public void onClick(View v) {
+			openOptionsMenu();
 		}
 	}
 

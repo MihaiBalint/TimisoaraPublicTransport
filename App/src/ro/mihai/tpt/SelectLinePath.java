@@ -55,28 +55,6 @@ public class SelectLinePath implements OnClickListener, DialogInterface.OnClickL
 		onClick(null, 0);
 	}
 
-	public void ask_onClick(View v) {
-		pathList = new ArrayList<Path>(selectable.getPaths());
-		assert( !pathList.isEmpty() );
-		
-		if(pathList.size()==1) { // only one path?
-			onClick(null, 0);
-			return;
-		}
-		
-		final CharSequence[] items = new CharSequence[pathList.size()];
-		
-		for(int i=0;i<items.length;i++) 
-			items[i] = pathList.get(i).getNiceName();
-
-		String title = parent.getString(R.string.selPathLabel) + ": " +selectable.getName();
-		new AlertDialog.Builder(parent)
-			.setTitle(title)
-			.setItems(items, this)
-			.create()
-			.show();
-	}
-	
     public void onClick(DialogInterface dialog, int item) {
     	Path selectedPath = pathList.get(item);
     	Utils.recordUsePath(parent, selectedPath);

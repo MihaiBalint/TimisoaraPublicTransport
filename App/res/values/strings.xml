@@ -35,10 +35,10 @@
 	<string name="app_credits">Author Credits</string>
 	<string name="switch_direction">Switch Direction</string>
 	
-	<string name="lblTrams">Trams</string>
-	<string name="lblTrolleys">Trolleys</string>
-	<string name="lblBus">City Buses</string>
-	<string name="lblExpress">Express Buses</string>
-	<string name="lblMetro">Metro Buses</string>
-	<string name="lblOther">Other connections</string>
+	<string name="lblTrams">Tram</string>
+	<string name="lblTrolleys">Trolley Bus</string>
+	<string name="lblBus">City Bus</string>
+	<string name="lblExpress">Express Bus</string>
+	<string name="lblMetro">Metro Bus</string>
+	<string name="lblOther">Other connection</string>
 </resources>

@@ -8,9 +8,13 @@
     </style>
     
     <style name="CategoryButton">
-        <item name="android:layout_width">145sp</item>
-        <item name="android:layout_height">55sp</item>
-    </style>
+        <item name="android:layout_width">39.8dp</item>
+        <item name="android:layout_height">39.8dp</item>
+    	<item name="android:layout_gravity">center</item>
+    	<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_marginLeft">8.1dp</item>
+		<item name="android:layout_marginRight">8.1dp</item>
+    	</style>
 
     <style name="LineButton">
         <item name="android:layout_width">65sp</item>

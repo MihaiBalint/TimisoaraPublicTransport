@@ -5,8 +5,9 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="left"
-    android:layout_marginBottom="5dip"
-    android:layout_marginTop="5dip">
+    android:layout_marginBottom="0dp"
+    android:layout_marginTop="0dp"
+    android:background="#FF222222">
     
     <ImageView 
         android:layout_width="wrap_content" 
@@ -17,17 +18,28 @@
        	android:layout_marginRight="14.6dp"
        	android:layout_marginLeft="14.6dp"
        	android:layout_marginTop="7.3dp"
-       	android:layout_marginBottom="7.3dp"
-        
+       	android:layout_marginBottom="7.3dp"      
         />
     <TextView 	
         android:layout_width="wrap_content" 
 		android:layout_height="53dp"
-		android:textColor="#FFFFFFFF"
+		android:textColor="#FFDDDDDD"
 	  	android:text="Transport public\nTimisoara"
 		android:textSize="12sp"
 	    android:gravity="center_vertical"
         />
+	<View
+   	    android:layout_width="0dp"
+   	    android:layout_weight="1"
+   	    android:layout_height="53dp"
+   	    android:background="#00000000" />
+   	<Button
+   	    android:id="@+id/menu_button"
+        android:layout_width="38.4dp" 
+		android:layout_height="38.4dp"
+       	android:layout_marginTop="7.3dp"
+       	android:layout_marginBottom="7.3dp"
+   	    android:background="@drawable/menu_light_button"/>
     
 
 </LinearLayout>
