@@ -27,29 +27,41 @@
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
+	    android:layout_marginTop="20dp"
 	    android:gravity="center"
-	    android:layout_marginTop="5dp"
 	    >
-		<Button	style="@style/LineButton" android:id="@+id/opt11"
-			android:text=" 33 "/>
-		<Button	style="@style/LineButton" android:id="@+id/opt12"
-			android:text=" Tv4 "/>
-		<Button	style="@style/LineButton" android:id="@+id/opt13"
+		<Button	style="@style/LineButton" android:id="@+id/bTv1"
+			android:text=" Tv1 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv2"
 			android:text=" Tv2 "/>
 	</LinearLayout>
-	
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:layout_marginTop="20dp"
+	    >
+		<Button	style="@style/LineButton" android:id="@+id/bTv4"
+			android:text=" Tv4 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv5"
+			android:text=" Tv5 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv6"
+			android:text=" Tv6 "/>
+	</LinearLayout>
+
 	<LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
-	    android:layout_marginTop="8dp"
+	    android:layout_marginTop="20dp"
 		>
-		<Button	style="@style/LineButton"  android:id="@+id/opt21"
-			android:text=" 40 "/>
-		<Button	style="@style/LineButton"  android:id="@+id/opt22"
-			android:text=" Tb14 "/>
-		<Button	style="@style/LineButton"  android:id="@+id/opt23"
-			android:text=" Tb15 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv7"
+			android:text=" Tv7 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv8"
+			android:text=" Tv8 "/>
+		<Button	style="@style/LineButton" android:id="@+id/bTv9"
+			android:text=" Tv9 "/>
 	</LinearLayout>
 </TableLayout>
 </merge>

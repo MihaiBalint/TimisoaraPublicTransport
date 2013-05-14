@@ -31,9 +31,12 @@ import ro.mihai.tpt.utils.Utils;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
@@ -46,6 +49,7 @@ public class ViewCategories extends CityActivity {
         
     	City city = getCity();
     	setContentView(R.layout.list_favorites);
+    	
     	addMenuAction();
     	findViewById(R.id.tram_button).setOnClickListener(new StartActivity(this, ViewTrams.class).addCity(city));
     	findViewById(R.id.bus_button).setOnClickListener(new StartActivity(this, ViewBusses.class).addCity(city));
@@ -55,18 +59,20 @@ public class ViewCategories extends CityActivity {
     	for (String l : LineKindUtils.MOST_USED)
     		if (!sortedNames.contains(l))
     			sortedNames.add(l);
-    	int[] ids = {R.id.opt11, R.id.opt12, R.id.opt13, R.id.opt21, R.id.opt22, R.id.opt23};
+    	int favorites = 6;
+    	ViewGroup favoritesView = (ViewGroup)findViewById(R.id.favorite_content);
+    	LayoutInflater inflater = this.getLayoutInflater();
+    	
     	Iterator<String> nameIt = sortedNames.iterator();
-    	for(int id: ids) {
+    	for(; favorites>0; favorites--) {
     		String name = nameIt.next();
     		Line line = city.getLine(name);
     		while (line.isFake() && nameIt.hasNext()) {
     			name = nameIt.next();
     			line = city.getLine(name);
     		}
-    		Button btn = (Button)findViewById(id);
-    		btn.setText(" "+name+" ");
-    		btn.setOnClickListener(new SelectLinePath(this, ViewTimes.class, city, line));
+    		favoritesView.addView(PathView.newPathView(inflater, favoritesView, line.getFirstPath(),
+    				new SelectLinePath(this, ViewTimes.class, city, line)));
     	}
     }
     

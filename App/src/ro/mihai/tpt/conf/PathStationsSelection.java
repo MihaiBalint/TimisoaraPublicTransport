@@ -83,7 +83,7 @@ public class PathStationsSelection {
 		List<String> pathNames = path.getLine().getSortedPathNames();
 		if (index<0 || index>= pathNames.size())
 			return "";
-		return "Dir. "+pathNames.get(index);
+		return pathNames.get(index);
 	}
 	
 	public int getCurrentPath() {

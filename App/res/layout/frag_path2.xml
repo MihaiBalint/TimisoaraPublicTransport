@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+    TimisoaraPublicTransport - display public transport information on your device
+    Copyright (C) 2011  Mihai Balint
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LikeTitleContainer"
+    android:background="#FFDDDDDD">
+    
+   	<LinearLayout
+        style="@style/LikeTitleIcon"
+       	android:layout_height="wrap_content"
+       	android:orientation="vertical"
+       	android:gravity="center_horizontal">
+   	    <TextView android:id="@+id/LineName"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:gravity="center_horizontal"
+			android:textColor="#FF0099CC"
+  			android:text="33"
+  			android:textStyle="bold"
+	   		android:textSize="36sp"
+	   	/>
+       	<TextView android:id="@+id/LineKind"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF0099CC"
+			android:inputType="textCapCharacters"
+  			android:text="autobuz"
+	   		android:textSize="12sp"
+	   	/>
+   	</LinearLayout>
+
+   	<LinearLayout
+   	    android:layout_width="0dp"
+   	    android:layout_height="wrap_content"
+   	    android:layout_marginBottom="7.3dp"
+   	    android:layout_marginTop="7.3dp"
+   	    android:layout_weight="1"
+   	    android:gravity="center_vertical"
+   	    android:orientation="vertical" >
+
+	    <TextView android:id="@+id/LineDirection1"
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF555555"
+		  	android:text="Catedrala Mitropolitana"
+			android:textSize="12sp"
+	        />
+	    <TextView
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF0F0F0F"
+		  	android:text="4 min"
+			android:textSize="12sp"
+	        />
+   	</LinearLayout>
+   	<Button
+   	    android:id="@+id/path_button"
+        android:layout_width="38.4dp" 
+		android:layout_height="38.4dp"
+   	    android:background="@drawable/arrow_right_button"
+   	    />
+   	<TextView android:id="@+id/LineDirection2"
+       	android:layout_width="0dp"
+   	    android:layout_weight="1"
+		android:layout_height="wrap_content"
+		android:textColor="#FF555555"
+	  	android:text="Pod Calea Sagului"
+		android:textSize="12sp"
+        />
+   	<Button
+   	    android:id="@+id/menu_button"
+        android:layout_width="38.4dp" 
+		android:layout_height="38.4dp"
+   	    android:background="@drawable/menu_light_button"
+   	    />
+    
+
+</LinearLayout>
