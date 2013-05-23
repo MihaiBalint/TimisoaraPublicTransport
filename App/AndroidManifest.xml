@@ -33,10 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ro.mihai.tpt.ViewCategories" />
-        <activity android:name="ro.mihai.tpt.ViewTrams" />
-        <activity android:name="ro.mihai.tpt.ViewBusses" />
-        <activity android:name="ro.mihai.tpt.ViewTrolleys" />
+        <activity android:name="ro.mihai.tpt.ViewCatFavorites" />
+        <activity android:name="ro.mihai.tpt.ViewCatTrams" />
+        <activity android:name="ro.mihai.tpt.ViewCatBusses" />
+        <activity android:name="ro.mihai.tpt.ViewCatTrolleys" />
         <activity android:name="ro.mihai.tpt.ViewTimes" />
         <activity android:name="ro.mihai.tpt.ViewCredits" />
         <activity android:name="ro.mihai.tpt.MapTimes" />

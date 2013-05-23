@@ -67,7 +67,7 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
         try {
         	if (null==city)
         		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(this, LoadCity.this, this);
-        	new StartActivity(this, ViewCategories.class)
+        	new StartActivity(this, ViewCatFavorites.class)
         		.addCity(city)
         		.start();
         	finish();

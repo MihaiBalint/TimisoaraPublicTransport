@@ -25,19 +25,20 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import ro.mihai.tpt.R;
 import ro.mihai.tpt.conf.Constants;
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection.Node;
-import ro.mihai.tpt.model.*;
+import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Estimate;
+import ro.mihai.tpt.model.Path;
+import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.LineKindUtils;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -46,12 +47,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class ViewTimes extends CityActivity {
@@ -75,7 +75,7 @@ public class ViewTimes extends CityActivity {
 		queue = new UpdateQueue();
 		
 		TextView lineKind = (TextView)findViewById(R.id.LineKind);
-		lineKind.setText(path.getLineKindLabel());
+		lineKind.setText(LineKindUtils.getShortLabelId(path.getLineKind()));
 		
 		TextView lineName = (TextView)findViewById(R.id.LineName);
 		lineName.setText(path.getLineNameLabel());

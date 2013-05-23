@@ -34,4 +34,14 @@ public class LineKindUtils {
 		}
 	}
 	
+	public static int getShortLabelId(LineKind k) {
+		switch(k) {
+		case TRAM: return R.string.lblShortTrams;
+		case TROLLEY: return R.string.lblShortTrolleys;
+		case BUS: return R.string.lblShortBus;
+		case EXPRESS: return R.string.lblShortExpress;
+		case METRO: return R.string.lblShortMetro;
+		default: return R.string.lblShortOther;
+		}
+	}
 }

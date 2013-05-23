@@ -19,10 +19,10 @@ package ro.mihai.tpt;
 
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.Path;
+import ro.mihai.tpt.utils.LineKindUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class PathView {
@@ -33,7 +33,7 @@ public class PathView {
 		path.selectAllStations();
 		
 		TextView lineKind = (TextView)pathView.findViewById(R.id.LineKind);
-		lineKind.setText(path.getLineKindLabel());
+		lineKind.setText(LineKindUtils.getShortLabelId(path.getLineKind()));
 		
 		TextView lineName = (TextView)pathView.findViewById(R.id.LineName);
 		lineName.setText(path.getLineNameLabel());

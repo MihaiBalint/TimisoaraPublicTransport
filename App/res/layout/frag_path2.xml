@@ -28,20 +28,14 @@
        	android:orientation="vertical"
        	android:gravity="center_horizontal">
    	    <TextView android:id="@+id/LineName"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:gravity="center_horizontal"
-			android:textColor="#FF0099CC"
-  			android:text="33"
-  			android:textStyle="bold"
-	   		android:textSize="36sp"
+	   	    style="@style/PathLineLabel"
+  			android:text="@string/lblExampleLine"
 	   	/>
        	<TextView android:id="@+id/LineKind"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:textColor="#FF0099CC"
-			android:inputType="textCapCharacters"
-  			android:text="autobuz"
+  			android:text="@string/lblExampleLineKind"
 	   		android:textSize="12sp"
 	   	/>
    	</LinearLayout>
@@ -49,8 +43,8 @@
    	<LinearLayout
    	    android:layout_width="0dp"
    	    android:layout_height="wrap_content"
-   	    android:layout_marginBottom="7.3dp"
-   	    android:layout_marginTop="7.3dp"
+   	    android:layout_marginBottom="3dp"
+   	    android:layout_marginTop="3dp"
    	    android:layout_weight="1"
    	    android:gravity="center_vertical"
    	    android:orientation="vertical" >
@@ -59,36 +53,38 @@
 	        android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:textColor="#FF555555"
-		  	android:text="Catedrala Mitropolitana"
+		  	android:text="@string/lblExampleDeparture"
 			android:textSize="12sp"
 	        />
 	    <TextView
 	        android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:textColor="#FF0F0F0F"
-		  	android:text="4 min"
+		  	android:text="@string/lblExampleTime"
 			android:textSize="12sp"
 	        />
    	</LinearLayout>
-   	<Button
+   	<ImageView
    	    android:id="@+id/path_button"
-        android:layout_width="38.4dp" 
-		android:layout_height="38.4dp"
-   	    android:background="@drawable/arrow_right_button"
+   	    style="@style/PathRightArrow"
+   	    android:src="@drawable/arrow_right_button"
+   	    android:scaleType="centerCrop"
+   	    android:contentDescription="@string/selPathLabel"
    	    />
    	<TextView android:id="@+id/LineDirection2"
        	android:layout_width="0dp"
    	    android:layout_weight="1"
 		android:layout_height="wrap_content"
 		android:textColor="#FF555555"
-	  	android:text="Pod Calea Sagului"
+	  	android:text="@string/lblExampleArrival"
 		android:textSize="12sp"
         />
-   	<Button
+   	<ImageView
    	    android:id="@+id/menu_button"
-        android:layout_width="38.4dp" 
-		android:layout_height="38.4dp"
-   	    android:background="@drawable/menu_light_button"
+   	    style="@style/MoreOptionsButton"
+   	    android:src="@drawable/menu_light_button"
+   	    android:contentDescription="@string/app_settings"
+   	    android:scaleType="centerCrop"
    	    />
     
 

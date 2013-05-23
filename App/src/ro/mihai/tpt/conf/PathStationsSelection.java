@@ -23,6 +23,7 @@ import java.util.List;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
+import ro.mihai.util.LineKind;
 
 public class PathStationsSelection {
 	private Path path;
@@ -61,21 +62,16 @@ public class PathStationsSelection {
 			sel.clearAllUpdates();
 	}
 	
-	public String getLineKindLabel() {
-		switch(path.getLine().getKind()) {
-		case BUS: return "B U S";
-		case EXPRESS: return "E X P R E S S";
-		case TRAM: return "T R A M";
-		case TROLLEY: return "TROLLEY BUS";
-		case METRO: return "M E T R O";
-		default: return "";
-		}
+	public LineKind getLineKind() {
+		return path.getLine().getKind();
 	}
-
+	
 	public String getLineNameLabel() {
 		String lineName = path.getLine().getName();
 		if (lineName.startsWith("Tv") || lineName.startsWith("Tb")) 
 			lineName = lineName.substring(2);
+		if (lineName.startsWith("M")) 
+			lineName = lineName.substring(1);
 		return lineName;
 	}
 	

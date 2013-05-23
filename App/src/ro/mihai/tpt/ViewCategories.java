@@ -18,73 +18,66 @@
 package ro.mihai.tpt;
 
 import java.util.Iterator;
-import java.util.List;
 
-import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Line;
+import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
-import ro.mihai.tpt.utils.LineKindUtils;
 import ro.mihai.tpt.utils.StartActivity;
-import ro.mihai.tpt.utils.Utils;
-
+import ro.mihai.util.LineKind;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 
-public class ViewCategories extends CityActivity {
+public abstract class ViewCategories extends CityActivity {
 
+	protected abstract Iterator<Path> getLinePathIterator(City city);
+	protected OnClickListener getCategoryClickListener(StartActivity activity) {
+		return activity.startOnClick();
+	}
+	
 	/** Called when the activity is first created. */
     @Override
-	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
+	protected final void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	City city = getCity();
-    	setContentView(R.layout.list_favorites);
+    	setContentView(R.layout.list_categories);
     	
     	addMenuAction();
-    	findViewById(R.id.tram_button).setOnClickListener(new StartActivity(this, ViewTrams.class).addCity(city));
-    	findViewById(R.id.bus_button).setOnClickListener(new StartActivity(this, ViewBusses.class).addCity(city));
-    	findViewById(R.id.trolleybus_button).setOnClickListener(new StartActivity(this, ViewTrolleys.class).addCity(city));
+    	findViewById(R.id.tram_button).setOnClickListener(getCategoryClickListener(
+    			new StartActivity(this, ViewCatTrams.class).addCity(city)));
+    	findViewById(R.id.bus_button).setOnClickListener(getCategoryClickListener(
+    			new StartActivity(this, ViewCatBusses.class).addCity(city)));
+    	findViewById(R.id.trolleybus_button).setOnClickListener(getCategoryClickListener(
+    			new StartActivity(this, ViewCatTrolleys.class).addCity(city)));
     	
-    	List<String> sortedNames = Utils.getTopLines(this);
-    	for (String l : LineKindUtils.MOST_USED)
-    		if (!sortedNames.contains(l))
-    			sortedNames.add(l);
-    	int favorites = 6;
     	ViewGroup favoritesView = (ViewGroup)findViewById(R.id.favorite_content);
     	LayoutInflater inflater = this.getLayoutInflater();
     	
-    	Iterator<String> nameIt = sortedNames.iterator();
-    	for(; favorites>0; favorites--) {
-    		String name = nameIt.next();
-    		Line line = city.getLine(name);
-    		while (line.isFake() && nameIt.hasNext()) {
-    			name = nameIt.next();
-    			line = city.getLine(name);
-    		}
-    		favoritesView.addView(PathView.newPathView(inflater, favoritesView, line.getFirstPath(),
-    				new SelectLinePath(this, ViewTimes.class, city, line)));
+    	Iterator<Path> pathIt = getLinePathIterator(city);
+    	while(pathIt.hasNext()) {
+    		Path path = pathIt.next();
+    		favoritesView.addView(PathView.newPathView(inflater, favoritesView, path,
+    				new SelectLinePath(this, ViewTimes.class, city, path.getLine())));
     	}
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public final boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.about_menu, menu);
         return true;
     }
     
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public final boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
         case R.id.app_credits:
@@ -99,5 +92,27 @@ public class ViewCategories extends CityActivity {
         }
     }
     
-
+	public static class LineKindIterator implements Iterator<Path> {
+		private final Iterator<String> lineNameIterator;
+		private final City city;
+		
+		public LineKindIterator(City city, Iterator<String> lineNameIterator) {
+			this.city = city;
+			this.lineNameIterator = lineNameIterator;
+		}
+		
+		public LineKindIterator(City city, LineKind lineKind) {
+			this(city, lineKind.getLineNameIterator());
+		}
+		
+		public boolean hasNext() {
+			return this.lineNameIterator.hasNext();
+		}
+		public Path next() {
+			return city.getLine(lineNameIterator.next()).getFirstPath();
+		}
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+	}
 }

@@ -16,29 +16,7 @@
 		<item name="android:layout_marginRight">8.1dp</item>
     </style>
     
-    <style name="LikeTitleContainer">
-    	<item name="android:layout_width">fill_parent</item>
-    	<item name="android:layout_height">wrap_content</item>
-    	<item name="android:orientation">horizontal</item>
-    	<item name="android:gravity">center_vertical</item>
-    	<item name="android:layout_marginBottom">0dp</item>
-    	<item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginLeft">0dp</item>
-    </style>
-    <style name="LikeTitleIcon">
-        <item name="android:layout_width">50dp</item>
-		<item name="android:layout_marginTop">7.3dp</item>
-		<item name="android:layout_marginBottom">7.3dp</item>
-		<item name="android:layout_marginRight">14.6dp</item>
-        <item name="android:layout_marginLeft">14.6dp</item>
-	</style>
-    <style name="TitleIconWithBack" parent="LikeTitleIcon">
-        <item name="android:layout_marginLeft">0dp</item>
-	</style>
-    
-    
-    
-    
+
     <style name="LineButton">
         <item name="android:layout_width">65sp</item>
         <item name="android:layout_height">35sp</item>

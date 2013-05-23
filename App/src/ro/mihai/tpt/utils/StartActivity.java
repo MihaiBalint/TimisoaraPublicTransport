@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class StartActivity implements OnClickListener {
+public class StartActivity {
 	private Class<?> activity;
 	private Activity parent;
 	
@@ -54,6 +54,22 @@ public class StartActivity implements OnClickListener {
 	
 	public void start() {
 		parent.startActivity(new Intent(parent, activity));
+	}
+	
+	public final OnClickListener startOnClick() {
+		return new OnClickListener() {
+			public void onClick(View v) {
+				start();
+			}
+		}; 
+	}
+	
+	public final OnClickListener replaceOnClick() {
+		return new OnClickListener() {
+			public void onClick(View v) {
+				replace();
+			}
+		}; 
 	}
 
 	public final void onClick(View v) {

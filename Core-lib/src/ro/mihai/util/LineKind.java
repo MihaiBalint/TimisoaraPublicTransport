@@ -1,5 +1,7 @@
 package ro.mihai.util;
 
+import java.util.Iterator;
+
 import ro.mihai.tpt.model.Line;
 
 public enum LineKind {
@@ -31,6 +33,10 @@ public enum LineKind {
 	
 	public String[] getLineNames() {
 		return names;
+	}
+	
+	public Iterator<String> getLineNameIterator() {
+		return new ArrayIterator<String>(names);
 	}
 
 	public static LineKind getKind(Line line) {

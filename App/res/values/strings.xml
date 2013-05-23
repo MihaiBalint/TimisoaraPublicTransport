@@ -41,4 +41,17 @@
 	<string name="lblExpress">Express Bus</string>
 	<string name="lblMetro">Metro Bus</string>
 	<string name="lblOther">Other connection</string>
+
+	<string name="lblShortTrams">tram</string>
+	<string name="lblShortTrolleys">trolleybus</string>
+	<string name="lblShortBus">bus</string>
+	<string name="lblShortExpress">express</string>
+	<string name="lblShortMetro">metro</string>
+	<string name="lblShortOther">other</string>
+	
+	<string name="lblExampleLine">33</string>
+	<string name="lblExampleLineKind">troleibuz</string>
+	<string name="lblExampleDeparture">Catedrala Mitropolitana</string>
+	<string name="lblExampleArrival">Pod Calea Sagului</string>
+	<string name="lblExampleTime">4 min</string>
 </resources>

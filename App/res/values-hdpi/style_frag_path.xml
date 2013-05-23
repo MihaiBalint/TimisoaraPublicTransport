@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="LikeTitleContainer">
+    	<item name="android:layout_width">fill_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:orientation">horizontal</item>
+    	<item name="android:gravity">center_vertical</item>
+    	<item name="android:layout_marginBottom">0dp</item>
+    	<item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+    </style>
+    <style name="LikeTitleIcon">
+        <item name="android:layout_width">50dp</item>
+		<item name="android:layout_marginTop">7.3dp</item>
+		<item name="android:layout_marginBottom">7.3dp</item>
+		<item name="android:layout_marginRight">14.6dp</item>
+        <item name="android:layout_marginLeft">14.6dp</item>
+	</style>
+    <style name="TitleIconWithBack" parent="LikeTitleIcon">
+        <item name="android:layout_marginLeft">0dp</item>
+	</style>
+
+    	
+    <style name="MoreOptionsButton">
+        <item name="android:layout_width">30.0dp</item>
+        <item name="android:layout_height">38.4dp</item>
+    </style>
+    <style name="PathRightArrow">
+        <item name="android:layout_width">25.0dp</item>
+        <item name="android:layout_height">38.4dp</item>
+    </style>
+    <style name="PathLineLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">#FF0099CC</item>
+	</style>
+    	
+</resources>
