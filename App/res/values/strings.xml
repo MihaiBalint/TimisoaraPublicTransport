@@ -49,7 +49,7 @@
 	<string name="lblShortMetro">metro</string>
 	<string name="lblShortOther">other</string>
 	
-	<string name="lblExampleLine">33</string>
+	<string name="lblExampleLine">E33</string>
 	<string name="lblExampleLineKind">troleibuz</string>
 	<string name="lblExampleDeparture">Catedrala Mitropolitana</string>
 	<string name="lblExampleArrival">Pod Calea Sagului</string>

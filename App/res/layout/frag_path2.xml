@@ -40,7 +40,7 @@
 			android:textColor="@color/vehicle_bus_color"
   			android:text="@string/lblExampleLineKind"
 	   		android:textSize="12sp"
-	   	/>
+	   		android:lines="1" />
    	</LinearLayout>
 
    	<LinearLayout
