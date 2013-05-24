@@ -36,7 +36,7 @@ import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
-import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 import android.app.AlertDialog;
@@ -75,7 +75,7 @@ public class ViewTimes extends CityActivity {
 		queue = new UpdateQueue();
 		
 		TextView lineKind = (TextView)findViewById(R.id.LineKind);
-		lineKind.setText(LineKindUtils.getShortLabelId(path.getLineKind()));
+		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));
 		
 		TextView lineName = (TextView)findViewById(R.id.LineName);
 		lineName.setText(path.getLineNameLabel());
@@ -314,7 +314,7 @@ public class ViewTimes extends CityActivity {
 	    			// add all paths for this connection type
 	    			pathList.add(paths);
 	    			labels.add(  paths.size()>1 
-	    				? getString(LineKindUtils.getLabelId(k)) // more than one? give generic label
+	    				? getString(LineKindAndroidEx.getLabelId(k)) // more than one? give generic label
 	    				: paths.get(0).getLabel()); // single one? use it's own label
 	    		}
 	    	}

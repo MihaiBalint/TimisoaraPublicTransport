@@ -19,7 +19,8 @@ package ro.mihai.tpt;
 
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.Path;
-import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.tpt.utils.LineKindAndroidEx;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,14 @@ public class PathView {
 		View pathView = inflater.inflate(R.layout.frag_path2, parent, false);
 		PathStationsSelection path = new PathStationsSelection(linePath);
 		path.selectAllStations();
+		Resources res = parent.getResources();
 		
 		TextView lineKind = (TextView)pathView.findViewById(R.id.LineKind);
-		lineKind.setText(LineKindUtils.getShortLabelId(path.getLineKind()));
+		lineKind.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
+		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));
 		
 		TextView lineName = (TextView)pathView.findViewById(R.id.LineName);
+		lineName.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		lineName.setText(path.getLineNameLabel());
 		
 		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.LineDirection1);

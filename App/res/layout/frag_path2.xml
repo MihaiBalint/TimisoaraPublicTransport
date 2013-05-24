@@ -27,14 +27,17 @@
        	android:layout_height="wrap_content"
        	android:orientation="vertical"
        	android:gravity="center_horizontal">
-   	    <TextView android:id="@+id/LineName"
-	   	    style="@style/PathLineLabel"
-  			android:text="@string/lblExampleLine"
-	   	/>
+
+   	    <TextView
+   	        android:id="@+id/LineName"
+   	        style="@style/PathLineLabel"
+   	        android:text="@string/lblExampleLine"
+   	        android:textColor="@color/vehicle_bus_color" />
+
        	<TextView android:id="@+id/LineKind"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="#FF0099CC"
+			android:textColor="@color/vehicle_bus_color"
   			android:text="@string/lblExampleLineKind"
 	   		android:textSize="12sp"
 	   	/>

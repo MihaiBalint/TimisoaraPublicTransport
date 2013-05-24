@@ -10,7 +10,7 @@
         <item name="android:layout_marginLeft">0dp</item>
     </style>
     <style name="LikeTitleIcon">
-        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_width">60dp</item>
 		<item name="android:layout_marginTop">7.3dp</item>
 		<item name="android:layout_marginBottom">7.3dp</item>
 		<item name="android:layout_marginRight">14.6dp</item>
@@ -26,7 +26,7 @@
         <item name="android:layout_height">38.4dp</item>
     </style>
     <style name="PathRightArrow">
-        <item name="android:layout_width">25.0dp</item>
+        <item name="android:layout_width">32.0dp</item>
         <item name="android:layout_height">38.4dp</item>
     </style>
     <style name="PathLineLabel">
@@ -35,7 +35,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">36sp</item>
-        <item name="android:textColor">#FF0099CC</item>
+        <item name="android:lineSpacingExtra">-9sp</item>
 	</style>
     	
 </resources>

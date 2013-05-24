@@ -26,7 +26,7 @@ import android.view.View.OnClickListener;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
-import ro.mihai.tpt.utils.LineKindUtils;
+import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.tpt.utils.Utils;
 
@@ -36,7 +36,7 @@ public class ViewCatFavorites extends ViewCategories {
 		List<Path> paths = new ArrayList<Path>();
 
 		List<String> sortedNames = Utils.getTopLines(this);
-    	for (String l : LineKindUtils.MOST_USED)
+    	for (String l : LineKindAndroidEx.MOST_USED)
     		if (!sortedNames.contains(l))
     			sortedNames.add(l);
     	int favorites = 6;

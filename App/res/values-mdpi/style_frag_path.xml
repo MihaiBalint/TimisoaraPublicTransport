@@ -10,7 +10,7 @@
         <item name="android:layout_marginLeft">0dp</item>
     </style>
     <style name="LikeTitleIcon">
-        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_width">55dp</item>
 		<item name="android:layout_marginTop">2.3dp</item>
 		<item name="android:layout_marginBottom">2.3dp</item>
 		<item name="android:layout_marginRight">4.6dp</item>
@@ -35,7 +35,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
-        <item name="android:textColor">#FF0099CC</item>
-	</style>
+        <item name="android:lineSpacingExtra">-10sp</item>
+    </style>
     	
 </resources>
