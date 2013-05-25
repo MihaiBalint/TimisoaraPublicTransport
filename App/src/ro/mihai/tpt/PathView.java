@@ -29,7 +29,15 @@ import android.widget.TextView;
 public class PathView {
 
 	public static View newPathView(LayoutInflater inflater, ViewGroup parent, Path linePath, View.OnClickListener clickListener) {
-		View pathView = inflater.inflate(R.layout.frag_path2, parent, false);
+		View pathView = createPathView(inflater, parent);
+		return fillPathView(pathView, parent, linePath, clickListener);
+	}
+	
+	public static View createPathView(LayoutInflater inflater, ViewGroup parent) {
+		return inflater.inflate(R.layout.frag_path2, parent, false);
+	}
+	
+	public static View fillPathView(View pathView, ViewGroup parent, Path linePath, View.OnClickListener clickListener) {
 		PathStationsSelection path = new PathStationsSelection(linePath);
 		path.selectAllStations();
 		Resources res = parent.getResources();

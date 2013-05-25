@@ -26,19 +26,14 @@
     <include
         layout="@layout/frag_title"
         />
-	<ScrollView 
-    	android:layout_height="0dp"
+	<ListView 
+		android:id="@+id/favorite_content" 
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
 		android:layout_weight="1"
-		android:layout_width="fill_parent">
-		<LinearLayout
-			android:id="@+id/favorite_content" 
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    >
-		</LinearLayout>
-	</ScrollView>
-	<!-- 
+		android:orientation="vertical"
+	    />
+    	<!-- 
 	<TextView
 		android:text="(c) 2011-2013 Various authors"
 		android:background="#A0402020"

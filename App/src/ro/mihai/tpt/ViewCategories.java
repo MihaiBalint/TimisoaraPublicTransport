@@ -23,17 +23,17 @@ import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
+import ro.mihai.tpt.utils.PathListViewAdapter;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ListView;
 
 public abstract class ViewCategories extends CityActivity {
 
@@ -58,15 +58,8 @@ public abstract class ViewCategories extends CityActivity {
     	findViewById(R.id.trolleybus_button).setOnClickListener(getCategoryClickListener(
     			new StartActivity(this, ViewCatTrolleys.class).addCity(city)));
     	
-    	ViewGroup favoritesView = (ViewGroup)findViewById(R.id.favorite_content);
-    	LayoutInflater inflater = this.getLayoutInflater();
-    	
-    	Iterator<Path> pathIt = getLinePathIterator(city);
-    	while(pathIt.hasNext()) {
-    		Path path = pathIt.next();
-    		favoritesView.addView(PathView.newPathView(inflater, favoritesView, path,
-    				new SelectLinePath(this, ViewTimes.class, city, path.getLine())));
-    	}
+    	ListView favoritesView = (ListView)findViewById(R.id.favorite_content);
+    	favoritesView.setAdapter(new PathListViewAdapter(this, city, getLinePathIterator(city)));
     }
     
     @Override
