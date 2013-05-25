@@ -53,6 +53,5 @@
         <activity android:name="ro.mihai.tpt.ViewCredits" />
         <activity android:name="ro.mihai.tpt.MapTimes" />
         <activity android:name="ro.mihai.tpt.Preferences" />
-        <uses-library android:name="com.google.android.maps" android:required="true"/>        
     </application>
 </manifest> 
