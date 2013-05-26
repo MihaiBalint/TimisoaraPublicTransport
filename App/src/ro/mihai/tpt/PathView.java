@@ -28,16 +28,18 @@ import android.widget.TextView;
 
 public class PathView {
 
-	public static View newPathView(LayoutInflater inflater, ViewGroup parent, Path linePath, View.OnClickListener clickListener) {
+	public static View newPathView(LayoutInflater inflater, ViewGroup parent,
+			Path linePath, View.OnClickListener clickListener, boolean isOddItem) {
 		View pathView = createPathView(inflater, parent);
-		return fillPathView(pathView, parent, linePath, clickListener);
+		return fillPathView(pathView, parent, linePath, clickListener, isOddItem);
 	}
 	
 	public static View createPathView(LayoutInflater inflater, ViewGroup parent) {
 		return inflater.inflate(R.layout.frag_path2, parent, false);
 	}
 	
-	public static View fillPathView(View pathView, ViewGroup parent, Path linePath, View.OnClickListener clickListener) {
+	public static View fillPathView(View pathView, ViewGroup parent, 
+			Path linePath, View.OnClickListener clickListener, boolean isOddItem) {
 		PathStationsSelection path = new PathStationsSelection(linePath);
 		path.selectAllStations();
 		Resources res = parent.getResources();
@@ -57,8 +59,8 @@ public class PathView {
 		lineDirection2.setText(path.getPathLabel(1));
 		
 		pathView.setOnClickListener(clickListener);
-		if (parent.getChildCount() % 2 != 0) 
-			pathView.setBackgroundColor(0xFFEEEEEE);
+		int evenOddColor = isOddItem ? R.color.frag_path_odd_color : R.color.frag_path_even_color;
+		pathView.setBackgroundColor(res.getColor(evenOddColor));
 		return pathView;
 	}
 }

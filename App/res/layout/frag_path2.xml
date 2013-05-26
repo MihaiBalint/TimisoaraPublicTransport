@@ -20,7 +20,7 @@
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LikeTitleContainer"
-    android:background="#FFDDDDDD">
+    android:background="@color/frag_path_even_color">
     
    	<LinearLayout
         style="@style/LikeTitleIcon"

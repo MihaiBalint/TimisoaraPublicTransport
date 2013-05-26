@@ -28,6 +28,7 @@ import ro.mihai.tpt.model.Path;
 import android.app.Activity;
 import android.database.DataSetObserver;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
@@ -77,8 +78,9 @@ public class PathListViewAdapter implements ListAdapter {
 			pathView = PathView.createPathView(context.getLayoutInflater(), null); 
 		}
 		Path path = paths.get(position);
-		return PathView.fillPathView(pathView, parent, path, 
-				new SelectLinePath(this.context, ViewTimes.class, city, path.getLine()));
+		boolean isOddItem = (position % 2) != 0;
+		OnClickListener onClick = new SelectLinePath(this.context, ViewTimes.class, city, path.getLine()); 
+		return PathView.fillPathView(pathView, parent, path, onClick, isOddItem);
 	}
 
 	public void registerDataSetObserver(DataSetObserver observer) {
