@@ -427,14 +427,6 @@ public class ViewTimes extends CityActivity {
         case R.id.app_settings: 
         	launchPrefs();
         	return true;
-        /*            
-        case R.id.view_map:
-        	new StartActivity(this, MapTimes.class)
-        		.addCity(city)
-        		.addLinePath(path)
-        		.start();
-            return true;
- 		*/
         default:
             return super.onOptionsItemSelected(item);
         }
