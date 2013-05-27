@@ -52,10 +52,10 @@ public class PathView {
 		lineName.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		lineName.setText(path.getLineNameLabel());
 		
-		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.LineDirection1);
+		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.StationLabel);
 		lineDirection1.setText(path.getPathLabel(0));
 		
-		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.LineDirection2);
+		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
 		lineDirection2.setText(path.getPathLabel(1));
 		
 		pathView.setOnClickListener(clickListener);
