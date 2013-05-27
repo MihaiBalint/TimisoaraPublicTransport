@@ -23,85 +23,13 @@
     android:layout_height="fill_parent"
     android:background="#000000"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dip">
-
-    	<LinearLayout
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:orientation="vertical"
-        	android:layout_marginRight="10dip"
-        	android:layout_marginLeft="10dip"
-        	android:gravity="center_horizontal">
-        	<TextView android:id="@+id/LineKind"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:textColor="#FFFFFFFF"
-				android:inputType="textCapCharacters"
-	  			android:text="b u s"
-		   		android:textSize="12sp"
-		   	/>
-    	    <TextView android:id="@+id/LineName"
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content"
-				android:minWidth="50dip"
-				android:gravity="center_horizontal"
-				android:textColor="#FFFFFFFF"
-	  			android:text="8"
-	  			android:textStyle="bold"
-		   		android:textSize="36sp"
-		   	/>
-    	</LinearLayout>
-        	
-		<View
-    	    android:layout_width="1dip"
-			android:layout_height="fill_parent"
-    	    android:background="#404040" />
-		
-    	<LinearLayout android:id="@+id/LineDirectionView"
-        	android:layout_width="fill_parent"
-        	android:layout_height="fill_parent"
-        	android:orientation="vertical"
-        	android:gravity="center_vertical">
-    	    
-    		<LinearLayout android:id="@+id/LineDirectionView"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:orientation="horizontal"
-        		android:gravity="center_vertical">
-        		
-	    	    <View android:id="@+id/LineDirectionRadio1"
-	    	        style="@style/DirectionRadio"/>
-    		    <TextView android:id="@+id/LineDirection1"
-    	            style="@style/DirectionLabel"
-	  				android:text="Directia Pod C. Sagului sdcc ecr erce rcerc"
-			   	/>
-			</LinearLayout>
-    	    <View
-    	    	android:layout_width="fill_parent"
-				android:layout_height="1dip"
-				android:gravity="left"
-    		    android:background="#404040" />
-    		<LinearLayout android:id="@+id/LineDirectionView"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:orientation="horizontal"
-        		android:gravity="center_vertical">
-        		
-	    	    <View android:id="@+id/LineDirectionRadio2"
-	    	        style="@style/DirectionRadio"/>
-    	        <TextView android:id="@+id/LineDirection2"
-    	            style="@style/DirectionLabel"
-	  				android:text="Directia Catedrala"
-		   			/>
-			</LinearLayout>
-    	</LinearLayout>
-    </LinearLayout>
+    
+    <include
+        layout="@layout/frag_title"
+        />
+    <include
+		layout="@layout/frag_path2"
+		/>
     
 	<ScrollView 
 		android:layout_width="fill_parent" 
@@ -113,43 +41,9 @@
 			android:layout_height="wrap_content"
 		/>
 	</ScrollView>
-    <View android:id="@+id/Spacer"
-		android:layout_width="fill_parent" 
-		android:layout_height="1dp"
-		android:background="#D0808080"
-    ></View>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right" >
-
-    	<Button
-    	    android:id="@+id/UpdateButton"
-    	    android:layout_width="0dp"
-    	    android:layout_weight="14"
-    	    android:layout_height="45dp"
-    	    android:gravity="center_vertical"
-    	    android:layout_gravity="left"
-    	    android:background="#000000"
-    	    android:drawableLeft="@drawable/upd_button"
-    	    android:text="33>Ion ionescu de la brad"
-    	    android:ellipsize="marquee"
-    	    android:textColor="#FFFFFF"
-    	    android:textSize="15sp" />
-		<View
-    	    android:layout_width="0dp"
-    	    android:layout_weight="1"
-    	    android:layout_height="45dp"
-    	    android:background="#000000" />
-    	<Button
-    	    android:id="@+id/ConnectionsButton"
-    	    android:layout_weight="5"
-    	    android:layout_width="0dip"
-    	    android:layout_height="45dp"
-    	    android:layout_marginLeft="0dp"
-    	    android:background="#000000"
-    	    android:drawableLeft="@drawable/con_button" />
-    	</LinearLayout>
+    
+    <include
+        layout="@layout/frag_times_actions"
+        />
 </LinearLayout>
 

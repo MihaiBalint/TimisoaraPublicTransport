@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
     Copyright (C) 2011  Mihai Balint
@@ -15,26 +17,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.tpt;
-
-import java.util.Iterator;
-
-import android.view.View.OnClickListener;
-
-import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Path;
-import ro.mihai.tpt.utils.StartActivity;
-import ro.mihai.util.LineKind;
-
-public class ViewCatTrams extends ViewCategories {
-	
-	@Override
-	protected Iterator<Path> getLinePathIterator(City city) {
-		return new LineKindIterator(city, LineKind.TRAM);
-	}
-
-	@Override
-	protected OnClickListener getCategoryClickListener(StartActivity activity) {
-		return activity.replaceOnClick();
-	}
-}
+ -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+		style="@style/CategoryButtonContainer">
+	    
+    	<Button
+    	    android:id="@+id/StarButton"
+			style="@style/CategoryButton"
+    	    android:background="@drawable/star_off_button"/>
+  	   	<Button
+    	    android:id="@+id/ConnectionsButton"
+			style="@style/CategoryButton"
+    	    android:background="@drawable/plus_button"/>
+    	<Button
+    	    android:id="@+id/UpdateButton"
+			style="@style/CategoryButton"
+    	    android:background="@drawable/upd_button"/>
+    	
+	</LinearLayout>
+</merge>

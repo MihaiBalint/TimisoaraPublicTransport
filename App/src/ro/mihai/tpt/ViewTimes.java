@@ -50,7 +50,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -73,32 +72,14 @@ public class ViewTimes extends CityActivity {
     	
     	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
-		
-		TextView lineKind = (TextView)findViewById(R.id.LineKind);
-		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));
-		
-		TextView lineName = (TextView)findViewById(R.id.LineName);
-		lineName.setText(path.getLineNameLabel());
-		
-		TextView lineDirection1 = (TextView)findViewById(R.id.LineDirection1);
-		lineDirection1.setText(path.getPathLabel(0));
-		
-		TextView lineDirection2 = (TextView)findViewById(R.id.LineDirection2);
-		lineDirection2.setText(path.getPathLabel(1));
-		
+		PathView.fillPathView(this.findViewById(R.id.PathView), this.getResources(), path, new PathSwitcher(), true);
+    	
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
-    	update.setText("Update");
     	
-    	int[] radio_ids = new int[]{R.id.LineDirectionRadio1, R.id.LineDirectionRadio2};
-    	View radio = (View)findViewById(radio_ids[path.getCurrentPath()]);
-    	radio.setBackgroundResource(R.drawable.checkbox_active);
-    	
-    	LinearLayout lineDirectionView = (LinearLayout)findViewById(R.id.LineDirectionView);
-    	lineDirectionView.setOnClickListener(new PathSwitcher());
-
     	Button connections = (Button)findViewById(R.id.ConnectionsButton);
     	connections.setOnClickListener(new SelectConnectionKinds());
+    	
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();

@@ -32,6 +32,8 @@
 		android:layout_height="0dp"
 		android:layout_weight="1"
 		android:orientation="vertical"
+		android:divider="@android:color/transparent"
+  		android:dividerHeight="0.0sp"
 	    />
     	<!-- 
 	<TextView

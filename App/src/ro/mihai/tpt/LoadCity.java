@@ -69,7 +69,7 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
         		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(this, LoadCity.this, this);
         	new StartActivity(this, ViewCatFavorites.class)
         		.addCity(city)
-        		.start();
+        		.replace();
         	finish();
         } catch(IOException e) {
         	setStatus("Err: "+e.getMessage());

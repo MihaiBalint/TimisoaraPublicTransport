@@ -32,6 +32,7 @@ import ro.mihai.tpt.utils.Utils;
 
 public class ViewCatFavorites extends ViewCategories {
 
+	@Override
 	protected Iterator<Path> getLinePathIterator(City city) {
 		List<Path> paths = new ArrayList<Path>();
 

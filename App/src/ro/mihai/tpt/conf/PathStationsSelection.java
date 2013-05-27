@@ -82,6 +82,24 @@ public class PathStationsSelection {
 		return pathNames.get(index);
 	}
 	
+	public String getDepartureStationName() {
+		if (!stations.isEmpty())
+			return stations.get(0).getStation().getNiceName();
+		List<Station> stations = path.getStationsByPath(); 
+		if (!stations.isEmpty())
+			return stations.get(0).getNiceName();
+		return "";
+	}
+	
+	public String getDestinationStationName() {
+		if (!stations.isEmpty())
+			return stations.get(stations.size()-1).getStation().getNiceName();
+		List<Station> stations = path.getStationsByPath(); 
+		if (!stations.isEmpty())
+			return stations.get(stations.size()-1).getNiceName();
+		return path.getNiceName();
+	}
+	
 	public int getCurrentPath() {
 		List<String> pathNames = path.getLine().getSortedPathNames();
 		return pathNames.indexOf(path.getNiceName());

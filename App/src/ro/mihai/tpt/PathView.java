@@ -17,6 +17,8 @@
 */
 package ro.mihai.tpt;
 
+import java.util.ArrayList;
+
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
@@ -31,19 +33,22 @@ public class PathView {
 	public static View newPathView(LayoutInflater inflater, ViewGroup parent,
 			Path linePath, View.OnClickListener clickListener, boolean isOddItem) {
 		View pathView = createPathView(inflater, parent);
-		return fillPathView(pathView, parent, linePath, clickListener, isOddItem);
+		return fillPathView(pathView, parent.getResources(), linePath, clickListener, isOddItem);
 	}
 	
 	public static View createPathView(LayoutInflater inflater, ViewGroup parent) {
 		return inflater.inflate(R.layout.frag_path2, parent, false);
 	}
 	
-	public static View fillPathView(View pathView, ViewGroup parent, 
+	public static View fillPathView(View pathView, Resources res, 
 			Path linePath, View.OnClickListener clickListener, boolean isOddItem) {
 		PathStationsSelection path = new PathStationsSelection(linePath);
 		path.selectAllStations();
-		Resources res = parent.getResources();
-		
+		return fillPathView(pathView, res, path, clickListener, isOddItem);
+	}
+	
+	public static View fillPathView(View pathView, Resources res, 
+			PathStationsSelection path, View.OnClickListener clickListener, boolean isOddItem) {
 		TextView lineKind = (TextView)pathView.findViewById(R.id.LineKind);
 		lineKind.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));
@@ -53,10 +58,10 @@ public class PathView {
 		lineName.setText(path.getLineNameLabel());
 		
 		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.StationLabel);
-		lineDirection1.setText(path.getPathLabel(0));
+		lineDirection1.setText(path.getDepartureStationName());
 		
 		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
-		lineDirection2.setText(path.getPathLabel(1));
+		lineDirection2.setText(path.getDestinationStationName());
 		
 		pathView.setOnClickListener(clickListener);
 		int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;

@@ -80,7 +80,7 @@ public class PathListViewAdapter implements ListAdapter {
 		Path path = paths.get(position);
 		boolean isOddItem = (position % 2) != 0;
 		OnClickListener onClick = new SelectLinePath(this.context, ViewTimes.class, city, path.getLine()); 
-		return PathView.fillPathView(pathView, parent, path, onClick, isOddItem);
+		return PathView.fillPathView(pathView, parent.getResources(), path, onClick, isOddItem);
 	}
 
 	public void registerDataSetObserver(DataSetObserver observer) {

@@ -33,6 +33,7 @@ public class ViewCatTrolleys extends ViewCategories {
 		return new LineKindIterator(city, LineKind.TROLLEY);
 	}
 
+	@Override
 	protected OnClickListener getCategoryClickListener(StartActivity activity) {
 		return activity.replaceOnClick();
 	}

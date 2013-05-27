@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     android:constantSize="true"
     android:dither="true">
-  <item android:drawable="@drawable/btn_upd_high" android:state_focused="true" />
-  <item android:drawable="@drawable/btn_upd_high" android:state_pressed="true" android:state_enabled="true" />
-  <item android:drawable="@drawable/btn_upd_off" android:state_enabled="false" />
-  <item android:drawable="@drawable/btn_upd_sel"/> 
+  <item android:drawable="@drawable/btn_update_high" android:state_focused="true" />
+  <item android:drawable="@drawable/btn_update_high" android:state_pressed="true" android:state_enabled="true" />
+  <item android:drawable="@drawable/btn_update_sel" android:state_enabled="false" />
+  <item android:drawable="@drawable/btn_update_sel"/> 
 </selector>

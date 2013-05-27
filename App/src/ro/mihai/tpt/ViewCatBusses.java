@@ -37,6 +37,7 @@ public class ViewCatBusses extends ViewCategories {
 				LineKind.METRO.getLineNames()));
 	}
 
+	@Override
 	protected OnClickListener getCategoryClickListener(StartActivity activity) {
 		return activity.replaceOnClick();
 	}
