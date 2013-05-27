@@ -20,7 +20,7 @@
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LikeTitleContainer"
-    android:background="@color/frag_path_even_color">
+    android:background="@color/frag_path_even">
     
    	<LinearLayout
         style="@style/LikeTitleIcon"
@@ -32,12 +32,12 @@
    	        android:id="@+id/LineName"
    	        style="@style/PathLineLabel"
    	        android:text="@string/lblExampleLine"
-   	        android:textColor="@color/vehicle_bus_color" />
+   	        android:textColor="@color/vehicle_bus" />
 
        	<TextView android:id="@+id/LineKind"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="@color/vehicle_bus_color"
+			android:textColor="@color/vehicle_bus"
   			android:text="@string/lblExampleLineKind"
 	   		android:textSize="12sp"
 	   		android:lines="1" />

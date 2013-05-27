@@ -59,7 +59,7 @@ public class PathView {
 		lineDirection2.setText(path.getPathLabel(1));
 		
 		pathView.setOnClickListener(clickListener);
-		int evenOddColor = isOddItem ? R.color.frag_path_odd_color : R.color.frag_path_even_color;
+		int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;
 		pathView.setBackgroundColor(res.getColor(evenOddColor));
 		return pathView;
 	}

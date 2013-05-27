@@ -25,19 +25,19 @@ import ro.mihai.util.LineKind;
 public enum LineKindAndroidEx {
 	TRAM(LineKind.TRAM, 
 			R.string.lblTrams, R.string.lblShortTrams, 
-			R.color.vehicle_tram_color), 
+			R.color.vehicle_tram), 
 	TROLLEY(LineKind.TROLLEY, 
 			R.string.lblTrolleys, R.string.lblShortTrolleys, 
-			R.color.vehicle_trolley_color), 
+			R.color.vehicle_trolley), 
 	BUS(LineKind.BUS, 
 			R.string.lblBus, R.string.lblShortBus, 
-			R.color.vehicle_bus_color), 
+			R.color.vehicle_bus), 
 	EXPRESS(LineKind.EXPRESS, 
 			R.string.lblExpress, R.string.lblShortExpress, 
-			R.color.vehicle_express_color), 
+			R.color.vehicle_express), 
 	METRO(LineKind.METRO, 
 			R.string.lblMetro, R.string.lblShortMetro, 
-			R.color.vehicle_metro_color);
+			R.color.vehicle_metro);
 
 	public static String[] MOST_USED = {"33", "40", "Tb14", "Tv2", "Tv4", "Tb15"};
 	public final LineKind originalKind;

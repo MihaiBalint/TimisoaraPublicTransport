@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Backgrounds -->
+	<color name="frag_path_even">#DDDDDD</color>
+	<color name="frag_path_odd">#EEEEEE</color>
+
+	<!-- Vehicle type specific -->
+	<color name="vehicle_bus">#FFFF4444</color>
+	<color name="vehicle_express">#FF99CC00</color>
+	<color name="vehicle_metro">#FFFFBB33</color>
+	<color name="vehicle_tram">#FF33B5E5</color>
+	<color name="vehicle_trolley">#FF9933CC</color>
+</resources>
