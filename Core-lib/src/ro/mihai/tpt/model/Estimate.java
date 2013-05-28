@@ -8,6 +8,18 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class Estimate implements Serializable {
+	public static enum Status {
+		AllIsGood, WaitingToUpdate, NetworkError, UpdateCanceled;
+		
+		public boolean isError() {
+			return this != AllIsGood && this != WaitingToUpdate;
+		}
+		
+		public boolean isUpdating() {
+			return this == WaitingToUpdate;
+		}
+	}
+	
 	public static class TimeEstimate {
 		public String asString;
 		public Calendar asTime;
@@ -19,10 +31,12 @@ public class Estimate implements Serializable {
 	}
 	
 	private static final long serialVersionUID = 1L;
+	private static final String EMPTY = "--:--";
 	private Station station;
 	private int stationIndex;
 	private Path path;
-	private String times1, times2, err;
+	private String times1, times2;
+	private Status status;
 	private EstimateType type;
 	private long updateTimeMilis;
 
@@ -30,14 +44,14 @@ public class Estimate implements Serializable {
 		this.path = path;
 		this.station = station;
 		this.stationIndex = stationIndex;
-		this.err = "";
-		this.times1 = "update";
-		this.times2 = "update";
+		this.status = Status.AllIsGood;
+		this.times1 = EMPTY;
+		this.times2 = EMPTY;
 		this.type = EstimateType.None;
 	}
 	
-	public void putErr(String err) {
-		this.err = err;
+	public void setStatus(Status status) {
+		this.status = status;
 		// this.updateTimeMilis = System.currentTimeMillis();
 	}
 	
@@ -53,10 +67,12 @@ public class Estimate implements Serializable {
 		this.updateTimeMilis = System.currentTimeMillis();
 		this.times1 = t1!=null ? t1.trim() : "";
 		this.times2 = t2!=null ? t2.trim() : "";
-		this.err = "";
+		this.status = Status.AllIsGood;
 		
-		if (t1!=null && t1.trim().length()==5 && t1.charAt(2)==':') 
-			this.type = EstimateType.Scheduled;
+		if (t1!=null && t1.trim().length()==5 && t1.charAt(2)==':')
+			this.type = isInteger(t1.substring(0,2)) && isInteger(t1.substring(3, 5))
+					? EstimateType.Scheduled
+					: EstimateType.None;
 		else if(">>".equals(times1) || isInteger(times1)) 
 			this.type = EstimateType.GPS;
 		else if(isMinutes(times1)) {
@@ -96,22 +112,22 @@ public class Estimate implements Serializable {
 		return parseEstimate(getTimes2(), updateTimeMilis);
 	}
 
-	public String getErr() {
-		return err;
+	public Status getStatus() {
+		return status;
 	}
 
 	public void startUpdate() {
-		err = "upd";
+		status = Status.WaitingToUpdate;
 	}
 	public void clearUpdate() {
 		if (isUpdating())
-			err = "";
+			status = Status.AllIsGood;
 	}
 	public boolean isUpdating() {
-		return "upd".equals(err);
+		return status.isUpdating();
 	}
 	public boolean hasErrors() {
-		return err!=null && err.length() > 0;
+		return status!=null && status.isError();
 	}
 	public boolean isVehicleHere() {
 		if (">>".equals(times1.trim())) 

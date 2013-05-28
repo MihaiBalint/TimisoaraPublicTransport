@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Backgrounds -->
-	<color name="frag_path_even">#DDDDDD</color>
-	<color name="frag_path_odd">#EEEEEE</color>
+	<color name="frag_path_even">#FFDDDDDD</color>
+	<color name="frag_path_odd">#FFEEEEEE</color>
 
 	<!-- Vehicle type specific -->
-	<color name="vehicle_bus">#FFFF4444</color>
-	<color name="vehicle_express">#FF99CC00</color>
-	<color name="vehicle_metro">#FFFFBB33</color>
-	<color name="vehicle_tram">#FF33B5E5</color>
+	<color name="vehicle_bus">#FFCC0000</color>
+	<color name="vehicle_express">#FF669900</color>
+	<color name="vehicle_metro">#FFFF8800</color>
+	<color name="vehicle_tram">#FF0099CC</color>
 	<color name="vehicle_trolley">#FF9933CC</color>
+	
+	<!-- Times color codes -->
+	<color name="times_updating">#FF99CC00</color>
 </resources>

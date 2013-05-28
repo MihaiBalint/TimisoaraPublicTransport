@@ -174,9 +174,9 @@ public class Path extends PersistentEntity implements Serializable {
 				String[] t = RATT.downloadTimes(prefs, extId, s.getId());
 				e.putTime(t[0], t[1]);
 			} else
-				e.putErr("upd-canceled");
+				e.setStatus(Estimate.Status.UpdateCanceled);
 		} catch(IOException exc) {
-			e.putErr("io-err");
+			e.setStatus(Estimate.Status.NetworkError);
 			ec++;
 		}
 		return ec;
@@ -282,7 +282,7 @@ public class Path extends PersistentEntity implements Serializable {
 			b.append(formatTime(e.getTimes1()));
 			b.append(", \t");
 			b.append(formatTime(e.getTimes2()));
-			String er = e.getErr();
+			String er = e.getStatus().toString();
 			if(er.length()>0) {
 				b.append("\t - ");
 				b.append(er);
@@ -379,7 +379,7 @@ public class Path extends PersistentEntity implements Serializable {
 			int c2 = compareTimes(t12, t22);
 			if(c2!=0) return c2;
 			
-			int c3 = e1.getErr().compareTo(e2.getErr()); 
+			int c3 = e1.getStatus().compareTo(e2.getStatus()); 
 			if(c3!=0) return c3;
 			
 			return s1.getName().compareTo(s2.getName());

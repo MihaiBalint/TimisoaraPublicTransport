@@ -36,11 +36,13 @@ import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
+import ro.mihai.tpt.utils.EstimateStatusEx;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -120,23 +122,33 @@ public class ViewTimes extends CityActivity {
 	}
 
 	private View newStationEstimateView(Estimate est, boolean evenRow) {
-		int rowLayout;
-		if (est.isUpdating()) {
-			rowLayout = R.layout.times_station_updating;
-		} else if (est.hasErrors()) {
-			rowLayout = evenRow ? R.layout.times_station_err_even : R.layout.times_station_err_odd;
-			updater.setHasErrors();
-		} else {
-			rowLayout = evenRow ? R.layout.times_station_even : R.layout.times_station_odd;
-		}
-
+		int rowLayout = R.layout.frag_station_time;
+		int background = R.color.frag_path_odd;
+		Resources res = getResources();
 		View timesRow = inflater.inflate(rowLayout, timesTable, false);
-		
+
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
+		
+		
+		if (est.isUpdating()) {
+			background = R.color.times_updating;
+		} else {
+			if (est.hasErrors()) {
+				updater.setHasErrors();
+				TextView error = (TextView)timesRow.findViewById(R.id.StationError);
+				error.setText(EstimateStatusEx.getDescriptionId(est.getStatus()));
+			}
+			if (evenRow)
+				background = R.color.frag_path_even;
+		}
+
+		View row = timesRow.findViewById(R.id.StationStatusRow);
+		row.setBackgroundColor(res.getColor(background));
+		
 		return timesRow;
 	}
 

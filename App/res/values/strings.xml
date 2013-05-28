@@ -48,10 +48,17 @@
 	<string name="lblShortExpress">express</string>
 	<string name="lblShortMetro">metro</string>
 	<string name="lblShortOther">other</string>
-	
+
+	<string name="lblStatusAllIsGood">OK</string>
+	<string name="lblStatusWaitingUpdate">Updating</string>
+	<string name="lblStatusNetworkError">Network/Internet error</string>
+	<string name="lblStatusUpdateCanceled">Update canceled</string>
+				
+		
 	<string name="lblExampleLine">E33</string>
 	<string name="lblExampleLineKind">troleibuz</string>
 	<string name="lblExampleDeparture">Catedrala Mitropolitana</string>
 	<string name="lblExampleArrival">Pod Calea Sagului</string>
 	<string name="lblExampleTime">77 min</string>
+	<string name="lblExampleError">Network/Internet error</string>
 </resources>

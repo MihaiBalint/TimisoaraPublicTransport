@@ -17,8 +17,6 @@
 */
 package ro.mihai.tpt;
 
-import java.util.ArrayList;
-
 import ro.mihai.tpt.conf.PathStationsSelection;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
