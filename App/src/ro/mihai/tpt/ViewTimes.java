@@ -31,6 +31,7 @@ import ro.mihai.tpt.conf.StationPathsSelection;
 import ro.mihai.tpt.conf.StationPathsSelection.Node;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Estimate;
+import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidSharedObjects;
@@ -39,6 +40,7 @@ import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.EstimateStatusEx;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
+import ro.mihai.util.Formatting;
 import ro.mihai.util.LineKind;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -122,10 +124,7 @@ public class ViewTimes extends CityActivity {
 	}
 
 	private View newStationEstimateView(Estimate est, boolean evenRow) {
-		int rowLayout = R.layout.frag_station_time;
-		int background = R.color.frag_path_odd;
-		Resources res = getResources();
-		View timesRow = inflater.inflate(rowLayout, timesTable, false);
+		View timesRow = inflater.inflate(R.layout.frag_station_time, timesTable, false);
 
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
@@ -134,6 +133,7 @@ public class ViewTimes extends CityActivity {
 		stationTime.setText(est.estimateTimeString());
 		
 		
+		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
 			background = R.color.times_updating;
 		} else {
@@ -147,34 +147,42 @@ public class ViewTimes extends CityActivity {
 		}
 
 		View row = timesRow.findViewById(R.id.StationStatusRow);
-		row.setBackgroundColor(res.getColor(background));
+		row.setBackgroundColor(getResources().getColor(background));
 		
 		return timesRow;
 	}
 
 	private View newConnectionEstimateView(Estimate est, boolean evenRow) {
-		int rowLayout;
-		if (est.isUpdating()) {
-			rowLayout = R.layout.times_connection_updating;
-		} else if (est.hasErrors()) {
-			rowLayout = evenRow ? R.layout.times_connection_err_even : R.layout.times_connection_err_odd;
-			updater.setHasErrors();
-		} else {
-			rowLayout = evenRow ? R.layout.times_connection_even : R.layout.times_connection_odd;
-		}
+		View timesRow = inflater.inflate(R.layout.frag_connection_time, timesTable, false);
 
-		View timesRow = inflater.inflate(rowLayout, timesTable, false);
-		
 		Path connectingPath = est.getPath();
+		Line connectingLine = connectingPath.getLine();
+		Resources res = getResources();
 		
 		TextView lineNameLabel = (TextView)timesRow.findViewById(R.id.LineName);
-		lineNameLabel.setText(connectingPath.getLine().getName());
+		path.getLineKind();
+		lineNameLabel.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
+		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
 
 		TextView lineDirectionLabel = (TextView)timesRow.findViewById(R.id.LineDirection);
 		lineDirectionLabel.setText(connectingPath.getNiceName());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
+		
+		
+		int background = R.color.frag_path_odd;
+		if (est.isUpdating()) {
+			background = R.color.times_updating;
+		} else {
+			if (est.hasErrors())
+				updater.setHasErrors();
+			if (evenRow)
+				background = R.color.frag_path_even;
+		} 
+		View row = timesRow.findViewById(R.id.StationStatusRow);
+		row.setBackgroundColor(res.getColor(background));
+		
 		return timesRow;
 	}
 	

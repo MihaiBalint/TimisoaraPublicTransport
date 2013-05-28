@@ -57,4 +57,8 @@ public class Formatting {
 				result += sep+item;
 		return result;
 	}
+	
+	public static String capitalize(String str) {
+		return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+	}
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
+import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.util.LineKind;
 
 public class PathStationsSelection {
@@ -67,12 +68,7 @@ public class PathStationsSelection {
 	}
 	
 	public String getLineNameLabel() {
-		String lineName = path.getLine().getName();
-		if (lineName.startsWith("Tv") || lineName.startsWith("Tb")) 
-			lineName = lineName.substring(2);
-		if (lineName.startsWith("M")) 
-			lineName = lineName.substring(1);
-		return lineName;
+		return LineKindAndroidEx.getLineNameLabel(path.getLine());
 	}
 	
 	public String getPathLabel(int index) {

@@ -20,6 +20,7 @@ package ro.mihai.tpt.utils;
 import java.util.NoSuchElementException;
 
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.model.Line;
 import ro.mihai.util.LineKind;
 
 public enum LineKindAndroidEx {
@@ -70,4 +71,13 @@ public enum LineKindAndroidEx {
 		return getAndroidEx(k).shortLabelId;
 	}
 	
+	public static String getLineNameLabel(Line line) {
+		String lineName = line.getName();
+		if (lineName.startsWith("Tv") || lineName.startsWith("Tb")) 
+			lineName = lineName.substring(2);
+		if (lineName.startsWith("M")) 
+			lineName = lineName.substring(1);
+		return lineName;
+	}
+
 }
