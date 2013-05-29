@@ -28,7 +28,7 @@
         />
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
-   	    android:background="@drawable/line_bullet_top"
+   	    android:background="@drawable/line_bullet_top_green"
    	    android:contentDescription="@string/app_settings"
    	    android:scaleType="centerCrop"
    	    />

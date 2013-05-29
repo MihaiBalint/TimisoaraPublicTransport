@@ -75,7 +75,11 @@ public class ViewTimes extends CityActivity {
     	
     	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
-		PathView.fillPathView(this.findViewById(R.id.PathView), this.getResources(), path, new PathSwitcher(), true);
+		View pathView = this.findViewById(R.id.PathView);
+		PathView.fillPathView(pathView, this.getResources(), path, new PathSwitcher(), true);
+		
+		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
+		pathView.findViewById(R.id.LineBullet).setBackgroundResource(kind.bullet_top);
     	
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes());
@@ -118,7 +122,7 @@ public class ViewTimes extends CityActivity {
 	    		Path connectingPath = connection.path;
 	    		est = connectingPath.getEstimate(connection.station);
 
-	    		timesTable.addView(newConnectionEstimateView(est, evenRow));
+	    		timesTable.addView(newConnectionEstimateView(est, evenRow, last));
 	    	}
 	    	stationNo++;
 		}
@@ -133,10 +137,8 @@ public class ViewTimes extends CityActivity {
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
 		
-		if(last) {
-			View bullet = timesRow.findViewById(R.id.LineBullet);
-			bullet.setBackgroundResource(R.drawable.line_bullet_bottom);
-		}
+		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
+		timesRow.findViewById(R.id.LineBullet).setBackgroundResource(last ? kind.bullet_bottom : kind.bullet_middle);
 		
 		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
@@ -157,7 +159,7 @@ public class ViewTimes extends CityActivity {
 		return timesRow;
 	}
 
-	private View newConnectionEstimateView(Estimate est, boolean evenRow) {
+	private View newConnectionEstimateView(Estimate est, boolean evenRow, boolean last) {
 		View timesRow = inflater.inflate(R.layout.infl_connection_time, timesTable, false);
 
 		Path connectingPath = est.getPath();
@@ -175,6 +177,9 @@ public class ViewTimes extends CityActivity {
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
 		
+		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
+		View bullet = timesRow.findViewById(R.id.LineBullet); 
+		bullet.setBackgroundResource(last ? R.drawable.line_middle_empty : kind.bullet_line);
 		
 		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
@@ -207,7 +212,7 @@ public class ViewTimes extends CityActivity {
 				index++;
 				for(Node connection : sel.getConnections()) {
 					if(!running.get()) return;
-					ec = updateConnectionRowView(ec, index, evenRow, connection.path, connection.station);
+					ec = updateConnectionRowView(ec, index, evenRow, last, connection.path, connection.station);
 					index++;
 				}
 				stationNo++;
@@ -218,12 +223,12 @@ public class ViewTimes extends CityActivity {
 				runOnUiThread(new ReportError());
 		}
 
-		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, Path path, Station s) {
+		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, final boolean last, Path path, Station s) {
 			final Estimate est = path.getEstimate(s);
 			Runnable upd = new Runnable() {
 				public void run() {
 					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newConnectionEstimateView(est, even), rowIndex);
+		    		timesTable.addView(newConnectionEstimateView(est, even, last), rowIndex);
 				}
 			};
 			est.startUpdate();

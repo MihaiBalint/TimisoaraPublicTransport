@@ -32,7 +32,7 @@
    	</LinearLayout>
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
-   	    android:background="@drawable/line_bullet_middle"
+   	    android:background="@drawable/line_bullet_middle_green"
    	    android:contentDescription="@string/app_settings"
    	    android:scaleType="centerCrop"
    	    />
