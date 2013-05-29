@@ -21,13 +21,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import android.view.View.OnClickListener;
-
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
-import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.tpt.utils.Utils;
 
 public class ViewCatFavorites extends ViewCategories {

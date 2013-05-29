@@ -35,7 +35,7 @@ public class PathView {
 	}
 	
 	public static View createPathView(LayoutInflater inflater, ViewGroup parent) {
-		return inflater.inflate(R.layout.frag_path2, parent, false);
+		return inflater.inflate(R.layout.infl_categories_path2, parent, false);
 	}
 	
 	public static View fillPathView(View pathView, Resources res, 

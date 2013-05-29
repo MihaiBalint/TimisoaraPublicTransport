@@ -40,7 +40,6 @@ import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.EstimateStatusEx;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
-import ro.mihai.util.Formatting;
 import ro.mihai.util.LineKind;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -106,12 +105,14 @@ public class ViewTimes extends CityActivity {
 		timesTable.removeAllViews();
 		List<StationPathsSelection> stations = path.getStations();
 
-		boolean evenRow = true; // java is zero based, therefore first = even
+		int stationNo = 0; // java is zero based, therefore first = even
 		for(StationPathsSelection sel: stations) {
 			Station s = sel.getStation();
 			Estimate est = path.getEstimate(s);
+			boolean evenRow = (stationNo % 2) == 0;
+			boolean last = stationNo == stations.size()-1;
 			
-	    	timesTable.addView(newStationEstimateView(est, evenRow));
+	    	timesTable.addView(newStationEstimateView(est, evenRow, last));
 	    	
 	    	for(Node connection : sel.getConnections()) {
 	    		Path connectingPath = connection.path;
@@ -119,12 +120,12 @@ public class ViewTimes extends CityActivity {
 
 	    		timesTable.addView(newConnectionEstimateView(est, evenRow));
 	    	}
-	    	evenRow = !evenRow;
+	    	stationNo++;
 		}
 	}
 
-	private View newStationEstimateView(Estimate est, boolean evenRow) {
-		View timesRow = inflater.inflate(R.layout.frag_station_time, timesTable, false);
+	private View newStationEstimateView(Estimate est, boolean evenRow, boolean last) {
+		View timesRow = inflater.inflate(R.layout.infl_station_time, timesTable, false);
 
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
@@ -132,6 +133,10 @@ public class ViewTimes extends CityActivity {
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
 		
+		if(last) {
+			View bullet = timesRow.findViewById(R.id.LineBullet);
+			bullet.setBackgroundResource(R.drawable.line_bullet_bottom);
+		}
 		
 		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
@@ -153,7 +158,7 @@ public class ViewTimes extends CityActivity {
 	}
 
 	private View newConnectionEstimateView(Estimate est, boolean evenRow) {
-		View timesRow = inflater.inflate(R.layout.frag_connection_time, timesTable, false);
+		View timesRow = inflater.inflate(R.layout.infl_connection_time, timesTable, false);
 
 		Path connectingPath = est.getPath();
 		Line connectingLine = connectingPath.getLine();
@@ -191,19 +196,21 @@ public class ViewTimes extends CityActivity {
 		private AtomicBoolean hasErrors = new AtomicBoolean(false);
 		
 		public void run() {
-			int ec = 0, index = 0;
-			boolean evenRow = true; // java is zero based, therefore first = even
-			for(StationPathsSelection sel: path.getStations()) {
+			List<StationPathsSelection> stations = path.getStations();
+			int ec = 0, index = 0, stationNo = 0;
+			for(StationPathsSelection sel: stations) {
 				if(!running.get()) return;
 				Station s = sel.getStation();
-				ec = updateStationRowView(ec, index, evenRow, path.getPath(), s);
+				boolean evenRow = (stationNo % 2) == 0;
+				boolean last = stationNo == stations.size()-1;
+				ec = updateStationRowView(ec, index, evenRow, last, path.getPath(), s);
 				index++;
 				for(Node connection : sel.getConnections()) {
 					if(!running.get()) return;
 					ec = updateConnectionRowView(ec, index, evenRow, connection.path, connection.station);
 					index++;
 				}
-				evenRow = !evenRow;
+				stationNo++;
 			}
 			killUpdate();
 			runOnUiThread(new UpdateView());
@@ -226,12 +233,12 @@ public class ViewTimes extends CityActivity {
 			return ec;
 		}
 
-		private int updateStationRowView(int ec, final int rowIndex, final boolean even, Path path, Station s) {
+		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, Path path, Station s) {
 			final Estimate est = path.getEstimate(s);
 			Runnable upd = new Runnable() {
 				public void run() {
 					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newStationEstimateView(est, even), rowIndex);
+		    		timesTable.addView(newStationEstimateView(est, even, last), rowIndex);
 				}
 			};
 			est.startUpdate();

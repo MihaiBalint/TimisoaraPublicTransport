@@ -18,32 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
  -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/PathView"
-    style="@style/LikeTitleContainer"
-    android:background="@color/frag_path_even">
-    
-   	<LinearLayout
-        style="@style/LikeTitleIcon"
-       	android:layout_height="wrap_content"
-       	android:orientation="vertical"
-       	android:gravity="center_horizontal">
-
-   	    <TextView
-   	        android:id="@+id/LineName"
-   	        style="@style/PathLineLabel"
-   	        android:text="@string/lblExampleLine"
-   	        android:textColor="@color/vehicle_bus" />
-
-       	<TextView android:id="@+id/LineKind"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:textColor="@color/vehicle_bus"
-  			android:text="@string/lblExampleLineKind"
-	   		android:textSize="12sp"
-	   		android:lines="1" />
-   	</LinearLayout>
-
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
    	<LinearLayout
    	    android:layout_width="0dp"
    	    android:layout_height="wrap_content"
@@ -83,13 +58,4 @@
 	  	android:text="@string/lblExampleArrival"
 		android:textSize="12sp"
         />
-   	<ImageView
-   	    android:id="@+id/menu_button"
-   	    style="@style/MoreOptionsButton"
-   	    android:src="@drawable/menu_light_button"
-   	    android:contentDescription="@string/app_settings"
-   	    android:scaleType="centerCrop"
-   	    />
-    
-
-</LinearLayout>
+</merge>

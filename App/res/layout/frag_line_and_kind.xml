@@ -18,37 +18,26 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
  -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#000000"
-    android:orientation="vertical" >
-    
-    <include
-        layout="@layout/frag_title"
-        />
-	<ScrollView 
-		android:layout_width="fill_parent" 
-		android:layout_height="0dp"
-		android:layout_weight="1">
-		<LinearLayout
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+   	<LinearLayout
+        style="@style/LikeTitleIcon"
+       	android:layout_height="wrap_content"
+       	android:orientation="vertical"
+       	android:gravity="center_horizontal">
+
+   	    <TextView
+   	        android:id="@+id/LineName"
+   	        style="@style/PathLineLabel"
+   	        android:text="@string/lblExampleLine"
+   	        android:textColor="@color/vehicle_bus" />
+
+       	<TextView android:id="@+id/LineKind"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
-			android:orientation="vertical">
-	    	<include
-				layout="@layout/frag_times_path2"
-				/>
-	  
-		    <TableLayout 
-				android:id="@+id/StationTimesTable" 
-				android:layout_width="fill_parent" 
-				android:layout_height="wrap_content"
-				/>
-		</LinearLayout>
-	</ScrollView>
-    
-    <include
-        layout="@layout/frag_times_actions"
-        />
-</LinearLayout>
-
+			android:textColor="@color/vehicle_bus"
+  			android:text="@string/lblExampleLineKind"
+	   		android:textSize="12sp"
+	       	android:gravity="center_horizontal"
+	   		android:lines="1" />
+   	</LinearLayout>
+</merge>

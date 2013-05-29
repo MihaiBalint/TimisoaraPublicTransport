@@ -19,36 +19,21 @@
 */
  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#000000"
-    android:orientation="vertical" >
+    android:id="@+id/PathView"
+    style="@style/LikeTitleContainer"
+    android:background="@color/frag_path_even">
     
     <include
-        layout="@layout/frag_title"
+        layout="@layout/frag_line_and_kind"
         />
-	<ScrollView 
-		android:layout_width="fill_parent" 
-		android:layout_height="0dp"
-		android:layout_weight="1">
-		<LinearLayout
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			android:orientation="vertical">
-	    	<include
-				layout="@layout/frag_times_path2"
-				/>
-	  
-		    <TableLayout 
-				android:id="@+id/StationTimesTable" 
-				android:layout_width="fill_parent" 
-				android:layout_height="wrap_content"
-				/>
-		</LinearLayout>
-	</ScrollView>
-    
     <include
-        layout="@layout/frag_times_actions"
+        layout="@layout/frag_dep_dest"
         />
+   	<ImageView
+   	    android:id="@+id/menu_button"
+   	    style="@style/MoreOptionsButton"
+   	    android:src="@drawable/menu_light_button"
+   	    android:contentDescription="@string/app_settings"
+   	    android:scaleType="centerCrop"
+   	    />
 </LinearLayout>
-

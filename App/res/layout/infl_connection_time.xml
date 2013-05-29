@@ -30,7 +30,13 @@
        	android:orientation="vertical"
        	android:gravity="center_horizontal">
    	</LinearLayout>
-
+   	<ImageView
+   	    style="@style/LineBullet"
+   	    android:background="@drawable/line_middle"
+   	    android:contentDescription="@string/app_settings"
+   	    android:scaleType="centerCrop"
+   		/>
+   	
     <TextView android:id="@+id/StationTime"
         android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
