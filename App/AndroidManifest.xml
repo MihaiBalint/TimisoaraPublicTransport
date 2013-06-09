@@ -52,5 +52,14 @@
         <activity android:name="ro.mihai.tpt.ViewTimes" />
         <activity android:name="ro.mihai.tpt.ViewCredits" />
         <activity android:name="ro.mihai.tpt.Preferences" />
+        <service android:name=".data.DataService"
+            android:permission="android.permission.INTERNET"
+			android:icon="@drawable/icon"
+			android:label="@string/service_name">
+			<intent-filter>
+				<action android:name="ro.mihai.tpt.UPDATE_LINE" />
+				<action android:name="ro.mihai.tpt.UPDATE_STATIONS" />
+			</intent-filter>
+		</service>
     </application>
 </manifest> 

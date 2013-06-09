@@ -24,16 +24,28 @@
     android:background="@color/frag_path_even"
     android:baselineAligned="false">
     
-   	<LinearLayout
-        style="@style/LikeTitleIcon"
-       	android:layout_height="wrap_content"
-       	android:orientation="vertical"
-       	android:gravity="center_horizontal">
-   	</LinearLayout>
+   	<RelativeLayout
+        style="@style/StationBullet">
+	   	<ImageView android:id="@+id/VehicleArrivingBullet"
+   	    	style="@style/VehicleArrivingBullet"
+	   	    android:background="@drawable/arrow_right_lower_half"
+	   	    android:contentDescription="@string/lblVehicle"
+	   	/>
+	   	<ImageView android:id="@+id/VehicleBoardingBullet"
+   	    	style="@style/VehicleBoardingBullet"
+	   	    android:background="@drawable/arrow_right"
+	   	    android:contentDescription="@string/lblVehicle"
+	   	/>
+	   	<ImageView android:id="@+id/VehicleDepartingBullet"
+   	    	style="@style/VehicleDepartingBullet"
+	   	    android:background="@drawable/arrow_right_upper_half"
+	   	    android:contentDescription="@string/lblVehicle"
+	   	/>
+	</RelativeLayout>
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
    	    android:background="@drawable/line_bullet_middle_green"
-   	    android:contentDescription="@string/app_settings"
+   	    android:contentDescription="@string/lblStation"
    	    android:scaleType="centerCrop"
    	    />
    		

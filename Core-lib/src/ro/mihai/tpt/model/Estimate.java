@@ -20,6 +20,20 @@ public class Estimate implements Serializable {
 		}
 	}
 	
+	public static enum VehicleStatus {
+		Away, Boarding, Arriving, Departing, ArrivingDeparting;
+		
+		public boolean isArriving() {
+			return this == Arriving || this == ArrivingDeparting;
+		}
+		public boolean isDeparting() {
+			return this == Departing || this == ArrivingDeparting;
+		}
+		public boolean isBoarding() {
+			return this == Boarding;
+		}
+	}
+	
 	public static class TimeEstimate {
 		public String asString;
 		public Calendar asTime;
@@ -129,16 +143,57 @@ public class Estimate implements Serializable {
 	public boolean hasErrors() {
 		return status!=null && status.isError();
 	}
-	public boolean isVehicleHere() {
-		if (">>".equals(times1.trim())) 
-			return true;
+	
+	private boolean isBoarding() {
+		return (">>".equals(times1.trim())); 
+	}
+	
+	public VehicleStatus getVehicleStatus() {
+		//Arriving?
+		// 		true	true	false	true		
+		// n-1 	11:11	--:--	4 min	7 min
+		// n	6 min	6 min	6 min	6 min
+		//
+		//Arriving&Departing?
+		// 		A&D		A&D		pass	A&D		A		A		pass	A		A		A		pass	A
+		// n-1	11:11	--:--	4 min	7 min	11:11	--:--	4 min	7 min	11:11	--:--	4 min	7 min
+		// n 	6 min	6 min	6 min	6 min	6 min	6 min	6 min	6 min	6 min	6 min	6 min	6 min
+		// n+1	4 min	4 min	4 min	4 min	7 min	7 min	7 min	7 min	>> 		>>		>>		>>
+		//
+		//Departing?
+		//		true	true	false	true	
+		// n	11:11	--:--	4 min	7 min
+		// n+1	6 min	6 min	6 min	6 min
+		//
+		
+		
+		if (isBoarding()) 
+			return VehicleStatus.Boarding;
+		
 		List<Station> stations = path.getStationsByPath();
 		
-		if(stationIndex==0) // first station
-			return false;
-		
-		Estimate prev = path.getEstimate(stations.get(stationIndex-1));
-		return prev.after(this, false); 
+		if(stationIndex > 0 && this.type.isGPS()) {
+			// fist station is never arriving
+			// for now, vehicles are only arriving when on GPS estimate
+			Estimate prev = path.getEstimate(stations.get(stationIndex-1));
+			if (prev.type.isGPS() == false || (!prev.isBoarding() && prev.after(this, false))) {
+				if (stationIndex < stations.size()-1) {
+					Estimate next = path.getEstimate(stations.get(stationIndex+1));
+					if (next.type.isGPS() && !next.isBoarding() && this.after(next, false))
+						return VehicleStatus.ArrivingDeparting;
+				}
+				return VehicleStatus.Arriving;
+			}
+		}
+		if (stationIndex < stations.size()-1) {
+			// last station is never departing
+			Estimate next = path.getEstimate(stations.get(stationIndex+1));
+			if (next.type.isGPS() && !next.isBoarding()) {
+				if (this.type.isGPS() == false || this.after(next, false))
+					return VehicleStatus.Departing;
+			}
+		}
+		return VehicleStatus.Away;
 	}
 	
 	public boolean updatedAfter(Estimate other) {

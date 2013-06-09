@@ -156,6 +156,20 @@ public class ViewTimes extends CityActivity {
 		View row = timesRow.findViewById(R.id.StationStatusRow);
 		row.setBackgroundColor(getResources().getColor(background));
 		
+		Estimate.VehicleStatus vehicle = est.getVehicleStatus();
+		if (vehicle.isArriving() == false) {
+			View arrivingBullet = timesRow.findViewById(R.id.VehicleArrivingBullet);
+			arrivingBullet.setVisibility(View.GONE);
+		}
+		if (vehicle.isBoarding() == false) {
+			View boardingBullet = timesRow.findViewById(R.id.VehicleBoardingBullet);
+			boardingBullet.setVisibility(View.GONE);
+		}
+		if (vehicle.isDeparting() == false) {
+			View departingBullet = timesRow.findViewById(R.id.VehicleDepartingBullet);
+			departingBullet.setVisibility(View.GONE);
+		}
+		
 		return timesRow;
 	}
 

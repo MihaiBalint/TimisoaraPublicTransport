@@ -21,6 +21,7 @@
 <resources>
     <string name="loading">Loading...</string>
     <string name="app_name">Public Transport Timisoara</string>
+    <string name="service_name">Public Transport Data Service</string>
     
     <string name="upd">Update Times</string>
     <string name="upd_error">Update could not complete. Some network connection errors have been encountered. Selecting an alternate download URL from the settings may fix this if your internet connection is working.</string>
@@ -41,7 +42,10 @@
 	<string name="lblExpress">Express Bus</string>
 	<string name="lblMetro">Metro Bus</string>
 	<string name="lblOther">Other connection</string>
-
+	
+	<string name="lblStation">Station</string>
+	<string name="lblVehicle">Vehicle</string>
+	
 	<string name="lblShortTrams">tram</string>
 	<string name="lblShortTrolleys">trolleybus</string>
 	<string name="lblShortBus">bus</string>

@@ -23,10 +23,6 @@
 		style="@style/CategoryButtonContainer">
 	    
     	<Button
-    	    android:id="@+id/UpdateButton"
-			style="@style/CategoryButton"
-    	    android:background="@drawable/upd_button"/>
-        <Button
     	    android:id="@+id/StarButton"
 			style="@style/CategoryButton"
     	    android:background="@drawable/star_off_button"/>
@@ -34,5 +30,10 @@
     	    android:id="@+id/ConnectionsButton"
 			style="@style/CategoryButton"
     	    android:background="@drawable/plus_button"/>
+    	<Button
+    	    android:id="@+id/UpdateButton"
+			style="@style/CategoryButton"
+    	    android:background="@drawable/upd_button"/>
+    	
 	</LinearLayout>
 </merge>
