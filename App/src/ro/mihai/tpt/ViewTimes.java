@@ -110,19 +110,24 @@ public class ViewTimes extends CityActivity {
 		List<StationPathsSelection> stations = path.getStations();
 
 		int stationNo = 0; // java is zero based, therefore first = even
+		View previousRow = null;
 		for(StationPathsSelection sel: stations) {
 			Station s = sel.getStation();
 			Estimate est = path.getEstimate(s);
 			boolean evenRow = (stationNo % 2) == 0;
 			boolean last = stationNo == stations.size()-1;
-			
-	    	timesTable.addView(newStationEstimateView(est, evenRow, last));
+			View newRow = newStationEstimateView(est, evenRow, last);
+			updateVehicleArrivingBullet(est.getVehicleStatus(), newRow, previousRow);
+	    	timesTable.addView(newRow);
+			previousRow = newRow;
+	    	
 	    	
 	    	for(Node connection : sel.getConnections()) {
 	    		Path connectingPath = connection.path;
 	    		est = connectingPath.getEstimate(connection.station);
-
-	    		timesTable.addView(newConnectionEstimateView(est, evenRow, last));
+	    		newRow = newConnectionEstimateView(est, evenRow, last);
+	    		timesTable.addView(newRow);
+	    		previousRow = newRow;
 	    	}
 	    	stationNo++;
 		}
@@ -155,20 +160,6 @@ public class ViewTimes extends CityActivity {
 
 		View row = timesRow.findViewById(R.id.StationStatusRow);
 		row.setBackgroundColor(getResources().getColor(background));
-		
-		Estimate.VehicleStatus vehicle = est.getVehicleStatus();
-		if (vehicle.isArriving() == false) {
-			View arrivingBullet = timesRow.findViewById(R.id.VehicleArrivingBullet);
-			arrivingBullet.setVisibility(View.GONE);
-		}
-		if (vehicle.isBoarding() == false) {
-			View boardingBullet = timesRow.findViewById(R.id.VehicleBoardingBullet);
-			boardingBullet.setVisibility(View.GONE);
-		}
-		if (vehicle.isDeparting() == false) {
-			View departingBullet = timesRow.findViewById(R.id.VehicleDepartingBullet);
-			departingBullet.setVisibility(View.GONE);
-		}
 		
 		return timesRow;
 	}
@@ -210,6 +201,36 @@ public class ViewTimes extends CityActivity {
 		return timesRow;
 	}
 	
+	private void updateVehicleArrivingBullet(Estimate.VehicleStatus vehicle, View thisRow, View previousRow) {
+		if (vehicle.isArriving()) {
+			View arrivingBullet = thisRow.findViewById(R.id.VehicleArrivingBullet);
+			arrivingBullet.setVisibility(View.VISIBLE);
+			assert(previousRow!=null);
+			View prevDepartingBullet = previousRow.findViewById(R.id.VehicleDepartingBullet);
+			prevDepartingBullet.setVisibility(View.VISIBLE);
+		}
+		if (vehicle.isBoarding()) {
+			View boardingBullet = thisRow.findViewById(R.id.VehicleBoardingBullet);
+			boardingBullet.setVisibility(View.VISIBLE);
+			if(previousRow!=null) {
+				View prevDepartingBullet = previousRow.findViewById(R.id.VehicleDepartingBullet);
+				prevDepartingBullet.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	private void updateVehicleDepartingBullet(Estimate.VehicleStatus vehicle, View thisRow, View nextRow) {
+		if (vehicle.isDeparting()) {
+			View departingBullet = thisRow.findViewById(R.id.VehicleDepartingBullet);
+			departingBullet.setVisibility(View.VISIBLE);
+			assert(nextRow!=null);
+			View nextArrivingBullet = nextRow.findViewById(R.id.VehicleArrivingBullet);
+			nextArrivingBullet.setVisibility(View.VISIBLE);
+			View nextBoardingBullet = nextRow.findViewById(R.id.VehicleBoardingBullet);
+			nextBoardingBullet.setVisibility(View.GONE);
+		}
+	}
+
 	private class UpdateTimes implements Runnable, OnClickListener {
 		private AtomicBoolean running = new AtomicBoolean(false);
 		private AtomicBoolean hasErrors = new AtomicBoolean(false);
@@ -241,6 +262,12 @@ public class ViewTimes extends CityActivity {
 			final Estimate est = path.getEstimate(s);
 			Runnable upd = new Runnable() {
 				public void run() {
+					if (rowIndex > 0) {
+						// connection rows are never arriving, therefore their predecessor can 
+						// never be departing
+						View previousRow = timesTable.getChildAt(rowIndex-1);
+						previousRow.findViewById(R.id.VehicleDepartingBullet).setVisibility(View.GONE);
+					}
 					timesTable.removeViewAt(rowIndex);
 		    		timesTable.addView(newConnectionEstimateView(est, even, last), rowIndex);
 				}
@@ -256,8 +283,15 @@ public class ViewTimes extends CityActivity {
 			final Estimate est = path.getEstimate(s);
 			Runnable upd = new Runnable() {
 				public void run() {
+					View newRow = newStationEstimateView(est, even, last);
+					View previousRow = rowIndex > 0 ? timesTable.getChildAt(rowIndex-1) : null;
+					View nextRow = (rowIndex < timesTable.getChildCount()-1) 
+							? timesTable.getChildAt(rowIndex+1) : null;
+					
+					updateVehicleArrivingBullet(est.getVehicleStatus(), newRow, previousRow);					
+					updateVehicleDepartingBullet(est.getVehicleStatus(), newRow, nextRow);					
 					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newStationEstimateView(est, even, last), rowIndex);
+		    		timesTable.addView(newRow, rowIndex);
 				}
 			};
 			est.startUpdate();

@@ -13,7 +13,7 @@
         <item name="android:layout_width">65dp</item>
 		<item name="android:layout_marginTop">7.3dp</item>
 		<item name="android:layout_marginBottom">7.3dp</item>
-		<item name="android:layout_marginRight">7.6dp</item>
+		<item name="android:layout_marginRight">7dp</item>
         <item name="android:layout_marginLeft">7.6dp</item>
 	</style>
     <style name="TitleIconWithBack" parent="LikeTitleIcon">
@@ -21,7 +21,7 @@
 	</style>
     <style name="StationBullet" parent="LikeTitleIcon">
     	<item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">72.6dp</item>
+        <item name="android:layout_width">72dp</item>
 		<item name="android:layout_marginRight">0dp</item>
 		<item name="android:layout_marginTop">0dp</item>
 		<item name="android:layout_marginBottom">0dp</item>
@@ -51,20 +51,21 @@
     </style>
     
     <style name="LineVehicle">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_alignParentRight">true</item>
+        <item name="android:visibility">gone</item>
     </style>
     <style name="VehicleArrivingBullet" parent="LineVehicle">
-        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_height">12dp</item>
         <item name="android:layout_alignParentTop">true</item>
     </style>
     <style name="VehicleBoardingBullet" parent="LineVehicle">
         <item name="android:layout_centerVertical">true</item>
     </style>
     <style name="VehicleDepartingBullet" parent="LineVehicle">
-        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_height">12dp</item>
         <item name="android:layout_alignParentBottom">true</item>      
     </style>
 </resources>

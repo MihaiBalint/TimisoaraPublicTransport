@@ -97,12 +97,12 @@ public class Estimate implements Serializable {
 	}
 	
 	public String estimateTimeString() {
-		return this.estimateTime().asString;
+		return this.estimateTime(updateTimeMilis).asString;
 	}
 	
-	private TimeEstimate estimateTime() {
+	private TimeEstimate estimateTime(long updateTime) {
 		if (this.type.isGPS() || this.type.isNotNone())
-			return getEstimate1();
+			return getEstimate1(updateTime);
 		
 		assert(this.type.isNone());
 		return new TimeEstimate(getTimes1(), null);
@@ -119,8 +119,8 @@ public class Estimate implements Serializable {
 		return formatTime(times2);
 	}
 
-	TimeEstimate getEstimate1() {
-		return new TimeEstimate(getTimes1(), parseEstimate(getTimes1(), updateTimeMilis));
+	TimeEstimate getEstimate1(long updateTime) {
+		return new TimeEstimate(getTimes1(), parseEstimate(getTimes1(), updateTime));
 	}
 	Calendar getEstimate2() {
 		return parseEstimate(getTimes2(), updateTimeMilis);
@@ -205,20 +205,13 @@ public class Estimate implements Serializable {
 	}
 	
 	public boolean after(Estimate other, boolean defaultIfNone) {
+		long now = System.currentTimeMillis();
 		Calendar 
-			thisEst = this.estimateTime().asTime,
-			otherEst = other.estimateTime().asTime;
+			thisEst = this.estimateTime(now).asTime,
+			otherEst = other.estimateTime(now).asTime;
 		
 		if (thisEst==null || otherEst==null) return defaultIfNone;
 
-		// linear regression of estimate, maybe not the best but we have no other
-		// X(t) = e1
-		// Y(t+k) = e2  =>  X(t+k) = e1-k
-		// this -> x, other -> y
-		
-		long delta = this.updateTimeMilis - other.updateTimeMilis;
-		thisEst.add(Calendar.MILLISECOND, (int)delta);
-		
 		return thisEst.after(otherEst);
 	}
 	
