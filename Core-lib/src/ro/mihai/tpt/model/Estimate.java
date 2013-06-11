@@ -77,7 +77,7 @@ public class Estimate implements Serializable {
 		return path;
 	}
 	
-	public void putTime(String t1, String t2) {
+	public void putTime(String t1, String t2, String timestamp) {
 		this.updateTimeMilis = System.currentTimeMillis();
 		this.times1 = t1!=null ? t1.trim() : "";
 		this.times2 = t2!=null ? t2.trim() : "";
@@ -203,16 +203,47 @@ public class Estimate implements Serializable {
 	public long updateDelta(Estimate other) {
 		return this.updateTimeMilis - other.updateTimeMilis;
 	}
-	
+
+	/**
+	 * Compare two estimates with a precision of 30 seconds.
+	 * This assumes that the estimate is given only with minute precision.
+	 * For stability, always call this method with other being the estimate
+	 * of the station further ahead
+	 * @param other
+	 * @param defaultIfNone
+	 * @return
+	 */
 	public boolean after(Estimate other, boolean defaultIfNone) {
-		long now = System.currentTimeMillis();
 		Calendar 
-			thisEst = this.estimateTime(now).asTime,
-			otherEst = other.estimateTime(now).asTime;
+			thisEst = this.estimateTime(this.updateTimeMilis).asTime,
+			otherEst = other.estimateTime(this.updateTimeMilis).asTime;
 		
 		if (thisEst==null || otherEst==null) return defaultIfNone;
+		otherEst.add(Calendar.SECOND, 30);
 
 		return thisEst.after(otherEst);
+	}
+	
+	public static long parseUpdateTime(String timestamp, long failDefault) {
+		// timestamp is: 2013-06-11 07:19:21
+		long time = failDefault; 
+		String[] split = timestamp.split("[ :-]");
+		if (split.length != 6)
+			return time;
+		try {
+			Calendar est = Calendar.getInstance(TimeZone.getTimeZone("Europe/Bucharest"));
+			est.set(Calendar.YEAR, Integer.parseInt(split[0]));
+			est.set(Calendar.MONTH, Integer.parseInt(split[1])-1);
+			est.set(Calendar.DAY_OF_MONTH, Integer.parseInt(split[2]));
+
+			est.set(Calendar.HOUR_OF_DAY, Integer.parseInt(split[3]));
+			est.set(Calendar.MINUTE, Integer.parseInt(split[4]));
+			est.set(Calendar.SECOND, Integer.parseInt(split[5]));
+			est.set(Calendar.MILLISECOND, 0);
+			return est.getTimeInMillis();
+		} catch(NumberFormatException e) {
+			return time;
+		}
 	}
 	
 	private static Calendar parseEstimate(String time, long updateTimeMilis) {

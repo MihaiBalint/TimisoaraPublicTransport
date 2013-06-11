@@ -172,7 +172,7 @@ public class Path extends PersistentEntity implements Serializable {
 		try {
 			if(ec<3) {
 				String[] t = RATT.downloadTimes(prefs, extId, s.getId());
-				e.putTime(t[0], t[1]);
+				e.putTime(t[0], t[1], t[2]);
 			} else
 				e.setStatus(Estimate.Status.UpdateCanceled);
 		} catch(IOException exc) {

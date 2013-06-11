@@ -61,4 +61,12 @@ public class Formatting {
 	public static String capitalize(String str) {
 		return Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
+	
+	public static String zeroLeadingInteger(int i, int minFixedWidth) {
+		String value = Integer.toString((i<0) ? 0-i : i);
+		String sign = (i<0) ? "-" : "";
+		while ((sign+value).length() < minFixedWidth)
+			value = "0"+value;
+		return sign+value;
+	}
 }
