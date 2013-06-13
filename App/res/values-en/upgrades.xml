@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="upgrade_analytics_title">Improve estimates?</string>
+	<string name="upgrade_analytics_message">We have received complaints that sometimes 
+	    the displayed estimates are not accurate, therefore,  we are starting a new project 
+	    to improve estimate accuracy. For this project we need data and we need your help
+	    to collect it. All you have to do is agree to participate in the program and use this 
+	    application as you normally would. If you agree, the application will use about 10% 
+	    more data than usually. Would you like to help improve this app?</string>
+</resources>

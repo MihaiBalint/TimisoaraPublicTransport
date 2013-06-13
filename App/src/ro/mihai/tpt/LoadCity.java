@@ -24,10 +24,9 @@ import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidCityLoader;
+import ro.mihai.tpt.utils.AppPreferences;
 import ro.mihai.tpt.utils.StartActivity;
-import ro.mihai.tpt.utils.Utils;
 import ro.mihai.util.IMonitor;
-import ro.mihai.util.IPrefs;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -36,8 +35,9 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
+public class LoadCity extends Activity implements Runnable, IMonitor {
 	private City city = null;
+	private AppPreferences prefs = null;
 	private ProgressBar prgress;
 	private TextView status;
 	private int work, max=-1, workMax;
@@ -66,7 +66,8 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
 	public void run() {
         try {
         	if (null==city)
-        		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(this, LoadCity.this, this);
+        		city = AndroidCityLoader.loadStoredCityOrDownloadAndCache(
+        				this.getAppPreferences(), LoadCity.this, this);
         	new StartActivity(this, ViewCatFavorites.class)
         		.addCity(city)
         		.replace();
@@ -108,10 +109,10 @@ public class LoadCity extends Activity implements Runnable, IMonitor, IPrefs {
 		}
 	}
 
-	private String baseUrl = null;
-	public String getBaseUrl() {
-		if (null==baseUrl)
-			baseUrl = Utils.readBaseDownloadUrl(this);
-		return baseUrl;
+	protected final AppPreferences getAppPreferences() {
+		if(null==prefs) {
+			prefs = new AppPreferences(this);
+		}
+		return prefs;
 	}
 }

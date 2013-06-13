@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="pref_base_download_url">base_download_url</string>
+	<string name="pref_current_version">current_version</string>
+	<string name="pref_device_id">device_id</string>
+	<string name="pref_analytics_enabled">analytics_enabled</string>
+	<string name="pref_analytics_cache">pref_analytics_cache</string>
+	<string name="pref_analytics_host">mihai.broke-it.net</string>
+	<string name="pref_analytics_port">8080</string>
+			
+    <string name="pref_base_download_url">base_download_url</string>
 	<string name="pref_base_download_url_title">Download URL</string>
 	<string name="pref_base_download_url_summary">The URL address which provides vehicle arrival estimates.</string>
 	<string name="pref_base_download_url_dialog">Choose URL</string>
@@ -16,5 +23,8 @@
         <item>http://www.ratt.ro/txt/</item>
         <item>http://82.77.146.19/txt/</item>
     </string-array>
+    
+	<string name="pref_analytics_enabled_title">Help improve estimates</string>
+	<string name="pref_analytics_enabled_summary">Participate in arrival time estimation improvement program.</string>
     
 </resources>

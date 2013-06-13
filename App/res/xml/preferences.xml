@@ -28,5 +28,9 @@
 		android:defaultValue="@string/pref_base_download_url_default"
 	    android:entryValues="@array/pref_base_download_url_entryvalues"
 	    android:dialogTitle="@string/pref_base_download_url_dialog" />
-    
+	<CheckBoxPreference
+	    android:key="@string/pref_analytics_enabled"
+	    android:title="@string/pref_analytics_enabled_title"
+	    android:summary="@string/pref_analytics_enabled_summary"
+	    />
 </PreferenceScreen>

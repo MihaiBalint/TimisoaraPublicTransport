@@ -20,7 +20,6 @@ package ro.mihai.tpt.utils;
 import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.Preferences;
 import ro.mihai.tpt.model.City;
-import ro.mihai.util.IPrefs;
 
 import ro.mihai.tpt.R;
 import android.app.Activity;
@@ -31,8 +30,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class CityActivity extends Activity implements IPrefs {
+public class CityActivity extends Activity {
 	private City city = null;
+	private AppPreferences prefs = null;
 	
 	protected final City getCity() throws CityNotLoadedException {
 		if(null==city) {
@@ -43,11 +43,19 @@ public class CityActivity extends Activity implements IPrefs {
 		return city;
 	}
 	
+	protected final AppPreferences getAppPreferences() {
+		if(null==prefs) {
+			prefs = new AppPreferences(this);
+		}
+		return prefs;
+	}
+	
 	@Override
 	protected final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
 			this.onCreateCityActivity(savedInstanceState);
+            new Upgrade(this).upgrade();
 		} catch(CityNotLoadedException e) {
 			reboot();
 			finish();
@@ -88,19 +96,11 @@ public class CityActivity extends Activity implements IPrefs {
         case REQUEST_CODE_PREFERENCES: 
             // The preferences returned if the request code is what we had given
             // earlier in startSubActivity
-        	baseUrl = Utils.readBaseDownloadUrl(this);
+        	getAppPreferences().refreshBaseUrl();
         	break;
         }
     }
   
-    private String baseUrl = null;
-    public String getBaseUrl() {
-    	if(baseUrl==null) 
-    		baseUrl = Utils.readBaseDownloadUrl(this);
-		return baseUrl;
-	}
-    
-    
 	protected void reboot() {
     	new StartActivity(this, LoadCity.class)
 		.start();

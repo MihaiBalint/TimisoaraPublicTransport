@@ -1,5 +1,6 @@
 package ro.mihai.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class Formatting {
@@ -44,6 +45,10 @@ public class Formatting {
 	public static String parseMinutes(String str) {
 		str = str.trim().toLowerCase();
 		return str.substring(0,str.indexOf("min.")).trim();
+	}
+	
+	public static <T> String join(String sep, T... items) {
+		return join(sep, Arrays.asList(items));
 	}
 	
 	public static <T> String join(String sep, Collection<T> items) {

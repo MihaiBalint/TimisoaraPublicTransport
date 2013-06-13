@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="upgrade_analytics_title">Estimari mai precise?</string>
+	<string name="upgrade_analytics_message">Deoarece dezvoltatorii aplicatiei au primit plangeri
+	    referitoare la calitatea uneori scazuta a timpilor afisati, s-au hotarat sa demareze un 
+	    proiect de crestere a preciziei estimarilor. Pentru acest proiect, dezvoltatorii au nevoie 
+	    de date si de ajutorul utilizatorilor pentru a furniza aceste date. Tot ce trebuie sa faceti
+	    este sa fiti de acord cu includerea dumneavoastra in program si sa folositi aplicatia in 
+	    modul uzual. Daca sunteti de acord, aplicatia va folosi cu 10% mai mult trafic de date
+	    decat de obicei. Sunteti de acord cu imbunatatirea aplicatiei?</string>
+</resources>

@@ -65,4 +65,8 @@
 	<string name="lblExampleArrival">Pod Calea Sagului</string>
 	<string name="lblExampleTime">77 min</string>
 	<string name="lblExampleError">Network/Internet error</string>
+	
+    <string name="lblAffirmative">Yes</string>
+    <string name="lblNegative">No</string>
+		
 </resources>

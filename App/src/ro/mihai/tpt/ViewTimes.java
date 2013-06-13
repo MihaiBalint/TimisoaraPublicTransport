@@ -274,7 +274,7 @@ public class ViewTimes extends CityActivity {
 			};
 			est.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(ViewTimes.this, ec, s);
+			ec = path.updateStation(getAppPreferences(), ec, s);
 			queueUIUpdate(upd);
 			return ec;
 		}
@@ -296,7 +296,7 @@ public class ViewTimes extends CityActivity {
 			};
 			est.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(ViewTimes.this, ec, s);
+			ec = path.updateStation(getAppPreferences(), ec, s);
 			queueUIUpdate(upd);
 			return ec;
 		}

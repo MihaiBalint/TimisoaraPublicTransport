@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.Path;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -31,14 +30,6 @@ import android.preference.PreferenceManager;
 public class Utils {
 	private static final String STATS_PREFIX = "stats-";
 
-	public static String readBaseDownloadUrl(Context ctx) {
-		// Read a sample value they have set
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		String defaultUrl = ctx.getString(R.string.pref_base_download_url_default);
-		
-		return sharedPref.getString(ctx.getString(R.string.pref_base_download_url), defaultUrl);
-	}
-	
 	public static void recordUsePath(Context ctx, Path p) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
 		String lineKey = STATS_PREFIX+p.getLine().getName();
