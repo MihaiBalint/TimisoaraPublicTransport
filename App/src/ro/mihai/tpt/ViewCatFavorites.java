@@ -17,37 +17,23 @@
 */
 package ro.mihai.tpt;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
-import ro.mihai.tpt.utils.LineKindAndroidEx;
-import ro.mihai.tpt.utils.Utils;
+import ro.mihai.tpt.utils.CityNotLoadedException;
 
 public class ViewCatFavorites extends ViewCategories {
 
 	@Override
 	protected Iterator<Path> getLinePathIterator(City city) {
-		List<Path> paths = new ArrayList<Path>();
-
-		List<String> sortedNames = Utils.getTopLines(this);
-    	for (String l : LineKindAndroidEx.MOST_USED)
-    		if (!sortedNames.contains(l))
-    			sortedNames.add(l);
-    	int favorites = 6;
-    	Iterator<String> nameIt = sortedNames.iterator();
-    	for(; favorites>0; favorites--) {
-    		String name = nameIt.next();
-    		Line line = city.getLine(name);
-    		while (line.isFake() && nameIt.hasNext()) {
-    			name = nameIt.next();
-    			line = city.getLine(name);
-    		}
-    		paths.add(line.getFirstPath());
-    	}
-		return paths.iterator();
+		return getAppPreferences().getFavoritePaths(city, 6).iterator();
 	}
+	
+    protected void addContentOnCreate() throws CityNotLoadedException {
+    	// nop
+    }
+    protected void addContentOnResume() throws CityNotLoadedException {
+    	createContent(getCity());
+    }
 }

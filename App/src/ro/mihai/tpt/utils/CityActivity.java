@@ -62,6 +62,18 @@ public class CityActivity extends Activity {
 		}
 	}
 	
+	@Override
+	protected final void onResume() {
+		super.onResume();
+		try {
+			this.onResumeCityActivity();
+		} catch(CityNotLoadedException e) {
+			reboot();
+			finish();
+		}
+	}
+	
+	
 	protected void addMenuAction() {
 		findViewById(R.id.menu_button).setOnClickListener(new OpenContextMenu());
 	}
@@ -75,6 +87,11 @@ public class CityActivity extends Activity {
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
 		// nop
 	}
+
+	protected void onResumeCityActivity() throws CityNotLoadedException {
+		// nop
+	}
+    
 	
 	private static final int REQUEST_CODE_PREFERENCES = 1;
 	public static final int REQUEST_CODE_REPLACE = 99;

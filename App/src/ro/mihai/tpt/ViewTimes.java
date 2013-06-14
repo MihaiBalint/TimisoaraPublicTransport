@@ -73,6 +73,7 @@ public class ViewTimes extends CityActivity {
     	city = getCity();
     	city.getClass();
     	
+    	addMenuAction();
     	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
 		View pathView = this.findViewById(R.id.PathView);
@@ -87,6 +88,8 @@ public class ViewTimes extends CityActivity {
     	Button connections = (Button)findViewById(R.id.ConnectionsButton);
     	connections.setOnClickListener(new SelectConnectionKinds());
     	
+    	Button favorite = (Button)findViewById(R.id.StarButton);
+    	favorite.setOnClickListener(new FavoritePathToggle(favorite));
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -458,6 +461,33 @@ public class ViewTimes extends CityActivity {
     	    		.addLinePath(opposite)
     	    		.replace();
         	} 
+		}
+    }
+    
+    private class FavoritePathToggle implements View.OnClickListener {
+    	private Button favorite;
+    	private boolean isFavorite;
+    	
+    	public FavoritePathToggle(Button favorite) {
+    		this.favorite = favorite;
+    		isFavorite = getAppPreferences().isFavoritePath(path.getPath()); 
+			updateImage();
+		}
+    	
+    	private void updateImage() {
+    		if (isFavorite) 
+    			favorite.setBackgroundResource(R.drawable.star_on_button);
+    		else
+    			favorite.setBackgroundResource(R.drawable.star_off_button);
+    	}
+    	
+		public void onClick(View v) {
+			isFavorite = !isFavorite;
+			if (isFavorite) 
+				getAppPreferences().addFavoritePath(path.getPath());
+			else
+				getAppPreferences().removeFavoritePath(path.getPath());
+			updateImage();
 		}
     }
     

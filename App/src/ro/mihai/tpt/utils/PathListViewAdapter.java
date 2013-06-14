@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ro.mihai.tpt.PathView;
-import ro.mihai.tpt.SelectLinePath;
 import ro.mihai.tpt.ViewTimes;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Path;
@@ -79,7 +78,7 @@ public class PathListViewAdapter implements ListAdapter {
 		}
 		Path path = paths.get(position);
 		boolean isOddItem = (position % 2) != 0;
-		OnClickListener onClick = new SelectLinePath(this.context, ViewTimes.class, city, path.getLine()); 
+		OnClickListener onClick = new SelectPath(ViewTimes.class, path); 
 		return PathView.fillPathView(pathView, parent.getResources(), path, onClick, isOddItem);
 	}
 
@@ -103,4 +102,22 @@ public class PathListViewAdapter implements ListAdapter {
 		return true;
 	}
 
+	public class SelectPath implements OnClickListener {
+		private Path selectedPath;
+		private Class<?> activity;
+		
+		public SelectPath(Class<?> activity, Path selectedPath) {
+			this.selectedPath = selectedPath;
+			this.activity = activity;
+		}
+		
+		public void onClick(View v) {
+	    	Utils.recordUsePath(context, selectedPath);
+	    	new StartActivity(context, activity)
+	    		.addCity(city)
+	    		.addLinePath(selectedPath)
+	    		.start();
+	    }
+		
+	} 
 }

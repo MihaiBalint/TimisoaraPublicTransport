@@ -58,9 +58,28 @@ public abstract class ViewCategories extends CityActivity {
     	findViewById(R.id.trolleybus_button).setOnClickListener(getCategoryClickListener(
     			new StartActivity(this, ViewCatTrolleys.class).addCity(city)));
     	
+    	addContentOnCreate();
+    }
+
+    @Override
+	protected final void onResumeCityActivity() throws CityNotLoadedException {
+		addContentOnResume();
+	}
+
+    protected void addContentOnCreate() throws CityNotLoadedException {
+    	createContent(getCity());
+    }
+    protected void addContentOnResume() throws CityNotLoadedException {
+    	// nop
+    }
+    
+    protected final void createContent(City city) {
     	ListView favoritesView = (ListView)findViewById(R.id.favorite_content);
     	favoritesView.setAdapter(new PathListViewAdapter(this, city, getLinePathIterator(city)));
     }
+    
+    
+    
     
     @Override
     public final boolean onCreateOptionsMenu(Menu menu) {
@@ -78,6 +97,10 @@ public abstract class ViewCategories extends CityActivity {
             return true;
         case R.id.app_settings: {
         	launchPrefs();
+        	return true;
+        }
+        case R.id.app_reset_settings: {
+        	getAppPreferences().reset();
         	return true;
         }
         default:
