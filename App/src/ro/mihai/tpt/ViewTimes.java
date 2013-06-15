@@ -73,7 +73,6 @@ public class ViewTimes extends CityActivity {
     	city = getCity();
     	city.getClass();
     	
-    	addMenuAction();
     	path = AndroidSharedObjects.instance().getPathSelection();
 		queue = new UpdateQueue();
 		View pathView = this.findViewById(R.id.PathView);

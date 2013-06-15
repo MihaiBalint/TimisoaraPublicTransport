@@ -29,6 +29,10 @@ public class ViewCatFavorites extends ViewCategories {
 	protected Iterator<Path> getLinePathIterator(City city) {
 		return getAppPreferences().getFavoritePaths(city, 6).iterator();
 	}
+
+	protected int getContentViewResId() {
+    	return R.layout.list_favorites;
+    }
 	
     protected void addContentOnCreate() throws CityNotLoadedException {
     	// nop

@@ -24,7 +24,7 @@
     android:orientation="vertical" >
     
     <include
-        layout="@layout/frag_title_back"
+        layout="@layout/frag_title"
         />
 	<ListView 
 		android:id="@+id/favorite_content" 

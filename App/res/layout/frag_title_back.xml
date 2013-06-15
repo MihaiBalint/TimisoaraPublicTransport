@@ -24,7 +24,15 @@
     android:background="#FF222222">
     
     <ImageView
-        style="@style/LikeTitleIcon"
+        style="@style/TitleBackArrow"
+   	    android:scaleType="centerCrop"
+        android:contentDescription="Back"
+        android:gravity="center"
+        android:onClick="finishActivity"
+        android:src="@drawable/arrow_left_button" />
+    
+    <ImageView
+        style="@style/TitleIconWithBack"
         android:layout_height="38.4dp"
         android:contentDescription="App Icon"
         android:gravity="center"

@@ -73,17 +73,14 @@ public class CityActivity extends Activity {
 		}
 	}
 	
-	
-	protected void addMenuAction() {
-		findViewById(R.id.menu_button).setOnClickListener(new OpenContextMenu());
+	public void finishActivity(View trigger) {
+		finish();
 	}
 	
-	private class OpenContextMenu implements View.OnClickListener {
-		public void onClick(View v) {
-			openOptionsMenu();
-		}
+	public void openContextMenu(View trigger) {
+		openOptionsMenu();
 	}
-
+	
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
 		// nop
 	}

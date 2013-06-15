@@ -48,9 +48,8 @@ public abstract class ViewCategories extends CityActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	City city = getCity();
-    	setContentView(R.layout.list_categories);
+    	setContentView(getContentViewResId());
     	
-    	addMenuAction();
     	findViewById(R.id.tram_button).setOnClickListener(getCategoryClickListener(
     			new StartActivity(this, ViewCatTrams.class).addCity(city)));
     	findViewById(R.id.bus_button).setOnClickListener(getCategoryClickListener(
@@ -59,6 +58,10 @@ public abstract class ViewCategories extends CityActivity {
     			new StartActivity(this, ViewCatTrolleys.class).addCity(city)));
     	
     	addContentOnCreate();
+    }
+    
+    protected int getContentViewResId() {
+    	return R.layout.list_categories;
     }
 
     @Override
