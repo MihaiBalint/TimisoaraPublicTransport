@@ -2,10 +2,14 @@ package ro.mihai.tpt.model;
 
 import static ro.mihai.util.Formatting.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+
+import ro.mihai.tpt.RATT;
+import ro.mihai.util.IPrefs;
 
 public class Estimate implements Serializable {
 	public static enum Status {
@@ -75,6 +79,23 @@ public class Estimate implements Serializable {
 	
 	public Path getPath() {
 		return path;
+	}
+	
+	public int updateStation(IPrefs prefs, int ec) {
+		try {
+			if(ec<3) {
+				String extLineId = path.getExtId();
+				String extStationId = station.getId();
+				String[] t = RATT.downloadTimes(prefs, extLineId, extStationId);
+				prefs.getAnalyticsCollector().record(t[0], t[1], t[2], extLineId, extStationId);
+				putTime(t[0], t[1], t[2]);
+			} else
+				setStatus(Estimate.Status.UpdateCanceled);
+		} catch(IOException exc) {
+			setStatus(Estimate.Status.NetworkError);
+			ec++;
+		}
+		return ec;
 	}
 	
 	public void putTime(String t1, String t2, String timestamp) {
@@ -170,24 +191,24 @@ public class Estimate implements Serializable {
 		if (isBoarding()) 
 			return VehicleStatus.Boarding;
 		
-		List<Station> stations = path.getStationsByPath();
+		List<Estimate> estimates = path.getStationsByPath();
 		
 		if(stationIndex > 0 && this.type.isGPS()) {
 			// fist station is never arriving
 			// for now, vehicles are only arriving when on GPS estimate
-			Estimate prev = path.getEstimate(stations.get(stationIndex-1));
+			Estimate prev = estimates.get(stationIndex-1);
 			if (prev.type.isGPS() == false || (!prev.isBoarding() && prev.after(this, false))) {
-				if (stationIndex < stations.size()-1) {
-					Estimate next = path.getEstimate(stations.get(stationIndex+1));
+				if (stationIndex < estimates.size()-1) {
+					Estimate next = estimates.get(stationIndex+1);
 					if (next.type.isGPS() && !next.isBoarding() && this.after(next, false))
 						return VehicleStatus.ArrivingDeparting;
 				}
 				return VehicleStatus.Arriving;
 			}
 		}
-		if (stationIndex < stations.size()-1) {
+		if (stationIndex < estimates.size()-1) {
 			// last station is never departing
-			Estimate next = path.getEstimate(stations.get(stationIndex+1));
+			Estimate next = estimates.get(stationIndex+1);
 			if (next.type.isGPS() && !next.isBoarding()) {
 				if (this.type.isGPS() == false || this.after(next, false))
 					return VehicleStatus.Departing;

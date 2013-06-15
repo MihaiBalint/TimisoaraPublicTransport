@@ -17,13 +17,13 @@
 */
 package ro.mihai.tpt.utils;
 
-import ro.mihai.tpt.conf.PathStationsSelection;
+import ro.mihai.tpt.conf.TravelOpportunity;
 import ro.mihai.tpt.model.*;
 
 public class AndroidSharedObjects {
 	private City city;
 	private Path linePath;
-	private PathStationsSelection pathSelection;
+	private TravelOpportunity pathSelection;
 	
 	public City getCity() throws CityNotLoadedException {
 		if (null==city) 
@@ -36,7 +36,7 @@ public class AndroidSharedObjects {
 		this.city = city;
 	}
 	
-	public PathStationsSelection getPathSelection() throws CityNotLoadedException {
+	public TravelOpportunity getPathSelection() throws CityNotLoadedException {
 		if (null==pathSelection) 
 			throw new CityNotLoadedException();
 		return pathSelection;
@@ -48,10 +48,10 @@ public class AndroidSharedObjects {
 	}
 	public void setLinePath(Path linePath) {
 		this.linePath = linePath;
-		this.pathSelection = new PathStationsSelection(linePath);
+		this.pathSelection = new TravelOpportunity(linePath);
 		this.pathSelection.selectAllStations();
 	}
-	public void setLinePath(PathStationsSelection pathSelection) {
+	public void setLinePath(TravelOpportunity pathSelection) {
 		this.linePath = pathSelection.getPath();
 		this.pathSelection = pathSelection;
 	}

@@ -26,9 +26,9 @@ import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.util.LineKind;
 
-public class PathStationsSelection {
+public class TravelOpportunity {
 	private Path path;
-	private List<StationPathsSelection> stations;
+	private List<ChangeOpportunity> disembarkOpportunities;
 	
 	//  hh:mm MainStation1 [hide/show]
 	//			hh:mm Line1 (dir) [hide/show]
@@ -43,23 +43,20 @@ public class PathStationsSelection {
 	//  hh:mm MainStation5 [hide/show]
 	//  hh:mm MainStation6 [hide/show]
 
-	public PathStationsSelection(Path path) {
+	public TravelOpportunity(Path path) {
 		this.path = path;
-		this.stations = new ArrayList<StationPathsSelection>();
+		this.disembarkOpportunities = new ArrayList<ChangeOpportunity>();
 	}
 	
-	public List<StationPathsSelection> getStations() {
-		return stations;
+	public List<ChangeOpportunity> getDisembarkOpportunities() {
+		return disembarkOpportunities;
 	}
 	public Path getPath() {
 		return path;
 	}
-	public Estimate getEstimate(Station s) {
-		return path.getEstimate(s);
-	}
 	public void clearAllUpdates() {
 		path.clearAllUpdates();
-		for(StationPathsSelection sel : stations)
+		for(ChangeOpportunity sel : disembarkOpportunities)
 			sel.clearAllUpdates();
 	}
 	
@@ -79,20 +76,20 @@ public class PathStationsSelection {
 	}
 	
 	public String getDepartureStationName() {
+		if (!disembarkOpportunities.isEmpty())
+			return disembarkOpportunities.get(0).getNiceName();
+		List<Estimate> stations = path.getStationsByPath(); 
 		if (!stations.isEmpty())
 			return stations.get(0).getStation().getNiceName();
-		List<Station> stations = path.getStationsByPath(); 
-		if (!stations.isEmpty())
-			return stations.get(0).getNiceName();
 		return "";
 	}
 	
 	public String getDestinationStationName() {
+		if (!disembarkOpportunities.isEmpty())
+			return disembarkOpportunities.get(disembarkOpportunities.size()-1).getNiceName();
+		List<Estimate> stations = path.getStationsByPath(); 
 		if (!stations.isEmpty())
 			return stations.get(stations.size()-1).getStation().getNiceName();
-		List<Station> stations = path.getStationsByPath(); 
-		if (!stations.isEmpty())
-			return stations.get(stations.size()-1).getNiceName();
 		return path.getNiceName();
 	}
 	
@@ -106,30 +103,32 @@ public class PathStationsSelection {
 	}
 
 	public void clearSelection() {
-		this.stations.clear();
+		this.disembarkOpportunities.clear();
 	}
 	
 	public void selectAllStations() {
-		List<Station> stations = path.getStationsByPath();
-		for(Station s : stations)
-			this.stations.add(new StationPathsSelection(s));
+		List<Estimate> stations = path.getStationsByPath();
+		for(Estimate s : stations)
+			this.disembarkOpportunities.add(new ChangeOpportunity(s));
 	}
 	
 	public void clearConnections() {
-		for(StationPathsSelection sel : stations) 
+		for(ChangeOpportunity sel : disembarkOpportunities) 
 			sel.clearConnections();
 	}
 	
 	public void addConnections(Path p) {
 		if (p==path) return;
 		
-		for(StationPathsSelection sel : stations) {
-			Station s = sel.getStation();
+		for(ChangeOpportunity sel : disembarkOpportunities) {
+			Station s = sel.getDisembarkEstimate().getStation();
 			
-			for(Station o : p.getStationsByPath())
+			for(Estimate e : p.getStationsByPath()) {
+				Station o = e.getStation(); 
 				if (o.getJunction() == s.getJunction())
 					if(s.distanceTo(o) < Constants.MAX_CONNECTION_DIST)
-						sel.addConnection(o, p);
+						sel.addConnection(e);
+			}
 		}
 	}
 	

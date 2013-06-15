@@ -21,7 +21,6 @@ import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.Preferences;
 import ro.mihai.tpt.model.City;
 
-import ro.mihai.tpt.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;

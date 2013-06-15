@@ -1,4 +1,4 @@
-package ro.mihai.tpt.analytics;
+package ro.mihai.tpt.test;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.junit.*;
+
+import ro.mihai.tpt.analytics.AnalyticsService;
 
 public class AnalyticsTest implements Runnable {
 	private static final int PORT = 8888;

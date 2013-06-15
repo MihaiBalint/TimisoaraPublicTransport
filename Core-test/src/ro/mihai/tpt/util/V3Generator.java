@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Junction;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
@@ -171,7 +172,8 @@ public class V3Generator extends TestCase {
 		for(String ln : city.getLineNamesSorted()) {
 			Line l = city.getLine(ln);
 			for(Path p:l.getPaths()) {
-				for(Station s:p.getStationsByPath()) {
+				for(Estimate e : p.getStationsByPath()) {
+					Station s = e.getStation();
 					StringBuilder b = new StringBuilder();
 					b.append(p.getId()); b.append(",");
 					

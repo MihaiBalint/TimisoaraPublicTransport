@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
-import ro.mihai.tpt.conf.PathStationsSelection;
+import ro.mihai.tpt.conf.TravelOpportunity;
 import ro.mihai.tpt.model.*;
 import android.app.Activity;
 import android.content.Intent;
@@ -43,7 +43,7 @@ public class StartActivity {
 		return this;
 	}
 
-	public StartActivity addLinePath(PathStationsSelection p) {
+	public StartActivity addLinePath(TravelOpportunity p) {
 		AndroidSharedObjects.instance().setLinePath(p);
 		return this;
 	}

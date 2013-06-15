@@ -17,7 +17,7 @@
 */
 package ro.mihai.tpt;
 
-import ro.mihai.tpt.conf.PathStationsSelection;
+import ro.mihai.tpt.conf.TravelOpportunity;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import android.content.res.Resources;
@@ -40,13 +40,13 @@ public class PathView {
 	
 	public static View fillPathView(View pathView, Resources res, 
 			Path linePath, View.OnClickListener clickListener, boolean isOddItem) {
-		PathStationsSelection path = new PathStationsSelection(linePath);
+		TravelOpportunity path = new TravelOpportunity(linePath);
 		path.selectAllStations();
 		return fillPathView(pathView, res, path, clickListener, isOddItem);
 	}
 	
 	public static View fillPathView(View pathView, Resources res, 
-			PathStationsSelection path, View.OnClickListener clickListener, boolean isOddItem) {
+			TravelOpportunity path, View.OnClickListener clickListener, boolean isOddItem) {
 		TextView lineKind = (TextView)pathView.findViewById(R.id.LineKind);
 		lineKind.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));

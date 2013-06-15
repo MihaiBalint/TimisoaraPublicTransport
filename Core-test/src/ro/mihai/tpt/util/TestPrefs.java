@@ -33,15 +33,15 @@ public class TestPrefs implements IPrefs {
 	}
 
 	@Override
-	public String getCachedAnalytics() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void setCachedAnalytics(String analytics) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String addCachedAnalytics(String analytics) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

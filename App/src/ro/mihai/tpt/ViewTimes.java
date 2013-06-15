@@ -26,9 +26,8 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import ro.mihai.tpt.conf.Constants;
-import ro.mihai.tpt.conf.PathStationsSelection;
-import ro.mihai.tpt.conf.StationPathsSelection;
-import ro.mihai.tpt.conf.StationPathsSelection.Node;
+import ro.mihai.tpt.conf.TravelOpportunity;
+import ro.mihai.tpt.conf.ChangeOpportunity;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Line;
@@ -60,7 +59,7 @@ public class ViewTimes extends CityActivity {
 	private TableLayout timesTable;
 	private LayoutInflater inflater;
 	private City city;
-	private PathStationsSelection path;
+	private TravelOpportunity path;
 	private UpdateTimes updater;
 	private UpdateQueue queue;
 
@@ -109,25 +108,22 @@ public class ViewTimes extends CityActivity {
     
 	private void inflateTable() {
 		timesTable.removeAllViews();
-		List<StationPathsSelection> stations = path.getStations();
+		List<ChangeOpportunity> changeOpportunities = path.getDisembarkOpportunities();
 
 		int stationNo = 0; // java is zero based, therefore first = even
 		View previousRow = null;
-		for(StationPathsSelection sel: stations) {
-			Station s = sel.getStation();
-			Estimate est = path.getEstimate(s);
+		for(ChangeOpportunity change: changeOpportunities) {
+			Estimate est = change.getDisembarkEstimate();
 			boolean evenRow = (stationNo % 2) == 0;
-			boolean last = stationNo == stations.size()-1;
+			boolean last = stationNo == changeOpportunities.size()-1;
 			View newRow = newStationEstimateView(est, evenRow, last);
 			updateVehicleArrivingBullet(est.getVehicleStatus(), newRow, previousRow);
 	    	timesTable.addView(newRow);
 			previousRow = newRow;
 	    	
 	    	
-	    	for(Node connection : sel.getConnections()) {
-	    		Path connectingPath = connection.path;
-	    		est = connectingPath.getEstimate(connection.station);
-	    		newRow = newConnectionEstimateView(est, evenRow, last);
+	    	for(Estimate connection : change.getConnections()) {
+	    		newRow = newConnectionEstimateView(connection, evenRow, last);
 	    		timesTable.addView(newRow);
 	    		previousRow = newRow;
 	    	}
@@ -238,18 +234,17 @@ public class ViewTimes extends CityActivity {
 		private AtomicBoolean hasErrors = new AtomicBoolean(false);
 		
 		public void run() {
-			List<StationPathsSelection> stations = path.getStations();
+			List<ChangeOpportunity> stations = path.getDisembarkOpportunities();
 			int ec = 0, index = 0, stationNo = 0;
-			for(StationPathsSelection sel: stations) {
+			for(ChangeOpportunity sel: stations) {
 				if(!running.get()) return;
-				Station s = sel.getStation();
 				boolean evenRow = (stationNo % 2) == 0;
 				boolean last = stationNo == stations.size()-1;
-				ec = updateStationRowView(ec, index, evenRow, last, path.getPath(), s);
+				ec = updateStationRowView(ec, index, evenRow, last, sel.getDisembarkEstimate());
 				index++;
-				for(Node connection : sel.getConnections()) {
+				for(Estimate connection : sel.getConnections()) {
 					if(!running.get()) return;
-					ec = updateConnectionRowView(ec, index, evenRow, last, connection.path, connection.station);
+					ec = updateConnectionRowView(ec, index, evenRow, last, connection);
 					index++;
 				}
 				stationNo++;
@@ -260,8 +255,7 @@ public class ViewTimes extends CityActivity {
 				runOnUiThread(new ReportError());
 		}
 
-		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, final boolean last, Path path, Station s) {
-			final Estimate est = path.getEstimate(s);
+		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, final boolean last, final Estimate connection) {
 			Runnable upd = new Runnable() {
 				public void run() {
 					if (rowIndex > 0) {
@@ -271,34 +265,35 @@ public class ViewTimes extends CityActivity {
 						previousRow.findViewById(R.id.VehicleDepartingBullet).setVisibility(View.GONE);
 					}
 					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newConnectionEstimateView(est, even, last), rowIndex);
+		    		timesTable.addView(newConnectionEstimateView(connection, even, last), rowIndex);
 				}
 			};
-			est.startUpdate();
+			connection.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(getAppPreferences(), ec, s);
+			ec = connection.updateStation(getAppPreferences(), ec);
 			queueUIUpdate(upd);
 			return ec;
 		}
 
-		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, Path path, Station s) {
-			final Estimate est = path.getEstimate(s);
+		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, final Estimate disembark) {
 			Runnable upd = new Runnable() {
 				public void run() {
-					View newRow = newStationEstimateView(est, even, last);
-					View previousRow = rowIndex > 0 ? timesTable.getChildAt(rowIndex-1) : null;
-					View nextRow = (rowIndex < timesTable.getChildCount()-1) 
-							? timesTable.getChildAt(rowIndex+1) : null;
-					
-					updateVehicleArrivingBullet(est.getVehicleStatus(), newRow, previousRow);					
-					updateVehicleDepartingBullet(est.getVehicleStatus(), newRow, nextRow);					
+					View newRow = newStationEstimateView(disembark, even, last);
+					if (!disembark.isUpdating()) {
+						View previousRow = rowIndex > 0 ? timesTable.getChildAt(rowIndex-1) : null;
+						View nextRow = (rowIndex < timesTable.getChildCount()-1) 
+								? timesTable.getChildAt(rowIndex+1) : null;
+						Estimate.VehicleStatus vehicle = disembark.getVehicleStatus();
+						updateVehicleArrivingBullet(vehicle, newRow, previousRow);					
+						updateVehicleDepartingBullet(vehicle, newRow, nextRow);					
+					}
 					timesTable.removeViewAt(rowIndex);
 		    		timesTable.addView(newRow, rowIndex);
 				}
 			};
-			est.startUpdate();
+			disembark.startUpdate();
 			queueUIUpdate(upd);
-			ec = path.updateStation(getAppPreferences(), ec, s);
+			ec = disembark.updateStation(getAppPreferences(), ec);
 			queueUIUpdate(upd);
 			return ec;
 		}
@@ -335,8 +330,8 @@ public class ViewTimes extends CityActivity {
 		public void onClick(View v) {
 			pathList = new ArrayList<List<Path>>();
 		   	Set<Path> connections = new TreeSet<Path>(new Path.LabelComparator());
-	    	for(StationPathsSelection sel : path.getStations()) {
-    			Station selStation = sel.getStation();
+	    	for(ChangeOpportunity sel : path.getDisembarkOpportunities()) {
+    			Station selStation = sel.getDisembarkEstimate().getStation();
 	    		// (1) the paths passing through this exact same station
 	    		Set<Path> stationPaths = new HashSet<Path>(selStation.getPaths());
 	    		Path excludePath = path.getPath();

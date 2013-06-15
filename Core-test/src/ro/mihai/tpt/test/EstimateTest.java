@@ -36,6 +36,7 @@ public class EstimateTest {
 		return year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;
 	} 
 	
+	@Test
 	public void afterTest() {
 		Estimate e1 = new Estimate(null, null, 0);
 		Estimate e2 = new Estimate(null, null, 0);
@@ -47,6 +48,7 @@ public class EstimateTest {
 		assertFalse(e1.after(e2, true));
 	}
 
+	@Test
 	public void afterTest2() {
 		Estimate e1 = new Estimate(null, null, 0);
 		Estimate e2 = new Estimate(null, null, 0);

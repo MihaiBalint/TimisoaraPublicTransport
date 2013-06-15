@@ -19,15 +19,15 @@ import ro.mihai.util.LineKind;
 
 public class CityTest {
 	private City c;
-	private List<String> app_lines = Arrays.asList(new String[]{
-			"Tv1","Tv2","Tv4","Tv5","Tv6","Tv7","Tv8","Tv9",
-			"Tb11","Tb14","Tb15","Tb16","Tb17","Tb18","Tb19",
-			"E1","E2","E3", "E4","E4b","E6","E7","E33",
-			"M30","M35","M36","M44", "3","13","13b","21","22","28","32","33","33b","40","46"});
+	private List<String> app_lines;
 
 	@Before
 	public void setUp() throws IOException {
 		c = JavaCityLoader.loadCachedCityOrDownloadAndCache(new TestPrefs());
+
+		app_lines = new ArrayList<String>();
+		for(LineKind kind : LineKind.values())
+			app_lines.addAll(Arrays.asList(kind.getLineNames()));
 	}
 	
 	@Test
@@ -166,7 +166,7 @@ public class CityTest {
 		assertTrue(c.getLine("E4b").getKind().isBusExpress());
 		assertTrue(c.getLine("E6").getKind().isBusExpress());
 		assertTrue(c.getLine("E7").getKind().isBusExpress());
-		assertTrue(c.getLine("E8").getKind().isBusExpress());
+		assertTrue(c.getLine("E33").getKind().isBusExpress());
 		assertOthersNotKind(LineKind.EXPRESS);
 	}
 
@@ -250,7 +250,7 @@ public class CityTest {
 
 	@Test
 	public void test_known_distance() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(0);
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(0).getStation();
 		
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("4640")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("3105")));
@@ -288,7 +288,7 @@ public class CityTest {
 	
 	@Test
 	public void test_known_distance_Arta_textila() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(4);
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(4).getStation();
 		for(Station s : s33.getJunction().getStations()) {
 			System.out.println(""+s.getId()+":"+s.getNiceName());
 		}
