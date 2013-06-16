@@ -22,9 +22,11 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/florin_bg"
     android:id="@+id/MainView"
     >
+    <include
+        layout="@layout/frag_title_back"
+        />
     
 <ScrollView 
 	android:id="@+id/ScrollView01" 

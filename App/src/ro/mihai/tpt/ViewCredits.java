@@ -21,6 +21,7 @@ import ro.mihai.tpt.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 public class ViewCredits extends Activity {
@@ -32,5 +33,10 @@ public class ViewCredits extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
     	setContentView(R.layout.list_credits);
+    	findViewById(R.id.menu_button).setVisibility(View.GONE);
     }
+
+    public void finishActivity(View trigger) {
+		finish();
+	}
 }
