@@ -37,6 +37,7 @@ import ro.mihai.tpt.utils.AndroidSharedObjects;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
 import ro.mihai.tpt.utils.EstimateStatusEx;
+import ro.mihai.tpt.utils.EstimateVehicleStatusEx;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
@@ -142,7 +143,9 @@ public class ViewTimes extends CityActivity {
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-		stationTime.setText(est.estimateTimeString());
+		stationTime.setText(est.isBoarding() 
+				? getResources().getString(EstimateVehicleStatusEx.Boarding.descriptionId)
+				: est.estimateTimeString());
 		stationTime.setTextColor(getResources().getColor(kind.colorId));
 		
 		timesRow.findViewById(R.id.LineBullet).setBackgroundResource(last ? kind.bullet_bottom : kind.bullet_middle);
@@ -182,7 +185,9 @@ public class ViewTimes extends CityActivity {
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
-		stationTime.setText(est.estimateTimeString());
+		stationTime.setText(est.isBoarding() 
+				? getResources().getString(EstimateVehicleStatusEx.Boarding.descriptionId)
+				: est.estimateTimeString());
 		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 		View bullet = timesRow.findViewById(R.id.LineBullet); 

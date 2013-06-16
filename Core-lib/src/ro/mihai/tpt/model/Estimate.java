@@ -165,7 +165,7 @@ public class Estimate implements Serializable {
 		return status!=null && status.isError();
 	}
 	
-	private boolean isBoarding() {
+	public boolean isBoarding() {
 		return (">>".equals(times1.trim())); 
 	}
 	

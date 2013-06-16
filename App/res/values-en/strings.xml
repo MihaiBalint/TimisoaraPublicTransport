@@ -19,7 +19,7 @@
 */
  -->
 <resources>
-    <string name="loading">Se incarca...</string>
+    <string name="loading">Loading...</string>
     <string name="app_name">Public Transport Timisoara</string>
     <string name="service_name">Public Transport Data Service</string>
     
@@ -36,34 +36,34 @@
 	<string name="app_credits">Author Credits</string>
 	<string name="switch_direction">Switch Direction</string>
 	
-	<string name="lblTrams">Tramvaie</string>
-	<string name="lblTrolleys">Troleibuze</string>
-	<string name="lblBus">Autobuze</string>
-	<string name="lblExpress">Expres</string>
-	<string name="lblMetro">Metropolitan</string>
-	<string name="lblOther">Alte legaturi</string>
+	<string name="lblTrams">Tram</string>
+	<string name="lblTrolleys">Trolley Bus</string>
+	<string name="lblBus">City Bus</string>
+	<string name="lblExpress">Express Bus</string>
+	<string name="lblMetro">Metro Bus</string>
+	<string name="lblOther">Other connection</string>
 	
-	<string name="lblStation">Statie</string>
-	<string name="lblVehicle">Vehicol</string>
-	<string name="lblBoarding">In statie</string>
+	<string name="lblStation">Station</string>
+	<string name="lblVehicle">Vehicle</string>
+	<string name="lblBoarding">Boarding</string>
 		
-	<string name="lblShortTrams">tramvai</string>
-	<string name="lblShortTrolleys">troleibuz</string>
-	<string name="lblShortBus">autobuz</string>
-	<string name="lblShortExpress">expres</string>
-	<string name="lblShortMetro">metropolitan</string>
-	<string name="lblShortOther">masina</string>
+	<string name="lblShortTrams">tram</string>
+	<string name="lblShortTrolleys">trolleybus</string>
+	<string name="lblShortBus">bus</string>
+	<string name="lblShortExpress">express</string>
+	<string name="lblShortMetro">metro</string>
+	<string name="lblShortOther">other</string>
 
 	<string name="lblStatusAllIsGood">OK</string>
-	<string name="lblStatusWaitingUpdate">Actualizare</string>
-	<string name="lblStatusNetworkError">Eroare de conexiune la internet</string>
-	<string name="lblStatusUpdateCanceled">Actualizare anulata</string>
+	<string name="lblStatusWaitingUpdate">Updating</string>
+	<string name="lblStatusNetworkError">Network/Internet error</string>
+	<string name="lblStatusUpdateCanceled">Update canceled</string>
 				
 	<string name="lblVStatusAway"></string>
-	<string name="lblVStatusBoarding">in statie</string>
-	<string name="lblVStatusArriving">se apropie</string>
-	<string name="lblVStatusDeparting">paraseste statia</string>
-	<string name="lblVStatusArrivingDeparting">tranzit</string>
+	<string name="lblVStatusBoarding">boarding</string>
+	<string name="lblVStatusArriving">arriving</string>
+	<string name="lblVStatusDeparting">departing</string>
+	<string name="lblVStatusArrivingDeparting">changing</string>
 					
 	<string name="lblExampleLine">E33</string>
 	<string name="lblExampleLineKind">troleibuz</string>
@@ -72,7 +72,7 @@
 	<string name="lblExampleTime">77 min</string>
 	<string name="lblExampleError">Network/Internet error</string>
 	
-    <string name="lblAffirmative">Da</string>
-    <string name="lblNegative">Nu</string>
+    <string name="lblAffirmative">Yes</string>
+    <string name="lblNegative">No</string>
 		
 </resources>
