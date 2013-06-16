@@ -70,7 +70,7 @@
 			android:textColor="#FF555555"
 		  	android:text="@string/lblExampleDeparture"
 			android:textSize="12sp"
-			android:lineSpacingExtra="-3sp"
+			android:lineSpacingExtra="-3dp"
 	        />
 	    <TextView android:id="@+id/StationTime"
 	        android:layout_width="wrap_content" 
