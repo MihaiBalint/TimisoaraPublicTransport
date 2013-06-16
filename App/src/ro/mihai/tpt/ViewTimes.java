@@ -42,6 +42,7 @@ import ro.mihai.tpt.utils.LineKindAndroidEx;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -82,7 +83,7 @@ public class ViewTimes extends CityActivity {
 		pathView.findViewById(R.id.LineBullet).setBackgroundResource(kind.bullet_top);
     	
     	Button update = (Button)findViewById(R.id.UpdateButton);
-    	update.setOnClickListener(updater = new UpdateTimes());
+    	update.setOnClickListener(updater = new UpdateTimes(this));
     	
     	Button connections = (Button)findViewById(R.id.ConnectionsButton);
     	connections.setOnClickListener(new SelectConnectionKinds());
@@ -238,12 +239,19 @@ public class ViewTimes extends CityActivity {
 		}
 	}
 
-	private class UpdateTimes implements Runnable, OnClickListener {
+	private static class UpdateTimes implements Runnable, OnClickListener {
 		private AtomicBoolean running = new AtomicBoolean(false);
 		private AtomicBoolean hasErrors = new AtomicBoolean(false);
+		private ViewTimes act;
+		private ReportError err;
+		
+		public UpdateTimes(ViewTimes act) {
+			this.act = act;
+		}
 		
 		public void run() {
-			List<ChangeOpportunity> stations = path.getDisembarkOpportunities();
+			hasErrors.set(false);
+			List<ChangeOpportunity> stations = act.path.getDisembarkOpportunities();
 			int ec = 0, index = 0, stationNo = 0;
 			for(ChangeOpportunity sel: stations) {
 				if(!running.get()) return;
@@ -259,9 +267,16 @@ public class ViewTimes extends CityActivity {
 				stationNo++;
 			}
 			killUpdate();
-			runOnUiThread(new UpdateView());
+			act.runOnUiThread(act.new UpdateView());
 			if (hasErrors.compareAndSet(true, false))
-				runOnUiThread(new ReportError());
+				act.runOnUiThread(newError());
+		}
+		
+		private ReportError newError() {
+			if(err!=null) 
+				err.dismiss();
+			err = new ReportError(act);
+			return err;
 		}
 
 		private int updateConnectionRowView(int ec, final int rowIndex, final boolean even, final boolean last, final Estimate connection) {
@@ -270,40 +285,40 @@ public class ViewTimes extends CityActivity {
 					if (rowIndex > 0) {
 						// connection rows are never arriving, therefore their predecessor can 
 						// never be departing
-						View previousRow = timesTable.getChildAt(rowIndex-1);
+						View previousRow = act.timesTable.getChildAt(rowIndex-1);
 						previousRow.findViewById(R.id.VehicleDepartingBullet).setVisibility(View.GONE);
 					}
-					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newConnectionEstimateView(connection, even, last), rowIndex);
+					act.timesTable.removeViewAt(rowIndex);
+					act.timesTable.addView(act.newConnectionEstimateView(connection, even, last), rowIndex);
 				}
 			};
 			connection.startUpdate();
-			queueUIUpdate(upd);
-			ec = connection.updateStation(getAppPreferences(), ec);
-			queueUIUpdate(upd);
+			act.queueUIUpdate(upd);
+			ec = connection.updateStation(act.getAppPreferences(), ec);
+			act.queueUIUpdate(upd);
 			return ec;
 		}
 
 		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, final Estimate disembark) {
 			Runnable upd = new Runnable() {
 				public void run() {
-					View newRow = newStationEstimateView(disembark, even, last);
+					View newRow = act.newStationEstimateView(disembark, even, last);
 					if (!disembark.isUpdating()) {
-						View previousRow = rowIndex > 0 ? timesTable.getChildAt(rowIndex-1) : null;
-						View nextRow = (rowIndex < timesTable.getChildCount()-1) 
-								? timesTable.getChildAt(rowIndex+1) : null;
+						View previousRow = rowIndex > 0 ? act.timesTable.getChildAt(rowIndex-1) : null;
+						View nextRow = (rowIndex < act.timesTable.getChildCount()-1) 
+								? act.timesTable.getChildAt(rowIndex+1) : null;
 						Estimate.VehicleStatus vehicle = disembark.getVehicleStatus();
-						updateVehicleArrivingBullet(vehicle, newRow, previousRow);					
-						updateVehicleDepartingBullet(vehicle, newRow, nextRow);					
+						act.updateVehicleArrivingBullet(vehicle, newRow, previousRow);					
+						act.updateVehicleDepartingBullet(vehicle, newRow, nextRow);					
 					}
-					timesTable.removeViewAt(rowIndex);
-		    		timesTable.addView(newRow, rowIndex);
+					act.timesTable.removeViewAt(rowIndex);
+					act.timesTable.addView(newRow, rowIndex);
 				}
 			};
 			disembark.startUpdate();
-			queueUIUpdate(upd);
-			ec = disembark.updateStation(getAppPreferences(), ec);
-			queueUIUpdate(upd);
+			act.queueUIUpdate(upd);
+			ec = disembark.updateStation(act.getAppPreferences(), ec);
+			act.queueUIUpdate(upd);
 			return ec;
 		}
 		
@@ -314,7 +329,12 @@ public class ViewTimes extends CityActivity {
 		
 		public void killUpdate() {
 			running.set(false);
-			path.clearAllUpdates();
+			act.path.clearAllUpdates();
+			if(err!=null) { 
+				err.dismiss();
+				err = null;
+			}
+			
 		}
 		
 		public void setHasErrors() {
@@ -438,17 +458,29 @@ public class ViewTimes extends CityActivity {
 		}
     }
     
-    private class ReportError implements Runnable, DialogInterface.OnClickListener {
-    	public void run() {
-			new AlertDialog.Builder(ViewTimes.this)
+    private static class ReportError implements Runnable, DialogInterface.OnClickListener {
+		private AlertDialog dialog;
+		private Context act;
+		
+		public ReportError(Context act) {
+			this.act = act;;
+		}
+    	public synchronized void run() {
+    		dismiss();
+			dialog = new AlertDialog.Builder(act)
 				.setMessage(R.string.upd_error)
 				.setPositiveButton("Ok", this)
-				.create()
-				.show();
+				.create();
+    		dialog.show();
 		}
+    	public synchronized void dismiss() {
+    		if (dialog!=null) 
+    			dialog.dismiss();
+			dialog = null;
+    	}
     	
 		public void onClick(DialogInterface dialog, int which) {
-			// NOP
+			dismiss();
 		}
     }
     

@@ -42,7 +42,6 @@ public class Upgrade {
     	AppPreferences prefs = new AppPreferences(context);
 		if (prefs.getCurrentVersion(0) < 24) {
 			upgrade23to24(prefs);
-			prefs.setCurrentVersion(24);
 		}
 		if (prefs.getCurrentVersion(0) < 25) {
 			// DO NOTHING
@@ -56,9 +55,11 @@ public class Upgrade {
 		        switch (which) {
 		        case DialogInterface.BUTTON_POSITIVE:
 		        	prefs.setAnalyticsEnabled(true);
+					prefs.setCurrentVersion(24);
 		            break;
 		        case DialogInterface.BUTTON_NEGATIVE:
 		        	prefs.setAnalyticsEnabled(false);
+					prefs.setCurrentVersion(24);
 		            break;
 		        }
 		    }
