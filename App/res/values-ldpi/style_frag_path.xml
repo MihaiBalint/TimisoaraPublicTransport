@@ -48,8 +48,8 @@
     </style>
     <style name="PathLineLabel">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:lineSpacingExtra">-8sp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:lineSpacingExtra">-6sp</item>
     </style>
     <style name="LineBullet">
         <item name="android:layout_width">15.0dp</item>
