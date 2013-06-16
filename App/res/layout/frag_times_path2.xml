@@ -78,7 +78,7 @@
 			android:textColor="@color/vehicle_bus"
 		  	android:text="@string/lblExampleTime"
 			android:textSize="12sp"
-			android:visibility="visible"
+			android:visibility="gone"
 	        />
    	</LinearLayout>
    	<ImageView

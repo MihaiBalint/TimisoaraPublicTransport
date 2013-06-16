@@ -136,14 +136,15 @@ public class ViewTimes extends CityActivity {
 
 	private View newStationEstimateView(Estimate est, boolean evenRow, boolean last) {
 		View timesRow = inflater.inflate(R.layout.infl_station_time, timesTable, false);
+		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setText(est.estimateTimeString());
+		stationTime.setTextColor(getResources().getColor(kind.colorId));
 		
-		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 		timesRow.findViewById(R.id.LineBullet).setBackgroundResource(last ? kind.bullet_bottom : kind.bullet_middle);
 		
 		int background = R.color.frag_path_odd;
@@ -173,7 +174,6 @@ public class ViewTimes extends CityActivity {
 		Resources res = getResources();
 		
 		TextView lineNameLabel = (TextView)timesRow.findViewById(R.id.LineName);
-		path.getLineKind();
 		lineNameLabel.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
 		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
 
@@ -181,6 +181,7 @@ public class ViewTimes extends CityActivity {
 		lineDirectionLabel.setText(connectingPath.getNiceName());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
+		stationTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
 		stationTime.setText(est.estimateTimeString());
 		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
