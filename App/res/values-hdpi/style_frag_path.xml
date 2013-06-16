@@ -16,7 +16,6 @@
 	</style>
     <style name="LikeTitleContent" parent="StandardHItem">
         <item name="android:layout_height">38.4dp</item>
-        <item name="android:layout_alignParentBottom">true</item>
 	</style>
     <style name="LikeTitleIcon" parent="LikeTitleContent">
         <item name="android:layout_width">65dp</item>
@@ -36,6 +35,12 @@
 		<item name="android:layout_marginRight">0dp</item>
 		<item name="android:layout_marginTop">0dp</item>
 		<item name="android:layout_marginBottom">0dp</item>
+	</style>
+    <style name="PathBullet">
+    	<item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">34dp</item>
+		<item name="android:layout_marginLeft">-28dp</item>
+        <item name="android:layout_marginRight">-7dp</item>
 	</style>
     
     	

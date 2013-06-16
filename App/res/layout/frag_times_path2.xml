@@ -49,6 +49,21 @@
 	   		android:textSize="12sp"
 	   		/>
    	</LinearLayout>
+   	<RelativeLayout
+        style="@style/PathBullet">
+	   	<ImageView android:id="@+id/VehicleBoardingBullet"
+   	    	style="@style/VehicleBoardingBullet"
+	   	    android:background="@drawable/arrow_right"
+	   	    android:contentDescription="@string/lblVehicle"
+	   	/>
+	   	<ImageView android:id="@+id/VehicleDepartingBullet"
+   	    	style="@style/VehicleDepartingBullet"
+	   	    android:background="@drawable/arrow_right_upper_half"
+	   	    android:contentDescription="@string/lblVehicle"
+	   	    android:layout_marginRight="7dp"
+	   	/>
+	</RelativeLayout>
+   		
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
    	    android:background="@drawable/line_bullet_top_green"

@@ -85,6 +85,8 @@ public class TravelOpportunity {
 	}
 	
 	public String getDestinationStationName() {
+		if (path.getLineName().equals("Tv7"))
+			return path.getNiceName();
 		if (!disembarkOpportunities.isEmpty())
 			return disembarkOpportunities.get(disembarkOpportunities.size()-1).getNiceName();
 		List<Estimate> stations = path.getStationsByPath(); 

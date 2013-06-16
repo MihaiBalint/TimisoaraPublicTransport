@@ -20,7 +20,7 @@ package ro.mihai.tpt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.*;
-import java.util.List;
+import java.util.*;
 
 import ro.mihai.tpt.model.*;
 import ro.mihai.util.*;
@@ -43,7 +43,6 @@ public class RATT {
 		return new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
 	}
 	
-
 	public static String[] downloadTimes(IPrefs prefs, String pathId, String stationId) throws IOException {
 		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+pathId+"&"+stationIdParamName+"="+stationId);
 		FormattedTextReader rd = new FormattedTextReader(url.openStream());
