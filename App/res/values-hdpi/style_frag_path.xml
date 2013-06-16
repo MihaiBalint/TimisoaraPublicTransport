@@ -42,13 +42,9 @@
         <item name="android:layout_height">38.4dp</item>
     </style>
     <style name="PathLineLabel">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">36sp</item>
         <item name="android:lineSpacingExtra">-9sp</item>
-        <item name="android:lines">1</item>
 	</style>
     <style name="LineBullet">
         <item name="android:layout_width">20.0dp</item>

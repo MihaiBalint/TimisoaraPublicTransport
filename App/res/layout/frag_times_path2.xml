@@ -29,20 +29,25 @@
        	android:orientation="vertical"
        	android:gravity="center_horizontal">
 
-   	    <TextView
-   	        android:id="@+id/LineName"
+   	    <TextView android:id="@+id/LineName"
    	        style="@style/PathLineLabel"
+   	        android:layout_width="fill_parent"
+   	        android:layout_height="wrap_content"
+   	        android:gravity="center_horizontal"
+	       	android:lines="1"
    	        android:text="@string/lblExampleLine"
-   	        android:textColor="@color/vehicle_bus" />
+   	        android:textColor="@color/vehicle_bus"
+   	        />
 
        	<TextView android:id="@+id/LineKind"
 			android:layout_width="fill_parent" 
 			android:layout_height="wrap_content"
-			android:textColor="@color/vehicle_bus"
-  			android:text="@string/lblExampleLineKind"
-	   		android:textSize="12sp"
 	       	android:gravity="center_horizontal"
-	   		android:lines="1" />
+	       	android:lines="1"
+  			android:text="@string/lblExampleLineKind"
+			android:textColor="@color/vehicle_bus"
+	   		android:textSize="12sp"
+	   		/>
    	</LinearLayout>
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
