@@ -35,7 +35,7 @@ public class PathView {
 	}
 	
 	public static View createPathView(LayoutInflater inflater, ViewGroup parent) {
-		return inflater.inflate(R.layout.infl_categories_path2, parent, false);
+		return inflater.inflate(R.layout.frag_times_path2, parent, false);
 	}
 	
 	public static View fillPathView(View pathView, Resources res, 
@@ -57,6 +57,9 @@ public class PathView {
 		
 		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.StationLabel);
 		lineDirection1.setText(path.getDepartureStationName());
+		
+		TextView estimateTime = (TextView)pathView.findViewById(R.id.StationTime);
+		estimateTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		
 		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
 		lineDirection2.setText(path.getDestinationStationName());

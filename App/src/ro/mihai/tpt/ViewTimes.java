@@ -89,6 +89,9 @@ public class ViewTimes extends CityActivity {
     	Button favorite = (Button)findViewById(R.id.StarButton);
     	favorite.setOnClickListener(new FavoritePathToggle(favorite));
     	
+    	View lineBullet = findViewById(R.id.LineBullet);
+    	lineBullet.setVisibility(View.VISIBLE);
+    	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
     	inflateTable();

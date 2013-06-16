@@ -23,18 +23,81 @@
     style="@style/LikeTitleContainer"
     android:background="@color/frag_path_even">
     
-    <include
-        layout="@layout/frag_line_and_kind"
-        />
+   	<LinearLayout
+        style="@style/LikeTitleIcon"
+       	android:layout_height="wrap_content"
+       	android:orientation="vertical"
+       	android:gravity="center_horizontal">
+
+   	    <TextView
+   	        android:id="@+id/LineName"
+   	        style="@style/PathLineLabel"
+   	        android:text="@string/lblExampleLine"
+   	        android:textColor="@color/vehicle_bus" />
+
+       	<TextView android:id="@+id/LineKind"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+			android:textColor="@color/vehicle_bus"
+  			android:text="@string/lblExampleLineKind"
+	   		android:textSize="12sp"
+	       	android:gravity="center_horizontal"
+	   		android:lines="1" />
+   	</LinearLayout>
    	<ImageView android:id="@+id/LineBullet"
    	    style="@style/LineBullet"
    	    android:background="@drawable/line_bullet_top_green"
    	    android:contentDescription="@string/app_settings"
    	    android:scaleType="centerCrop"
+   	    android:visibility="gone"
    	    />
-    <include
-        layout="@layout/frag_dep_dest"
+   	<LinearLayout
+   	    android:layout_width="0dp"
+   	    android:layout_height="wrap_content"
+   	    android:layout_marginBottom="3dp"
+   	    android:layout_marginTop="3dp"
+   	    android:layout_weight="1"
+   	    android:gravity="center_vertical"
+   	    android:orientation="vertical" >
+
+	    <TextView android:id="@+id/StationLabel"
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF555555"
+		  	android:text="@string/lblExampleDeparture"
+			android:textSize="12sp"
+	        />
+	    <TextView android:id="@+id/StationTime"
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF0F0F0F"
+		  	android:text="@string/lblExampleTime"
+			android:textSize="12sp"
+	        />
+   	</LinearLayout>
+   	<ImageView
+   	    android:id="@+id/DirectionChanger"
+   	    style="@style/PathRightArrow"
+   	    android:src="@drawable/arrow_right_button"
+   	    android:scaleType="centerCrop"
+   	    android:contentDescription="@string/selPathLabel"
+   	    />
+   	<TextView android:id="@+id/DestinationStationLabel"
+       	android:layout_width="0dp"
+   	    android:layout_weight="1"
+		android:layout_height="wrap_content"
+		android:textColor="#FF555555"
+	  	android:text="@string/lblExampleArrival"
+		android:textSize="12sp"
         />
+   	<ImageView
+   	    android:id="@+id/menu_button"
+   	    style="@style/MoreOptionsButton"
+   	    android:src="@drawable/menu_light_button"
+   	    android:contentDescription="@string/app_settings"
+   	    android:scaleType="centerCrop"
+   	    android:visibility="gone"
+   	    />
     <View
         android:layout_width="10dp"
         android:layout_height="1dp"
