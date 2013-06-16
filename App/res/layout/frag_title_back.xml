@@ -39,18 +39,20 @@
         android:onClick="finishActivity"
         android:src="@drawable/icon" />
 
-    <TextView 	
-        android:layout_width="wrap_content" 
+    <TextView
+        android:layout_width="wrap_content"
 		android:layout_height="53dp"
 		android:textColor="#FFDDDDDD"
 	  	android:text="Transport public\nTimisoara"
 		android:textSize="12sp"
-	    android:gravity="center_vertical"
+		android:gravity="center_vertical"
+		android:layout_marginBottom="0dp"
+		android:layout_marginTop="0dp"
         />
 	<View
+        style="@style/LikeTitleContent"
    	    android:layout_width="0dp"
    	    android:layout_weight="1"
-   	    android:layout_height="53dp"
    	    android:background="#00000000" />
    	<ImageView
    	    android:id="@+id/menu_button"
@@ -58,8 +60,6 @@
    	    android:src="@drawable/menu_light_button"
    	    android:contentDescription="@string/app_settings"
    	    android:scaleType="centerCrop"
-       	android:layout_marginTop="7.3dp"
-       	android:layout_marginBottom="7.3dp"
        	android:onClick="openContextMenu"
    	    />
 </LinearLayout>

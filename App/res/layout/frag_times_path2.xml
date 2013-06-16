@@ -57,10 +57,9 @@
    	    android:visibility="gone"
    	    />
    	<LinearLayout
-   	    android:layout_width="0dp"
+   	    style="@style/StandardHItem"
    	    android:layout_height="wrap_content"
-   	    android:layout_marginBottom="3dp"
-   	    android:layout_marginTop="3dp"
+   	    android:layout_width="0dp"
    	    android:layout_weight="1"
    	    android:gravity="center_vertical"
    	    android:orientation="vertical" >
@@ -71,13 +70,15 @@
 			android:textColor="#FF555555"
 		  	android:text="@string/lblExampleDeparture"
 			android:textSize="12sp"
+			android:lineSpacingExtra="-3sp"
 	        />
 	    <TextView android:id="@+id/StationTime"
 	        android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="#FF0F0F0F"
+			android:textColor="@color/vehicle_bus"
 		  	android:text="@string/lblExampleTime"
 			android:textSize="12sp"
+			android:visibility="visible"
 	        />
    	</LinearLayout>
    	<ImageView
@@ -88,12 +89,14 @@
    	    android:contentDescription="@string/selPathLabel"
    	    />
    	<TextView android:id="@+id/DestinationStationLabel"
+   	    style="@style/StandardHItem"
        	android:layout_width="0dp"
    	    android:layout_weight="1"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:textColor="#FF555555"
 	  	android:text="@string/lblExampleArrival"
 		android:textSize="12sp"
+		android:gravity="center_vertical"
         />
    	<ImageView
    	    android:id="@+id/menu_button"

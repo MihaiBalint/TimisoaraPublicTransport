@@ -9,10 +9,17 @@
     	<item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginLeft">0dp</item>
     </style>
-    <style name="LikeTitleIcon">
-        <item name="android:layout_width">65dp</item>
-		<item name="android:layout_marginTop">7.3dp</item>
+    <style name="StandardHItem">
+    	<item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginTop">7.3dp</item>
 		<item name="android:layout_marginBottom">7.3dp</item>
+	</style>
+    <style name="LikeTitleContent" parent="StandardHItem">
+        <item name="android:layout_height">38.4dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+	</style>
+    <style name="LikeTitleIcon" parent="LikeTitleContent">
+        <item name="android:layout_width">65dp</item>
 		<item name="android:layout_marginRight">7dp</item>
         <item name="android:layout_marginLeft">7.6dp</item>
 	</style>
@@ -20,9 +27,8 @@
         <item name="android:layout_marginLeft">-9.4dp</item>
 		<item name="android:layout_marginRight">3.6dp</item>
     </style>
-    <style name="TitleBackArrow">
+    <style name="TitleBackArrow" parent="LikeTitleContent">
         <item name="android:layout_width">20.0dp</item>
-        <item name="android:layout_height">38.4dp</item>
     </style>
     <style name="StationBullet" parent="LikeTitleIcon">
     	<item name="android:layout_height">fill_parent</item>
@@ -33,18 +39,16 @@
 	</style>
     
     	
-    <style name="MoreOptionsButton">
+    <style name="MoreOptionsButton" parent="LikeTitleContent">
         <item name="android:layout_width">30.0dp</item>
-        <item name="android:layout_height">38.4dp</item>
     </style>
-    <style name="PathRightArrow">
+    <style name="PathRightArrow" parent="LikeTitleContent">
         <item name="android:layout_width">32.0dp</item>
-        <item name="android:layout_height">38.4dp</item>
     </style>
     <style name="PathLineLabel">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">36sp</item>
-        <item name="android:lineSpacingExtra">-9sp</item>
+        <item name="android:textSize">30.6sp</item>
+        <item name="android:lineSpacingExtra">-7sp</item>
 	</style>
     <style name="LineBullet">
         <item name="android:layout_width">20.0dp</item>
