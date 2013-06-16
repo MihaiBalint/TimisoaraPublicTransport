@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/app_reset_settings"
           android:title="Reset settings" 
-          android:icon="@android:drawable/ic_menu_delete"/>
+          android:icon="@android:drawable/ic_menu_delete"
+          android:visible="false"/>
     <item android:id="@+id/app_credits"
           android:title="@string/app_credits" 
           android:icon="@android:drawable/ic_menu_myplaces"/>
