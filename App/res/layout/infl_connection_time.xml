@@ -56,14 +56,14 @@
    	    android:layout_marginRight="10sp"
 		android:textColor="#FF0F0F0F"
 	  	android:text="@string/lblExampleTime"
-		android:textSize="12sp"
+		android:textSize="14sp"
         />
     <TextView android:id="@+id/LineName"
         android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:textColor="#FF555555"
 	  	android:text="@string/lblExampleLine"
-		android:textSize="12sp"
+		android:textSize="14sp"
         />
 	<TextView android:id="@+id/LineArrow"
         android:layout_width="wrap_content" 
@@ -72,7 +72,7 @@
    	    android:layout_marginLeft="10sp"
    	    android:layout_marginRight="10sp"
 	  	android:text=">"
-		android:textSize="12sp"
+		android:textSize="14sp"
         />
 	<TextView android:id="@+id/LineDirection"
    	    android:layout_width="0dp"
@@ -80,6 +80,6 @@
 		android:layout_height="wrap_content"
 		android:textColor="#FF555555"
 	  	android:text="@string/lblExampleArrival"
-		android:textSize="12sp"
+		android:textSize="14sp"
         />
 </LinearLayout>

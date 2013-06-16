@@ -63,7 +63,7 @@
 			android:layout_height="wrap_content"
 			android:textColor="#FF555555"
 		  	android:text="@string/lblExampleDeparture"
-			android:textSize="12sp"
+			android:textSize="14sp"
 	        />
    		<LinearLayout 
 	   	    android:layout_width="wrap_content"
@@ -76,14 +76,14 @@
 		   	    android:layout_marginRight="20sp"
 				android:textColor="#FF0F0F0F"
 			  	android:text="@string/lblExampleTime"
-				android:textSize="12sp"
+				android:textSize="14sp"
 		        />
 		    <TextView android:id="@+id/StationError"
 		        android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"
 				android:textColor="#FFCC0000"
 			  	android:text=""
-				android:textSize="12sp"
+				android:textSize="14sp"
 		        />
    		</LinearLayout>
 	    	    
