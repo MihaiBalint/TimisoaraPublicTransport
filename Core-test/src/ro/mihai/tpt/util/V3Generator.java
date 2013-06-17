@@ -172,7 +172,7 @@ public class V3Generator extends TestCase {
 		for(String ln : city.getLineNamesSorted()) {
 			Line l = city.getLine(ln);
 			for(Path p:l.getPaths()) {
-				for(Estimate e : p.getStationsByPath()) {
+				for(Estimate e : p.getEstimatesByPath()) {
 					Station s = e.getStation();
 					StringBuilder b = new StringBuilder();
 					b.append(p.getId()); b.append(",");

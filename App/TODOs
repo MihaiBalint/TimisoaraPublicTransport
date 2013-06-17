@@ -26,10 +26,6 @@ ldpi 33
    * Route planner
    
 
-De apreciat și auto-refresh-ul. O idee care-mi vine acum cu noul UI e ori să modifici butonul Reload să sugereze 
-și să facă "Switch Direction"; ori să rămână Reload, dar numele traseului (Tv8->AEM) să fie centrat și la atingere 
-să devină "Tv8->Gara".
-
 Aș sugera să pui în meniul contextual și Conexiuni. 
 
 - dar cum am mai intalnit probleme similare, nu ar strica inca un buton cu "raporteaza o problema la situatia 
@@ -38,7 +34,6 @@ timpilor ACUM" ar fi probabil destul de util.
 dai "Back" si apoi sa intri pe al doilea sens (in frig poate fi o aventura pt cei ce dardaie
 
 - improve the direction selection box by adding more information: i.e. station succession, major stations   
-- inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)
 - tot din meniu adaugarea unui help care sa explice fiecare tip de timp afisat (cca / min/ ora). Eu am citit forumul 
   si stiu dar nu tot fac/ ar trebui sa faca asta.
 - ar mai fi si altele legate de utilizarea GPS/ maps dar deja e full-time job, si nu e cazul sa ne intindem.
@@ -54,6 +49,9 @@ Nu stiu cum se poate insa este o chestie utila mai ales in cazul in care urmator
 
 
 *** Complete
+- inlaturearea shortcut-urilor de pe ecranul home sau, si mai util, personalizarea lor (eventual de la un meniu din home)
+- refresh on open, switch direction
+
 - Setting for selecting the download url
 - Move to SD-Card
  

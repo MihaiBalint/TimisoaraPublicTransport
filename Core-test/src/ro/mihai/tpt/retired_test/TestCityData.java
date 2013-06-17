@@ -22,7 +22,6 @@ import java.util.Collections;
 
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.INamedEntity;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.util.TestPrefs;
 import junit.framework.TestCase;

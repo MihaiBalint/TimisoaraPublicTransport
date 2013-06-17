@@ -142,7 +142,7 @@ public class City implements Serializable {
 			b.append(l.getName());
 			if(l.getPaths().size() == 1) {
 				b.append(" - ");
-				for(Estimate e : l.getFirstPath().getStationsByPath()) {
+				for(Estimate e : l.getFirstPath().getEstimatesByPath()) {
 					b.append(e.getStation().getName());
 					b.append(", ");
 				}
@@ -153,7 +153,7 @@ public class City implements Serializable {
 				b.append(" "+l.getPaths().size()+" paths.\n");
 				for(Path p : l.getPaths()) {
 					b.append("\t"+p.getName()+" - ");
-					for(Estimate e : p.getStationsByPath()) {
+					for(Estimate e : p.getEstimatesByPath()) {
 						b.append(e.getStation().getName());
 						b.append(", ");
 					}

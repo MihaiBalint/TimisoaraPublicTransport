@@ -78,7 +78,7 @@ public class TravelOpportunity {
 	public String getDepartureStationName() {
 		if (!disembarkOpportunities.isEmpty())
 			return disembarkOpportunities.get(0).getNiceName();
-		List<Estimate> stations = path.getStationsByPath(); 
+		List<Estimate> stations = path.getEstimatesByPath(); 
 		if (!stations.isEmpty())
 			return stations.get(0).getStation().getNiceName();
 		return "";
@@ -89,7 +89,7 @@ public class TravelOpportunity {
 			return path.getNiceName();
 		if (!disembarkOpportunities.isEmpty())
 			return disembarkOpportunities.get(disembarkOpportunities.size()-1).getNiceName();
-		List<Estimate> stations = path.getStationsByPath(); 
+		List<Estimate> stations = path.getEstimatesByPath(); 
 		if (!stations.isEmpty())
 			return stations.get(stations.size()-1).getStation().getNiceName();
 		return path.getNiceName();
@@ -109,7 +109,7 @@ public class TravelOpportunity {
 	}
 	
 	public void selectAllStations() {
-		List<Estimate> stations = path.getStationsByPath();
+		List<Estimate> stations = path.getEstimatesByPath();
 		for(Estimate s : stations)
 			this.disembarkOpportunities.add(new ChangeOpportunity(s));
 	}
@@ -125,7 +125,7 @@ public class TravelOpportunity {
 		for(ChangeOpportunity sel : disembarkOpportunities) {
 			Station s = sel.getDisembarkEstimate().getStation();
 			
-			for(Estimate e : p.getStationsByPath()) {
+			for(Estimate e : p.getEstimatesByPath()) {
 				Station o = e.getStation(); 
 				if (o.getJunction() == s.getJunction())
 					if(s.distanceTo(o) < Constants.MAX_CONNECTION_DIST)

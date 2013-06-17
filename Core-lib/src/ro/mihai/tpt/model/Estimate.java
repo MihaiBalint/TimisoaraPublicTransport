@@ -191,7 +191,7 @@ public class Estimate implements Serializable {
 		if (isBoarding()) 
 			return VehicleStatus.Boarding;
 		
-		List<Estimate> estimates = path.getStationsByPath();
+		List<Estimate> estimates = path.getEstimatesByPath();
 		
 		if(stationIndex > 0 && this.type.isGPS()) {
 			// fist station is never arriving

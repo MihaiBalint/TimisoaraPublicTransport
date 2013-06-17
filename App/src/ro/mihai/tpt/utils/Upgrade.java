@@ -45,7 +45,6 @@ public class Upgrade {
 		}
 		if (prefs.getCurrentVersion(0) < 25) {
 			// DO NOTHING
-			// prefs.setCurrentVersion(25);
 		}
 	}
 	

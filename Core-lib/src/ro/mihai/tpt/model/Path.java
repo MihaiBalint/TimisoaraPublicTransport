@@ -119,7 +119,7 @@ public class Path extends PersistentEntity implements Serializable {
 		return getLineName()+">"+getNiceName();
 	}	
 
-	public List<Estimate> getStationsByPath() {
+	public List<Estimate> getEstimatesByPath() {
 		ensureLoaded();
 		return estimatesByPath;
 	}
@@ -277,8 +277,8 @@ public class Path extends PersistentEntity implements Serializable {
 		b = getNiceName().getBytes();
 		lazy.writeInt(b.length); lazy.write(b);
 		
-		lazy.writeInt(getStationsByPath().size());
-		for(Estimate e:getStationsByPath()) {
+		lazy.writeInt(getEstimatesByPath().size());
+		for(Estimate e:getEstimatesByPath()) {
 			b = e.getStation().getId().getBytes();
 			lazy.writeInt(b.length); lazy.write(b);
 		}

@@ -119,7 +119,7 @@ public class Line extends PersistentEntity implements Serializable {
 		paths.remove(tailsPath);
 		pathNames.remove("");
 		for(Path p:paths) {
-			for(Estimate e : tailsPath.getStationsByPath())
+			for(Estimate e : tailsPath.getEstimatesByPath())
 				p.concatenate(e.getStation());
 		}
 	} 
@@ -128,7 +128,7 @@ public class Line extends PersistentEntity implements Serializable {
 		ensureLoaded();		
 		Set<Station> all = new LinkedHashSet<Station>();
 		for(Path p: paths)
-			for(Estimate e : p.getStationsByPath())
+			for(Estimate e : p.getEstimatesByPath())
 				all.add(e.getStation());
 		return all;
 	}

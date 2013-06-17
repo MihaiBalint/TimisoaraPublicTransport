@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -47,7 +48,15 @@ public class CityTest {
 				hiddenLines += "App does not show line "+l.getName()+"\n"; 
 		assertEquals("", hiddenLines);
 	}
-		
+	
+	private static List<Station> stations(List<Estimate> estimates) {
+		List<Station> st = new ArrayList<Station>();
+		for (Estimate est : estimates) {
+			st.add(est.getStation());
+		}
+		return st;
+	}
+	
 	@Test
 	public void test_line_33_arta_connections() {
 		Line l33 = c.getLine("33");
@@ -61,10 +70,10 @@ public class CityTest {
 		assertTrue(l33.getStations().contains(a2));
 		
 		Path p1 = l33.getPath("Catedrala");
-		assertTrue(p1.getStationsByPath().contains(a1));
+		assertTrue(stations(p1.getEstimatesByPath()).contains(a1));
 
 		Path p2 = l33.getPath("Pod C. Sagului");
-		assertTrue(p2.getStationsByPath().contains(a2));
+		assertTrue(stations(p2.getEstimatesByPath()).contains(a2));
 	}
 
 	@Test
@@ -80,10 +89,10 @@ public class CityTest {
 		assertTrue(lE1.getStations().contains(a2));
 		
 		Path p1 = lE1.getPath("Selgros");
-		assertTrue(p1.getStationsByPath().contains(a1));
+		assertTrue(stations(p1.getEstimatesByPath()).contains(a1));
 
 		Path p2 = lE1.getPath("Pod C. Sagului");
-		assertTrue(p2.getStationsByPath().contains(a2));
+		assertTrue(stations(p2.getEstimatesByPath()).contains(a2));
 	}
 
 	@Test
@@ -94,8 +103,8 @@ public class CityTest {
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
 		
-		assertEquals("33, E1, E8", a1.getLineNames());
-		assertEquals("33, E1, E8", a2.getLineNames());
+		assertEquals("33, E1, E33", a1.getLineNames());
+		assertEquals("33, E1, E33", a2.getLineNames());
 	}
 	
 	@Test
@@ -128,7 +137,7 @@ public class CityTest {
 		assertTrue(tv9.getKind().isTram());
 		assertTrue(tv9.getPaths().size()>0);
 		for(Path p : tv9.getPaths())
-			assertTrue(p.getStationsByPath().size()>0);
+			assertTrue(p.getEstimatesByPath().size()>0);
 		assertEquals(2,tv9.getPaths().size());
 	}
 	
@@ -250,7 +259,7 @@ public class CityTest {
 
 	@Test
 	public void test_known_distance() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(0).getStation();
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getEstimatesByPath().get(0).getStation();
 		
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("4640")));
 		assertTrue(s33.getJunction().getStations().contains(c.getStation("3105")));
@@ -288,7 +297,7 @@ public class CityTest {
 	
 	@Test
 	public void test_known_distance_Arta_textila() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getStationsByPath().get(4).getStation();
+		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getEstimatesByPath().get(4).getStation();
 		for(Station s : s33.getJunction().getStations()) {
 			System.out.println(""+s.getId()+":"+s.getNiceName());
 		}
