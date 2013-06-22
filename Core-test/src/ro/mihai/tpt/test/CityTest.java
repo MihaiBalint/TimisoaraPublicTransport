@@ -32,7 +32,7 @@ public class CityTest {
 	}
 	
 	@Test
-	public void test_app_panel_links() {
+	public void test_city_has_all_kinds() {
 		String missingLines = "";
 		for(String line : app_lines)
 			if (c.getLine(line) == null || c.getLine(line).isFake())
@@ -125,6 +125,14 @@ public class CityTest {
 			assertNotNull("Junction name should not be null", s.getJunction());
 	}
 	
+	private void assertKind(LineKind kind) {
+		for(String lineName : kind.getLineNames())
+			assertEquals(c.getLine(lineName).getKind(), kind);
+		
+		for(Line l : c.getLines()) 
+			if (!kind.contains(l.getName()))
+				assertTrue(l.getName()+" is not a "+kind, l.getKind() != kind);
+	}
 	private void assertOthersNotKind(LineKind kind) {
 		for(Line l : c.getLines()) 
 			if (!kind.contains(l.getName()))
@@ -142,72 +150,21 @@ public class CityTest {
 	}
 	
 	@Test
-	public void test_all_trams_types() {
-		assertTrue(c.getLine("Tv1").getKind().isTram());
-		assertTrue(c.getLine("Tv2").getKind().isTram());
-		assertTrue(c.getLine("Tv4").getKind().isTram());
-		assertTrue(c.getLine("Tv5").getKind().isTram());
-		assertTrue(c.getLine("Tv6").getKind().isTram());
-		assertTrue(c.getLine("Tv7").getKind().isTram());
-		assertTrue(c.getLine("Tv8").getKind().isTram());
-		assertTrue(c.getLine("Tv9").getKind().isTram());
+	public void test_all_line_types() {
+		assertKind(LineKind.TRAM);
 		assertOthersNotKind(LineKind.TRAM);
-	}
 
-	@Test
-	public void test_all_trolley_types() {
-		assertTrue(c.getLine("Tb11").getKind().isTrolley());
-		assertTrue(c.getLine("Tb14").getKind().isTrolley());
-		assertTrue(c.getLine("Tb15").getKind().isTrolley());
-		assertTrue(c.getLine("Tb16").getKind().isTrolley());
-		assertTrue(c.getLine("Tb17").getKind().isTrolley());
-		assertTrue(c.getLine("Tb18").getKind().isTrolley());
-		assertTrue(c.getLine("Tb19").getKind().isTrolley());
+		assertKind(LineKind.TROLLEY);
 		assertOthersNotKind(LineKind.TROLLEY);
-	}
-	
-	@Test
-	public void test_all_express_types() {
-		assertTrue(c.getLine("E1").getKind().isBusExpress());
-		assertTrue(c.getLine("E2").getKind().isBusExpress());
-		assertTrue(c.getLine("E3").getKind().isBusExpress());
-		assertTrue(c.getLine("E4").getKind().isBusExpress());
-		assertTrue(c.getLine("E4b").getKind().isBusExpress());
-		assertTrue(c.getLine("E6").getKind().isBusExpress());
-		assertTrue(c.getLine("E7").getKind().isBusExpress());
-		assertTrue(c.getLine("E33").getKind().isBusExpress());
+
+		assertKind(LineKind.EXPRESS);
 		assertOthersNotKind(LineKind.EXPRESS);
-	}
 
-	@Test
-	public void test_all_metro_types() {
-		assertTrue(c.getLine("M30").getKind().isBusMetro());
-		assertTrue(c.getLine("M35").getKind().isBusMetro());
-		assertTrue(c.getLine("M36").getKind().isBusMetro());
+		assertKind(LineKind.METRO);
 		assertOthersNotKind(LineKind.METRO);
-	}
 
-	@Test
-	public void test_all_city_bus_types() {
-		assertTrue(c.getLine("3").getKind().isBus());
-		assertTrue(c.getLine("13").getKind().isBus());
-		assertTrue(c.getLine("21").getKind().isBus());
-		assertTrue(c.getLine("28").getKind().isBus());
-		assertTrue(c.getLine("32").getKind().isBus());
-		assertTrue(c.getLine("33").getKind().isBus());
-		assertTrue(c.getLine("40").getKind().isBus());
-		assertTrue(c.getLine("46").getKind().isBus());
+		assertKind(LineKind.BUS);
 		assertOthersNotKind(LineKind.BUS);
-	}
-	
-	@Test
-	public void test_city_has_all_kinds() {
-		String missingLines = "";
-		for(LineKind k : LineKind.values())
-			for(String line : k.getLineNames())
-				if (c.getLine(line).isFake())
-					missingLines += "Line not present in city: "+line+"\n";
-		assertEquals("", missingLines);
 	}
 
 	@Test
