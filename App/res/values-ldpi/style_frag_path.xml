@@ -23,27 +23,12 @@
         <item name="android:layout_marginLeft">4.6dp</item>
    	</style>
     <style name="TitleIconWithBack" parent="LikeTitleIcon">
-        <item name="android:layout_marginLeft">-6.4dp</item>
-		<item name="android:layout_marginRight">0.0dp</item>
+        <item name="android:layout_marginLeft">-10.6dp</item>
     </style>
     <style name="TitleBackArrow" parent="LikeTitleContent">
         <item name="android:layout_width">16.0dp</item>
         <item name="android:layout_marginLeft">-4dp</item>
     </style>
-    <style name="StationBullet" parent="LikeTitleIcon">
-    	<item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">59dp</item>
-		<item name="android:layout_marginRight">0dp</item>
-		<item name="android:layout_marginTop">0dp</item>
-		<item name="android:layout_marginBottom">0dp</item>
-	</style>
-    <style name="PathBullet">
-    	<item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">23dp</item>
-		<item name="android:layout_marginLeft">-19dp</item>
-		<item name="android:layout_marginRight">-7dp</item>
-	</style>
-    
     
     <style name="MoreOptionsButton" parent="LikeTitleContent">
         <item name="android:layout_width">20.0dp</item>
@@ -57,16 +42,25 @@
         <item name="android:textSize">24sp</item>
         <item name="android:lineSpacingExtra">-6sp</item>
     </style>
-    <style name="LineBullet">
-        <item name="android:layout_width">15.0dp</item>
-        <item name="android:layout_height">fill_parent</item>
+    <style name="LinePath">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">match_parent</item>
+		<item name="android:layout_marginLeft">-18dp</item>
+		<item name="android:layout_marginRight">4dp</item>
+        </style>
+    <style name="PathBullet">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
     	
     <style name="LineVehicle">
-        <item name="android:layout_width">18.0dp</item>
-        <item name="android:layout_height">18.0dp</item>
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_alignParentRight">true</item>
+		<item name="android:layout_marginRight">7dp</item>
         <item name="android:visibility">gone</item>
     </style>
     <style name="VehicleArrivingBullet" parent="LineVehicle">

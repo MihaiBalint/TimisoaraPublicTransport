@@ -24,14 +24,30 @@
     android:background="@color/frag_path_even"
     android:baselineAligned="false">
     
+    <View
+        style="@style/LikeTitleIcon" 
+        android:layout_height="1dp"/>
+    
    	<RelativeLayout
-        style="@style/StationBullet">
+   	    style="@style/LinePath"
+   	    android:visibility="visible" >
+	   	<ImageView android:id="@+id/LinePathLine"
+	   	    style="@style/PathBullet"
+	   	    android:layout_height="match_parent"
+	   	    android:background="@drawable/line_middle_green"
+	   	    android:contentDescription="@string/app_settings"
+	   	/>
+   	    <ImageView android:id="@+id/LinePathBullet"
+	   	    style="@style/PathBullet"
+	   	    android:background="@drawable/line_bullet_green"
+	   	    android:contentDescription="@string/app_settings"
+	   	/>
 	   	<ImageView android:id="@+id/VehicleArrivingBullet"
    	    	style="@style/VehicleArrivingBullet"
 	   	    android:background="@drawable/arrow_right_lower_half"
 	   	    android:contentDescription="@string/lblVehicle"
 	   	/>
-	   	<ImageView android:id="@+id/VehicleBoardingBullet"
+   	    <ImageView android:id="@+id/VehicleBoardingBullet"
    	    	style="@style/VehicleBoardingBullet"
 	   	    android:background="@drawable/arrow_right"
 	   	    android:contentDescription="@string/lblVehicle"
@@ -42,12 +58,6 @@
 	   	    android:contentDescription="@string/lblVehicle"
 	   	/>
 	</RelativeLayout>
-   	<ImageView android:id="@+id/LineBullet"
-   	    style="@style/LineBullet"
-   	    android:background="@drawable/line_bullet_middle_green"
-   	    android:contentDescription="@string/lblStation"
-   	    android:scaleType="centerCrop"
-   	    />
    		
    	<LinearLayout
    	    android:layout_width="0dp"

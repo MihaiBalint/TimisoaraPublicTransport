@@ -49,9 +49,23 @@
 	   		android:textSize="12sp"
 	   		/>
    	</LinearLayout>
+
    	<RelativeLayout
-        style="@style/PathBullet">
-	   	<ImageView android:id="@+id/VehicleBoardingBullet"
+   	    android:id="@+id/LinePath"
+   	    style="@style/LinePath"
+   	    android:visibility="gone" >
+	   	<ImageView android:id="@+id/LinePathLine"
+	   	    style="@style/PathBullet"
+	   	    android:layout_height="match_parent"
+	   	    android:background="@drawable/line_top_green"
+	   	    android:contentDescription="@string/app_settings"
+	   	/>
+   	    <ImageView android:id="@+id/LinePathBullet"
+	   	    style="@style/PathBullet"
+	   	    android:background="@drawable/line_bullet_green"
+	   	    android:contentDescription="@string/app_settings"
+	   	/>
+   	    <ImageView android:id="@+id/VehicleBoardingBullet"
    	    	style="@style/VehicleBoardingBullet"
 	   	    android:background="@drawable/arrow_right"
 	   	    android:contentDescription="@string/lblVehicle"
@@ -60,17 +74,9 @@
    	    	style="@style/VehicleDepartingBullet"
 	   	    android:background="@drawable/arrow_right_upper_half"
 	   	    android:contentDescription="@string/lblVehicle"
-	   	    android:layout_marginRight="7dp"
 	   	/>
 	</RelativeLayout>
    		
-   	<ImageView android:id="@+id/LineBullet"
-   	    style="@style/LineBullet"
-   	    android:background="@drawable/line_bullet_top_green"
-   	    android:contentDescription="@string/app_settings"
-   	    android:scaleType="centerCrop"
-   	    android:visibility="gone"
-   	    />
    	<LinearLayout
    	    style="@style/StandardHItem"
    	    android:layout_height="wrap_content"

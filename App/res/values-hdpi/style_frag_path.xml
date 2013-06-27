@@ -23,26 +23,11 @@
         <item name="android:layout_marginLeft">7.6dp</item>
 	</style>
     <style name="TitleIconWithBack" parent="LikeTitleIcon">
-        <item name="android:layout_marginLeft">-9.4dp</item>
-		<item name="android:layout_marginRight">3.6dp</item>
+        <item name="android:layout_marginLeft">-13dp</item>
     </style>
     <style name="TitleBackArrow" parent="LikeTitleContent">
         <item name="android:layout_width">20.0dp</item>
     </style>
-    <style name="StationBullet" parent="LikeTitleIcon">
-    	<item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">72dp</item>
-		<item name="android:layout_marginRight">0dp</item>
-		<item name="android:layout_marginTop">0dp</item>
-		<item name="android:layout_marginBottom">0dp</item>
-	</style>
-    <style name="PathBullet">
-    	<item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_width">34dp</item>
-		<item name="android:layout_marginLeft">-28dp</item>
-        <item name="android:layout_marginRight">-7dp</item>
-	</style>
-    
     	
     <style name="MoreOptionsButton" parent="LikeTitleContent">
         <item name="android:layout_width">30.0dp</item>
@@ -55,9 +40,17 @@
         <item name="android:textSize">30.6sp</item>
         <item name="android:lineSpacingExtra">-7sp</item>
 	</style>
-    <style name="LineBullet">
-        <item name="android:layout_width">20.0dp</item>
-        <item name="android:layout_height">fill_parent</item>
+    <style name="LinePath">
+        <item name="android:layout_width">40dp</item>
+		<item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">-24dp</item>
+        <item name="android:layout_marginRight">7dp</item>
+    </style>
+    <style name="PathBullet">
+        <item name="android:layout_width">15dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
     
     <style name="LineVehicle">
@@ -65,6 +58,7 @@
         <item name="android:layout_height">24dp</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_alignParentRight">true</item>
+		<item name="android:layout_marginRight">7dp</item>
         <item name="android:visibility">gone</item>
     </style>
     <style name="VehicleArrivingBullet" parent="LineVehicle">

@@ -80,8 +80,10 @@ public class ViewTimes extends CityActivity {
 		PathView.fillPathView(pathView, this.getResources(), path, new PathSwitcher(), false);
 		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
-		pathView.findViewById(R.id.LineBullet).setBackgroundResource(kind.bullet_top);
-    	
+		pathView.findViewById(R.id.LinePathLine).setBackgroundResource(kind.line_top);
+		pathView.findViewById(R.id.LinePathBullet).setBackgroundResource(kind.line_bullet);
+		pathView.findViewById(R.id.LinePath).setVisibility(View.VISIBLE);
+		
     	Button update = (Button)findViewById(R.id.UpdateButton);
     	update.setOnClickListener(updater = new UpdateTimes(this));
     	
@@ -91,8 +93,7 @@ public class ViewTimes extends CityActivity {
     	Button favorite = (Button)findViewById(R.id.StarButton);
     	favorite.setOnClickListener(new FavoritePathToggle(favorite));
     	
-    	View lineBullet = findViewById(R.id.LineBullet);
-    	lineBullet.setVisibility(View.VISIBLE);
+    	
     	
     	timesTable = (TableLayout)findViewById(R.id.StationTimesTable);
     	inflater = this.getLayoutInflater();
@@ -143,6 +144,9 @@ public class ViewTimes extends CityActivity {
 	
 	private View updatePathView(Estimate est) {
 		View timesRow = findViewById(R.id.PathView);
+		int background = est.isUpdating() ? R.color.times_updating : R.color.frag_path_even;
+		timesRow.setBackgroundColor(getResources().getColor(background));
+		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
@@ -173,7 +177,8 @@ public class ViewTimes extends CityActivity {
 				: est.estimateTimeString());
 		stationTime.setTextColor(getResources().getColor(kind.colorId));
 		
-		timesRow.findViewById(R.id.LineBullet).setBackgroundResource(last ? kind.bullet_bottom : kind.bullet_middle);
+		timesRow.findViewById(R.id.LinePathLine).setBackgroundResource(last ? kind.line_bottom : kind.line_middle);
+		timesRow.findViewById(R.id.LinePathBullet).setBackgroundResource(kind.line_bullet);
 		
 		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
@@ -215,8 +220,8 @@ public class ViewTimes extends CityActivity {
 				: est.estimateTimeString());
 		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
-		View bullet = timesRow.findViewById(R.id.LineBullet); 
-		bullet.setBackgroundResource(last ? R.drawable.line_middle_empty : kind.bullet_line);
+		View bullet = timesRow.findViewById(R.id.LinePathLine); 
+		bullet.setBackgroundResource(last ? R.drawable.line_middle_empty : kind.line_middle);
 		
 		int background = R.color.frag_path_odd;
 		if (est.isUpdating()) {
