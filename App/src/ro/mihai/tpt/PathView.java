@@ -65,14 +65,14 @@ public class PathView {
 		lineDirection2.setText(path.getDestinationStationName());
 		
 		pathView.setOnClickListener(clickListener);
-		int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;
-		pathView.setBackgroundColor(res.getColor(evenOddColor));
+		//int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;
+		//pathView.setBackgroundColor(res.getColor(evenOddColor));
+		int evenOddColor = isOddItem ? R.drawable.row_back_odd : R.drawable.row_back_even;
+		pathView.setBackgroundResource(evenOddColor);
 		return pathView;
 	}
 	
 	public static void addDepartureClickListener(View pathView, View.OnClickListener clickListener) {
-		pathView.findViewById(R.id.StationLabel).setOnClickListener(clickListener);
-		pathView.findViewById(R.id.StationTime).setOnClickListener(clickListener);
-		
+		pathView.findViewById(R.id.DepartureStation).setOnClickListener(clickListener); 
 	}
 }

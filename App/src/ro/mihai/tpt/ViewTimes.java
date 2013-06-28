@@ -146,9 +146,8 @@ public class ViewTimes extends CityActivity {
 		Estimate est = stop.getDisembarkEstimate();
 		View timesRow = findViewById(R.id.PathView);
 		PathView.addDepartureClickListener(timesRow, new ShowStationConnections(stop));
-		int background = est.isUpdating() ? R.color.times_updating : R.color.frag_path_even;
-		timesRow.setBackgroundColor(getResources().getColor(background));
-		
+		int background = est.isUpdating() ? R.drawable.row_back_updating : R.drawable.row_back_even;
+		timesRow.setBackgroundResource(background);
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 		
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
@@ -184,9 +183,9 @@ public class ViewTimes extends CityActivity {
 		timesRow.findViewById(R.id.LinePathLine).setBackgroundResource(last ? kind.line_bottom : kind.line_middle);
 		timesRow.findViewById(R.id.LinePathBullet).setBackgroundResource(kind.line_bullet);
 		
-		int background = R.color.frag_path_odd;
+		int background = R.drawable.row_back_odd;
 		if (est.isUpdating()) {
-			background = R.color.times_updating;
+			background = R.drawable.row_back_updating;
 		} else {
 			if (est.hasErrors()) {
 				updater.setHasErrors();
@@ -194,11 +193,11 @@ public class ViewTimes extends CityActivity {
 				error.setText(EstimateStatusEx.getDescriptionId(est.getStatus()));
 			}
 			if (evenRow)
-				background = R.color.frag_path_even;
+				background = R.drawable.row_back_even;
 		}
 
 		View row = timesRow.findViewById(R.id.StationStatusRow);
-		row.setBackgroundColor(getResources().getColor(background));
+		row.setBackgroundResource(background);
 		
 		return timesRow;
 	}
@@ -227,17 +226,17 @@ public class ViewTimes extends CityActivity {
 		View bullet = timesRow.findViewById(R.id.LinePathLine); 
 		bullet.setBackgroundResource(last ? R.drawable.line_middle_empty : kind.line_middle);
 		
-		int background = R.color.frag_path_odd;
+		int background = R.drawable.row_back_odd;
 		if (est.isUpdating()) {
-			background = R.color.times_updating;
+			background = R.drawable.row_back_updating;
 		} else {
 			if (est.hasErrors())
 				updater.setHasErrors();
 			if (evenRow)
-				background = R.color.frag_path_even;
+				background = R.drawable.row_back_even;
 		} 
 		View row = timesRow.findViewById(R.id.StationStatusRow);
-		row.setBackgroundColor(res.getColor(background));
+		row.setBackgroundResource(background);
 		
 		return timesRow;
 	}

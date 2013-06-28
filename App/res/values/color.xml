@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Backgrounds -->
-	<color name="frag_path_even">#FFDDDDDD</color>
-	<color name="frag_path_odd">#FFEEEEEE</color>
-
+	<color name="row_even">#FFDDDDDD</color>
+	<color name="row_odd">#FFEEEEEE</color>
+	<color name="transparent">#00000000</color>
+	
 	<!-- Vehicle type specific -->
 	<color name="vehicle_bus">#FFCC0000</color>
 	<color name="vehicle_express">#FF669900</color>
@@ -12,5 +13,5 @@
 	<color name="vehicle_trolley">#FF9933CC</color>
 	
 	<!-- Times color codes -->
-	<color name="times_updating">#FF99CC00</color>
+	<color name="data_updating">#FF99CC00</color>
 </resources>

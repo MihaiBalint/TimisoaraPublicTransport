@@ -21,7 +21,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/StationStatusRow"
     style="@style/LikeTitleContainer"
-    android:background="@color/frag_path_even"
+    android:background="@drawable/row_back_even"
     android:baselineAligned="false">
 
     <View

@@ -21,7 +21,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/PathView"
     style="@style/LikeTitleContainer"
-    android:background="@color/frag_path_even">
+    android:background="@drawable/row_back_even">
     
    	<LinearLayout
         style="@style/LikeTitleIcon"
@@ -78,7 +78,9 @@
 	</RelativeLayout>
    		
    	<LinearLayout
+   	    android:id="@+id/DepartureStation"
    	    style="@style/StandardHItem"
+   	    android:background="@drawable/row_back_transparent"
    	    android:layout_height="wrap_content"
    	    android:layout_width="0dp"
    	    android:layout_weight="1"
