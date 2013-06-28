@@ -69,4 +69,10 @@ public class PathView {
 		pathView.setBackgroundColor(res.getColor(evenOddColor));
 		return pathView;
 	}
+	
+	public static void addDepartureClickListener(View pathView, View.OnClickListener clickListener) {
+		pathView.findViewById(R.id.StationLabel).setOnClickListener(clickListener);
+		pathView.findViewById(R.id.StationTime).setOnClickListener(clickListener);
+		
+	}
 }

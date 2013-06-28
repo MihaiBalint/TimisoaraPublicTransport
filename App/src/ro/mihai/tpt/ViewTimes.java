@@ -118,22 +118,22 @@ public class ViewTimes extends CityActivity {
 
 		int stationNo = 0; // java is zero based, therefore first = even
 		View previousRow = null;
-		for(ChangeOpportunity change: changeOpportunities) {
-			Estimate est = change.getDisembarkEstimate();
+		for(ChangeOpportunity stop: changeOpportunities) {
+			Estimate est = stop.getDisembarkEstimate();
 			boolean evenRow = (stationNo % 2) == 0;
 			boolean last = stationNo == changeOpportunities.size()-1;
 			
 			View newRow;
 			if(stationNo == 0) {
-				newRow = updatePathView(est);
+				newRow = updatePathView(stop);
 			} else {
-				newRow = newStationEstimateView(est, evenRow, last);
+				newRow = newStationEstimateView(stop, evenRow, last);
 		    	timesTable.addView(newRow);
 			}
 			updateVehicleArrivingBullet(est.getVehicleStatus(), newRow, previousRow);
 			previousRow = newRow;
 	    	
-	    	for(Estimate connection : change.getConnections()) {
+	    	for(Estimate connection : stop.getConnections()) {
 	    		newRow = newConnectionEstimateView(connection, evenRow, last);
 	    		timesTable.addView(newRow);
 	    		previousRow = newRow;
@@ -142,8 +142,10 @@ public class ViewTimes extends CityActivity {
 		}
 	}
 	
-	private View updatePathView(Estimate est) {
+	private View updatePathView(ChangeOpportunity stop) {
+		Estimate est = stop.getDisembarkEstimate();
 		View timesRow = findViewById(R.id.PathView);
+		PathView.addDepartureClickListener(timesRow, new ShowStationConnections(stop));
 		int background = est.isUpdating() ? R.color.times_updating : R.color.frag_path_even;
 		timesRow.setBackgroundColor(getResources().getColor(background));
 		
@@ -164,8 +166,10 @@ public class ViewTimes extends CityActivity {
 		return timesRow;
 	}
 
-	private View newStationEstimateView(Estimate est, boolean evenRow, boolean last) {
+	private View newStationEstimateView(ChangeOpportunity stop, boolean evenRow, boolean last) {
+		Estimate est = stop.getDisembarkEstimate();
 		View timesRow = inflater.inflate(R.layout.infl_station_time, timesTable, false);
+		timesRow.setOnClickListener(new ShowStationConnections(stop));
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
@@ -283,14 +287,14 @@ public class ViewTimes extends CityActivity {
 			hasErrors.set(false);
 			List<ChangeOpportunity> stations = act.path.getDisembarkOpportunities();
 			int ec = 0, index = 0, stationNo = 0;
-			for(ChangeOpportunity sel: stations) {
+			for(ChangeOpportunity stop: stations) {
 				if(!running.get()) return;
 				
 				boolean evenRow = (stationNo % 2) == 0;
 				boolean last = stationNo == stations.size()-1;
-				ec = updateStationRowView(ec, index, evenRow, last, sel.getDisembarkEstimate());
+				ec = updateStationRowView(ec, index, evenRow, last, stop);
 				index++;
-				for(Estimate connection : sel.getConnections()) {
+				for(Estimate connection : stop.getConnections()) {
 					if(!running.get()) return;
 					ec = updateConnectionRowView(ec, index, evenRow, last, connection);
 					index++;
@@ -331,19 +335,20 @@ public class ViewTimes extends CityActivity {
 			return ec;
 		}
 
-		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, final Estimate disembark) {
+		private int updateStationRowView(int ec, final int rowIndex, final boolean even, final boolean last, final ChangeOpportunity stop) {
+			final Estimate disembark = stop.getDisembarkEstimate();
 			Runnable upd = new Runnable() {
 				public void run() {
 					View newRow;
 					View previousRow, nextRow;
 					if (rowIndex == 0) {
-						newRow = act.updatePathView(disembark);
+						newRow = act.updatePathView(stop);
 						previousRow = null;
 						nextRow = (act.timesTable.getChildCount() > 0) 
 								? act.timesTable.getChildAt(0) 
 								: null;
 					} else {
-						newRow = act.newStationEstimateView(disembark, even, last);
+						newRow = act.newStationEstimateView(stop, even, last);
 						act.timesTable.removeViewAt(rowIndex-1);
 						act.timesTable.addView(newRow, rowIndex-1);
 						previousRow = rowIndex > 1 
@@ -377,11 +382,14 @@ public class ViewTimes extends CityActivity {
 				err.dismiss();
 				err = null;
 			}
-			
 		}
 		
 		public void setHasErrors() {
 			hasErrors.set(true);
+		}
+		
+		public boolean isRunning() {
+			return running.get();
 		}
 	}
 	
@@ -395,6 +403,26 @@ public class ViewTimes extends CityActivity {
 			inflateTable();
 		}
 	}
+    
+    private class ShowStationConnections implements OnClickListener {
+    	private ChangeOpportunity stop;
+    	
+    	public ShowStationConnections(ChangeOpportunity stop) {
+    		this.stop = stop;
+    	}
+    	
+		public void onClick(View v) {
+			if (updater.isRunning()) 
+				return;
+			if (stop.hasConnections()) {
+				stop.clearConnections();
+			} else {
+				path.clearConnections();
+				stop.addAllChangeOpportunities();
+			}
+	    	runOnUiThread(new UpdateView());
+		}
+    }
     
     private class SelectConnectionKinds implements OnClickListener, DialogInterface.OnClickListener {
     	private List<List<Path>> pathList;

@@ -18,9 +18,12 @@
 package ro.mihai.tpt.conf;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ro.mihai.tpt.model.Estimate;
+import ro.mihai.tpt.model.Path;
+import ro.mihai.tpt.model.Station;
 
 public class ChangeOpportunity {
 	private Estimate disembark;
@@ -53,7 +56,24 @@ public class ChangeOpportunity {
 			this.connections.add(connectionEstimate);
 	}
 	
+	public boolean hasConnections() {
+		return ! connections.isEmpty();
+	}
+	
 	public void clearConnections() {
 		connections.clear();
 	}
+	
+	public void addAllChangeOpportunities() {
+		Station station = disembark.getStation();
+		for(Path p : station.getPaths()) {
+			Iterator<Estimate> it = p.getEstimatesByPath().iterator();
+			while(it.hasNext()) {
+				Estimate e = it.next();
+				if (e.getStation() == station && e!=disembark && it.hasNext()) 
+					this.addConnection(e);
+			}
+		}
+	}
+	
 }
