@@ -46,8 +46,8 @@
 	   	        />
 	       	<ImageView android:id="@+id/LineBarredKind"
 	       	    android:src="@drawable/barat"
-	   	        android:layout_width="0dp"
-	   	        android:layout_height="0dp"
+	   	        android:layout_width="1dp"
+	   	        android:layout_height="1dp"
 	   	        android:layout_alignLeft="@id/LineName"
 	   	        android:layout_alignRight="@id/LineName"
 	   	        android:layout_alignTop="@id/LineName"

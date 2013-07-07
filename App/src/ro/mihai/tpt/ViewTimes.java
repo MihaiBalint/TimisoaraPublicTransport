@@ -214,12 +214,12 @@ public class ViewTimes extends CityActivity {
 		lineNameLabel.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
 		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
 
+		timesRow.findViewById(R.id.LineBarredKind).setVisibility(
+				LineKindAndroidEx.isLineBarred(connectingLine) ? View.VISIBLE : View.GONE);
+
 		TextView lineDirectionLabel = (TextView)timesRow.findViewById(R.id.LineDirection);
 		lineDirectionLabel.setText(connectingPath.getNiceName());
-		if (LineKindAndroidEx.isLineBarred(connectingLine)) {
-			timesRow.findViewById(R.id.LineBarredKind).setVisibility(View.VISIBLE);
-		}
-		
+
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
 		stationTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
 		stationTime.setText(est.isBoarding() 

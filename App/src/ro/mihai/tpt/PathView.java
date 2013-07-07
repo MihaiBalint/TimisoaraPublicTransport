@@ -54,6 +54,8 @@ public class PathView {
 		TextView lineName = (TextView)pathView.findViewById(R.id.LineName);
 		lineName.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
 		lineName.setText(path.getLineNameLabel());
+
+		pathView.findViewById(R.id.LineBarredKind).setVisibility(path.isLineBarred() ? View.VISIBLE : View.GONE);
 		
 		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.StationLabel);
 		lineDirection1.setText(path.getDepartureStationName());
@@ -63,10 +65,6 @@ public class PathView {
 		
 		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
 		lineDirection2.setText(path.getDestinationStationName());
-		
-		if (path.isLineBarred()) {
-			pathView.findViewById(R.id.LineBarredKind).setVisibility(View.VISIBLE);
-		}
 		
 		pathView.setOnClickListener(clickListener);
 		//int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;
