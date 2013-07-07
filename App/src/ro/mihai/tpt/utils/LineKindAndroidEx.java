@@ -100,7 +100,12 @@ public enum LineKindAndroidEx {
 			lineName = lineName.substring(2);
 		if (lineName.startsWith("M")) 
 			lineName = lineName.substring(1);
+		if (lineName.endsWith("b"))
+			lineName = lineName.substring(0, lineName.length()-1);
 		return lineName;
 	}
 
+	public static boolean isLineBarred(Line line) {
+		return line.getName().endsWith("b");
+	}
 }

@@ -46,6 +46,7 @@
 	<string name="lblStation">Station</string>
 	<string name="lblVehicle">Vehicle</string>
 	<string name="lblBoarding">Boarding</string>
+	<string name="lblBarredLine">Barred</string>
 		
 	<string name="lblShortTrams">tram</string>
 	<string name="lblShortTrolleys">trolleybus</string>

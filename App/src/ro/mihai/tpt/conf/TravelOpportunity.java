@@ -63,6 +63,9 @@ public class TravelOpportunity {
 	public LineKind getLineKind() {
 		return path.getLine().getKind();
 	}
+	public boolean isLineBarred() {
+		return LineKindAndroidEx.isLineBarred(path.getLine());
+	}
 	
 	public String getLineNameLabel() {
 		return LineKindAndroidEx.getLineNameLabel(path.getLine());

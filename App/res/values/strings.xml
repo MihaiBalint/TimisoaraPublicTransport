@@ -46,7 +46,8 @@
 	<string name="lblStation">Statie</string>
 	<string name="lblVehicle">Vehicol</string>
 	<string name="lblBoarding">In statie</string>
-		
+	<string name="lblBarredLine">Barat</string>
+			
 	<string name="lblShortTrams">tramvai</string>
 	<string name="lblShortTrolleys">troleibuz</string>
 	<string name="lblShortBus">autobuz</string>

@@ -34,13 +34,13 @@
 	   	<ImageView android:id="@+id/LinePathLine"
 	   	    style="@style/PathBullet"
 	   	    android:background="@drawable/line_middle_green"
-	   	    android:contentDescription="@string/app_settings"
+	   	    android:contentDescription="@string/lblStation"
 	   	    android:layout_height="fill_parent"
 	   	/>
    	    <ImageView android:id="@+id/LinePathBullet"
 	   	    style="@style/PathBullet"
 	   	    android:background="@drawable/line_bullet_green"
-	   	    android:contentDescription="@string/app_settings"
+	   	    android:contentDescription="@string/lblStation"
 	   	/>
 	   	<ImageView android:id="@+id/VehicleArrivingBullet"
    	    	style="@style/VehicleArrivingBullet"

@@ -64,6 +64,10 @@ public class PathView {
 		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
 		lineDirection2.setText(path.getDestinationStationName());
 		
+		if (path.isLineBarred()) {
+			pathView.findViewById(R.id.LineBarredKind).setVisibility(View.VISIBLE);
+		}
+		
 		pathView.setOnClickListener(clickListener);
 		//int evenOddColor = isOddItem ? R.color.frag_path_odd : R.color.frag_path_even;
 		//pathView.setBackgroundColor(res.getColor(evenOddColor));
