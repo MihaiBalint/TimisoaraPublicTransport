@@ -42,7 +42,7 @@
 	</style>
     <style name="LinePath">
         <item name="android:layout_width">40dp</item>
-		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_height">fill_parent</item>
         <item name="android:layout_marginLeft">-24dp</item>
         <item name="android:layout_marginRight">7dp</item>
     </style>

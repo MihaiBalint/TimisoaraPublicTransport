@@ -180,7 +180,8 @@ public class ViewTimes extends CityActivity {
 				: est.estimateTimeString());
 		stationTime.setTextColor(getResources().getColor(kind.colorId));
 		
-		timesRow.findViewById(R.id.LinePathLine).setBackgroundResource(last ? kind.line_bottom : kind.line_middle);
+		timesRow.findViewById(R.id.LinePathLine).setBackgroundResource(
+				last ? kind.line_bottom : kind.line_middle);
 		timesRow.findViewById(R.id.LinePathBullet).setBackgroundResource(kind.line_bullet);
 		
 		int background = R.drawable.row_back_odd;
@@ -223,8 +224,8 @@ public class ViewTimes extends CityActivity {
 				: est.estimateTimeString());
 		
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
-		View bullet = timesRow.findViewById(R.id.LinePathLine); 
-		bullet.setBackgroundResource(last ? R.drawable.line_middle_empty : kind.line_middle);
+		timesRow.findViewById(R.id.LinePathLine).setBackgroundResource(
+				last ? R.drawable.line_middle_empty : kind.line_middle); 
 		
 		int background = R.drawable.row_back_odd;
 		if (est.isUpdating()) {

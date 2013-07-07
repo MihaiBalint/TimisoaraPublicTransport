@@ -33,7 +33,7 @@
    	    android:visibility="visible" >
 	   	<ImageView android:id="@+id/LinePathLine"
 	   	    style="@style/PathBullet"
-	   	    android:layout_height="match_parent"
+	   	    android:layout_height="fill_parent"
 	   	    android:background="@drawable/line_middle_green"
 	   	    android:contentDescription="@string/app_settings"
 	   	/>
