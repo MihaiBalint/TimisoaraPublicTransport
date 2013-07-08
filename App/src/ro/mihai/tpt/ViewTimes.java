@@ -266,11 +266,6 @@ public class ViewTimes extends CityActivity {
 
 	private void updateVehicleDepartingBullet(Estimate.VehicleStatus vehicle, View thisRow, View nextRow) {
 		if (vehicle.isDeparting()) {
-			View departingBullet = thisRow.findViewById(R.id.VehicleDepartingBullet);
-			departingBullet.setVisibility(View.VISIBLE);
-			assert(nextRow!=null);
-			View nextArrivingBullet = nextRow.findViewById(R.id.VehicleArrivingBullet);
-			nextArrivingBullet.setVisibility(View.VISIBLE);
 			View nextBoardingBullet = nextRow.findViewById(R.id.VehicleBoardingBullet);
 			nextBoardingBullet.setVisibility(View.GONE);
 		}
