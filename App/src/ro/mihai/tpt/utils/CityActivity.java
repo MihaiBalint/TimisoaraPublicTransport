@@ -19,6 +19,8 @@ package ro.mihai.tpt.utils;
 
 import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.Preferences;
+import ro.mihai.tpt.R;
+import ro.mihai.tpt.data.Achievements;
 import ro.mihai.tpt.model.City;
 
 import android.app.Activity;
@@ -27,6 +29,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CityActivity extends Activity {
@@ -55,9 +58,21 @@ public class CityActivity extends Activity {
 		try {
 			this.onCreateCityActivity(savedInstanceState);
             new Upgrade(this).upgrade();
+            addAchievements();
 		} catch(CityNotLoadedException e) {
 			reboot();
 			finish();
+		}
+	}
+
+	private void addAchievements() {
+		Achievements achieve = getAppPreferences().getTopAchieve(); 
+		ImageView badge = (ImageView)findViewById(R.id.badge);
+		if (achieve.isVisible()) {
+			badge.setImageResource(achieve.getBadgeId());
+		    badge.setVisibility(View.VISIBLE);
+		} else {
+		    badge.setVisibility(View.GONE);
 		}
 	}
 	
@@ -78,6 +93,10 @@ public class CityActivity extends Activity {
 	
 	public void openContextMenu(View trigger) {
 		openOptionsMenu();
+	}
+
+	public void openAchievementsView(View trigger) {
+		// TODO
 	}
 	
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {

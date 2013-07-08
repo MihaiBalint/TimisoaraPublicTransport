@@ -29,8 +29,14 @@
         <item name="android:layout_width">20.0dp</item>
     </style>
     	
+    <style name="UserBadge" parent="LikeTitleContent">
+        <item name="android:layout_width">38.4dp</item>
+        <item name="android:scaleType">fitCenter</item>
+       	<item name="android:visibility">gone</item>
+    </style>
     <style name="MoreOptionsButton" parent="LikeTitleContent">
-        <item name="android:layout_width">30.0dp</item>
+       	<item name="android:paddingLeft">8.4dp</item>
+        <item name="android:layout_width">38.4dp</item>
     </style>
     <style name="PathRightArrow" parent="LikeTitleContent">
         <item name="android:layout_width">32.0dp</item>

@@ -35,7 +35,8 @@
 	<string name="app_settings">Settings</string>
 	<string name="app_credits">Author Credits</string>
 	<string name="switch_direction">Switch Direction</string>
-	
+	<string name="app_user_achieves">Medaliile calatorului</string>
+		
 	<string name="lblTrams">Tramvaie</string>
 	<string name="lblTrolleys">Troleibuze</string>
 	<string name="lblBus">Autobuze</string>

@@ -45,6 +45,13 @@
    	    android:layout_weight="1"
    	    android:background="#00000000" />
    	<ImageView
+   	    android:id="@+id/badge"
+   	    style="@style/UserBadge"
+   	    android:src="@drawable/badge_contributor"
+   	    android:contentDescription="@string/app_user_achieves"
+       	android:onClick="openAchievementsView"
+   	    />
+   	<ImageView
    	    android:id="@+id/menu_button"
    	    style="@style/MoreOptionsButton"
    	    android:src="@drawable/menu_light_button"

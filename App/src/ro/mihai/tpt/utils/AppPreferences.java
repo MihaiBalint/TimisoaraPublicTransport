@@ -31,6 +31,7 @@ import ro.mihai.tpt.analytics.AnalyticsService;
 import ro.mihai.tpt.analytics.Collector;
 import ro.mihai.tpt.analytics.IAnalyticsService;
 import ro.mihai.tpt.analytics.NoAnalyticsService;
+import ro.mihai.tpt.data.Achievements;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
@@ -101,6 +102,14 @@ public class AppPreferences implements IPrefs {
 		sharedPref.edit()
 			.putBoolean(pref_analytics_enabled, enabled)
 			.commit();
+	}
+
+	public Achievements getTopAchieve() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		if (sharedPref.getBoolean(pref_analytics_enabled, false)) {
+			return Achievements.Contributor;
+		} 
+		return Achievements.None;
 	}
 	
 	private IAnalyticsService service = null;
