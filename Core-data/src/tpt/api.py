@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 from flask import Flask, url_for, request, jsonify
 app = Flask(__name__)
