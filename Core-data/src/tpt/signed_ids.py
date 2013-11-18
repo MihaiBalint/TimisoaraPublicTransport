@@ -7,7 +7,7 @@ import subprocess
 
 
 def make_signatures(plain_id):
-    p = subprocess.popen(["gpg", "--clearsign", "--detach-sign"],
+    p = subprocess.Popen(["gpg", "--clearsign", "--detach-sign"],
                          stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     sig, _ = p.communicate(plain_id)
     sig_hash = hashlib.sha512(sig).hexdigest()
