@@ -15,4 +15,4 @@ def make_signatures(plain_id):
 
 if __name__ == '__main__':
     print("Plain: {0}\nHash: {2}\nSig: {1}".format(
-        make_signatures(sys.argv[1])))
+        *make_signatures(sys.argv[1])))
