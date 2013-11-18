@@ -29,3 +29,7 @@ def generate_device_id():
 def post_times_bundle():
 
     return 'Thank you\n'
+
+
+if __name__ == '__main__':
+    app.run()
