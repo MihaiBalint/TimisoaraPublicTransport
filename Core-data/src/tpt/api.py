@@ -1,3 +1,4 @@
+#!/bin/env python
 
 from flask import Flask, url_for, request, jsonify
 app = Flask(__name__)
@@ -16,7 +17,7 @@ def not_found(error=None):
 
 @app.route('/')
 def api_root():
-    return 'Welcome'
+    return 'Welcome\n'
 
 
 @app.route('/generate_device_id')
