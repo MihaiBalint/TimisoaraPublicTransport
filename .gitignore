@@ -6,6 +6,7 @@
 
 # Java class files
 *.class
+*.pyc
 
 # generated files
 bin/
