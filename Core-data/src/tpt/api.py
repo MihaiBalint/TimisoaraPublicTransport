@@ -9,7 +9,7 @@ import tpt.signed_ids
 
 def generate_device_id(cursor, used=True):
     entry_id = tpt.db.insert_new_device(cursor, used=used)
-    _, device_sig, device_hash = tpt.signed_ids.make_signatures(entry_id)
+    _, device_sig, device_hash = tpt.signed_ids.make_signatures(str(entry_id))
     tpt.db.insert_device_sig(cursor, entry_id, device_sig, device_hash)
     return device_hash
 
