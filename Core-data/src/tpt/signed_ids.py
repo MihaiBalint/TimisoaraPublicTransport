@@ -6,12 +6,18 @@ import sys
 import subprocess
 
 
+class SigningException(Exception):
+    pass
+
+
 def make_signatures(plain_id):
     p = subprocess.Popen(["gpg", "--clearsign", "--detach-sign"],
                          stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    sig, _ = p.communicate(plain_id)
-    sig_hash = hashlib.sha512(sig).hexdigest()
-    return (plain_id, sig, sig_hash)
+    out, err = p.communicate(str(plain_id))
+    if p.returncode != 0:
+        raise SigningException()
+    sig_hash = hashlib.sha512(out).hexdigest()
+    return (plain_id, out, sig_hash)
 
 
 if __name__ == '__main__':
