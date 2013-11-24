@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import contextlib
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
@@ -25,8 +26,21 @@ def do_api_root():
 
 @app.route('/generate_device_id')
 def do_generate_device_id():
-
-    return 'NONE\n'
+    try:
+        conn = tpt.db.open_connection()
+        try:
+            with contextlib.closing(conn.cursor()) as cursor:
+                device_id = tpt.tools.use_device_id(cursor)
+                conn.commit()
+                return device_id
+        except:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    except:
+        # TODO introduce logging
+        return 'NONE\n'
 
 
 @app.route('/post_times_bundle')
