@@ -11,11 +11,19 @@ _schema_name = _schema_template % _schema_version
 
 
 def open_connection():
-    host = os.environ.get("POSTGRES_HOST", "localhost")
+    host_port = os.environ.get("POSTGRES_HOST", "localhost:5432")
+    hp = host_port.split(":")
+    if len(hp) == 1:
+        host = hp
+        port = "5432"
+    else:
+        host = hp[0]
+        port = hp[1]
+
     db = os.environ.get("POSTGRES_DB", "py_db")
     user = os.environ.get("POSTGRES_USER", "py_user")
     password = os.environ.get("POSTGRES_PASS", "py_pass")
-    return psycopg2.connect(host=host, database=db,
+    return psycopg2.connect(host=host, database=db, port=port,
                             user=user, password=password)
 
 
