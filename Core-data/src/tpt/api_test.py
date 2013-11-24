@@ -15,7 +15,7 @@ class DeviceIdGeneration(tpt.db_test.DatabaseSetup, unittest.TestCase):
         tpt.db.create_database(self.conn)
         with contextlib.closing(self.conn.cursor()) as cursor:
             tpt.api.generate_device_id(cursor, used=False)
-            self.assertNotNone(tpt.db.use_free_device_hash(cursor))
+            self.assertIsNotNone(tpt.db.use_free_device_hash(cursor))
 
     def test_generate_used_device_id(self):
         tpt.db.create_database(self.conn)
