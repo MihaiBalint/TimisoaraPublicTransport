@@ -33,18 +33,18 @@ def not_found(error=None):
 
 
 @app.route('/')
-def api_root():
+def do_api_root():
     return 'Welcome\n'
 
 
 @app.route('/generate_device_id')
-def generate_device_id():
+def do_generate_device_id():
 
     return 'NONE\n'
 
 
 @app.route('/post_times_bundle')
-def post_times_bundle():
+def do_post_times_bundle():
 
     return 'Thank you\n'
 
