@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import contextlib
+import logging
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
@@ -38,8 +39,8 @@ def do_generate_device_id():
             raise
         finally:
             conn.close()
-    except:
-        # TODO introduce logging
+    except Exception as ex:
+        logging.exception("Could not obtain unused device id.")
         return 'NONE\n'
 
 
