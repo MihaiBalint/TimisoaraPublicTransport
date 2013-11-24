@@ -20,12 +20,12 @@ def not_found(error=None):
     return resp
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def do_api_root():
     return 'Welcome\n'
 
 
-@app.route('/generate_device_id')
+@app.route('/generate_device_id', methods=["GET", "POST"])
 def do_generate_device_id():
     try:
         conn = tpt.db.open_connection()
@@ -39,12 +39,12 @@ def do_generate_device_id():
             raise
         finally:
             conn.close()
-    except Exception as ex:
+    except Exception:
         logging.exception("Could not obtain unused device id.")
         return 'NONE\n'
 
 
-@app.route('/post_times_bundle')
+@app.route('/post_times_bundle', methods=["POST"])
 def do_post_times_bundle():
 
     return 'Thank you\n'
