@@ -40,14 +40,26 @@ def do_generate_device_id():
         finally:
             conn.close()
     except Exception:
-        logging.exception("Could not obtain unused device id.")
+        logging.exception("Error getting unused device id.")
         return 'NONE\n'
 
 
 @app.route('/post_times_bundle', methods=["POST"])
 def do_post_times_bundle():
-
-    return 'Thank you\n'
+    try:
+        conn = tpt.db.open_connection()
+        try:
+            with contextlib.closing(conn.cursor()) as cursor:
+                pass
+        except:
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    except Exception:
+        logging.exception("Error saving times bundle.")
+    finally:
+        return 'Thank you\n'
 
 
 if __name__ == '__main__':

@@ -76,8 +76,8 @@ def _create_times_table(cursor):
         "log_id serial PRIMARY KEY",
         "device_id integer",
         "reported timestamp with time zone",
-        "estmate1 varchar(32)",
-        "estmate2 varchar(32)",
+        "estimate1 varchar(32)",
+        "estimate2 varchar(32)",
         "est_timestamp varchar(128)",
         "route_id varchar(32)",
         "station_id varchar(32)",
@@ -101,13 +101,6 @@ def drop_database(connection):
         cursor.execute("DROP SCHEMA %s CASCADE;" % _schema_name)
 
 
-def get_device_entry_id(cursor, device_hash):
-    # Mostly used for testing
-    sql = "select device_id from %s.device_ids where hash=%%s limit 1;"
-    cursor.execute(sql % _schema_name, (device_hash,))
-    return cursor.fetchone()[0]
-
-
 def insert_new_device(cursor, used=False):
     if used:
         sql = "insert into %s.device_ids (used, first_seen) " \
@@ -126,6 +119,13 @@ def insert_device_sig(cursor, entry_id, device_sig, device_hash):
     cursor.execute(sql % _schema_name, (device_sig, device_hash, entry_id))
 
 
+def update_device_activity(cursor, device_hash):
+    sql = "update %s.device_ids set last_seen = now() " \
+        "where hash=%%s returning device_id;"
+    cursor.execute(sql % _schema_name, (device_hash, ))
+    return cursor.fetchone()[0]
+
+
 def use_free_device_hash(cursor):
     sql = "select device_id, hash from %s.device_ids where used=false " \
         "order by device_id limit 1 for update;"
@@ -139,6 +139,14 @@ def use_free_device_hash(cursor):
     cursor.execute(sql % _schema_name, (device_id,))
     cursor.connection.commit()
     return device_hash
+
+
+def insert_estimate(cursor, device_hash, e1, e2, et, rid, sid):
+    device_id = update_device_activity(cursor, device_hash)
+    sql = "insert into %s.times_log (device_id, reported, estimate1, " \
+        "estimate2, est_timestamp, route_id, station_id) " \
+        "values (%%s, now(), %%s, %%s, %%s, %%s, %%s);"
+    cursor.execute(sql % _schema_name, (device_id, e1, e2, et, rid, sid))
 
 
 class PreviousDataNotFound(Exception):

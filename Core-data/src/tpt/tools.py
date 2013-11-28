@@ -28,6 +28,8 @@ def generate_unused_ids(conn, count):
             while count > 0:
                 generate_device_id(cursor, used=False)
                 count -= 1
+                if (count % 100) == 0:
+                    conn.commit()
     finally:
         conn.commit()
 
