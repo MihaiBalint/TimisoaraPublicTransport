@@ -50,12 +50,14 @@ def do_post_times_bundle():
         conn = tpt.db.open_connection()
         try:
             with contextlib.closing(conn.cursor()) as cursor:
-                pass
+                tpt.tools.insert_times_log(cursor, request.stream)
         except:
             conn.rollback()
             raise
         finally:
             conn.close()
+    except tpt.db.ItemNotFoundException:
+        return not_found()
     except Exception:
         logging.exception("Error saving times bundle.")
     finally:

@@ -10,6 +10,10 @@ _schema_template = "tpt%.4d"
 _schema_name = _schema_template % _schema_version
 
 
+class ItemNotFoundException(Exception):
+    pass
+
+
 def open_connection():
     host_port = os.environ.get("POSTGRES_HOST", "localhost:5432")
     hp = host_port.split(":")
@@ -123,7 +127,10 @@ def update_device_activity(cursor, device_hash):
     sql = "update %s.device_ids set last_seen = now() " \
         "where hash=%%s returning device_id;"
     cursor.execute(sql % _schema_name, (device_hash, ))
-    return cursor.fetchone()[0]
+    result = cursor.fetchone()
+    if result is None:
+        raise ItemNotFoundException()
+    return result[0]
 
 
 def use_free_device_hash(cursor):
@@ -141,8 +148,7 @@ def use_free_device_hash(cursor):
     return device_hash
 
 
-def insert_estimate(cursor, device_hash, e1, e2, et, rid, sid):
-    device_id = update_device_activity(cursor, device_hash)
+def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
     sql = "insert into %s.times_log (device_id, reported, estimate1, " \
         "estimate2, est_timestamp, route_id, station_id) " \
         "values (%%s, now(), %%s, %%s, %%s, %%s, %%s);"

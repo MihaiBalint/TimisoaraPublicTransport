@@ -3,6 +3,8 @@ from __future__ import print_function
 
 import argparse
 import contextlib
+import csv
+import StringIO
 
 import tpt.db
 import tpt.signed_ids
@@ -20,6 +22,21 @@ def use_device_id(cursor):
     if device_hash is not None:
         return device_hash
     return generate_device_id(cursor)
+
+
+def insert_times_log(cursor, data_stream):
+    device_addr = data_stream.readline(100).strip()
+    device_hash = data_stream.readline(140).strip()
+    device_id = tpt.db.update_device_activity(cursor, device_hash)
+    reader = csv.reader(data_stream, delimiter=",", quotechar='"',
+                        lineterminator="\n", quoting=csv.QUOTE_ALL,
+                        skipinitialspace=True)
+    for row in reader:
+        if len(row) != 5:
+            continue
+        strip_row = [e.strip() for e in row]
+        tpt.db.insert_estimate(cursor, device_id, *strip_row)
+    cursor.connection.commit()
 
 
 def generate_unused_ids(conn, count):

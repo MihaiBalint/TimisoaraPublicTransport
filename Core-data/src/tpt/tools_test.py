@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import contextlib
+import StringIO
 import unittest
 
 import tpt.db
@@ -46,3 +47,19 @@ class DeviceIdGeneration(tpt.db_test.DatabaseSetup, unittest.TestCase):
             for _ in range(5):
                 self.assertIsNotNone(tpt.db.use_free_device_hash(cursor))
             self.assertIsNone(tpt.db.use_free_device_hash(cursor))
+
+    def test_insert_times_log(self):
+        data = """"3min", "15:25", "2013-11-29 00:17:49", "1111", "2222"
+"4min", "15:28", "2013-11-29 00:17:49", "1112", "3333"
+
+"""
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            device_hash = tpt.tools.use_device_id(cursor)
+            device_id = self._get_device_entry_id(cursor, device_hash)
+
+            head = "192.168.0.253\r\n%s\r\n" % device_hash
+            tpt.tools.insert_times_log(cursor, StringIO.StringIO(head + data))
+            rt, e1, e2, et, rid, sid = self._get_times_log(cursor, device_id)
+            self.assertEqual(
+                (e1, e2, et, rid, sid),
+                ("3min", "15:25", "2013-11-29 00:17:49", "1111", "2222"))
