@@ -76,5 +76,9 @@
 	
     <string name="lblAffirmative">Yes</string>
     <string name="lblNegative">No</string>
-		
+
+    <string name="achvYourName">Your name here</string>
+    <string name="achvPhila">Philanthropist</string>
+    <string name="achvPhilaDesc">Helps improve estimate accuracy.</string>
+    
 </resources>

@@ -20,6 +20,7 @@ package ro.mihai.tpt.utils;
 import ro.mihai.tpt.LoadCity;
 import ro.mihai.tpt.Preferences;
 import ro.mihai.tpt.R;
+import ro.mihai.tpt.ViewUserCredits;
 import ro.mihai.tpt.data.Achievements;
 import ro.mihai.tpt.model.City;
 
@@ -96,7 +97,8 @@ public class CityActivity extends Activity {
 	}
 
 	public void openAchievementsView(View trigger) {
-		// TODO
+		Intent userCredits = new Intent().setClass(this, ViewUserCredits.class);
+        startActivity(userCredits);
 	}
 	
 	protected void onCreateCityActivity(Bundle savedInstanceState) throws CityNotLoadedException {
@@ -129,6 +131,7 @@ public class CityActivity extends Activity {
             // The preferences returned if the request code is what we had given
             // earlier in startSubActivity
         	getAppPreferences().refreshBaseUrl();
+        	addAchievements();
         	break;
         }
     }

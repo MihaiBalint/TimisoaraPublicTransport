@@ -51,6 +51,7 @@
         <activity android:name="ro.mihai.tpt.ViewCatTrolleys" />
         <activity android:name="ro.mihai.tpt.ViewTimes" />
         <activity android:name="ro.mihai.tpt.ViewCredits" />
+        <activity android:name="ro.mihai.tpt.ViewUserCredits" />
         <activity android:name="ro.mihai.tpt.Preferences" />
         <service android:name=".data.DataService"
             android:permission="android.permission.INTERNET"

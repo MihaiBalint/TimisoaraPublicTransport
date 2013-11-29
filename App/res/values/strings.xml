@@ -76,5 +76,10 @@
 	
     <string name="lblAffirmative">Da</string>
     <string name="lblNegative">Nu</string>
+    
+    <string name="achvYourName">Aici numele tau</string>
+    <string name="achvPhila">Filantrop</string>
+    <string name="achvPhilaDesc">Contribuie la imbunatatirea estimarilor</string>
+    
 		
 </resources>
