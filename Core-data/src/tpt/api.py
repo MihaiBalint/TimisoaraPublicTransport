@@ -44,7 +44,7 @@ def do_generate_device_id():
         return 'NONE\n'
 
 
-@app.route('/post_times_bundle', methods=["POST"])
+@app.route('/post_times_bundle', methods=["POST", "GET"])
 def do_post_times_bundle():
     try:
         conn = tpt.db.open_connection()
@@ -60,7 +60,8 @@ def do_post_times_bundle():
         return not_found()
     except Exception:
         logging.exception("Error saving times bundle.")
-    finally:
+        return 'Not saved, thank you anyway\n'
+    else:
         return 'Thank you\n'
 
 

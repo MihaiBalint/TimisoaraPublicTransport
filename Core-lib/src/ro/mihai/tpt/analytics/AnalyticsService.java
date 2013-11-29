@@ -8,20 +8,31 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class AnalyticsService implements IAnalyticsService {
-	private String remoteAddress;
+	private String remoteAddress, baseUrl;
 	private int remotePort;
 	
-	public AnalyticsService(String remoteAddress, int remotePort) {
+	public AnalyticsService(String remoteAddress, int remotePort, String baseUrl) {
+		this.baseUrl = baseUrl;
 		this.remoteAddress = remoteAddress;
 		this.remotePort = remotePort;
 	}
 	
-	private String getHeaders(String service) {
-		return "POST /tpt-analytics/"+service+" HTTP/1.1\r\n"+
+	public AnalyticsService(String remoteAddress, int remotePort) {
+		this(remoteAddress, remotePort, "/tpt-analytics");
+	}
+	
+	
+	private String getHeaders(String service, int contentLength) {
+		/*
+		 * ('Content-Length', u'251'),  
+		*/
+		return "POST "+this.baseUrl+"/"+service+" HTTP/1.1\r\n"+
+				"Content-Length: "+contentLength+"\r\n"+
 				"Host: "+remoteAddress+":"+remotePort+"\r\n"+
 				"User-Agent: App\r\n"+
-				"Accept: text/html\r\n"+
+				"Accept: */*\r\n"+
 				"Referer: App\r\n"+
+				"Content-Type: application/x-www-form-urlencoded\r\n"+
 				"Connection: close\r\n";
 	}
 	
@@ -34,9 +45,10 @@ public class AnalyticsService implements IAnalyticsService {
 		OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
 		InputStream is = sock.getInputStream();
 		String local = sock.getLocalAddress().getHostAddress();
-		os.write(getHeaders(service));
+		String content = getContent(local, data);
+		os.write(getHeaders(service, content.length()));
 		os.write("\r\n");
-		os.write(getContent(local, data));
+		os.write(content);
 		os.flush();
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
