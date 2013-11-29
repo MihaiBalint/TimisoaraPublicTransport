@@ -23,9 +23,6 @@ public class AnalyticsService implements IAnalyticsService {
 	
 	
 	private String getHeaders(String service, int contentLength) {
-		/*
-		 * ('Content-Length', u'251'),  
-		*/
 		return "POST "+this.baseUrl+"/"+service+" HTTP/1.1\r\n"+
 				"Content-Length: "+contentLength+"\r\n"+
 				"Host: "+remoteAddress+":"+remotePort+"\r\n"+
