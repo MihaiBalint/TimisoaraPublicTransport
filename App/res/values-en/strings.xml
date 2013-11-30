@@ -71,7 +71,7 @@
 	<string name="lblExampleLineKind">troleibuz</string>
 	<string name="lblExampleDeparture">Catedrala Mitropolitana</string>
 	<string name="lblExampleArrival">Pod Calea Sagului</string>
-	<string name="lblExampleTime">77 min</string>
+	<string name="lblExampleTime">7 min</string>
 	<string name="lblExampleError">Network/Internet error</string>
 	
     <string name="lblAffirmative">Yes</string>

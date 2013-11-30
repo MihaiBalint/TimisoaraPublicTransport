@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+    TimisoaraPublicTransport - display public transport information on your device
+    Copyright (C) 2011  Mihai Balint
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+
+    <include
+		layout="@layout/frag_times_path2"
+		/>
+*/
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dip"
+    style="@style/LikeTitleContainer"
+    android:background="@drawable/widget_back_selector">
+
+   	<LinearLayout
+        style="@style/LikeTitleIcon"
+       	android:layout_height="wrap_content"
+       	android:orientation="vertical"
+       	android:gravity="center_horizontal">
+		
+   	    <RelativeLayout
+	   	    android:layout_width="fill_parent"
+	   	    android:layout_height="wrap_content"
+   	        >
+	   	    <TextView android:id="@+id/LineName"
+	   	        style="@style/PathLineLabel"
+	   	        android:layout_width="wrap_content"
+	   	        android:layout_height="wrap_content"
+	   	        android:layout_centerHorizontal="true"
+	   	        android:gravity="center_horizontal"
+	   	        android:minEms="2"
+		       	android:lines="1"
+	   	        android:text="@string/lblExampleLine"
+	   	        android:textColor="@color/vehicle_bus"
+	   	        />
+	       	<ImageView android:id="@+id/LineBarredKind"
+	       	    android:src="@drawable/barat"
+	   	        android:layout_width="1dp"
+	   	        android:layout_height="1dp"
+	   	        android:layout_alignLeft="@id/LineName"
+	   	        android:layout_alignRight="@id/LineName"
+	   	        android:layout_alignTop="@id/LineName"
+	   	        android:layout_alignBottom="@id/LineName"
+	   	        android:layout_marginBottom="-8dp"
+	       	    android:scaleType="fitCenter"
+	       	    android:contentDescription="@string/lblBarredLine"
+	       	    android:visibility="gone"
+	       	    />
+   	    </RelativeLayout>
+       	<TextView android:id="@+id/LineKind"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content"
+	       	android:gravity="center_horizontal"
+	       	android:lines="1"
+  			android:text="@string/lblExampleLineKind"
+			android:textColor="@color/vehicle_bus"
+	   		android:textSize="12sp"
+	   		/>
+   	</LinearLayout>
+    
+   	<LinearLayout
+   	    android:id="@+id/DepartureStation"
+   	    style="@style/StandardHItem"
+   	    android:layout_height="wrap_content"
+   	    android:layout_width="0dp"
+   	    android:layout_weight="1"
+   	    android:gravity="center_vertical"
+   	    android:orientation="vertical" >
+
+	    <TextView android:id="@+id/StationLabel"
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="#FF555555"
+		  	android:text="@string/lblExampleDeparture"
+			android:textSize="14sp"
+			android:lineSpacingExtra="-3dp"
+	        />
+	    <TextView android:id="@+id/StationTime"
+	        android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:textColor="@color/vehicle_bus"
+		  	android:text="@string/lblExampleTime"
+			android:textSize="20sp"
+	        />
+   	</LinearLayout>
+    
+    <ImageView
+   	    android:id="@+id/DirectionChanger"
+   	    style="@style/PathRightArrow"
+   	    android:src="@drawable/arrow_right_button"
+   	    android:scaleType="centerCrop"
+   	    android:contentDescription="@string/selPathLabel"
+   	    />
+    <TextView android:id="@+id/DestinationStationLabel"
+   	    style="@style/StandardHItem"
+       	android:layout_width="0dp"
+   	    android:layout_weight="1"
+		android:layout_height="fill_parent"
+		android:textColor="#FF555555"
+	  	android:text="@string/lblExampleArrival"
+		android:textSize="14sp"
+		android:gravity="center_vertical"
+        />
+   	<ImageView
+   	    android:id="@+id/UpdateButton"
+   	    style="@style/InlineUpdateButton"
+   	    android:src="@drawable/upd_button"
+   	    android:scaleType="centerCrop"
+   	    />
+</LinearLayout> 

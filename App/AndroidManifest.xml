@@ -62,5 +62,14 @@
 				<action android:name="ro.mihai.tpt.UPDATE_STATIONS" />
 			</intent-filter>
 		</service>
+        <receiver android:name="ro.mihai.tpt.WidgetStation" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/station_widget_provider" />
+        </receiver>        
+        		
     </application>
 </manifest> 
