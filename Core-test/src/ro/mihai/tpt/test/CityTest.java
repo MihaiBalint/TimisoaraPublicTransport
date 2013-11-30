@@ -176,7 +176,7 @@ public class CityTest {
 				knownKinds.add(line);
 		for(Line l : c.getLines())
 			if (!knownKinds.contains(l.getName()))
-				missingKinds += "Cinty has line of unknown kind: "+l.getName()+"\n";
+				missingKinds += "City has line of unknown kind: "+l.getName()+"\n";
 		assertEquals("", missingKinds);
 	}
 	

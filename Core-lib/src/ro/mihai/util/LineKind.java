@@ -9,7 +9,7 @@ public enum LineKind {
 	TROLLEY("Tb11","Tb14","Tb15","Tb16","Tb17","Tb18"), 
 	BUS("3","13","21","22","28","32","33","33b","40","46"),
 	EXPRESS("E1","E2","E3","E4","E4b","E6","E7", "E33"),
-	METRO("M30","M35","M36","M44");
+	METRO("M30","M35","M44", "M45");
 	
 	private final String[] names;
 	
