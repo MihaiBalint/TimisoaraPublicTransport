@@ -52,7 +52,10 @@
 			android:layout_marginLeft="20dp"
 			android:textColor="#FF000000"
 			android:textSize="30dp"
-			android:gravity="left"/>
+			android:gravity="left"
+			android:onClick="changeYourName"
+			android:clickable="true"
+			/>
         <ImageView
 	   	    android:id="@+id/medal1"
 	   	    android:src="@drawable/medal1_shadow"

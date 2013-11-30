@@ -50,6 +50,7 @@ public class AppPreferences implements IPrefs {
 	private String pref_analytics_cache;
 	private String pref_current_version;
 	private String pref_favorite_paths;
+	private String pref_achieve_name;
 	
 	public AppPreferences(Context ctx) {
 		this.ctx = ctx;
@@ -59,6 +60,7 @@ public class AppPreferences implements IPrefs {
 		pref_analytics_cache = ctx.getString(R.string.pref_analytics_cache);
 		pref_current_version = ctx.getString(R.string.pref_current_version);
 		pref_favorite_paths = ctx.getString(R.string.pref_favorite_paths);
+		pref_achieve_name = ctx.getString(R.string.pref_achieve_name);
 		this.collector = new Collector(this, getDeviceId());
 	}
 	
@@ -110,6 +112,19 @@ public class AppPreferences implements IPrefs {
 			return Achievements.Contributor;
 		} 
 		return Achievements.None;
+	}
+	
+	public String getAchieveUserName() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		return sharedPref.getString(pref_achieve_name, "");
+		
+	}
+	
+	public void setAchieveUserName(String name) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		sharedPref.edit()
+			.putString(pref_achieve_name, name)
+			.commit();
 	}
 	
 	private IAnalyticsService service = null;
