@@ -7,9 +7,9 @@ import ro.mihai.tpt.model.Line;
 public enum LineKind {
 	TRAM("Tv1","Tv2","Tv4","Tv5","Tv6","Tv7","Tv8","Tv9"), 
 	TROLLEY("Tb11","Tb14","Tb15","Tb16","Tb17","Tb18"), 
-	BUS("3","13","21","22","28","32","33","33b","40","46"),
+	BUS("3","13","21","22","28","29","32","33","33b","40","46"),
 	EXPRESS("E1","E2","E3","E4","E4b","E6","E7", "E33"),
-	METRO("M30","M35","M44", "M45");
+	METRO("M30","M35","M43","M44", "M45");
 	
 	private final String[] names;
 	

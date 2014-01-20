@@ -88,7 +88,7 @@
 	    <TextView android:id="@+id/StationLabel"
 	        android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
-			android:textColor="#FF555555"
+			android:textColor="#FFE0E0E0"
 		  	android:text="@string/lblExampleDeparture"
 			android:textSize="14sp"
 			android:lineSpacingExtra="-3dp"
@@ -105,7 +105,7 @@
     <ImageView
    	    android:id="@+id/DirectionChanger"
    	    style="@style/PathRightArrow"
-   	    android:src="@drawable/arrow_right_button"
+   	    android:src="@drawable/btn_w_arrow_right_high"
    	    android:scaleType="centerCrop"
    	    android:contentDescription="@string/selPathLabel"
    	    />
@@ -114,7 +114,7 @@
        	android:layout_width="0dp"
    	    android:layout_weight="1"
 		android:layout_height="fill_parent"
-		android:textColor="#FF555555"
+		android:textColor="#FFE0E0E0"
 	  	android:text="@string/lblExampleArrival"
 		android:textSize="14sp"
 		android:gravity="center_vertical"
