@@ -5,7 +5,7 @@ import contextlib
 import psycopg2
 import os
 
-_schema_version = 1
+_schema_version = 2
 _schema_template = "tpt%.4d"
 _schema_name = _schema_template % _schema_version
 
@@ -56,10 +56,14 @@ def _create_tpt_schema(cursor):
     cursor.execute("CREATE SCHEMA %s;" % _schema_name)
 
 
-def _create_ids_table(cursor):
-    ids_table = "device_ids"
-    if exists_table(cursor, _schema_name, ids_table):
+def _create_table(cursor, table_name, ddl):
+    if exists_table(cursor, _schema_name, table_name):
         return
+    cursor.execute("CREATE TABLE %s.%s(%s);" %
+                   (_schema_name, table_name, ", ".join(ddl)))
+
+
+def _create_ids_table(cursor):
     ddl = [
         "device_id serial PRIMARY KEY",
         "sig varchar(1024) UNIQUE",
@@ -68,14 +72,10 @@ def _create_ids_table(cursor):
         "first_seen timestamp with time zone",
         "last_seen timestamp with time zone",
         ]
-    cursor.execute("CREATE TABLE %s.%s(%s);" %
-                (_schema_name, ids_table, ", ".join(ddl)))
+    _create_table(cursor, "device_ids", ddl)
 
 
 def _create_times_table(cursor):
-    times_table = "times_log"
-    if exists_table(cursor, _schema_name, times_table):
-        return
     ddl = [
         "log_id serial PRIMARY KEY",
         "device_id integer",
@@ -89,8 +89,48 @@ def _create_times_table(cursor):
             "REFERENCES %s.device_ids (device_id) MATCH SIMPLE " \
             "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
         ]
-    cursor.execute("CREATE TABLE %s.%s(%s);" %
-                (_schema_name, times_table, ", ".join(ddl)))
+    _create_table(cursor, "times_log", ddl)
+
+
+def _create_routes_table(cursor):
+    ddl = [
+        "route_id serial PRIMARY KEY",
+        "title varchar(32)",
+        "vehicle_type integer",
+        "is_barred boolean",
+        "route_extid varchar(32)",
+        ]
+    _create_table(cursor, "routes", ddl)
+
+
+def _create_stops_table(cursor):
+    ddl = [
+        "stop_id serial PRIMARY KEY",
+        "title varchar(32)",
+        "short_title varchar(32)",
+        "gps_pos point",
+        "is_station boolean",
+        "stop_extid varchar(32)",
+        ]
+    _create_table(cursor, "stops", ddl)
+
+
+def _create_route_stops_table(cursor):
+    ddl = [
+        "route_stop_id serial UNIQUE",
+        "route_id integer",
+        "stop_id integer",
+        "stop_index integer",
+        "is_enabled boolean",
+        "CONSTRAINT route_stops_fk1 FOREIGN KEY (route_id) " \
+            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+        "CONSTRAINT route_stops_fk2 FOREIGN KEY (stop_id) " \
+            "REFERENCES %s.stops (stop_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+        "PRIMARY KEY(route_id, stop_id, stop_index)"
+        ]
+    _create_table(cursor, "route_stops", ddl)
 
 
 def create_database(connection):
@@ -98,6 +138,9 @@ def create_database(connection):
         _create_tpt_schema(cursor)
         _create_ids_table(cursor)
         _create_times_table(cursor)
+        _create_routes_table(cursor)
+        _create_stops_table(cursor)
+        _create_route_stops_table(cursor)
 
 
 def drop_database(connection):
@@ -160,17 +203,29 @@ class PreviousDataNotFound(Exception):
 
 
 def _migrate_data(cursor, previous_schema):
-    pass
+    _create_tpt_schema(cursor)
+    cursor.execute("alter table %s.device_ids set schema %s;" % (
+            previous_schema, _schema_name))
+    cursor.execute(
+        "create view %s.device_ids as select * from %s.device_ids;" %
+        (previous_schema, _schema_name))
+    cursor.execute("alter table %s.times_log set schema %s;" % (
+            previous_schema, _schema_name))
+    cursor.execute(
+        "create view %s.times_log as select * from %s.times_log;" %
+        (previous_schema, _schema_name))
 
 
 def migrate_database(connection):
-    drop_database(connection)
-    create_database(connection)
+    with contextlib.closing(connection.cursor()) as cursor:
+        if exists_schema(cursor, _schema_name):
+            drop_database(connection)
     previous_schema = _schema_template % (_schema_version - 1)
     with contextlib.closing(connection.cursor()) as cursor:
         if not exists_schema(cursor, previous_schema):
             raise PreviousDataNotFound("Missing schema: %s " % previous_schema)
         _migrate_data(cursor, previous_schema)
+    create_database(connection)
 
 if __name__ == '__main__':
     pass

@@ -8,8 +8,8 @@ import unittest
 import tpt.db
 
 
-def patch_schema():
-    tpt.db._schema_version = 1
+def patch_schema(version=2):
+    tpt.db._schema_version = version
     tpt.db._schema_template = "tpt_testing%.4d"
     test_schema = tpt.db._schema_template % tpt.db._schema_version
     tpt.db._schema_name = test_schema
@@ -121,3 +121,70 @@ class DatabaseCreation(DatabaseSetup, unittest.TestCase):
 
             now = datetime.datetime.now(rt.tzinfo)
             self.assertTrue((now - rt).total_seconds() <= 2)
+
+
+class DatabaseMigration(DatabaseSetup, unittest.TestCase):
+
+    def _insert_data(self):
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            entry_id1 = tpt.db.insert_new_device(cursor, used=False)
+            tpt.db.insert_device_sig(cursor, entry_id1, "sig1", "hash1")
+            tpt.db.update_device_activity(cursor, "hash1")
+            tpt.db.insert_estimate(cursor, entry_id1, "3min", "15:25",
+                                   "2013-11-29 00:17:49", "1111", "2222")
+            return entry_id1
+
+    def _assert_data(self, entry_id1):
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            self.assertEqual(self._get_device_entry_id(cursor, "hash1"),
+                             entry_id1)
+            rt, e1, e2, et, rid, sid = self._get_times_log(cursor, entry_id1)
+            self.assertEqual(
+                (e1, e2, et, rid, sid),
+                ("3min", "15:25", "2013-11-29 00:17:49", "1111", "2222"))
+
+    def tearDown(self):
+        patch_schema(1)
+        tpt.db.drop_database(self.conn)
+        patch_schema(2)
+        tpt.db.drop_database(self.conn)
+        self.conn.commit()
+        self.conn.close()
+
+    def test_migrated_data(self):
+        # create old data
+        patch_schema(1)
+        tpt.db.create_database(self.conn)
+        entry_id1 = self._insert_data()
+
+        # assert migrated data
+        patch_schema(2)
+        tpt.db.migrate_database(self.conn)
+        self._assert_data(entry_id1)
+
+    def test_legacy_reads_post_migration(self):
+        # create old data
+        patch_schema(1)
+        tpt.db.create_database(self.conn)
+        entry_id1 = self._insert_data()
+
+        patch_schema(2)
+        tpt.db.migrate_database(self.conn)
+        # assert legacy data
+        patch_schema(1)
+        self._assert_data(entry_id1)
+
+    def test_legacy_writes_post_migration(self):
+        # migrate empty database
+        patch_schema(1)
+        tpt.db.create_database(self.conn)
+        patch_schema(2)
+        tpt.db.migrate_database(self.conn)
+
+        # insert in legacy database
+        patch_schema(1)
+        entry_id1 = self._insert_data()
+
+        # assert data in current database
+        patch_schema(2)
+        self._assert_data(entry_id1)

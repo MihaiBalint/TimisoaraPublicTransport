@@ -65,5 +65,59 @@ def do_post_times_bundle():
         return 'Thank you\n'
 
 
+def _get_fields():
+    fields = request.args.get('fields', "").split(",")
+    return tuple(f.strip() for f in fields if f.strip())
+
+
+def _mock_route(fields):
+    r1 = {"id": 123, "extid": "1456", "title": "40",
+          "vehicleType": 2, "isBarred": False,
+          "departure": "Str. Gheorghe Baritiu",
+          "destination": "Str. Ion Ionescu de la Brad"}
+    result = {"status": "success", "routes": [r1]}
+    return jsonify(result)
+
+
+def _mock_route_stops(fields):
+    s1 = {"id": 123, "extid": "1234", "title": "Catedrala Mitropolitana",
+          "next_eta": "1min"}
+    s2 = {"id": 123, "extid": "1234", "title": "Pod C. Sagului",
+          "next_eta": "2min"}
+    result = {"status": "success", "stops": [s1, s2]}
+    return jsonify(result)
+
+
+@app.route('/v1/routes/<route_id>', methods=["GET"])
+def get_routes(route_id):
+    fields = _get_fields()
+    return _mock_route(fields)
+
+
+@app.route('/v1/city/<city_id>/<route_type>/routes', methods=["GET"])
+def get_routes_by_type(city_id, route_type):
+    fields = _get_fields()
+    return _mock_route(fields)
+
+
+@app.route('/v1/route/<route_id>/stops', methods=["GET"])
+def get_route_stops(route_id):
+    fields = _get_fields()
+    return _mock_route_stops(fields)
+
+
+@app.route('/v1/route/<route_id>/eta', methods=["GET"])
+def get_route_eta(route_id):
+    fields = _get_fields()
+    result = {"status": "error", "message": "Not implemented"}
+    return jsonify(result)
+
+
+@app.route('/v1/eta/<route_ext_id>/<stop_ext_id>', methods=["GET"])
+def get_eta(route_ext_id, stop_ext_id):
+    return jsonify({"eta": "7min"})
+
+
 if __name__ == '__main__':
+    app.debug = True
     app.run(host="0.0.0.0", port=8080)
