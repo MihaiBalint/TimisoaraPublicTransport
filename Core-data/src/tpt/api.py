@@ -70,13 +70,39 @@ def _get_fields():
     return tuple(f.strip() for f in fields if f.strip())
 
 
-def _mock_route(fields):
-    r1 = {"id": 123, "extid": "1456", "title": "40",
-          "vehicleType": 2, "isBarred": False,
-          "departure": "Str. Gheorghe Baritiu",
-          "destination": "Str. Ion Ionescu de la Brad"}
-    result = {"status": "success", "routes": [r1]}
-    return jsonify(result)
+def _map_routes(cursor, fields, routes):
+    route_map = ["route_id", "title", "vehicle_type", "is_barred",
+                 "route_extid", "route_exttitle"]
+    departure = "departure"
+    destination = "destination"
+    for route in routes:
+        item_dict = dict((k, v) for k, v in zip(route_map, route)
+                         if k in fields)
+        stations = tpt.db.find_route_stations(cursor, route[0])
+        if departure in fields:
+            item_dict[departure] = stations[0][2]
+        if destination in fields:
+            item_dict[destination] = stations[-1][2]
+        yield item_dict
+
+
+def _do_any_routes(route_gen):
+    result = []
+    status = "success"
+    conn = tpt.db.open_connection()
+    try:
+        with contextlib.closing(conn.cursor()) as cursor:
+            # TODO: paginate routes
+            result = list(_map_routes(
+                    cursor, _get_fields(), route_gen(cursor)))
+    except:
+        status = "error"
+        raise
+    finally:
+        conn.close()
+    return jsonify({
+            "status": status,
+            "routes": result})
 
 
 def _mock_route_stops(fields):
@@ -89,15 +115,44 @@ def _mock_route_stops(fields):
 
 
 @app.route('/v1/routes/<route_id>', methods=["GET"])
-def get_routes(route_id):
-    fields = _get_fields()
-    return _mock_route(fields)
+def do_routes(route_id):
+    def routes_gen(cursor):
+        if route_id:
+            return [tpt.db.find_route(cursor, route_id)]
+        else:
+            return tpt.db.find_all_active_routes(cursor)
+    return _do_any_routes(routes_gen)
 
 
-@app.route('/v1/city/<city_id>/<route_type>/routes', methods=["GET"])
-def get_routes_by_type(city_id, route_type):
-    fields = _get_fields()
-    return _mock_route(fields)
+@app.route('/v1/cities/<city_id>/tram/routes', methods=["GET"])
+def do_tram_routes(city_id):
+    def routes_gen(cursor):
+        return tpt.db.find_active_routes_by_type(cursor, city_id, 0)
+    return _do_any_routes(routes_gen)
+
+
+@app.route('/v1/cities/<city_id>/trolleybus/routes', methods=["GET"])
+def do_trollebus_routes(city_id):
+    def routes_gen(cursor):
+        return tpt.db.find_active_routes_by_type(cursor, city_id, 1)
+    return _do_any_routes(routes_gen)
+
+
+@app.route('/v1/cities/<city_id>/any_bus/routes', methods=["GET"])
+def do_any_bus_routes(city_id):
+    def routes_gen(cursor):
+        buses = tpt.db.find_active_routes_by_type(cursor, city_id, 2)
+        express = tpt.db.find_active_routes_by_type(cursor, city_id, 3)
+        metro = tpt.db.find_active_routes_by_type(cursor, city_id, 4)
+        return buses + express + metro
+    return _do_any_routes(routes_gen)
+
+
+@app.route('/v1/cities/<city_id>/favorite/routes', methods=["GET"])
+def do_favorite_routes(city_id):
+    def routes_gen(cursor):
+        return tpt.db.find_favorite_routes(cursor)
+    return _do_any_routes(routes_gen)
 
 
 @app.route('/v1/route/<route_id>/stops', methods=["GET"])

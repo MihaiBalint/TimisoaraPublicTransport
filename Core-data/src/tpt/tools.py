@@ -4,9 +4,9 @@ from __future__ import print_function
 import argparse
 import contextlib
 import csv
-import StringIO
 
 import tpt.db
+import tpt.db_import
 import tpt.signed_ids
 
 
@@ -59,6 +59,16 @@ def _drop_db(options, conn):
     tpt.db.drop_database(conn)
 
 
+def _migrate_db(options, conn):
+    tpt.db.migrate_database(conn)
+
+
+def _import_db(options, conn):
+    with contextlib.closing(conn.cursor()) as cursor, \
+            open(options.csv_file, "rb") as csvfile:
+        tpt.db_import.import_big_csv(csvfile, cursor)
+
+
 def _generate_batch(options, conn):
     generate_unused_ids(conn, options.batch_size)
 
@@ -76,6 +86,16 @@ def main_tools():
     parser_drop = subparsers.add_parser(
         "drop-db", help="drop schema and tables and delete all data.")
     parser_drop.set_defaults(func=_drop_db)
+
+    parser_migrate = subparsers.add_parser(
+        "migrate-db", help="migrate schema and tables to current version.")
+    parser_migrate.set_defaults(func=_migrate_db)
+
+    parser_import = subparsers.add_parser(
+        "import-rs-db", help="Import static route and stop data from file.")
+    parser_import.add_argument(
+        "csv_file", help="CSV file with the import data")
+    parser_import.set_defaults(func=_import_db)
 
     parser_gen_ids = subparsers.add_parser(
         "generate-batch",

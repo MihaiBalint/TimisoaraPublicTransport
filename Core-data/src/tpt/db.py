@@ -99,6 +99,7 @@ def _create_routes_table(cursor):
         "vehicle_type integer",
         "is_barred boolean",
         "route_extid varchar(32)",
+        "route_exttitle varchar(32)"
         ]
     _create_table(cursor, "routes", ddl)
 
@@ -106,11 +107,12 @@ def _create_routes_table(cursor):
 def _create_stops_table(cursor):
     ddl = [
         "stop_id serial PRIMARY KEY",
-        "title varchar(32)",
-        "short_title varchar(32)",
+        "title varchar(512)",
+        "short_title varchar(512)",
         "gps_pos point",
         "is_station boolean",
         "stop_extid varchar(32)",
+        "stop_exttitle varchar(512)",
         ]
     _create_table(cursor, "stops", ddl)
 
@@ -196,6 +198,79 @@ def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
         "estimate2, est_timestamp, route_id, station_id) " \
         "values (%%s, now(), %%s, %%s, %%s, %%s, %%s);"
     cursor.execute(sql % _schema_name, (device_id, e1, e2, et, rid, sid))
+
+
+def insert_stop(cursor, title, shorter, lat, lng, ext_id, ext_title):
+    sql = "insert into %s.stops (title, short_title, gps_pos, " \
+        "is_station, stop_extid, stop_exttitle) " \
+        "values (%%s, %%s, point(%%s, %%s), true, %%s, %%s) " \
+        "returning stop_id;"
+    cursor.execute(sql % _schema_name, (title, shorter, lat, lng,
+                                        ext_id, ext_title))
+    return cursor.fetchone()[0]
+
+
+def find_stop(cursor, stop_id):
+    sql = "select * from %s.stops where stop_id=%%s;"
+    cursor.execute(sql % _schema_name, (stop_id, ))
+    return cursor.fetchone()
+
+
+def insert_route(cursor, title, vehicle_type, is_barred, ext_id, ext_title):
+    sql = "insert into %s.routes (title, vehicle_type, is_barred, " \
+        "route_extid, route_exttitle) values (%%s, %%s, %%s, %%s, %%s) " \
+        "returning route_id;"
+    cursor.execute(sql % _schema_name, (title, vehicle_type, is_barred,
+                                        ext_id, ext_title))
+    return cursor.fetchone()[0]
+
+
+def find_route(cursor, route_id):
+    sql = "select * from %s.routes where route_id=%%s;"
+    cursor.execute(sql % _schema_name, (route_id, ))
+    return cursor.fetchone()
+
+
+def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
+    sql = "insert into %s.route_stops (route_id, stop_id, stop_index, " \
+        "is_enabled) values (%%s, %%s, %%s, %%s) " \
+        "returning route_stop_id;"
+    cursor.execute(sql % _schema_name, (route_id, stop_id, stop_index,
+                                        is_enabled))
+    return cursor.fetchone()[0]
+
+
+def find_route_stations(cursor, route_id):
+    sql = "select s.stop_id, rs.stop_index, s.title, s.short_title, " \
+        "s.gps_pos, s.stop_extid, s.stop_exttitle, rs.is_enabled " \
+        "from {0}.stops as s, {0}.route_stops as rs where s.is_station and " \
+        "s.stop_id=rs.stop_id and rs.route_id=%s order by rs.stop_index;"
+    cursor.execute(sql.format(_schema_name), (route_id, ))
+    return cursor.fetchall()
+
+
+def find_active_routes_by_type(cursor, city_id, vehicle_type):
+    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
+        "where r.vehicle_type=%s and rs.is_enabled and " \
+        "rs.route_id=r.route_id order by r.title;"
+    cursor.execute(sql.format(_schema_name), (vehicle_type, ))
+    return cursor.fetchall()
+
+
+def find_all_active_route(cursor):
+    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
+        "where rs.is_enabled and rs.route_id=r.route_id order by r.title;"
+    cursor.execute(sql.format(_schema_name))
+    return cursor.fetchall()
+
+
+def find_favorite_routes(cursor):
+    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
+        "where rs.is_enabled and rs.route_id=r.route_id and " \
+        "r.title=any(Array['4','E1','5','E2','2','6','8','7']) " \
+        "order by r.title;"
+    cursor.execute(sql.format(_schema_name))
+    return cursor.fetchall()
 
 
 class PreviousDataNotFound(Exception):
