@@ -2,6 +2,7 @@
 
 import contextlib
 import logging
+import urllib2
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
@@ -86,6 +87,18 @@ def _map_routes(cursor, fields, routes):
         yield item_dict
 
 
+def _map_stops(cursor, fields, stops):
+    stop_map = ["stop_id", "stop_index", "title", "short_title", "gps_pos",
+                "stop_extid", "stop_exttitle", "is_enabled"]
+    next_eta = "next_eta"
+    for stop in stops:
+        item_dict = dict((k, v) for k, v in zip(stop_map, stop)
+                         if k in fields)
+        if next_eta in fields:
+            item_dict[next_eta] = "--"
+        yield item_dict
+
+
 def _do_any_routes(route_gen):
     result = []
     status = "success"
@@ -155,22 +168,39 @@ def do_favorite_routes(city_id):
     return _do_any_routes(routes_gen)
 
 
-@app.route('/v1/route/<route_id>/stops', methods=["GET"])
-def get_route_stops(route_id):
-    fields = _get_fields()
-    return _mock_route_stops(fields)
+@app.route('/v1/routes/<route_id>/stops', methods=["GET"])
+def do_route_stops(route_id):
+    result = []
+    status = "success"
+    conn = tpt.db.open_connection()
+    try:
+        with contextlib.closing(conn.cursor()) as cursor:
+            # TODO: paginate stops
+            stops = tpt.db.find_route_stations(cursor, route_id)
+            result = list(_map_stops(cursor, _get_fields(), stops))
+    except:
+        status = "error"
+        raise
+    finally:
+        conn.close()
+    return jsonify({
+            "status": status,
+            "stops": result})
 
 
-@app.route('/v1/route/<route_id>/eta', methods=["GET"])
+@app.route('/v1/routes/<route_id>/eta', methods=["GET"])
 def get_route_eta(route_id):
-    fields = _get_fields()
     result = {"status": "error", "message": "Not implemented"}
     return jsonify(result)
 
 
 @app.route('/v1/eta/<route_ext_id>/<stop_ext_id>', methods=["GET"])
 def get_eta(route_ext_id, stop_ext_id):
-    return jsonify({"eta": "7min"})
+    url = "http://www.ratt.ro/txt/afis_msg.php?id_traseu={0}&id_statie={1}"
+    resp = urllib2.urlopen(url.format(route_ext_id, stop_ext_id))
+    content = resp.read()
+    s1 = content.split("Sosire1:")[1].split("<br> Sosire2:")[0]
+    return jsonify({"eta": s1})
 
 
 if __name__ == '__main__':
