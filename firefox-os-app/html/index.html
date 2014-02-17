@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Timisoara public transport</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bs-theme.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container theme-page" role="main">
+
+   <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-back-icon navbar-action-icon hidden" href="#"></a>
+          <a class="navbar-brand-icon navbar-action-icon" href="#"></a>
+          <a class="navbar-brand">Public transport<br>Timisoara</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#install">Install App</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#develop">Developer</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+   <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="actions-container actions-lines">
+            <a class="navbar-action-icon tram-kinds" href="#"></a>
+            <a class="navbar-action-icon trolleybus-kinds" href="#"></a>
+            <a class="navbar-action-icon bus-kinds" href="#"></a>
+          </div>
+          <div class="actions-container actions-times hidden">
+            <a class="navbar-action-icon update-times" href="#"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+
+    <div class="loading-spinner">
+      Loading...
+    </div>
+
+
+    <table class="table table-striped table-lines hidden">
+      <tbody>
+        <tr class="template line-row">
+          <td class="vehicle-col">
+            <div><a href="#" class="vehicle-name">E33</a></div>
+            <div class="vehicle-type">autobuz</div>
+          </td>
+          <td class="departure-col">
+            <span class="departure-label">Catedrala</span>
+          </td>
+          <td class="dir-arrow-col">
+            <div class="icon-arrow-to"></div>
+          </td>
+          <td class="destination-col">
+            <span class="destination-label">Sagului</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-striped table-times hidden">
+      <thead>
+        <tr class="table-times-line">
+          <th class="vehicle-col">
+            <div class="vehicle-name">E33</div>
+            <div class="vehicle-type">autobuz</div>
+          </th>
+          <th class="route-col">
+            <todo />
+          </th>
+          <th class="departure-col">
+            <div class="departure-label">Catedrala</div>
+            <div class="station-time">7 min</div>
+          </th>
+          <th class="dir-arrow-col">
+            <div class="icon-arrow-to"></div>
+          </th>
+          <th class="destination-col">
+            <span class="destination-label">Sagului</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="template station-row">
+          <td class="vehicle-col"></td>
+          <td class="route-col">
+            <todo />
+          </td>
+          <td class="station-col" colspan="3">
+            <div class="station-label">Catedrala</div>
+            <div class="station-time">7 min</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/live_data.js"></script>
+    <script src="../js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+/* Custom button
+-------------------------------------------------- */
+
+/* Override base .btn styles */
+/* Apply text and background changes to three key states: default, hover, and active (click). */
+.btn-back,
+.btn-back:hover,
+.btn-back:active {
+  color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #007da7;
+  border-radius: 0px;
+}
+
+/* Apply the custom-colored gradients */
+/* Note: you'll need to include all the appropriate gradients for various browsers and standards. */
+.btn-back {
+  background-repeat: repeat-x;
+  background-image: linear-gradient(top, #009ED2 0%, #007DA7 100%);
+  ...
+}
+
+/* Set the hover state */
+/* An easy hover state is just to move the gradient up a small amount. Add other embellishments as you see fit. */
+.btn-back:hover {
+  background-position: 0 -15px;
+}
+
+body {
+    background-color: #E6E6E6;
+}
+
+.navbar-fixed-top .navbar-header {
+    word-wrap: break-word;
+}
+
+.navbar-fixed-top .navbar-nav {
+    float: right;
+}
+
+.navbar-fixed-top .navbar-brand-icon {
+    background-image: url('../img/icon.png');
+    display: block;
+    float: left;
+}
+
+.navbar-fixed-top .navbar-back-icon {
+    background-image: url('../img/btn_arrow_left_sel.png');
+    display: block;
+    float: left;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+.navbar-fixed-top .navbar-back-icon:hover {
+    background-image: url('../img/btn_arrow_left_high.png');
+}
+
+.navbar-fixed-top .navbar-brand {
+    font-size: 18px;
+    display: inline;
+    padding: 5px 15px 5px 15px;
+    cursor: pointer;
+}
+
+.navbar-fixed-bottom .navbar-header {
+    margin-left: auto;
+    margin-right: auto;
+    width: 160px;
+    float: none;
+}
+
+.navbar-action-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left bottom;
+    cursor: pointer;
+}
+.tram-kinds {             background-image: url('../img/btn_tram_sel.png'); }
+.tram-kinds:hover {       background-image: url('../img/btn_tram_high.png'); }
+.trolleybus-kinds {       background-image: url('../img/btn_trolleybus_sel.png'); }
+.trolleybus-kinds:hover { background-image: url('../img/btn_trolleybus_high.png'); }
+.bus-kinds {              background-image: url('../img/btn_bus_sel.png'); }
+.bus-kinds:hover {        background-image: url('../img/btn_bus_high.png'); }
+.update-times {           background-image: url('../img/btn_update_sel.png'); }
+.update-times:hover {     background-image: url('../img/btn_update_high.png'); }
+
+
+.actions-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.actions-times {
+    width: 50px;
+}
+
+.loading-spinner {
+    margin: 60px auto 50px auto;
+    width: 50px;
+}
+
+.table-striped {
+    margin-top: 50px;
+    margin-bottom: 55px;
+}
+
+.table-striped>tbody>tr>td, .table-striped>thead>tr>th {
+    border: none;
+    vertical-align: middle;
+}
+
+.table-striped>thead>tr>th {
+    font-weight: normal;
+}
+
+.table-striped>thead>tr>th {
+    border: none;
+    background-color: #DDDDDD;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td {
+    background-color: #EEEEEE;
+}
+
+.table-striped>tbody>tr:nth-child(even)>td {
+    background-color: #DDDDDD;
+}
+
+.table-times>tbody>tr>td {
+    padding: 0px 8px 0px 8px;
+}
+
+.vehicle-col {
+    text-align: center;
+    padding: 0px 4px 0px 4px;
+    width: 50px;
+}
+
+.vehicle-name, .vehicle-name:hover {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.vehicle-type {
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+.dir-arrow-col {
+    text-align: center;
+    width: 20px;
+    padding: 0px;
+}
+
+.dir-arrow-col .icon-arrow-to {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    margin: 0px -10px 0px -10px;
+    display: block;
+    background-image: url("../img/btn_arrow_right_high.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.vehicle-type-bus, .vehicle-type-bus:hover {     color: #CC0000; }
+.vehicle-type-express, .vehicle-type-express:hover { color: #669900; }
+.vehicle-type-metro, .vehicle-type-metro:hover {   color: #FF8800; }
+.vehicle-type-tram, .vehicle-type-tram:hover {    color: #0099CC; }
+.vehicle-type-trolley, .vehicle-type-trolley:hover { color: #9933CC; }
+.vehicle-type-barred, .vehicle-type-barred:hover {  text-decoration: line-through; }
+.station-updating {     background-color: #99CC00; }

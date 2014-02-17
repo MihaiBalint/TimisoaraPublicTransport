@@ -1,0 +1,16 @@
+Timisoara Public Transport
+
+Scrapes public transport information from the official transport 
+authority web site (times, stations, connections) and displays it
+conveniently on your device.
+
+This application is about utility, it has an spartan interface, 
+no bells. no whistles, no google maps or GPS required. It is 
+designed after my own requirements:
+- show me vehicle arrival times
+- show me my connections at the next station
+
+Required permissions:
+- internet access - the time are obtained from http://www.ratt.ro/txt
+
+License: GPL v3
