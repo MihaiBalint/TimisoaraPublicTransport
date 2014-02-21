@@ -13,14 +13,18 @@ function vehicle_kind(kind_id) {
     }
 }
 
-function add_new_row(template_row, fill_function, fill_entity) {
+function add_new_row(template_row, fill_function) {
     var last = template_row;
     var clone = template_row.clone();
 
     last.before(clone);
     clone.removeClass("template");
-    clone.addClass("non-template");
-    fill_function(clone, fill_entity);
+    clone.addClass("populated-template");
+    if (arguments.length === 3) {
+        fill_function(clone, arguments[2]);
+    } else if (arguments.length === 4) {
+        fill_function(clone, arguments[2], arguments[3]);
+    }
     clone.show();
     return clone;
 }
@@ -28,9 +32,7 @@ function add_new_row(template_row, fill_function, fill_entity) {
 function set_line(obj, route) {
     var kind = vehicle_kind(route.vehicle_type);
     $(".vehicle-name", obj).text(route.title);
-    if (route.is_barred) {
-        $(".vehicle-name", obj).addClass("vehicle-type-barred");
-    }
+    $(".vehicle-name", obj).toggleClass("vehicle-type-barred", route.is_barred);
     $(".vehicle-type", obj).text(kind.label);
     $(".vehicle-col, .vehicle-name", obj)
         .removeClass("vehicle-type-tram vehicle-type-trolley vehicle-type-bus vehicle-type-express vehicle-type-metro")
@@ -72,54 +74,51 @@ function load_lines(data) {
     $(".table-lines").removeClass("hidden");
 }
 
-function set_station(obj, station) {
+function set_station(obj, station, route) {
+    var kind = vehicle_kind(route.vehicle_type);
     var station_time = $(".station-time", obj);
     $(".station-label", obj).text(station.title);
     station_time.text(station.next_eta);
     station_time.data("station_extid", station.stop_extid);
+    station_time.data("route_extid", route.route_extid);
+    station_time
+        .removeClass("vehicle-type-tram vehicle-type-trolley vehicle-type-bus vehicle-type-express vehicle-type-metro")
+        .addClass(kind.style_class);
 }
 
-function set_update_times_click(update_btn, data, station_times) {
-    $(update_btn).off("click");
-    $(update_btn).on("click", function click_update() {
-        $.each(station_times, function update_each(index, obj) {
-            obj.addClass("station-updating");
-            get_station_times(data.route.route_extid, $(obj).data("station_extid"), function complete_update(estimate) {
-                obj.text(estimate.eta);
-                obj.removeClass("station-updating");
-                obj.addClass("station"+index);
-            });
+function update_station_times() {
+    // TODO disable update button click abuse
+    var update_time = function update_time() {
+        var obj = $(this);
+        var station_extid = obj.data("station_extid");
+        var route_extid = obj.data("route_extid");
+        obj.addClass("station-updating");
+        get_station_times(route_extid, station_extid, function complete_update(estimate) {
+            obj.text(estimate.eta);
+            obj.removeClass("station-updating");
+            obj.addClass("station"+index);
         });
-    });
+    };
+    $(".table-times .table-times-line .station-time, .table-times tbody .populated-template .station-time").each(update_time);
 }
 
 function load_times(data) {
     var station, index = 0;
     var template = $(".table-times .template");
-    var kind = vehicle_kind(data.route.vehicle_type);
-    var station_times = [], station_row;
     set_line($(".table-times .table-times-line"), data.route);
-    set_station($(".table-times .table-times-line"), data.stops[0]);
-    station_times.push($(".table-times .table-times-line .station-time"));
+    set_station($(".table-times .table-times-line"), data.stops[0], data.route);
 
     template.hide();
     template = template.clone();
     $(".table-times tbody").empty();
     $(".table-times tbody").append(template);
     for (index = 1; index < data.stops.length; index++) {
-        station_row = add_new_row(template, set_station, data.stops[index]);
-        station_times.push($(".station-time", station_row));
+        add_new_row(template, set_station, data.stops[index], data.route);
     }
-    set_update_times_click($(".update-times"), data, station_times);
-    $.each(station_times, function style_each(index, obj) {
-        obj
-            .removeClass("vehicle-type-tram vehicle-type-trolley vehicle-type-bus vehicle-type-express vehicle-type-metro")
-            .addClass(kind.style_class);
-    });
-
     $(".loading-spinner").addClass("hidden");
     $(".table-times").removeClass("hidden");
     $(".actions-times").removeClass("hidden");
+    update_station_times();
 }
 
 function load_favorites() {
@@ -147,10 +146,11 @@ function load_busses() {
 
 function setup_control() {
     load_favorites();
-    $(".tram-kinds").click(load_trams)
-    $(".trolleybus-kinds").click(load_trolleybuses)
-    $(".bus-kinds").click(load_busses)
-    $(".navbar-fixed-top .navbar-brand, .navbar-fixed-top .navbar-brand-icon, .navbar-fixed-top .navbar-back-icon").click(load_favorites);
+    $(".tram-kinds").on("click", load_trams);
+    $(".trolleybus-kinds").on("click", load_trolleybuses);
+    $(".bus-kinds").on("click", load_busses);
+    $(".update-times").on("click", update_station_times);
+    $(".navbar-fixed-top .navbar-brand, .navbar-fixed-top .navbar-brand-icon, .navbar-fixed-top .navbar-back-icon").on("click", load_favorites);
 }
 
-$(setup_control)
+$(setup_control);

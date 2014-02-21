@@ -38,8 +38,8 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="#install">Install App</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#develop">Developer</a></li>
+            <li><a href="#about" data-toggle="modal" data-target="#aboutModal">About</a></li>
+            <li><a href="https://github.com/MihaiBalint/TimisoaraPublicTransport" target="_blank">Developer</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -125,6 +125,28 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="aboutModalLabel">About app</h4>
+          </div>
+          <div class="modal-body">
+            App version 0.2 (c) 2014 Mihai Balint<br>
+            Many thanks to Kriszti Cseh for maintaining the route and stop data.<br><br>
+            Special thanks to RATT for providing this data<br><br>
+            This is open source software licensed under GPLv3.<br>
+            Source code available at the developer site.<br>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-primary" data-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
