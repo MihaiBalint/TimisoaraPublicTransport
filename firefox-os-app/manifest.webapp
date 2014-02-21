@@ -1,16 +1,14 @@
 {
     "version": "0.2",
     "name": "Timisoara Public Transport",
-    "description": "Get real-time vehicle arrival times from Timisoara's public transport system.<br><br>
-Use your device to download live arrival times obtained from the real-time GPS tracking units installed in all public transport vehicles (trams, buses and trolleybuses). The app connects directly to Timisoara's Transport Authority (RATT) servers and presents the arrival information in a format optimized for mobile devices.<br><br>
-Features a utilitarian interface designed for quick browsing and information access. Arrival times are displayed using two formats:<br>
-- N min the live time, obtained via GPS until the vehicle arrives in the station<br>
-- HH:MM the scheduled vehicle arrival time. The scheduled time will most commonly be displayed when the vehicle has not yet left the end-station (i.e. no vehicle heading your way)<br>",
+    "description": "Get real-time vehicle arrival times from Timisoara's public transport system.<br><br>Use your device to download live arrival times obtained from the real-time GPS tracking units installed in all public transport vehicles (trams, buses and trolleybuses). The app connects directly to Timisoara's Transport Authority (RATT) servers and presents the arrival information in a format optimized for mobile devices.<br><br>Features a utilitarian interface designed for quick browsing and information access. Arrival times are displayed using two formats:<br>- N min the live time, obtained via GPS until the vehicle arrives in the station<br>- HH:MM the scheduled vehicle arrival time. The scheduled time will most commonly be displayed when the vehicle has not yet left the end-station (i.e. no vehicle heading your way)<br>",
     "launch_path": "/index.html",
     "icons": {
         "16": "/img/icon-16.png",
+        "30": "/img/icon-30.png",
         "32": "/img/icon-32.png",
         "48": "/img/icon-48.png",
+        "60": "/img/icon-60.png",
         "128": "/img/icon-128.png"
     },
     "developer": {
@@ -20,21 +18,13 @@ Features a utilitarian interface designed for quick browsing and information acc
     "installs_allowed_from": ["*"],
     "locales": {
         "ro": {
-            "description": "Instalati aplicatia pentru a primi pe telefon timpii de sosire in statie a vehiculelor din reteaua de transport public din Timisoara.<br><br>
-Timpii afisati sunt calculati in timp-real cu ajutorul dispozitivelor GPS instalate in fiecare vehicul (tramvai, autobuz, troleibuz). Aplicatia se conecteaza la serverele publice ale regiei de transport Timisoara (RATT) pentru a obtine timpii de sosire si ii afiseaza intr-un format optimizat pentru telefoane si tablete Android.<br><br>
-Interfata aplicatiei este concentrata pe utilizabilitate si proiectata pentru navigare rapida is afisarea compacta a cat mai multe informatii. Timpii de sosire sunt afisati in doua formate:<br>
-- N min - timpul real-time calculat prin GPS.<br>
-- HH:MM - timpul 'de lista' (programat) - este afisat cand de la capatul liniei nu a intrat inca nici un vehicul pe traseu sau daca vehiclul nu a trecut inca printr-o statie cu panou de afisare electronic.<br>",
+            "description": "Instalati aplicatia pentru a primi pe telefon timpii de sosire in statie a vehiculelor din reteaua de transport public din Timisoara.<br><br>Timpii afisati sunt calculati in timp-real cu ajutorul dispozitivelor GPS instalate in fiecare vehicul (tramvai, autobuz, troleibuz). Aplicatia se conecteaza la serverele publice ale regiei de transport Timisoara (RATT) pentru a obtine timpii de sosire si ii afiseaza intr-un format optimizat pentru telefoane si tablete Android.<br><br>Interfata aplicatiei este concentrata pe utilizabilitate si proiectata pentru navigare rapida is afisarea compacta a cat mai multe informatii. Timpii de sosire sunt afisati in doua formate:<br>- N min - timpul real-time calculat prin GPS.<br>- HH:MM - timpul 'de lista' (programat) - este afisat cand de la capatul liniei nu a intrat inca nici un vehicul pe traseu sau daca vehiclul nu a trecut inca printr-o statie cu panou de afisare electronic.<br>",
             "developer": {
                 "url": "https://github.com/MihaiBalint/TimisoaraPublicTransport"
             }
         },
         "en": {
-            "description": "Get real-time vehicle arrival times from Timisoara's public transport system.<br><br>
-Use your device to download live arrival times obtained from the real-time GPS tracking units installed in all public transport vehicles (trams, buses and trolleybuses). The app connects directly to Timisoara's Transport Authority (RATT) servers and presents the arrival information in a format optimized for mobile devices.<br><br>
-Features a utilitarian interface designed for quick browsing and information access. Arrival times are displayed using two formats:<br>
-- N min the live time, obtained via GPS until the vehicle arrives in the station<br>
-- HH:MM the scheduled vehicle arrival time. The scheduled time will most commonly be displayed when the vehicle has not yet left the end-station (i.e. no vehicle heading your way)<br>",
+            "description": "Get real-time vehicle arrival times from Timisoara's public transport system.<br><br>Use your device to download live arrival times obtained from the real-time GPS tracking units installed in all public transport vehicles (trams, buses and trolleybuses). The app connects directly to Timisoara's Transport Authority (RATT) servers and presents the arrival information in a format optimized for mobile devices.<br><br>Features a utilitarian interface designed for quick browsing and information access. Arrival times are displayed using two formats:<br>- N min the live time, obtained via GPS until the vehicle arrives in the station<br>- HH:MM the scheduled vehicle arrival time. The scheduled time will most commonly be displayed when the vehicle has not yet left the end-station (i.e. no vehicle heading your way)<br>",
             "developer": {
                 "url": "https://github.com/MihaiBalint/TimisoaraPublicTransport"
             }

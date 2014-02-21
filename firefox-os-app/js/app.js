@@ -96,10 +96,10 @@ function update_station_times() {
         get_station_times(route_extid, station_extid, function complete_update(estimate) {
             obj.text(estimate.eta);
             obj.removeClass("station-updating");
-            obj.addClass("station"+index);
         });
     };
     $(".table-times .table-times-line .station-time, .table-times tbody .populated-template .station-time").each(update_time);
+    return false;
 }
 
 function load_times(data) {
@@ -126,22 +126,44 @@ function load_favorites() {
     $(".actions-lines").removeClass("hidden");
     $(".navbar-fixed-top .navbar-back-icon").addClass("hidden");
     get_favorites(load_lines);
+    return false;
 }
 
 function load_trams() {
     start_loading();
     $(".actions-lines").removeClass("hidden");
     get_trams(load_lines);
+    return false;
 }
 function load_trolleybuses() {
     start_loading();
     $(".actions-lines").removeClass("hidden");
     get_trolleybuses(load_lines);
+    return false;
 }
 function load_busses() {
     start_loading();
     $(".actions-lines").removeClass("hidden");
     get_busses(load_lines);
+    return false;
+}
+
+
+function install_app() {
+    var baseURL = location.href.substring(0, location.href.lastIndexOf("/"));
+    var canInstall = !!(navigator.mozApps && navigator.mozApps. installPackage);
+    if (canInstall) {
+        var req = navigator.mozApps.install(baseURL + '/manifest.webapp');
+        req.onsuccess = function() {
+            $("#toastModal .modal-body").text("Installation complete.");
+            $("#toastModal").modal('show');
+        };
+        req.onerror = function() {
+            $("#toastModal .modal-body").text("Installation failed: "+this.error.name);
+            $("#toastModal").modal('show');
+        };
+    }
+    return false;
 }
 
 function setup_control() {
@@ -151,6 +173,8 @@ function setup_control() {
     $(".bus-kinds").on("click", load_busses);
     $(".update-times").on("click", update_station_times);
     $(".navbar-fixed-top .navbar-brand, .navbar-fixed-top .navbar-brand-icon, .navbar-fixed-top .navbar-back-icon").on("click", load_favorites);
+
+    $(".install-btn").on("click", install_app);
 }
 
 $(setup_control);
