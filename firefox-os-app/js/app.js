@@ -162,6 +162,9 @@ function install_app() {
             $("#toastModal .modal-body").text("Installation failed: "+this.error.name);
             $("#toastModal").modal('show');
         };
+    } else {
+        $("#toastModal .modal-body").text("Open web apps are not supported on this platform. Try FirefoxOS devices from Mozilla.");
+        $("#toastModal").modal('show');
     }
     return false;
 }
