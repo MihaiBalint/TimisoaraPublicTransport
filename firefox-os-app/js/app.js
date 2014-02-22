@@ -151,7 +151,7 @@ function load_busses() {
 
 function install_app() {
     var baseURL = location.href.substring(0, location.href.lastIndexOf("/"));
-    var canInstall = !!(navigator.mozApps && navigator.mozApps. installPackage);
+    var canInstall = !!(navigator.mozApps && navigator.mozApps.install);
     if (canInstall) {
         var req = navigator.mozApps.install(baseURL + '/manifest.webapp');
         req.onsuccess = function() {
@@ -169,6 +169,18 @@ function install_app() {
     return false;
 }
 
+function maybe_show_install_app() {
+    var baseURL = location.href.substring(0, location.href.lastIndexOf("/"));
+    var canCheckInstall = !!(navigator.mozApps && navigator.mozApps.checkInstalled);
+    var installCheck;
+    if (canCheckInstall) {
+        installCheck = navigator.mozApps.checkInstalled(baseURL + '/manifest.webapp');
+        installCheck.onsuccess = function() {
+            $(".install-btn").toggleClass("hidden", installCheck.result);
+        };
+    }
+}
+
 function setup_control() {
     load_favorites();
     $(".tram-kinds").on("click", load_trams);
@@ -178,6 +190,7 @@ function setup_control() {
     $(".navbar-fixed-top .navbar-brand, .navbar-fixed-top .navbar-brand-icon, .navbar-fixed-top .navbar-back-icon").on("click", load_favorites);
 
     $(".install-btn").on("click", install_app);
+    maybe_show_install_app();
 }
 
 $(setup_control);
