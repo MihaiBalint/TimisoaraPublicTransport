@@ -172,11 +172,18 @@ function install_app() {
 function maybe_show_install_app() {
     var baseURL = location.href.substring(0, location.href.lastIndexOf("/"));
     var canCheckInstall = !!(navigator.mozApps && navigator.mozApps.checkInstalled);
-    var installCheck;
+    var installCheck, appSelf;
     if (canCheckInstall) {
         installCheck = navigator.mozApps.checkInstalled(baseURL + '/manifest.webapp');
         installCheck.onsuccess = function() {
-            $(".install-btn").toggleClass("hidden", installCheck.result);
+            if (installCheck.result == null) {
+                appSelf = navigator.mozApps.getSelf();
+                appSelf.onsuccess = function() {
+                    if (appSelf.result == null) {
+                        $(".install-btn").removeClass("hidden", installCheck.result);
+                    }
+                };
+            };
         };
     }
 }
