@@ -6,6 +6,8 @@ function load_route_stops(data) {
 }
 
 function line_row_onclick(route_id) {
+    start_loading();
+    $(".actions-times").removeClass("hidden");
     get_route_times(route_id, load_route_stops);
 }
 add_onclick("line_row_onclick", line_row_onclick);

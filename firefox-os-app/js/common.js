@@ -91,10 +91,7 @@ function set_line(obj, route) {
     $(".destination-label", obj).text(route.destination);
 
     obj.on("click", function click_line() {
-        var onclick;
-        start_loading();
-        $(".actions-times").removeClass("hidden");
-        onclick = find_onclick_handler(obj.data("onclick"));
+        var onclick = find_onclick_handler(obj.data("onclick"));
         if (onclick) {
             onclick(route.route_id);
         }
@@ -143,7 +140,6 @@ function load_trams() {
     return false;
 }
 add_onclick("load_trams", load_trams);
-
 
 function load_trolleybuses() {
     start_loading();
