@@ -4,6 +4,7 @@ import contextlib
 import logging
 import urllib2
 from flask import Flask, request, jsonify
+from werkzeug.contrib.fixers import ProxyFix
 app = Flask(__name__)
 
 import tpt.db
@@ -203,6 +204,8 @@ def get_eta(route_ext_id, stop_ext_id):
     return jsonify({"eta": s1})
 
 
+app.wsgi_app = ProxyFix(app.wsgi_app)
+app.debug = False
+
 if __name__ == '__main__':
-    app.debug = False
     app.run(host="0.0.0.0", port=8080)
