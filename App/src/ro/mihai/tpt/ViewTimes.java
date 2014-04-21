@@ -18,9 +18,13 @@
 package ro.mihai.tpt;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -165,6 +169,106 @@ public class ViewTimes extends CityActivity {
 		return timesRow;
 	}
 
+	private Random random = new Random();
+	private HashMap<String, Integer> waiting = new HashMap<String, Integer>();
+    private class IncrementWaiting implements OnClickListener {
+    	private String key;
+    	
+    	public IncrementWaiting(String key) {
+    		this.key = key;
+    	}
+    	
+		public void onClick(View v) {
+			if (!waiting.containsKey(key))
+				return;
+			waiting.put(key, waiting.get(key) + 1);
+	    	runOnUiThread(new UpdateView());
+		}
+    }
+    
+    private String getAprText(String key) {
+		int people;
+		if (!waiting.containsKey(key)) {
+			switch(random.nextInt(5)) {
+			case 0: case 1: 
+				people = random.nextInt(5); break;
+			case 2: 
+				people = 6+random.nextInt(6); break;
+			default:
+				people = 0; break;
+			}
+			waiting.put(key, people);
+		}
+		people = waiting.get(key);
+		if (people == 0)
+			return "";
+		if (people == 1)
+			return "O persoana asteapta aici";
+		else if (people < 15) 
+			return people + " persoane asteapta aici";
+		else if (people < 20)
+			return "Multe persoane asteapta aici";
+		else if (people < 25)
+			return "Foarte multi asteapta aici";
+		else if (people < 35)
+			return "Cei mai multi asteapta aici";
+		else if (people < 45)
+			return "Smartphone party!";
+		else if (people < 60)
+			return "Prima zi din Aprilie?";
+		else if (people < 75)
+			return "Aici e revolutie!";
+		else if (people < 85)
+			return "Err:123 - utilizator defect.";
+		else if (people < 100)
+			return "Stii, asta e telefonul tau";
+		else if (people < 150)
+			return "Auuuu! ma doare ecranul!";
+		else if (people < 200)
+			return "Serios?";
+		else if (people < 250)
+			return "Inca nu te-ai plictisit?";
+		else if (people < 300)
+			return "Oare cat mai tine bateria?";
+		else if (people < 350)
+			return "Pune androidul jos, ACUM!";
+		else if (people < 400)
+			return "Crezi ca primesti ceva premiu?";
+		else if (people < 500)
+			return "Nu e nici o luminita in tunel.";
+		else if (people < 505)
+			return "Bravo! Ai dat 500 clickuri!";
+		else if (people < 515)
+			return "Un review la aplicatie?";
+		else if (people < 530)
+			return "De aici nu mai urmeaza nimic!";
+		else if (people < 550)
+			return "Pe bune asta a fost";
+		else if (people < 600)
+			return "Ai prins tramvaiul?";
+		else if (people < 700)
+			return "Cat timp din viata ai pierdut?";
+		else if (people < 800)
+			return "Incep sa cedez.";
+		else if (people < 900)
+			return "Eu plec. Ciao!";
+		else if (people < 1000)
+			return "Mai tine bateria asta?";
+		else if (people < 1010)
+			return "1000 de clickuri?";
+		else if (people < 1020)
+			return "La reclame dai 1000 de clickuri?";
+		else if (people < 1050)
+			return "Atat a fost";
+		else if (people < 100000)
+			return people + " clickuri";
+		else if (people < 100005)
+			return "100k clickuri. Inca e 1 Apr?";
+		else
+			return people + " clickuri";
+    }
+	
+	
 	private View newStationEstimateView(ChangeOpportunity stop, boolean evenRow, boolean last) {
 		Estimate est = stop.getDisembarkEstimate();
 		View timesRow = inflater.inflate(R.layout.infl_station_time, timesTable, false);
@@ -199,6 +303,18 @@ public class ViewTimes extends CityActivity {
 
 		View row = timesRow.findViewById(R.id.StationStatusRow);
 		row.setBackgroundResource(background);
+		
+		Calendar now = Calendar.getInstance();
+		if ((now.get(Calendar.DAY_OF_MONTH) == 1 && now.get(Calendar.MONTH) == Calendar.APRIL) ||
+				getAppPreferences().getAchieveUserName().equals("20140401")) {
+			String key = path.getPath().getExtId()+est.getStation().getId();
+			TextView aprfool = (TextView)timesRow.findViewById(R.id.aprfooltext);
+			aprfool.setText(getAprText(key));
+			aprfool.setVisibility(View.VISIBLE);
+			Button aprbutton = (Button)timesRow.findViewById(R.id.aprfoolbutton); 
+			aprbutton.setVisibility(View.VISIBLE);
+			aprbutton.setOnClickListener(new IncrementWaiting(key));
+		}
 		
 		return timesRow;
 	}

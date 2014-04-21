@@ -24,9 +24,15 @@
     android:background="@drawable/row_back_even"
     android:baselineAligned="false">
     
-    <View
+    <TextView android:id="@+id/aprfooltext"
         style="@style/LikeTitleIcon" 
-        android:layout_height="1dp"/>
+        android:layout_height="30dp"
+        android:text="8 persoane asteapta"
+        android:textSize="10sp"
+        android:textColor="#FF300000"
+        android:layout_marginLeft="2.6dp"
+        android:layout_width="70dp"
+        android:visibility="invisible"/>
     
    	<RelativeLayout
    	    style="@style/LinePath"
@@ -59,6 +65,18 @@
 	   	/>
 	</RelativeLayout>
    		
+   	<Button android:id="@+id/aprfoolbutton"
+   	    android:text="Solicita vehicul"
+   	    android:lines="2"
+   	    android:layout_width="60dp" 
+   	    android:layout_height="35dp"
+   	    android:textSize="12sp"
+   	    android:padding="0dp"
+   	    android:textColor="#FFA00000"
+   	    android:background="@drawable/button_flat_back"
+   	    android:layout_marginRight="3dp"
+   	    android:visibility="gone"/>
+   	
    	<LinearLayout
    	    android:layout_width="0dp"
    	    android:layout_height="wrap_content"

@@ -4,6 +4,7 @@
 	<color name="row_even">#FFDDDDDD</color>
 	<color name="row_odd">#FFEEEEEE</color>
 	<color name="transparent">#00000000</color>
+	<color name="ugly_gray">#FFB0B0B0</color>
 	
 	<!-- Vehicle type specific -->
 	<color name="vehicle_bus">#FFCC0000</color>
