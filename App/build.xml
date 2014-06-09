@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="TimisoaraPublicTransport" default="help">
-    <!-- generated using adnroid update project --name TimisoaraPublicTransport -->
+    <!-- generated using $SDK/tools/android update project --path . -n TimisoaraPublicTransport -->
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
