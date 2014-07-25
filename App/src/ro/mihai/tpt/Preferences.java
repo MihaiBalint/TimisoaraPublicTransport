@@ -1,8 +1,3 @@
-package ro.mihai.tpt;
-import ro.mihai.tpt.R;
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
-
 /*
     TimisoaraPublicTransport - display public transport information on your device
     Copyright (C) 2011  Mihai Balint
@@ -20,6 +15,10 @@ import android.preference.PreferenceActivity;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  */
+package ro.mihai.tpt;
+import ro.mihai.tpt.R;
+import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
 public class Preferences extends PreferenceActivity {
 	

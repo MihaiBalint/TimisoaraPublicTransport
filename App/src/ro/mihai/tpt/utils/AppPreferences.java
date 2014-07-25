@@ -132,12 +132,21 @@ public class AppPreferences implements IPrefs {
 		if (service == null) {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
 			if (sharedPref.getBoolean(pref_analytics_enabled, true)) {
-				service = new AnalyticsService(ctx.getString(R.string.pref_analytics_url));
+				String agent = "App."+getAppVersion();
+				service = new AnalyticsService(ctx.getString(R.string.pref_analytics_url), agent);
 			} else {
 				service = new NoAnalyticsService();
 			}
 		}
 		return service;
+	}
+	
+	public int getAppVersion() {
+		try {
+			return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionCode;
+		} catch(Exception e) {
+			return 0;
+		}
 	}
 	
 	public int getCurrentVersion(int missingVersionCode) {

@@ -15,21 +15,15 @@ import ro.mihai.util.Formatting;
 
 public class AnalyticsService implements IAnalyticsService {
 	private String url;
-	//private String remoteAddress, baseUrl;
-	//private int remotePort;
-	
-	@Deprecated
-	public AnalyticsService(String remoteAddress, int remotePort, String baseUrl) {
-		this.url = "http://"+remoteAddress+":"+remotePort+baseUrl;
-	}
-	
-	@Deprecated
-	public AnalyticsService(String remoteAddress, int remotePort) {
-		this(remoteAddress, remotePort, "/tpt-analytics");
-	}
+	private String agent;
 	
 	public AnalyticsService(String https_url) {
+		this(https_url, "TEST");
+	}
+	
+	public AnalyticsService(String https_url, String agent) {
 		this.url = https_url;
+		this.agent = agent;
 	}
 	
 	private String getContent(String localAddress, String data) {
@@ -41,8 +35,8 @@ public class AnalyticsService implements IAnalyticsService {
 		URLConnection con = u.openConnection();
 		con.setDoOutput(true);
 		con.setReadTimeout(10000);
-		con.setRequestProperty("User-Agent", "App");
-		con.setRequestProperty("Referer", "App");
+		con.setRequestProperty("User-Agent", this.agent);
+		con.setRequestProperty("Referer", this.agent);
 		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		con.setRequestProperty("Accept", "*/*");
 		con.setAllowUserInteraction(false);
