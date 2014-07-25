@@ -1,7 +1,5 @@
 package ro.mihai.tpt.analytics;
 
-import java.io.IOException;
-
 import ro.mihai.util.Formatting;
 import ro.mihai.util.IPrefs;
 
@@ -52,8 +50,10 @@ public class Collector {
 			try {
 				deviceId = prefs.getAnalyticsService().generateDeviceId();
 				prefs.setDeviceId(deviceId);
-			} catch(IOException e) {
-				// server problems? we use the default device_id 
+			} catch(Exception e) { 
+				// should be java.io.IOException, but I really 
+				// don't like crashes esp. for something like analytics
+				// use the default device_id
 			}
 		}
 		return deviceId;
@@ -66,8 +66,10 @@ public class Collector {
 	private void publish(String data) {
 		try {
 			prefs.getAnalyticsService().postTimesBundle(generateDeviceId(), data);
-		} catch(IOException e) {
-			// oh well win some loose some
+		} catch(Exception e) {
+			// should be java.io.IOException, but I really 
+			// don't like crashes esp. for something like analytics
+			// win some loose some
 		}
 	}
 	

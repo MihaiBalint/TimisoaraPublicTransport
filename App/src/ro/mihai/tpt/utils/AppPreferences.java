@@ -132,9 +132,7 @@ public class AppPreferences implements IPrefs {
 		if (service == null) {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
 			if (sharedPref.getBoolean(pref_analytics_enabled, true)) {
-				String host = ctx.getString(R.string.pref_analytics_host);
-				String port = ctx.getString(R.string.pref_analytics_port);
-				service = new AnalyticsService(host, Integer.parseInt(port));
+				service = new AnalyticsService(ctx.getString(R.string.pref_analytics_url));
 			} else {
 				service = new NoAnalyticsService();
 			}

@@ -28,7 +28,7 @@ public class StationsXMLReader {
 		
 		if (!rd.skipAfter("lng='", true)) return null;
 		String lng = rd.readUntil("'");
-		if(null==lat) return null;
+		if(null==lng) return null;
 
 		if (!rd.skipAfter("id_st='", true)) return null;
 		String id = rd.readUntil("'");

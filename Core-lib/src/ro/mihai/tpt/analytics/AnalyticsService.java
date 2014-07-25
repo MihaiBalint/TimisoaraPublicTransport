@@ -2,35 +2,34 @@ package ro.mihai.tpt.analytics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Enumeration;
+
+import ro.mihai.util.Formatting;
 
 public class AnalyticsService implements IAnalyticsService {
-	private String remoteAddress, baseUrl;
-	private int remotePort;
+	private String url;
+	//private String remoteAddress, baseUrl;
+	//private int remotePort;
 	
+	@Deprecated
 	public AnalyticsService(String remoteAddress, int remotePort, String baseUrl) {
-		this.baseUrl = baseUrl;
-		this.remoteAddress = remoteAddress;
-		this.remotePort = remotePort;
+		this.url = "http://"+remoteAddress+":"+remotePort+baseUrl;
 	}
 	
+	@Deprecated
 	public AnalyticsService(String remoteAddress, int remotePort) {
 		this(remoteAddress, remotePort, "/tpt-analytics");
 	}
 	
-	
-	private String getHeaders(String service, int contentLength) {
-		return "POST "+this.baseUrl+"/"+service+" HTTP/1.1\r\n"+
-				"Content-Length: "+contentLength+"\r\n"+
-				"Host: "+remoteAddress+":"+remotePort+"\r\n"+
-				"User-Agent: App\r\n"+
-				"Accept: */*\r\n"+
-				"Referer: App\r\n"+
-				"Content-Type: application/x-www-form-urlencoded\r\n"+
-				"Connection: close\r\n";
+	public AnalyticsService(String https_url) {
+		this.url = https_url;
 	}
 	
 	private String getContent(String localAddress, String data) {
@@ -38,20 +37,26 @@ public class AnalyticsService implements IAnalyticsService {
 	}
 	
 	public String postData(String service, String data) throws IOException {
-		Socket sock = new Socket(remoteAddress, remotePort);
-		OutputStreamWriter os = new OutputStreamWriter(sock.getOutputStream());
-		InputStream is = sock.getInputStream();
-		String local = sock.getLocalAddress().getHostAddress();
+		URL u = new URL(url+"/"+service);
+		URLConnection con = u.openConnection();
+		con.setDoOutput(true);
+		con.setReadTimeout(10000);
+		con.setRequestProperty("User-Agent", "App");
+		con.setRequestProperty("Referer", "App");
+		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		con.setRequestProperty("Accept", "*/*");
+		con.setAllowUserInteraction(false);
+        
+		PrintStream ps = new PrintStream(con.getOutputStream());
+		String local = getLocalAddress();
 		String content = getContent(local, data);
-		os.write(getHeaders(service, content.length()));
-		os.write("\r\n");
-		os.write(content);
-		os.flush();
+		ps.print(content);
+		ps.flush();
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		while (br.readLine().length() > 0);
+		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String result = br.readLine();
-		sock.close();
+		br.close();
+
 		return result;
 	}
 	
@@ -63,4 +68,27 @@ public class AnalyticsService implements IAnalyticsService {
 		postData("post_times_bundle", deviceId+"\r\n"+data);
 	}
 	
+    public static String getLocalAddress() {
+    	ArrayList<String> all_addrs = new ArrayList<String>();
+        try {
+        	Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        	while(interfaces.hasMoreElements()) {
+        		NetworkInterface intf = interfaces.nextElement();
+        		Enumeration<InetAddress> addrs = intf.getInetAddresses();
+        		while(addrs.hasMoreElements()) {
+        			InetAddress addr = addrs.nextElement();
+                    if (!addr.isLoopbackAddress()) {
+                        String sAddr = addr.getHostAddress().toUpperCase();
+                        int delim = sAddr.indexOf('%'); // ip6 port
+                        if (delim >= 0)
+                        	sAddr = sAddr.substring(0, delim);
+                        all_addrs.add(intf.getName()+"-"+sAddr);
+                    }
+                }
+            }
+        } catch (IOException ex) {
+        	
+        }
+        return "v2;"+Formatting.join(";", all_addrs);
+    }
 }

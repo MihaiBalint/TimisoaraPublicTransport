@@ -75,23 +75,24 @@ public class AnalyticsTest implements Runnable {
 
 	@Test
 	public void testPostData() throws IOException {
-		AnalyticsService as = new AnalyticsService("localhost", PORT);
+		AnalyticsService as = new AnalyticsService("http://localhost:"+PORT+"/tpt-analytics");
 		assertEquals("<html>", as.postData("zuzu", ""));
 		assertNotNull(sentAddress);
-		assertTrue(sentAddress.length() > 0);
+		assertTrue(sentAddress.startsWith("v2;"));
+		assertTrue(sentAddress.length() > 3);
 	}
 	
 	@Test
 	public void testGenerateDeviceId() throws IOException {
-		AnalyticsService as = new AnalyticsService("localhost", PORT);
+		AnalyticsService as = new AnalyticsService("http://localhost:"+PORT+"/tpt-analytics");
 		assertEquals("1234567890", as.generateDeviceId());
 	} 
 
 	@Test
 	public void testPostTimesData() throws IOException {
-		AnalyticsService as = new AnalyticsService("localhost", PORT);
+		AnalyticsService as = new AnalyticsService("http://localhost:"+PORT+"/tpt-analytics");
 		as.postTimesBundle("1234", "bla");
 		assertEquals("1234", postedDevice);
 		assertEquals("bla", postedData);
-	} 
+	}
 }
