@@ -42,7 +42,7 @@ def do_generate_device_id():
         finally:
             conn.close()
     except Exception:
-        logging.exception("Error getting unused device id.")
+        app.logger.exception("Error getting unused device id.")
         return 'NONE\n'
 
 
@@ -58,10 +58,11 @@ def do_post_times_bundle():
             raise
         finally:
             conn.close()
-    except tpt.db.ItemNotFoundException:
+    except tpt.db.ItemNotFoundException, e:
+        app.logger.info(e.message)
         return not_found()
     except Exception:
-        logging.exception("Error saving times bundle.")
+        app.logger.exception("Error saving times bundle.")
         return 'Not saved, thank you anyway\n'
     else:
         return 'Thank you\n'
@@ -206,6 +207,12 @@ def get_eta(route_ext_id, stop_ext_id):
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.debug = False
+
+if not app.debug:
+    from logging.handlers import SysLogHandler
+    handler = SysLogHandler(address='/dev/log')
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080)

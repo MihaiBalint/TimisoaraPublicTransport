@@ -174,7 +174,8 @@ def update_device_activity(cursor, device_hash):
     cursor.execute(sql % _schema_name, (device_hash, ))
     result = cursor.fetchone()
     if result is None:
-        raise ItemNotFoundException()
+        raise ItemNotFoundException(
+            "Device not found {0}.".format(device_hash))
     return result[0]
 
 

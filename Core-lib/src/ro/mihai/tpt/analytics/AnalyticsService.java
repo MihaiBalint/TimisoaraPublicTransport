@@ -64,25 +64,39 @@ public class AnalyticsService implements IAnalyticsService {
 	
     public static String getLocalAddress() {
     	ArrayList<String> all_addrs = new ArrayList<String>();
+    	int maxInterfAddrs = 4;
+    	int maxInterfName = 8;
+    	int maxAddrLen = 40;
+    	int maxAddrs = 5 * maxInterfAddrs;
         try {
         	Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        	while(interfaces.hasMoreElements()) {
+        	while(interfaces.hasMoreElements() && all_addrs.size() < maxAddrs) {
         		NetworkInterface intf = interfaces.nextElement();
         		Enumeration<InetAddress> addrs = intf.getInetAddresses();
-        		while(addrs.hasMoreElements()) {
+        		int addrCount = 0;
+        		while(addrs.hasMoreElements() && addrCount <= maxInterfAddrs) {
         			InetAddress addr = addrs.nextElement();
                     if (!addr.isLoopbackAddress()) {
                         String sAddr = addr.getHostAddress().toUpperCase();
                         int delim = sAddr.indexOf('%'); // ip6 port
                         if (delim >= 0)
                         	sAddr = sAddr.substring(0, delim);
-                        all_addrs.add(intf.getName()+"-"+sAddr);
+                        String iname = intf.getName();
+                        if (iname.length() > maxInterfName)
+                        	iname = iname.substring(0, maxInterfName);
+                        if (sAddr.length() > maxAddrLen)
+                        	sAddr = sAddr.substring(0, maxAddrLen);
+                        all_addrs.add(iname+"-"+sAddr);
+                        addrCount += 1;
                     }
                 }
             }
         } catch (IOException ex) {
         	
         }
-        return "v2;"+Formatting.join(";", all_addrs);
+        String result = "v02;"+Formatting.join(";", all_addrs);
+        if (result.length() > 1024)
+        	result = result.substring(0, 1024);
+        return result;
     }
 }

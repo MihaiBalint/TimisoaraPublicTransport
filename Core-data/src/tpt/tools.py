@@ -25,7 +25,7 @@ def use_device_id(cursor):
 
 
 def insert_times_log(cursor, data_stream):
-    device_addr = data_stream.readline(100).strip()
+    device_addr = data_stream.readline(1024).strip()
     device_hash = data_stream.readline(140).strip()
     device_id = tpt.db.update_device_activity(cursor, device_hash)
     reader = csv.reader(data_stream, delimiter=",", quotechar='"',
