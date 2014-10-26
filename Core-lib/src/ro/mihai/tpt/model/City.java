@@ -37,7 +37,7 @@ public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private DataVersion version;
 	private Map<String, Station> stations;
-	private Map<String,Line> lineNameMap;
+	private Map<String, Line> lineNameMap;
 	private ArrayList<Path> pathIdMap;
 	
 	private Map<Integer, Junction> junctionMap;
@@ -224,7 +224,7 @@ public class City implements Serializable {
 		return in;
 	}
 	
-	public void loadFromStream(DetachableStream in, IMonitor mon) throws IOException {
+	public void loadFromStream(DetachableStream in, IMonitor mon, int dbEntries) throws IOException {
 		String sigStr;
 		try {
 			sigStr = in.readFixedLengthString(22);
@@ -253,7 +253,7 @@ public class City implements Serializable {
 		this.in = in;
 		int blType, blLength;
 
-		mon.setMax(823);
+		mon.setMax(dbEntries);
 		
 		blType = in.readInt();
 		blLength = in.readInt();

@@ -157,30 +157,33 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	
 	private void persistLazy(DataOutputStream res) throws IOException {
 		ensureLoaded();
-		byte[] b;
 		
 		// lazy station resources
-		b = getName().getBytes();
-		res.writeInt(b.length); res.write(b);
-		
-		b = getNiceName().getBytes();
-		res.writeInt(b.length); res.write(b);
+		writePossiblyNullString(res, getName());
+		writePossiblyNullString(res, getNiceName());
+		writePossiblyNullString(res, getShortName());
 
-		b = getShortName().getBytes();
-		res.writeInt(b.length); res.write(b);
+		if (junction!=null)
+			res.writeInt(junction.getId());
+		else
+			res.writeInt(0);
 
-		res.writeInt(junction.getId());
-
-		b = getLat().getBytes();
-		res.writeInt(b.length); res.write(b);
-
-		b = getLng().getBytes();
-		res.writeInt(b.length); res.write(b);
+		writePossiblyNullString(res, getLat());
+		writePossiblyNullString(res, getLng());
 		
 		res.writeInt(paths.size());
 		for(Path p : paths) {
 			res.writeInt(p.getId());
 		}
+	}
+	
+	private static void writePossiblyNullString(DataOutputStream res, String data) throws IOException {
+		if (data == null) {
+			res.writeInt(-1);
+			return;
+		}
+		byte[] b = data.getBytes();
+		res.writeInt(b.length); res.write(b);
 	}
 	
 	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {

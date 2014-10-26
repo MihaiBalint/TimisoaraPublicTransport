@@ -1,6 +1,7 @@
 package ro.mihai.util;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,9 +62,11 @@ public abstract class DetachableStream implements Serializable {
 	
 	public synchronized String readString() throws IOException {
 		int bc = ensureStream().readInt();
+		position+=bc+4;
+		if (bc < 0)
+			return null;
 		byte[] b = new byte[bc];
 		ensureStream().readFully(b);
-		position+=bc+4;
 		return new String(b);
 	}
 
@@ -108,4 +111,18 @@ public abstract class DetachableStream implements Serializable {
 			return new DataInputStream(new BufferedInputStream(new FileInputStream(new File(fileName))));
 		}
 	}
+	
+	public static class FromBytes extends DetachableStream {
+		private static final long serialVersionUID = 1L;
+		private byte[] bytes;
+		public FromBytes(byte[] bytes) {
+			this.bytes = bytes;
+		}
+		
+		@Override
+		public DataInputStream openInputStream() throws IOException {
+			return new DataInputStream(new ByteArrayInputStream(bytes));
+		}
+	}
+	
 }

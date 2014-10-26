@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Junction;
@@ -106,7 +107,7 @@ public class V3Generator extends TestCase {
 		
 		City c1 = new City();
 		DetachableStream fis = new DetachableStream.FromFile(fileName);
-		c1.loadFromStream(fis, new NullMonitor());
+		c1.loadFromStream(fis, new NullMonitor(), RATT.CITY_DB_ENTRIES);
 		for(Station s:c1.getStations())
 			s.getName();
 		assertTrue(c.getStations().size() > 0);

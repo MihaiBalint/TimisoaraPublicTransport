@@ -22,7 +22,7 @@ public class JavaCityLoader {
 		File cache = new File(cityCacheFileName);
 		if(cache.isFile() && cache.exists() && cache.canRead()) {
 			c = new City();
-			c.loadFromStream(new DetachableStream.FromFile(cityCacheFileName), new NullMonitor());
+			c.loadFromStream(new DetachableStream.FromFile(cityCacheFileName), new NullMonitor(), RATT.CITY_DB_ENTRIES);
 		} else {
 			c = RATT.downloadCity(prefs, new NullMonitor());
 			c.saveToFile(new FileOutputStream(cache));

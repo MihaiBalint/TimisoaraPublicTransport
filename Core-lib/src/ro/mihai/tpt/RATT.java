@@ -26,6 +26,7 @@ import ro.mihai.tpt.model.*;
 import ro.mihai.util.*;
 
 public class RATT {
+	public static final int CITY_DB_ENTRIES = 823;
 	public static final String root = "http://www.ratt.ro/txt/";
 	
 	private static final String stationIdParamName = "id_statie"; 

@@ -57,6 +57,7 @@ public class Estimate implements Serializable {
 	private Status status;
 	private EstimateType type;
 	private long updateTimeMilis;
+	private HourlySchedule schedule;
 
 	public Estimate(Path path, Station station, int stationIndex) {
 		this.path = path;
@@ -66,11 +67,16 @@ public class Estimate implements Serializable {
 		this.times1 = EMPTY;
 		this.times2 = EMPTY;
 		this.type = EstimateType.None;
+		this.schedule = new HourlySchedule();
 	}
 	
 	public void setStatus(Status status) {
 		this.status = status;
 		// this.updateTimeMilis = System.currentTimeMillis();
+	}
+	
+	public HourlySchedule getSchedule() {
+		return schedule;
 	}
 	
 	public Station getStation() {

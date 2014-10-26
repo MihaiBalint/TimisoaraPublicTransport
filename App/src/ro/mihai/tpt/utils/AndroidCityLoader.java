@@ -37,7 +37,7 @@ public class AndroidCityLoader {
 
 	public static City loadFromAppResources(Context ctx) throws IOException {
 		City c = new City();
-		c.loadFromStream(new AndroidDetachableStream.FromRawResource(ctx,R.raw.citylines), new NullMonitor());
+		c.loadFromStream(new AndroidDetachableStream.FromRawResource(ctx,R.raw.citylines), new NullMonitor(), RATT.CITY_DB_ENTRIES);
 		return c;
 	}
 	
@@ -45,11 +45,11 @@ public class AndroidCityLoader {
 		City c = new City();
 		try {
 			// read resources file
-			c.loadFromStream(new AndroidDetachableStream.FromRawResource(ctx,R.raw.citylines),mon);
+			c.loadFromStream(new AndroidDetachableStream.FromRawResource(ctx,R.raw.citylines),mon, RATT.CITY_DB_ENTRIES);
 		} catch(Resources.NotFoundException ex) {
 			try {
 				// read the proper cache
-				c.loadFromStream(new AndroidDetachableStream.FromFile(ctx,cityCacheFileName),mon);
+				c.loadFromStream(new AndroidDetachableStream.FromFile(ctx,cityCacheFileName),mon, RATT.CITY_DB_ENTRIES);
 			} catch(FileNotFoundException e) {
 				// download and parse new stuff
 				c = RATT.downloadCity(prefs, mon);

@@ -17,21 +17,13 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
-import ro.mihai.tpt.RATT;
 import ro.mihai.util.DetachableStream;
 import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
@@ -123,6 +115,10 @@ public class Path extends PersistentEntity implements Serializable {
 		ensureLoaded();
 		return estimatesByPath;
 	}
+
+	public Estimate getEstimateByPath(int stationIndex) {
+		return getEstimatesByPath().get(stationIndex);
+	}
 	
 	/*
 	 * 
@@ -142,93 +138,6 @@ public class Path extends PersistentEntity implements Serializable {
 	/*
 	 * 
 	 */
-	
-	public void reOrder() {
-		ensureLoaded();
-		try {
-			stationCheck();
-			orderRead();
-			orderCheck();
-		}catch(IOException e) {
-			System.err.println(getLineName() + " ("+name+"): "+e);
-		}catch(NoSuchElementException e) {
-			System.err.println(getLineName() + " ("+name+"): "+e);
-		}catch(AssertionError e) {
-			System.out.println("*** "+getLineName() + " ("+name+"): "+e);
-		}
-	}
-
-	private void stationCheck() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
-		String l;
-		Set<String> stations = new HashSet<String>(); 
-		while(null!=(l=br.readLine())) {
-			stations.add(l.trim());
-			Station found = null;
-			String tried = "";
-			for(Estimate e : estimatesByPath) {
-				Station s = e.getStation();
-				tried += s.getNicestNamePossible().trim()+"\n";
-				if(s.getNicestNamePossible().trim().equals(l.trim())) {
-					found = s; break;
-				}
-			}
-			assert(null!=found) : "No station found for: "+l+", Tried: \n"+tried;
-		}
-		br.close();
-		
-		Set<String> stationsCopy = new HashSet<String>(stations);
-		for(Estimate e : estimatesByPath) {
-			Station s = e.getStation();
-			String st = s.getNicestNamePossible().trim();
-			if(stations.contains(st)) {
-				stations.remove(st);
-			} else {
-				if(!stationsCopy.contains(st))
-					System.err.println(getLineName()+" ("+name+"): Missing in order: "+st);
-				else
-					System.out.println(getLineName()+" ("+name+"): Duplicated: "+st);
-			}
-		}
-	}
-
-	private void orderRead() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
-		String l;
-		
-		List<Estimate> est = estimatesByPath;
-		
-		this.temp = null;
-		this.segments = new ArrayList<Segment>();
-		this.estimatesByPath = new ArrayList<Estimate>();
-		
-		while(null!=(l=br.readLine())) {
-			
-			for(Estimate e:est) {
-				Station s = e.getStation();
-				String st = s.getNicestNamePossible().trim();
-				if(st.equals(l.trim())) 
-					concatenate(s);
-			}
-		}
-	}
-	
-	private void orderCheck() throws IOException, NoSuchElementException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("order/"+getLineName()+" ("+name+").txt")));
-		String l;
-		Iterator<Estimate> it = estimatesByPath.iterator();
-		Station s = it.next().getStation();
-		
-		while(null!=(l=br.readLine())) {
-			l=l.trim();
-			assert(s.getNicestNamePossible().trim().equals(l))
-				: s.getNicestNamePossible().trim()+" is not "+l;
-			
-			while(it.hasNext() && s.getNicestNamePossible().trim().equals(l))
-				s=it.next().getStation();
-		}
-		br.close();
-	}
 	
 	public List<String> timesToString() {
 		ensureLoaded();
@@ -291,7 +200,7 @@ public class Path extends PersistentEntity implements Serializable {
 		
 		// eager path resources
 		eager.writeInt(id);
-		assert line.getPaths().contains(this);
+		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
 		b = getLineName().getBytes();
 		eager.writeInt(b.length); eager.write(b);
 
