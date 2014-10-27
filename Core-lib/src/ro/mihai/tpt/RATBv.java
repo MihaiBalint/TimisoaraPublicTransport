@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Estimate;
+import ro.mihai.tpt.model.HourlyPlan;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
@@ -99,11 +99,15 @@ public class RATBv {
 		}
 		l.addPath(p2);
 		
-		Estimate station1dir1 = p1.getEstimateByPath(0);
-		station1dir1.getSchedule().setSchedule( 5, new int[]{28, 39, 53});
-		station1dir1.getSchedule().setSchedule( 6, new int[]{ 8, 21, 30, 38, 48, 58});
-		station1dir1.getSchedule().setSchedule( 7, new int[]{ 6, 13, 20, 28, 35, 43, 51, 58});
-		station1dir1.getSchedule().setSchedule( 8, new int[]{ 5, 13, 20, 30, 42, 55});
+		HourlyPlan dir1station1 = p1.getEstimateByPath(0).getPlan();
+		dir1station1.setHourSchedule( 5, new int[]{28, 39, 53});
+		dir1station1.setHourSchedule( 6, new int[]{ 8, 21, 30, 38, 48, 58});
+		dir1station1.setHourSchedule( 7, new int[]{ 6, 13, 20, 28, 35, 43, 51, 58});
+		dir1station1.setHourSchedule( 8, new int[]{ 5, 13, 20, 30, 42, 55});
+
+		HourlyPlan dir1station2 = p1.getEstimateByPath(1).getPlan();
+		dir1station2.setHourSchedule( 5, new int[]{43, 54});
+		dir1station2.setHourSchedule( 6, new int[]{ 8, 23, 36, 45, 53});
 		// ... and so on
 		
 		// Open your own stream here (possibly to a file)
@@ -121,7 +125,7 @@ public class RATBv {
 		loadedCity.loadFromStream(inBuffer, new NullMonitor(), CITY_DB_ENTRIES);
 		
 		Path p = loadedCity.getLineByName("1").getPath("Livada Postei - Triaj");
-		int[] nextHourMin = p.getEstimateByPath(0).getSchedule().getNextMinute(7, 10);
+		int[] nextHourMin = p.getEstimateByPath(0).getPlan().getNextMinute(7, 10);
 		int nextHour = nextHourMin[0];
 		int nextMin = nextHourMin[1];
 		

@@ -159,21 +159,6 @@ public class Path extends PersistentEntity implements Serializable {
 		return times;
 	}
 	
-	@Override
-	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
-		this.extId = res.readString();
-		this.name = res.readString();
-		this.niceName = res.readString();
-		
-		int stationCount = res.readInt();
-		for(int j=0;j<stationCount;j++) {
-			String stationId = res.readString();
-			
-			Station s = city.getStation(stationId);
-			concatenate(s);
-		}
-	}
-	
 	private void persistLazy(BPOutputStream lazy) throws IOException {
 		// lazy path resources
 		lazy.writeString(extId);
@@ -189,9 +174,9 @@ public class Path extends PersistentEntity implements Serializable {
 	@Override
 	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
 		// eager path resources
-		eager.writeInt(id);
 		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
 		
+		eager.writeInt(id);
 		eager.writeString(getLineName());
 		eager.writeInt(lazyId);
 
@@ -205,6 +190,21 @@ public class Path extends PersistentEntity implements Serializable {
 		Path path = new Path(line, pathId, eager.readInt(), city);
 		line.addEagerPath(path);
 		return path;
+	}
+
+	@Override
+	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
+		this.extId = res.readString();
+		this.name = res.readString();
+		this.niceName = res.readString();
+		
+		int stationCount = res.readInt();
+		for(int j=0;j<stationCount;j++) {
+			String stationId = res.readString();
+			
+			Station s = city.getStation(stationId);
+			concatenate(s);
+		}
 	}
 	
 	@Override
