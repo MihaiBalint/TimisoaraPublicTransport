@@ -17,14 +17,14 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-import ro.mihai.util.DetachableStream;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.Formatting;
 
 public class Station extends PersistentEntity implements INamedEntity, Serializable {
@@ -138,7 +138,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		return junction!=null && junction.getName()!=null && junction.getName().trim().length() > 0;
 	}
 	
-	protected void loadLazyResources(DetachableStream lazy, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream lazy, DataVersion version) throws IOException {
 		this.name = lazy.readString();
 		this.niceName = lazy.readString();
 		this.shortName = lazy.readString();
@@ -155,21 +155,21 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		}
 	}
 	
-	private void persistLazy(DataOutputStream res) throws IOException {
+	private void persistLazy(BPOutputStream res) throws IOException {
 		ensureLoaded();
 		
 		// lazy station resources
-		writePossiblyNullString(res, getName());
-		writePossiblyNullString(res, getNiceName());
-		writePossiblyNullString(res, getShortName());
+		res.writeString(getName());
+		res.writeString(getNiceName());
+		res.writeString(getShortName());
 
 		if (junction!=null)
 			res.writeInt(junction.getId());
 		else
 			res.writeInt(0);
 
-		writePossiblyNullString(res, getLat());
-		writePossiblyNullString(res, getLng());
+		res.writeString(getLat());
+		res.writeString(getLng());
 		
 		res.writeInt(paths.size());
 		for(Path p : paths) {
@@ -177,22 +177,9 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		}
 	}
 	
-	private static void writePossiblyNullString(DataOutputStream res, String data) throws IOException {
-		if (data == null) {
-			res.writeInt(-1);
-			return;
-		}
-		byte[] b = data.getBytes();
-		res.writeInt(b.length); res.write(b);
-	}
-	
-	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
-		byte[] b;
-		
+	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
 		// eager station resources
-		b = id.getBytes();
-		eager.writeInt(b.length); eager.write(b);
-
+		eager.writeString(id);
 		eager.writeInt(lazyId); 
 		
 		// lazy station resources
@@ -200,7 +187,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		lazy.flush();
 	}
 	
-	public static Station loadEager(DetachableStream eager, City city) throws IOException {
+	public static Station loadEager(BPInputStream eager, City city) throws IOException {
 		String id = eager.readString();
 		
 		return new Station(id, eager.readInt(), city);

@@ -17,14 +17,14 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import ro.mihai.util.DetachableStream;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
 
@@ -160,7 +160,7 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 	
 	@Override
-	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
 		this.extId = res.readString();
 		this.name = res.readString();
 		this.niceName = res.readString();
@@ -174,42 +174,31 @@ public class Path extends PersistentEntity implements Serializable {
 		}
 	}
 	
-	private void persistLazy(DataOutputStream lazy) throws IOException {
-		byte[] b;
+	private void persistLazy(BPOutputStream lazy) throws IOException {
 		// lazy path resources
-		b = extId.getBytes();
-		lazy.writeInt(b.length); lazy.write(b);
-		
-		b = getName().getBytes();
-		lazy.writeInt(b.length); lazy.write(b);
-
-		b = getNiceName().getBytes();
-		lazy.writeInt(b.length); lazy.write(b);
+		lazy.writeString(extId);
+		lazy.writeString(getName());
+		lazy.writeString(getNiceName());
 		
 		lazy.writeInt(getEstimatesByPath().size());
-		for(Estimate e:getEstimatesByPath()) {
-			b = e.getStation().getId().getBytes();
-			lazy.writeInt(b.length); lazy.write(b);
-		}
+		for(Estimate e:getEstimatesByPath()) 
+			lazy.writeString(e.getStation().getId());
 		lazy.flush();
 	}	
 
 	@Override
-	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
-		byte[] b;
-		
+	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
 		// eager path resources
 		eager.writeInt(id);
 		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
-		b = getLineName().getBytes();
-		eager.writeInt(b.length); eager.write(b);
-
+		
+		eager.writeString(getLineName());
 		eager.writeInt(lazyId);
 
 		persistLazy(lazy);
 	}
 
-	public static Path loadEager(DetachableStream eager, City city) throws IOException {
+	public static Path loadEager(BPInputStream eager, City city) throws IOException {
 		int pathId = eager.readInt();
 		String lineName = eager.readString();
 		Line line = city.getLineByName(lineName);

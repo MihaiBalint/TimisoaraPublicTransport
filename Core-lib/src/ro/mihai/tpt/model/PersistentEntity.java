@@ -1,9 +1,9 @@
 package ro.mihai.tpt.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ro.mihai.util.DetachableStream;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 
 public abstract class PersistentEntity {
 	private long resId;
@@ -26,7 +26,7 @@ public abstract class PersistentEntity {
 		load();
 	}
 	
-	protected abstract void loadLazyResources(DetachableStream res, DataVersion version) throws IOException;
+	protected abstract void loadLazyResources(BPInputStream res, DataVersion version) throws IOException;
 	
-	public abstract void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException;
+	public abstract void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException;
 }

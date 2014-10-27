@@ -1,0 +1,70 @@
+package ro.mihai.util;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Collection;
+
+import ro.mihai.tpt.model.PersistentEntity;
+
+public class BPOutputStream {
+	private DataOutputStream stream;
+	
+	public BPOutputStream(OutputStream stream) {
+		this(new DataOutputStream(stream));
+	}
+	
+	public BPOutputStream(DataOutputStream stream) {
+		this.stream = stream;
+	}
+
+	public void writeString(String data) throws IOException {
+		if (data == null) {
+			stream.writeInt(-1);
+			return;
+		}
+		byte[] b = data.getBytes();
+		stream.writeInt(b.length); stream.write(b);
+	}
+	
+	public void writeInt(int data) throws IOException {
+		stream.writeInt(data);
+	}
+	
+	public void writeMagic(String magic) throws IOException {
+		stream.write(magic.getBytes());
+	}
+	
+	public <T extends PersistentEntity> void writeEntityCollection(Collection<T> items, BPOutputStream lazy, ByteArrayOutputStream lazyBuf) throws IOException {
+		ByteArrayOutputStream data = new ByteArrayOutputStream();
+		BPOutputStream itemStream = new BPOutputStream(data);
+		itemStream.writeInt(items.size());
+		for(T s: items) {
+			s.persist(itemStream, lazy, lazyBuf.size());
+			lazy.flush();
+		}
+		itemStream.flush();
+		
+		stream.writeInt(1);
+		stream.writeInt(data.size());
+		stream.write(data.toByteArray());
+		
+	}
+	
+	public void writeLazyBlock(ByteArrayOutputStream data) throws IOException {
+		stream.writeInt(2);
+		stream.writeInt(data.size());
+		stream.write(data.toByteArray());
+	}
+	
+	public void flush() throws IOException {
+		stream.flush();
+	}
+	
+	public void close() throws IOException {
+		stream.close();
+	}
+	
+	
+}

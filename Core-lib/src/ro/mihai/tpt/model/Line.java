@@ -17,7 +17,6 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,7 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ro.mihai.util.DetachableStream;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.LineKind;
 
 public class Line extends PersistentEntity implements Serializable {
@@ -144,31 +144,27 @@ public class Line extends PersistentEntity implements Serializable {
 		return false;
 	}
 
-	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
 		for(Path p: paths)
 			pathNames.put(p.getName(), p);
 	}
 
 
-	private void persistLazy(DataOutputStream lazy) throws IOException {
+	private void persistLazy(BPOutputStream lazy) throws IOException {
 		for(Path p:paths) {
 			assert p.getLineName().equals(name);
 		}
 	}
 
-	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
-		byte[] b;
-		
+	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
 		// eager line resources
-		b = name.getBytes();
-		eager.writeInt(b.length); eager.write(b);
-
+		eager.writeString(name);
 		eager.writeInt(lazyId);
 
 		persistLazy(lazy);
 	}
 
-	public static Line loadEager(DetachableStream eager, City city) throws IOException {
+	public static Line loadEager(BPInputStream eager, City city) throws IOException {
 		String name = eager.readString();
 		
 		return new Line(name, eager.readInt(), city);

@@ -18,8 +18,6 @@
 package ro.mihai.tpt.model;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,9 +27,10 @@ import java.util.*;
 import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.RATT.LineReader;
 import ro.mihai.tpt.RATT.StationReader;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.FormattedTextReader;
 import ro.mihai.util.IMonitor;
-import ro.mihai.util.DetachableStream;
 
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -42,7 +41,7 @@ public class City implements Serializable {
 	
 	private Map<Integer, Junction> junctionMap;
 	
-	private DetachableStream in;
+	private BPInputStream in;
 	
 	public City() {
 		this.lineNameMap = new HashMap<String, Line>();
@@ -166,65 +165,33 @@ public class City implements Serializable {
 	
 	
 	public void saveToFile(OutputStream out) throws IOException {
-		DataOutputStream os = new DataOutputStream(out);
-		os.write("CityLineCache = 4.0.0;".getBytes());
+		BPOutputStream os = new BPOutputStream(out);
+		os.writeMagic("CityLineCache = 4.0.0;");
 
 		// collections of entities are stored in blocks
 		// each collection is split in two parts 
 		// (a) a mandatory information part - loaded at startup 
 		// (b) a deferred loading part - loaded as needed
 
-		ByteArrayOutputStream eagerBuf, lazyBuf = new ByteArrayOutputStream();
-		DataOutputStream lazyRes = new DataOutputStream(lazyBuf);
+		ByteArrayOutputStream lazyBuf = new ByteArrayOutputStream();
+		BPOutputStream lazyRes = new BPOutputStream(lazyBuf);
 
-		eagerBuf = new ByteArrayOutputStream();
-		persistCollection(lineNameMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
-		os.writeInt(1);
-		os.writeInt(eagerBuf.size());
-		os.write(eagerBuf.toByteArray());
-		
-		eagerBuf = new ByteArrayOutputStream();
-		persistCollection(pathIdMap, new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
-		os.writeInt(1);
-		os.writeInt(eagerBuf.size());
-		os.write(eagerBuf.toByteArray());
-		
-		eagerBuf = new ByteArrayOutputStream();
-		persistCollection(stations.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
-		os.writeInt(1);
-		os.writeInt(eagerBuf.size());
-		os.write(eagerBuf.toByteArray());
+		os.writeEntityCollection(lineNameMap.values(), lazyRes, lazyBuf);
+		os.writeEntityCollection(pathIdMap, lazyRes, lazyBuf);
+		os.writeEntityCollection(stations.values(), lazyRes, lazyBuf);
+		os.writeEntityCollection(junctionMap.values(), lazyRes, lazyBuf);
 
-		eagerBuf = new ByteArrayOutputStream();
-		persistCollection(junctionMap.values(), new DataOutputStream(eagerBuf), lazyRes, lazyBuf);
-		os.writeInt(1);
-		os.writeInt(eagerBuf.size());
-		os.write(eagerBuf.toByteArray());
-
-		os.writeInt(2);
-		os.writeInt(lazyBuf.size());
-		os.write(lazyBuf.toByteArray());
+		os.writeLazyBlock(lazyBuf);
 		
 		os.flush();
 		os.close();
 	}
 	
-	private <T extends PersistentEntity> void persistCollection(Collection<T> items, DataOutputStream eager, DataOutputStream lazy, ByteArrayOutputStream lazyBuf) throws IOException {
-		eager.writeInt(items.size());
-		for(T s: items) {
-			// station resources
-			s.persist(eager, lazy, lazyBuf.size());
-			lazy.flush();
-		}
-		eager.flush();
-		
-	}
-	
-	public DetachableStream getDetachableInputStream() {
+	public BPInputStream getDetachableInputStream() {
 		return in;
 	}
 	
-	public void loadFromStream(DetachableStream in, IMonitor mon, int dbEntries) throws IOException {
+	public void loadFromStream(BPInputStream in, IMonitor mon, int dbEntries) throws IOException {
 		String sigStr;
 		try {
 			sigStr = in.readFixedLengthString(22);
@@ -240,7 +207,7 @@ public class City implements Serializable {
 			throw new SaveFileException();
 		} else if(sigStr.contains("2.0.0")) {
 			version = DataVersion.Version2;
-			loadFromFile2Rest(mon, in.getInputStream());
+			loadFromFile2Rest(mon, in);
 			throw new SaveFileException();
 		} else if(sigStr.contains("3.0.0")) {
 			version = DataVersion.Version3;
@@ -251,63 +218,49 @@ public class City implements Serializable {
 			version = DataVersion.Version6;
 		}
 		this.in = in;
-		int blType, blLength;
-
 		mon.setMax(dbEntries);
 		
-		blType = in.readInt();
-		blLength = in.readInt();
-		int lineCount = in.readInt();
-		for(int i=0;i<lineCount;i++) {
+		int monitorCount = 0;
+		Iterator<?> it;
+		
+		it = in.readEntityCollection();
+		while (it.hasNext()) {
+			it.next(); monitorCount++;
 			Line l = Line.loadEager(in, this);
 			lineNameMap.put(l.getName(), l);
 			mon.workComplete();
 		}
 
-		blType = in.readInt();
-		blLength = in.readInt();
-		int pathCount = in.readInt();
-		while(pathIdMap.size()<pathCount)
-			pathIdMap.add(null);
-		for(int i=0;i<pathCount;i++) {
+		it = in.readEntityCollection();
+		while (it.hasNext()) {
+			it.next(); monitorCount++;
 			Path p = Path.loadEager(in, this);
+			
+			while(pathIdMap.size() <= p.getId())
+				pathIdMap.add(null);
 			pathIdMap.set(p.getId(), p);
 			mon.workComplete();
 		}
 		
-		blType = in.readInt();
-		blLength = in.readInt();
-		int stationCount = in.readInt();
 		stations = new HashMap<String, Station>();
-		for(int i=0;i<stationCount;i++) {
+		it = in.readEntityCollection();
+		while (it.hasNext()) {
+			it.next(); monitorCount++;
 			Station s = Station.loadEager(in, this);
 			stations.put(s.getId(), s);
 			mon.workComplete();
 		}
 
-		blType = in.readInt();
-		blLength = in.readInt();
-		int junctionCount = in.readInt();
-		assert mon.getMax() == lineCount+pathCount+stationCount+junctionCount: 
-			"Max: "+(lineCount+pathCount+stationCount+junctionCount)+
-			"!="+mon.getMax();
-		for(int i=0;i<junctionCount;i++) {
+		it = in.readEntityCollection();
+		while (it.hasNext()) {
+			it.next(); monitorCount++;
 			Junction s = Junction.loadEager(in, this);
 			junctionMap.put(s.getId(), s);
 			mon.workComplete();
 		}
+		assert mon.getMax() == monitorCount: "Max: "+(monitorCount)+"!="+mon.getMax();
 
-		while (blType!=2) {
-			blType = in.readInt();
-			blLength = in.readInt();
-			if (blType==2) break;
-			in.sureSkip(blLength);
-		}
-
-		if (blType!=2) 
-			throw new IOException("Failed to read deferred resource data before stream ended.");
-		
-		in.mark(blLength);
+		in.mark(in.skipToLazyBlock());
 	}
 		
 	public synchronized void loadLazyResources(PersistentEntity s, long resId) {
@@ -353,16 +306,12 @@ public class City implements Serializable {
 	}
 	
 	@Deprecated
-	private void loadFromFile2Rest(IMonitor mon, DataInputStream in) throws IOException {
-		int bc;
-		byte[] b;
+	private void loadFromFile2Rest(IMonitor mon, BPInputStream in) throws IOException {
 		int lineCount = in.readInt();
 		for(int i=0;i<lineCount;i++) {
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String id = new String(b);
+			String id = in.readString();
 			
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String name = new String(b);
+			String name = in.readString();
 			Line l = newLine(name);
 			Path p = newPath(l,id,"");
 			l.addPath(p); 
@@ -373,18 +322,13 @@ public class City implements Serializable {
 		stations = new HashMap<String, Station>();
 		mon.setMax(stationCount);
 		for(int i=0;i<stationCount;i++) {
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String id = new String(b);
-			
-			bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-			String name = new String(b);
+			String id = in.readString();
+			String name = in.readString();
 			Station s = new Station(id, name);
 			
 			lineCount = in.readInt();
 			for(int j=0;j<lineCount;j++) {
-				bc = in.readInt(); b = new byte[bc]; in.readFully(b);
-				
-				String extId = new String(b);
+				String extId = in.readString();
 				for(Path p : pathIdMap)
 					if (p.getExtId().equals(extId)) {
 						p.concatenate(s);

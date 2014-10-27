@@ -1,13 +1,13 @@
 package ro.mihai.tpt.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ro.mihai.util.DetachableStream;
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPOutputStream;
 
 public class Junction extends PersistentEntity implements Serializable {
 	private static AtomicInteger ids = new AtomicInteger(0);
@@ -47,7 +47,7 @@ public class Junction extends PersistentEntity implements Serializable {
 	}
 
 	@Override
-	protected void loadLazyResources(DetachableStream res, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
 		this.name = res.readString();
 
 		int stationCount = res.readInt();
@@ -59,23 +59,19 @@ public class Junction extends PersistentEntity implements Serializable {
 		}
 	}
 
-	private void persistLazy(DataOutputStream lazy) throws IOException {
+	private void persistLazy(BPOutputStream lazy) throws IOException {
 		ensureLoaded();
-		byte[] b;
-		
 		// lazy junction resources
-		b = getName().getBytes();
-		lazy.writeInt(b.length); lazy.write(b);
+		lazy.writeString(getName());
 		
 		lazy.writeInt(stations.size());
 		for(Station s:stations) {
-			b = s.getId().getBytes();
-			lazy.writeInt(b.length); lazy.write(b);
+			lazy.writeString(s.getId());
 		}
 	}
 	
 	@Override
-	public void persist(DataOutputStream eager, DataOutputStream lazy, int lazyId) throws IOException {
+	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
 		eager.writeInt(id); 
 		eager.writeInt(lazyId); 
 		
@@ -84,7 +80,7 @@ public class Junction extends PersistentEntity implements Serializable {
 		lazy.flush();
 	}
 	
-	public static Junction loadEager(DetachableStream eager, City city) throws IOException {
+	public static Junction loadEager(BPInputStream eager, City city) throws IOException {
 		int id = eager.readInt();
 
 		return new Junction(id, eager.readInt(), city);
