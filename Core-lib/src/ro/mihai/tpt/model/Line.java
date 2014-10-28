@@ -153,14 +153,14 @@ public class Line extends PersistentEntity implements Serializable {
 
 
 	@Override
-	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
+	protected void saveLazyResources(BPMemoryOutputStream lazy) throws IOException {
 		for(Path p:paths) {
 			assert p.getLineName().equals(name);
 		}
 	}
 
 	@Override
-	public void persistEager(BPOutputStream eager) throws IOException {
+	public void saveEager(BPOutputStream eager) throws IOException {
 		// eager line resources
 		eager.writeString(name);
 	}

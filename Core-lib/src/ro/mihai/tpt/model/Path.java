@@ -160,20 +160,20 @@ public class Path extends PersistentEntity implements Serializable {
 		int planCount = eager.readInt();
 		path.eagerPlans = new HourlyPlan[planCount];
 		for (int i=0;i<planCount;i++)
-			path.eagerPlans[i] = PersistentEntity.createHourlyPlan(eager, city);
+			path.eagerPlans[i] = PersistentEntity.loadEagerHourlyPlan(eager, city);
 		return path;
 	}
 	
 	@Override
-	public void persist(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
-		super.persist(eager, lazy);
+	public void saveEagerAndLazy(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
+		super.saveEagerAndLazy(eager, lazy);
 		eager.writeInt(getEstimatesByPath().size());
 		for(Estimate e:getEstimatesByPath())
-			e.getPlan().persist(eager, lazy);
+			e.getPlan().saveEagerAndLazy(eager, lazy);
 	}
 
 	@Override
-	protected void persistEager(BPOutputStream eager) throws IOException {
+	protected void saveEager(BPOutputStream eager) throws IOException {
 		// eager path resources
 		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
 		
@@ -199,7 +199,7 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 	
 	@Override
-	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
+	protected void saveLazyResources(BPMemoryOutputStream lazy) throws IOException {
 		// lazy path resources
 		lazy.writeString(extId);
 		lazy.writeString(getName());

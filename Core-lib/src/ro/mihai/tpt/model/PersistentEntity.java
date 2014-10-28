@@ -37,30 +37,30 @@ public abstract class PersistentEntity {
 	}
 	
 	protected abstract void loadLazyResources(BPInputStream res) throws IOException;
+	protected abstract void saveLazyResources(BPMemoryOutputStream lazy) throws IOException;
 	
-	protected abstract void persistEager(BPOutputStream eager) throws IOException;
-	protected abstract void persistLazy(BPMemoryOutputStream lazy) throws IOException;
+	protected abstract void saveEager(BPOutputStream eager) throws IOException;
 	
-	public void persist(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
+	public void saveEagerAndLazy(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
 		eager.writeInt(lazy.size());
-		persistEager(eager);
-		persistLazy(lazy);
+		saveEager(eager);
+		saveLazyResources(lazy);
 		lazy.flush();
 	}
 	
-	public static Station createStation(BPInputStream eager, City c) throws IOException {
+	public static Station loadEagerStation(BPInputStream eager, City c) throws IOException {
 		return Station.loadEager(eager, eager.readInt(), c);
 	}
-	public static Junction createJunction(BPInputStream eager, City c) throws IOException {
+	public static Junction loadEagerJunction(BPInputStream eager, City c) throws IOException {
 		return Junction.loadEager(eager, eager.readInt(), c);
 	}
-	public static Line createLine(BPInputStream eager, City c) throws IOException {
+	public static Line loadEagerLine(BPInputStream eager, City c) throws IOException {
 		return Line.loadEager(eager, eager.readInt(), c);
 	}
-	public static Path createPath(BPInputStream eager, City c) throws IOException {
+	public static Path loadEagerPath(BPInputStream eager, City c) throws IOException {
 		return Path.loadEager(eager, eager.readInt(), c);
 	}	
-	public static HourlyPlan createHourlyPlan(BPInputStream eager, City c) throws IOException {
+	public static HourlyPlan loadEagerHourlyPlan(BPInputStream eager, City c) throws IOException {
 		return HourlyPlan.loadEager(eager, eager.readInt(), c);
 	}	
 }

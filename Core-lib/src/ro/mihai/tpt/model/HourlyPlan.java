@@ -86,12 +86,12 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 	}
 
 	@Override
-	public void persistEager(BPOutputStream eager) throws IOException {
-		// NOP
+	public void saveEager(BPOutputStream eager) throws IOException {
+		// NOOP
 	}
 	
 	@Override
-	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
+	protected void saveLazyResources(BPMemoryOutputStream lazy) throws IOException {
 		lazy.writeInt(hourly.length);
 		for (int h=0;h<hourly.length;h++) {
 			long bitHours = 0;

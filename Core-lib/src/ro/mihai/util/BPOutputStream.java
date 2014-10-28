@@ -43,7 +43,7 @@ public class BPOutputStream {
 		BPMemoryOutputStream itemStream = BPMemoryOutputStream.usingByteArray();
 		itemStream.writeInt(items.size());
 		for(T s: items) {
-			s.persist(itemStream, lazy);
+			s.saveEagerAndLazy(itemStream, lazy);
 			lazy.flush();
 		}
 		itemStream.flush();

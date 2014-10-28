@@ -157,7 +157,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	}
 	
 	@Override
-	protected void persistLazy(BPMemoryOutputStream res) throws IOException {
+	protected void saveLazyResources(BPMemoryOutputStream res) throws IOException {
 		ensureLoaded();
 		
 		// lazy station resources
@@ -180,7 +180,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	}
 	
 	@Override
-	public void persistEager(BPOutputStream eager) throws IOException {
+	public void saveEager(BPOutputStream eager) throws IOException {
 		// eager station resources
 		eager.writeString(id);
 	}

@@ -204,7 +204,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Line l = PersistentEntity.createLine(in, this);
+			Line l = PersistentEntity.loadEagerLine(in, this);
 			lineNameMap.put(l.getName(), l);
 			mon.workComplete();
 		}
@@ -212,7 +212,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Path p = PersistentEntity.createPath(in, this);
+			Path p = PersistentEntity.loadEagerPath(in, this);
 			
 			while(pathIdMap.size() <= p.getId())
 				pathIdMap.add(null);
@@ -224,7 +224,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Station s = PersistentEntity.createStation(in, this);
+			Station s = PersistentEntity.loadEagerStation(in, this);
 			stations.put(s.getId(), s);
 			mon.workComplete();
 		}
@@ -232,7 +232,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Junction s = PersistentEntity.createJunction(in, this);
+			Junction s = PersistentEntity.loadEagerJunction(in, this);
 			junctionMap.put(s.getId(), s);
 			mon.workComplete();
 		}
