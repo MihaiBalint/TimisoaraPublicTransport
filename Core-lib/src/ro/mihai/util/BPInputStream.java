@@ -90,6 +90,7 @@ public abstract class BPInputStream implements Serializable {
 		assert blLength >= 0;
 		
 		int count = readInt();
+		assert count >= 0;
 		return new EntityIterator(count);
 	}
 	

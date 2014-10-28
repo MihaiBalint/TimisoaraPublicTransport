@@ -41,7 +41,6 @@ public class BPOutputStream {
 	
 	public <T extends PersistentEntity> void writeEntityCollection(Collection<T> items, BPMemoryOutputStream lazy) throws IOException {
 		BPMemoryOutputStream itemStream = BPMemoryOutputStream.usingByteArray();
-		itemStream.writeInt(items.size());
 		for(T s: items) {
 			s.saveEagerAndLazy(itemStream, lazy);
 			lazy.flush();
@@ -50,6 +49,7 @@ public class BPOutputStream {
 		
 		stream.writeInt(1);
 		stream.writeInt(itemStream.size());
+		stream.writeInt(items.size());
 		stream.write(itemStream.toByteArray());
 		
 	}
