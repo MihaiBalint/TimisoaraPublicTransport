@@ -42,10 +42,25 @@ public abstract class PersistentEntity {
 	protected abstract void persistLazy(BPMemoryOutputStream lazy) throws IOException;
 	
 	public void persist(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
-		persistEager(eager);
 		eager.writeInt(lazy.size());
+		persistEager(eager);
 		persistLazy(lazy);
 		lazy.flush();
 	}
 	
+	public static Station createStation(BPInputStream eager, City c) throws IOException {
+		return Station.loadEager(eager, eager.readInt(), c);
+	}
+	public static Junction createJunction(BPInputStream eager, City c) throws IOException {
+		return Junction.loadEager(eager, eager.readInt(), c);
+	}
+	public static Line createLine(BPInputStream eager, City c) throws IOException {
+		return Line.loadEager(eager, eager.readInt(), c);
+	}
+	public static Path createPath(BPInputStream eager, City c) throws IOException {
+		return Path.loadEager(eager, eager.readInt(), c);
+	}	
+	public static HourlyPlan createHourlyPlan(BPInputStream eager, City c) throws IOException {
+		return HourlyPlan.loadEager(eager, eager.readInt(), c);
+	}	
 }

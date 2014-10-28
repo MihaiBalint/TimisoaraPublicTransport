@@ -13,6 +13,7 @@ import java.util.Map;
 import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Estimate;
+import ro.mihai.tpt.model.HourlyPlan;
 import ro.mihai.tpt.model.Junction;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
@@ -76,7 +77,7 @@ public class V3Generator extends TestCase {
 				p.setNiceName(nnp[1]);
 				l.addPath(p);
 			}
-			p.concatenate(st);
+			p.concatenate(st, new HourlyPlan());
 			st.addPath(p);
 		}
 		c.setStations(new ArrayList<Station>(stMap.values()));

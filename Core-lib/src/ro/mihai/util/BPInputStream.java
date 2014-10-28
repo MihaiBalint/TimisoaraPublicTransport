@@ -37,6 +37,12 @@ public abstract class BPInputStream implements Serializable {
 		position+=4;
 		return result;
 	}
+
+	public synchronized long readLong() throws IOException {
+		long result = ensureStream().readLong();
+		position+=8;
+		return result;
+	}
 	
 	public synchronized String readString() throws IOException {
 		int bc = ensureStream().readInt();

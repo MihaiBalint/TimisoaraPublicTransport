@@ -125,7 +125,7 @@ public class RATT {
 				l.addPath(p);
 			} else
 				p = l.getFirstPath();
-			p.concatenate(st);
+			p.concatenate(st, new HourlyPlan());
 			st.addPath(p);
 			return l; 
 		}

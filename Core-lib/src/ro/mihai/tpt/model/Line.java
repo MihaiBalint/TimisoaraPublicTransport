@@ -121,7 +121,7 @@ public class Line extends PersistentEntity implements Serializable {
 		pathNames.remove("");
 		for(Path p:paths) {
 			for(Estimate e : tailsPath.getEstimatesByPath())
-				p.concatenate(e.getStation());
+				p.concatenate(e.getStation(), e.getPlan());
 		}
 	} 
 	
@@ -164,10 +164,9 @@ public class Line extends PersistentEntity implements Serializable {
 		eager.writeString(name);
 	}
 
-	public static Line loadEager(BPInputStream eager, City city) throws IOException {
+	public static Line loadEager(BPInputStream eager, int resId, City city) throws IOException {
 		String name = eager.readString();
-		
-		return new Line(name, eager.readInt(), city);
+		return new Line(name, resId, city);
 	}
 }
 

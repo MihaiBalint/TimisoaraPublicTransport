@@ -59,7 +59,7 @@ public class Estimate implements Serializable {
 	private long updateTimeMilis;
 	private HourlyPlan plan;
 
-	public Estimate(Path path, Station station, int stationIndex) {
+	public Estimate(Path path, Station station, int stationIndex, HourlyPlan plan) {
 		this.path = path;
 		this.station = station;
 		this.stationIndex = stationIndex;
@@ -67,7 +67,7 @@ public class Estimate implements Serializable {
 		this.times1 = EMPTY;
 		this.times2 = EMPTY;
 		this.type = EstimateType.None;
-		this.plan = new HourlyPlan();
+		this.plan = plan;
 	}
 	
 	public void setStatus(Status status) {

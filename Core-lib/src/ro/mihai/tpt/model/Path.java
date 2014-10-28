@@ -87,25 +87,15 @@ public class Path extends PersistentEntity implements Serializable {
 		return line;
 	}
 	
-	private void addSegment(Segment s) {
-		if(segments.isEmpty()) 
-			addStation(s.getFrom());
-		segments.add(s);
-		addStation(s.getTo());
-	}
-
 	private Station temp;
-	public void concatenate(Station s) {
+	public void concatenate(Station s, HourlyPlan plan) {
+		estimatesByPath.add(new Estimate(this, s, estimatesByPath.size(), plan));
 		if(temp==null) {
 			temp = s;
 			return;
 		} 
-		addSegment(new Segment(temp, s));
+		segments.add(new Segment(temp, s));
 		temp = s;
-	}
-	
-	private void addStation(Station s) {
-		estimatesByPath.add(new Estimate(this, s, estimatesByPath.size()));
 	}
 	
 	public String getLabel() {
@@ -159,14 +149,27 @@ public class Path extends PersistentEntity implements Serializable {
 		}
 		return times;
 	}
-	
-	public static Path loadEager(BPInputStream eager, City city) throws IOException {
+
+	private HourlyPlan[] eagerPlans;
+	static Path loadEager(BPInputStream eager, int resId, City city) throws IOException {
 		int pathId = eager.readInt();
 		String lineName = eager.readString();
 		Line line = city.getLineByName(lineName);
-		Path path = new Path(line, pathId, eager.readInt(), city);
+		Path path = new Path(line, pathId, resId, city);
 		line.addEagerPath(path);
+		int planCount = eager.readInt();
+		path.eagerPlans = new HourlyPlan[planCount];
+		for (int i=0;i<planCount;i++)
+			path.eagerPlans[i] = PersistentEntity.createHourlyPlan(eager, city);
 		return path;
+	}
+	
+	@Override
+	public void persist(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
+		super.persist(eager, lazy);
+		eager.writeInt(getEstimatesByPath().size());
+		for(Estimate e:getEstimatesByPath())
+			e.getPlan().persist(eager, lazy);
 	}
 
 	@Override
@@ -185,11 +188,13 @@ public class Path extends PersistentEntity implements Serializable {
 		this.niceName = res.readString();
 		
 		int stationCount = res.readInt();
+		assert stationCount == eagerPlans.length;
+		
 		for(int j=0;j<stationCount;j++) {
 			String stationId = res.readString();
 			
 			Station s = city.getStation(stationId);
-			concatenate(s);
+			concatenate(s, eagerPlans[j]);
 		}
 	}
 	

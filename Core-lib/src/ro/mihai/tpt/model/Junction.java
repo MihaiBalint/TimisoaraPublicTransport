@@ -77,10 +77,9 @@ public class Junction extends PersistentEntity implements Serializable {
 		eager.writeInt(id); 
 	}
 	
-	public static Junction loadEager(BPInputStream eager, City city) throws IOException {
+	public static Junction loadEager(BPInputStream eager, int resId, City city) throws IOException {
 		int id = eager.readInt();
-
-		return new Junction(id, eager.readInt(), city);
+		return new Junction(id, resId, city);
 	}
 	
 }

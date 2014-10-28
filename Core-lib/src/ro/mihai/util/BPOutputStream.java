@@ -30,6 +30,10 @@ public class BPOutputStream {
 	public void writeInt(int data) throws IOException {
 		stream.writeInt(data);
 	}
+
+	public void writeLong(long data) throws IOException {
+		stream.writeLong(data);
+	}
 	
 	public void writeMagic(String magic) throws IOException {
 		stream.write(magic.getBytes());

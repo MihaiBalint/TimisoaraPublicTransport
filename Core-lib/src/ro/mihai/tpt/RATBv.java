@@ -85,7 +85,7 @@ public class RATBv {
 		Path p1 = c.newPath(l, "insert_RATBv_route_id_here(or not)", "Livada Postei - Triaj");
 		p1.setNiceName(p1.getName());
 		for (Station s: dir1) {
-			p1.concatenate(s);
+			p1.concatenate(s, new HourlyPlan());
 			s.addPath(p1);
 		}
 		l.addPath(p1);
@@ -94,7 +94,7 @@ public class RATBv {
 		Path p2 = c.newPath(l, "", "Triaj - Livada Postei");
 		p2.setNiceName(p2.getName());
 		for (Station s: dir2) {
-			p2.concatenate(s);
+			p2.concatenate(s, new HourlyPlan());
 			s.addPath(p2);
 		}
 		l.addPath(p2);
@@ -125,12 +125,17 @@ public class RATBv {
 		loadedCity.loadFromStream(inBuffer, new NullMonitor(), CITY_DB_ENTRIES);
 		
 		Path p = loadedCity.getLineByName("1").getPath("Livada Postei - Triaj");
-		int[] nextHourMin = p.getEstimateByPath(0).getPlan().getNextMinute(7, 10);
+		HourlyPlan plan = p.getEstimateByPath(0).getPlan();
+		int[] nextHourMin = plan.getNextMinute(7, 10);
+		
 		int nextHour = nextHourMin[0];
 		int nextMin = nextHourMin[1];
 		
 		assert nextHour == 7;
-		assert nextMin == 20;
+		assert nextMin == 13;
+		
+		nextHourMin = plan.getNextMinute(7, 14);
+		assert nextHourMin[0] == 7 && nextHourMin[1] == 20;
 	}
 	
 }

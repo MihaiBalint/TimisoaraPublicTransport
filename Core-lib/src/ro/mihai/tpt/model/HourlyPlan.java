@@ -10,13 +10,14 @@ import ro.mihai.util.BPOutputStream;
 
 public class HourlyPlan extends PersistentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final int HOURS = 24;
 	
 	private static final int[] NONE = new int[]{};
 	private int[][] hourly;
 	
 	private HourlyPlan(long resId, City city) {
 		super(resId, city);
-		hourly = new int[23][];
+		hourly = new int[HOURS][];
 	}
 	
 	public HourlyPlan() {
@@ -46,14 +47,14 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 				int h = hour;
 				do {
 					h++; 
-					minutes = getHourSchedule(hour);
-				} while (h<24 && minutes.length==0);
+					minutes = getHourSchedule(h);
+				} while (h<HOURS-1 && minutes.length==0);
 				if (minutes.length==0) {
-					h = 0;
+					h = -1;
 					do {
 						h++; 
-						minutes = getHourSchedule(hour);
-					} while (h<hour && minutes.length==0);
+						minutes = getHourSchedule(h);
+					} while (h<hour-1 && minutes.length==0);
 					if (minutes.length==0) 
 						return new int[]{-1, -1};
 				}
@@ -63,8 +64,8 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 		return new int[]{hour, minutes[pos]};
 	}
 	
-	public static HourlyPlan loadEager(BPInputStream eager, City city) throws IOException {
-		return new HourlyPlan(eager.readInt(), city);
+	static HourlyPlan loadEager(BPInputStream eager, int resId, City city) throws IOException {
+		return new HourlyPlan(resId, city);
 	}
 
 	@Override
@@ -74,11 +75,40 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 	
 	@Override
 	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
-		// TODO
+		lazy.writeInt(hourly.length);
+		for (int h=0;h<hourly.length;h++) {
+			long bitHours = 0;
+			int[] minutes = hourly[h];
+			if (minutes != null) {
+				assert minutes.length < 60;
+				for (int m=0;m<minutes.length;m++)
+					bitHours = bitHours | (1l<<minutes[m]);
+			}
+			lazy.writeLong(bitHours);
+		}
 	}
 	
 	@Override
 	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
-		// TODO
+		hourly = new int[res.readInt()][];
+		int[] minutes = new int[60];
+		for (int h=0;h<hourly.length;h++) {
+			long bitHours = res.readLong();
+			if (bitHours==0) {
+				hourly[h] = null;
+				continue;
+			}
+			int m=0, mi=0;
+			while (bitHours!=0 && m<60) {
+				long p = 1l<<m;
+				if ((bitHours & p) != 0) {
+					bitHours = bitHours & ~p;
+					minutes[mi] = m;
+					mi++;
+				}
+				m++;
+			}
+			hourly[h] = Arrays.copyOf(minutes, mi);
+		}
 	}
 }

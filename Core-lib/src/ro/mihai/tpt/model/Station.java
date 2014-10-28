@@ -185,10 +185,9 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		eager.writeString(id);
 	}
 	
-	public static Station loadEager(BPInputStream eager, City city) throws IOException {
+	public static Station loadEager(BPInputStream eager, int resId, City city) throws IOException {
 		String id = eager.readString();
-		
-		return new Station(id, eager.readInt(), city);
+		return new Station(id, resId, city);
 	}
 	
 	public int distanceTo(Station b) {

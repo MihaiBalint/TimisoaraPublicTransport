@@ -225,7 +225,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Line l = Line.loadEager(in, this);
+			Line l = PersistentEntity.createLine(in, this);
 			lineNameMap.put(l.getName(), l);
 			mon.workComplete();
 		}
@@ -233,7 +233,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Path p = Path.loadEager(in, this);
+			Path p = PersistentEntity.createPath(in, this);
 			
 			while(pathIdMap.size() <= p.getId())
 				pathIdMap.add(null);
@@ -245,7 +245,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Station s = Station.loadEager(in, this);
+			Station s = PersistentEntity.createStation(in, this);
 			stations.put(s.getId(), s);
 			mon.workComplete();
 		}
@@ -253,7 +253,7 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Junction s = Junction.loadEager(in, this);
+			Junction s = PersistentEntity.createJunction(in, this);
 			junctionMap.put(s.getId(), s);
 			mon.workComplete();
 		}
@@ -320,7 +320,7 @@ public class City implements Serializable {
 				String extId = in.readString();
 				for(Path p : pathIdMap)
 					if (p.getExtId().equals(extId)) {
-						p.concatenate(s);
+						p.concatenate(s, new HourlyPlan());
 						s.addPath(p);
 						break;
 					}

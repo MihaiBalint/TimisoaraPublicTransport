@@ -38,8 +38,8 @@ public class EstimateTest {
 	
 	@Test
 	public void afterTest() {
-		Estimate e1 = new Estimate(null, null, 0);
-		Estimate e2 = new Estimate(null, null, 0);
+		Estimate e1 = new Estimate(null, null, 0, null);
+		Estimate e2 = new Estimate(null, null, 0, null);
 		String now = timestamp(System.currentTimeMillis());
 		e1.putTime("13:30", "13:30", now);
 		e2.putTime("13:40", "13:40", now);
@@ -50,8 +50,8 @@ public class EstimateTest {
 
 	@Test
 	public void afterTest2() {
-		Estimate e1 = new Estimate(null, null, 0);
-		Estimate e2 = new Estimate(null, null, 0);
+		Estimate e1 = new Estimate(null, null, 0, null);
+		Estimate e2 = new Estimate(null, null, 0, null);
 		String now = timestamp(System.currentTimeMillis());
 		e1.putTime("13:50", "13:50", now);
 		e2.putTime("13:20", "13:20", now);
