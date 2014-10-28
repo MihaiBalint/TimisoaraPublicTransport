@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 
 public class Junction extends PersistentEntity implements Serializable {
@@ -59,7 +60,8 @@ public class Junction extends PersistentEntity implements Serializable {
 		}
 	}
 
-	private void persistLazy(BPOutputStream lazy) throws IOException {
+	@Override
+	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
 		ensureLoaded();
 		// lazy junction resources
 		lazy.writeString(getName());
@@ -71,13 +73,8 @@ public class Junction extends PersistentEntity implements Serializable {
 	}
 	
 	@Override
-	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
+	public void persistEager(BPOutputStream eager) throws IOException {
 		eager.writeInt(id); 
-		eager.writeInt(lazyId); 
-		
-		// lazy station resources
-		persistLazy(lazy);
-		lazy.flush();
 	}
 	
 	public static Junction loadEager(BPInputStream eager, City city) throws IOException {

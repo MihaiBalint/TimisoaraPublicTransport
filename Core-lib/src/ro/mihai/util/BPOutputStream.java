@@ -1,6 +1,5 @@
 package ro.mihai.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,23 +35,22 @@ public class BPOutputStream {
 		stream.write(magic.getBytes());
 	}
 	
-	public <T extends PersistentEntity> void writeEntityCollection(Collection<T> items, BPOutputStream lazy, ByteArrayOutputStream lazyBuf) throws IOException {
-		ByteArrayOutputStream data = new ByteArrayOutputStream();
-		BPOutputStream itemStream = new BPOutputStream(data);
+	public <T extends PersistentEntity> void writeEntityCollection(Collection<T> items, BPMemoryOutputStream lazy) throws IOException {
+		BPMemoryOutputStream itemStream = BPMemoryOutputStream.usingByteArray();
 		itemStream.writeInt(items.size());
 		for(T s: items) {
-			s.persist(itemStream, lazy, lazyBuf.size());
+			s.persist(itemStream, lazy);
 			lazy.flush();
 		}
 		itemStream.flush();
 		
 		stream.writeInt(1);
-		stream.writeInt(data.size());
-		stream.write(data.toByteArray());
+		stream.writeInt(itemStream.size());
+		stream.write(itemStream.toByteArray());
 		
 	}
 	
-	public void writeLazyBlock(ByteArrayOutputStream data) throws IOException {
+	public void writeLazyBlock(BPMemoryOutputStream data) throws IOException {
 		stream.writeInt(2);
 		stream.writeInt(data.size());
 		stream.write(data.toByteArray());

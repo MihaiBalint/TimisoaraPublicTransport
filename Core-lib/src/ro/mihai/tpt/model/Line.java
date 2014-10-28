@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.LineKind;
 
@@ -150,18 +151,17 @@ public class Line extends PersistentEntity implements Serializable {
 	}
 
 
-	private void persistLazy(BPOutputStream lazy) throws IOException {
+	@Override
+	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
 		for(Path p:paths) {
 			assert p.getLineName().equals(name);
 		}
 	}
 
-	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
+	@Override
+	public void persistEager(BPOutputStream eager) throws IOException {
 		// eager line resources
 		eager.writeString(name);
-		eager.writeInt(lazyId);
-
-		persistLazy(lazy);
 	}
 
 	public static Line loadEager(BPInputStream eager, City city) throws IOException {

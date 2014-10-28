@@ -17,7 +17,6 @@
 */
 package ro.mihai.tpt.model;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,13 +27,14 @@ import ro.mihai.tpt.SaveFileException;
 import ro.mihai.tpt.RATT.LineReader;
 import ro.mihai.tpt.RATT.StationReader;
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.FormattedTextReader;
 import ro.mihai.util.IMonitor;
 
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private DataVersion version;
+	DataVersion version;
 	private Map<String, Station> stations;
 	private Map<String, Line> lineNameMap;
 	private ArrayList<Path> pathIdMap;
@@ -173,15 +173,14 @@ public class City implements Serializable {
 		// (a) a mandatory information part - loaded at startup 
 		// (b) a deferred loading part - loaded as needed
 
-		ByteArrayOutputStream lazyBuf = new ByteArrayOutputStream();
-		BPOutputStream lazyRes = new BPOutputStream(lazyBuf);
+		BPMemoryOutputStream lazyRes = BPMemoryOutputStream.usingByteArray();
 
-		os.writeEntityCollection(lineNameMap.values(), lazyRes, lazyBuf);
-		os.writeEntityCollection(pathIdMap, lazyRes, lazyBuf);
-		os.writeEntityCollection(stations.values(), lazyRes, lazyBuf);
-		os.writeEntityCollection(junctionMap.values(), lazyRes, lazyBuf);
+		os.writeEntityCollection(lineNameMap.values(), lazyRes);
+		os.writeEntityCollection(pathIdMap, lazyRes);
+		os.writeEntityCollection(stations.values(), lazyRes);
+		os.writeEntityCollection(junctionMap.values(), lazyRes);
 
-		os.writeLazyBlock(lazyBuf);
+		os.writeLazyBlock(lazyRes);
 		
 		os.flush();
 		os.close();
@@ -263,16 +262,6 @@ public class City implements Serializable {
 		in.mark(in.skipToLazyBlock());
 	}
 		
-	public synchronized void loadLazyResources(PersistentEntity s, long resId) {
-		try {
-			in.reset();
-			in.sureSkip(resId);
-			s.loadLazyResources(in, version);
-		} catch(IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	@Deprecated
 	public void loadFromFile1(InputStream in,IMonitor mon) throws IOException {
 		FormattedTextReader rd = new FormattedTextReader(in);

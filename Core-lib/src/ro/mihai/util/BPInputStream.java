@@ -87,7 +87,7 @@ public abstract class BPInputStream implements Serializable {
 		return new EntityIterator(count);
 	}
 	
-	public int skipToLazyBlock() throws IOException {
+	public synchronized int skipToLazyBlock() throws IOException {
 		int blType = 0, blLength = 0;
 		while (blType!=2) {
 			blType = readInt();

@@ -1,16 +1,30 @@
 package ro.mihai.tpt.model;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class HourlyPlan {
+import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
+import ro.mihai.util.BPOutputStream;
+
+public class HourlyPlan extends PersistentEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private static final int[] NONE = new int[]{};
 	private int[][] hourly;
 	
-	public HourlyPlan() {
+	private HourlyPlan(long resId, City city) {
+		super(resId, city);
 		hourly = new int[23][];
 	}
 	
+	public HourlyPlan() {
+		this(-1, null);
+	}
+	
 	public int[] getHourSchedule(int hour) {
+		ensureLoaded();
 		int[] minutes = hourly[hour];
 		if (minutes == null)
 			return NONE;
@@ -18,6 +32,7 @@ public class HourlyPlan {
 	}
 
 	public void setHourSchedule(int hour, int[] minutes) {
+		ensureLoaded();
 		Arrays.sort(minutes);
 		hourly[hour] = minutes;
 	}
@@ -46,5 +61,24 @@ public class HourlyPlan {
 			}
 		}
 		return new int[]{hour, minutes[pos]};
+	}
+	
+	public static HourlyPlan loadEager(BPInputStream eager, City city) throws IOException {
+		return new HourlyPlan(eager.readInt(), city);
+	}
+
+	@Override
+	public void persistEager(BPOutputStream eager) throws IOException {
+		// NOP
+	}
+	
+	@Override
+	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
+		// TODO
+	}
+	
+	@Override
+	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
+		// TODO
 	}
 }

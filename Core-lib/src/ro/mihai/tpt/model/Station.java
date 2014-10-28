@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.Formatting;
 
@@ -155,7 +156,8 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		}
 	}
 	
-	private void persistLazy(BPOutputStream res) throws IOException {
+	@Override
+	protected void persistLazy(BPMemoryOutputStream res) throws IOException {
 		ensureLoaded();
 		
 		// lazy station resources
@@ -177,14 +179,10 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		}
 	}
 	
-	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
+	@Override
+	public void persistEager(BPOutputStream eager) throws IOException {
 		// eager station resources
 		eager.writeString(id);
-		eager.writeInt(lazyId); 
-		
-		// lazy station resources
-		persistLazy(lazy);
-		lazy.flush();
 	}
 	
 	public static Station loadEager(BPInputStream eager, City city) throws IOException {

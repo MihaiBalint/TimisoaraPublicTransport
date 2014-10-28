@@ -3,6 +3,7 @@ package ro.mihai.tpt.model;
 import java.io.IOException;
 
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 
 public abstract class PersistentEntity {
@@ -18,7 +19,16 @@ public abstract class PersistentEntity {
 	
 	private final synchronized void load() {
 		if (loaded) return;
-		city.loadLazyResources(this, resId);
+		try {
+			BPInputStream in = city.getDetachableInputStream();
+			synchronized (in) {
+				in.reset();
+				in.sureSkip(resId);
+				loadLazyResources(in, city.version);
+			}
+		} catch(IOException e) {
+			throw new RuntimeException(e);
+		}
 		loaded = true;
 	}
 	protected final void ensureLoaded() {
@@ -28,5 +38,14 @@ public abstract class PersistentEntity {
 	
 	protected abstract void loadLazyResources(BPInputStream res, DataVersion version) throws IOException;
 	
-	public abstract void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException;
+	protected abstract void persistEager(BPOutputStream eager) throws IOException;
+	protected abstract void persistLazy(BPMemoryOutputStream lazy) throws IOException;
+	
+	public void persist(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
+		persistEager(eager);
+		eager.writeInt(lazy.size());
+		persistLazy(lazy);
+		lazy.flush();
+	}
+	
 }

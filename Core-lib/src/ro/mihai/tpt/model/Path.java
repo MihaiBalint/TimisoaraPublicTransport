@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import ro.mihai.util.BPInputStream;
+import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 import ro.mihai.util.IPrefs;
 import static ro.mihai.util.Formatting.*;
@@ -159,30 +160,6 @@ public class Path extends PersistentEntity implements Serializable {
 		return times;
 	}
 	
-	private void persistLazy(BPOutputStream lazy) throws IOException {
-		// lazy path resources
-		lazy.writeString(extId);
-		lazy.writeString(getName());
-		lazy.writeString(getNiceName());
-		
-		lazy.writeInt(getEstimatesByPath().size());
-		for(Estimate e:getEstimatesByPath()) 
-			lazy.writeString(e.getStation().getId());
-		lazy.flush();
-	}	
-
-	@Override
-	public void persist(BPOutputStream eager, BPOutputStream lazy, int lazyId) throws IOException {
-		// eager path resources
-		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
-		
-		eager.writeInt(id);
-		eager.writeString(getLineName());
-		eager.writeInt(lazyId);
-
-		persistLazy(lazy);
-	}
-
 	public static Path loadEager(BPInputStream eager, City city) throws IOException {
 		int pathId = eager.readInt();
 		String lineName = eager.readString();
@@ -190,6 +167,15 @@ public class Path extends PersistentEntity implements Serializable {
 		Path path = new Path(line, pathId, eager.readInt(), city);
 		line.addEagerPath(path);
 		return path;
+	}
+
+	@Override
+	protected void persistEager(BPOutputStream eager) throws IOException {
+		// eager path resources
+		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
+		
+		eager.writeInt(id);
+		eager.writeString(getLineName());
 	}
 
 	@Override
@@ -207,6 +193,19 @@ public class Path extends PersistentEntity implements Serializable {
 		}
 	}
 	
+	@Override
+	protected void persistLazy(BPMemoryOutputStream lazy) throws IOException {
+		// lazy path resources
+		lazy.writeString(extId);
+		lazy.writeString(getName());
+		lazy.writeString(getNiceName());
+		
+		lazy.writeInt(getEstimatesByPath().size());
+		for(Estimate e:getEstimatesByPath()) { 
+			lazy.writeString(e.getStation().getId());
+		}
+	}	
+
 	@Override
 	public String toString() {
 		return "Path: "+id+"["+getLineName()+"]("+Integer.toHexString(hashCode())+")";
