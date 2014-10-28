@@ -139,7 +139,8 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		return junction!=null && junction.getName()!=null && junction.getName().trim().length() > 0;
 	}
 	
-	protected void loadLazyResources(BPInputStream lazy, DataVersion version) throws IOException {
+	@Override
+	protected void loadLazyResources(BPInputStream lazy) throws IOException {
 		this.name = lazy.readString();
 		this.niceName = lazy.readString();
 		this.shortName = lazy.readString();
@@ -148,7 +149,6 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 
 		this.lng = lazy.readString();
 		
-		if (version.lessThan(DataVersion.Version4)) return;
 		int pathCount = lazy.readInt();
 		for(int i=0;i<pathCount;i++) {
 			int pathId = lazy.readInt();

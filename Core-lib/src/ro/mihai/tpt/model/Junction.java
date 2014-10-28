@@ -48,7 +48,7 @@ public class Junction extends PersistentEntity implements Serializable {
 	}
 
 	@Override
-	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream res) throws IOException {
 		this.name = res.readString();
 
 		int stationCount = res.readInt();

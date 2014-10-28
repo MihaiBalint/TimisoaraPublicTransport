@@ -18,23 +18,17 @@
 package ro.mihai.tpt.model;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.*;
 
-import ro.mihai.tpt.SaveFileException;
-import ro.mihai.tpt.RATT.LineReader;
-import ro.mihai.tpt.RATT.StationReader;
 import ro.mihai.util.BPInputStream;
 import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
-import ro.mihai.util.FormattedTextReader;
 import ro.mihai.util.IMonitor;
 
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
-	DataVersion version;
 	private Map<String, Station> stations;
 	private Map<String, Line> lineNameMap;
 	private ArrayList<Path> pathIdMap;
@@ -166,7 +160,7 @@ public class City implements Serializable {
 	
 	public void saveToFile(OutputStream out) throws IOException {
 		BPOutputStream os = new BPOutputStream(out);
-		os.writeMagic("CityLineCache = 4.0.0;");
+		os.writeMagic("CityLineCache = 5.0.0;");
 
 		// collections of entities are stored in blocks
 		// each collection is split in two parts 
@@ -191,31 +185,16 @@ public class City implements Serializable {
 	}
 	
 	public void loadFromStream(BPInputStream in, IMonitor mon, int dbEntries) throws IOException {
-		String sigStr;
+		String magic;
 		try {
-			sigStr = in.readFixedLengthString(22);
+			magic = in.readFixedLengthString(22);
 		} catch(IOException e) {
 			throw new IOException("Failed to read signature before stream ended.");
 		}
 
-		if(!sigStr.startsWith("CityLineCache = "))
+		if(!magic.startsWith("CityLineCache = 5.0.0;"))
 			throw new IOException("Signature expected, something else found, assuming wrong file.");
-		if(sigStr.contains("1.0.0")) {
-			version = DataVersion.Version1;
-			loadFromFile1Rest(mon, new FormattedTextReader(in.getInputStream()));
-			throw new SaveFileException();
-		} else if(sigStr.contains("2.0.0")) {
-			version = DataVersion.Version2;
-			loadFromFile2Rest(mon, in);
-			throw new SaveFileException();
-		} else if(sigStr.contains("3.0.0")) {
-			version = DataVersion.Version3;
-		} else if(sigStr.contains("4.0.0")) {
-			version = DataVersion.Version5;
-		} else {
-			assert(sigStr.contains("5.0.0"));
-			version = DataVersion.Version6;
-		}
+		
 		this.in = in;
 		mon.setMax(dbEntries);
 		
@@ -261,72 +240,4 @@ public class City implements Serializable {
 
 		in.mark(in.skipToLazyBlock());
 	}
-		
-	@Deprecated
-	public void loadFromFile1(InputStream in,IMonitor mon) throws IOException {
-		FormattedTextReader rd = new FormattedTextReader(in);
-		String version = rd.readString("CityLineCache = ", ";");
-		assert(version.equals("1.0.0"));
-		
-		loadFromFile1Rest(mon, rd);
-	}
-
-	@Deprecated
-	private void loadFromFile1Rest(IMonitor mon, FormattedTextReader rd) throws IOException {
-		StationReader str = new StationReader(rd);
-		int stationCount = Integer.parseInt(rd.readString("StationCount = ", ";"));
-		mon.setMax(stationCount*2);
-		stations = new HashMap<String, Station>();
-		for(int i=0;i<stationCount;i++) { 
-			Station s = str.read();
-			stations.put(s.getId(), s);
-			mon.workComplete();
-		}
-		
-		for(Station s : stations.values()) {
-			String stationId = rd.readString("StationId = ", ";");
-			assert(stationId.equals(s.getId()));
-			
-			int lineCount = Integer.parseInt(rd.readString("LineCount = ", ";"));
-			for(int i=0;i<lineCount;i++)
-				new LineReader(this,s,rd).read();
-			mon.workComplete();
-		}
-	}
-	
-	@Deprecated
-	private void loadFromFile2Rest(IMonitor mon, BPInputStream in) throws IOException {
-		int lineCount = in.readInt();
-		for(int i=0;i<lineCount;i++) {
-			String id = in.readString();
-			
-			String name = in.readString();
-			Line l = newLine(name);
-			Path p = newPath(l,id,"");
-			l.addPath(p); 
-			// Ver 2.0.0 does not suppor`t multiple paths per line, only a single one
-		}
-		
-		int stationCount = in.readInt();
-		stations = new HashMap<String, Station>();
-		mon.setMax(stationCount);
-		for(int i=0;i<stationCount;i++) {
-			String id = in.readString();
-			String name = in.readString();
-			Station s = new Station(id, name);
-			
-			lineCount = in.readInt();
-			for(int j=0;j<lineCount;j++) {
-				String extId = in.readString();
-				for(Path p : pathIdMap)
-					if (p.getExtId().equals(extId)) {
-						p.concatenate(s, new HourlyPlan());
-						s.addPath(p);
-						break;
-					}
-			}
-			stations.put(s.getId(), s);
-			mon.workComplete();
-		}
-	}	
 }

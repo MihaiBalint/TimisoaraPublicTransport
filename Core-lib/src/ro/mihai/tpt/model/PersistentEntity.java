@@ -24,7 +24,7 @@ public abstract class PersistentEntity {
 			synchronized (in) {
 				in.reset();
 				in.sureSkip(resId);
-				loadLazyResources(in, city.version);
+				loadLazyResources(in);
 			}
 		} catch(IOException e) {
 			throw new RuntimeException(e);
@@ -36,7 +36,7 @@ public abstract class PersistentEntity {
 		load();
 	}
 	
-	protected abstract void loadLazyResources(BPInputStream res, DataVersion version) throws IOException;
+	protected abstract void loadLazyResources(BPInputStream res) throws IOException;
 	
 	protected abstract void persistEager(BPOutputStream eager) throws IOException;
 	protected abstract void persistLazy(BPMemoryOutputStream lazy) throws IOException;

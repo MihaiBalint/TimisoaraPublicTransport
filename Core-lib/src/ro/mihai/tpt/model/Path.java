@@ -182,7 +182,7 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 
 	@Override
-	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
+	protected void loadLazyResources(BPInputStream res) throws IOException {
 		this.extId = res.readString();
 		this.name = res.readString();
 		this.niceName = res.readString();

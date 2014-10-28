@@ -145,7 +145,8 @@ public class Line extends PersistentEntity implements Serializable {
 		return false;
 	}
 
-	protected void loadLazyResources(BPInputStream res, DataVersion version) throws IOException {
+	@Override
+	protected void loadLazyResources(BPInputStream res) throws IOException {
 		for(Path p: paths)
 			pathNames.put(p.getName(), p);
 	}
