@@ -20,6 +20,8 @@ package ro.mihai.tpt.model;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import ro.mihai.util.BPInputStream;
 import ro.mihai.util.BPMemoryOutputStream;
@@ -111,21 +113,48 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 		int[] minutes = new int[60];
 		for (int h=0;h<hourly.length;h++) {
 			long bitHours = res.readLong();
-			if (bitHours==0) {
+			BitIterator bi = new BitIterator(bitHours, 60);
+			if (!bi.hasNext()) {
 				hourly[h] = null;
 				continue;
 			}
-			int m=0, mi=0;
-			while (bitHours!=0 && m<60) {
-				long p = 1l<<m;
-				if ((bitHours & p) != 0) {
-					bitHours = bitHours & ~p;
-					minutes[mi] = m;
-					mi++;
-				}
-				m++;
-			}
+			int mi=0;
+			while(bi.hasNext())
+				minutes[mi++] = bi.next();
 			hourly[h] = Arrays.copyOf(minutes, mi);
+		}
+	}
+	
+	private static class BitIterator implements Iterator<Integer> {
+		private long data;
+		private int position, max;
+		
+		public BitIterator(long data, int max) {
+			position = -1;
+			this.data = data;
+			this.max = max;
+		}
+		
+		@Override
+		public Integer next() {
+			if (!hasNext())
+				throw new NoSuchElementException();
+			long mask;
+			do {
+				position++;
+				mask = 1l << position;
+			} while ((data & mask) == 0);
+			data = data & ~mask;
+			return position;
+		}
+		@Override
+		public boolean hasNext() {
+			return data!=0 && (position+1) < max;
+		}
+		
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 	}
 }
