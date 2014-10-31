@@ -94,35 +94,45 @@ public class HourlyPlan extends PersistentEntity implements Serializable {
 	
 	@Override
 	protected void saveLazyResources(BPMemoryOutputStream lazy) throws IOException {
-		lazy.writeInt(hourly.length);
-		for (int h=0;h<hourly.length;h++) {
-			long bitHours = 0;
-			int[] minutes = hourly[h];
-			if (minutes != null) {
-				assert minutes.length < 60;
-				for (int m=0;m<minutes.length;m++)
-					bitHours = bitHours | (1l<<minutes[m]);
-			}
-			lazy.writeLong(bitHours);
-		}
+		savePlanTable(lazy, hourly);
 	}
 	
 	@Override
 	protected void loadLazyResources(BPInputStream res) throws IOException {
-		hourly = new int[res.readInt()][];
-		int[] minutes = new int[60];
-		for (int h=0;h<hourly.length;h++) {
-			long bitHours = res.readLong();
-			BitIterator bi = new BitIterator(bitHours, 60);
-			if (!bi.hasNext()) {
-				hourly[h] = null;
-				continue;
+		this.hourly = loadPlanTable(res);
+	}
+	
+	private static void savePlanTable(BPMemoryOutputStream lazy, int[][] hourlyTable) throws IOException {
+		int workingHoursMask = 0;
+		for (int h=0;h<hourlyTable.length;h++)
+			if (hourlyTable[h]!=null && hourlyTable[h].length>0)
+				workingHoursMask = workingHoursMask | (1<<h);
+		lazy.writeInt(workingHoursMask);
+		for (int h=0;h<hourlyTable.length;h++) {
+			int[] minutes = hourlyTable[h];
+			if (minutes!=null && minutes.length>0) {
+				long bitHours = 0;
+				for (int m=0;m<minutes.length;m++)
+					bitHours = bitHours | (1l<<minutes[m]);
+				lazy.writeLong(bitHours);
 			}
+		}
+		
+	}
+	
+	private static int[][] loadPlanTable(BPInputStream res) throws IOException {
+		int[][] hourlyTable = new int[HOURS][];
+		int[] minutes = new int[60];
+		BitIterator workingHours = new BitIterator(res.readInt(), HOURS);
+		while (workingHours.hasNext()) {
+			int h = workingHours.next();
+			BitIterator bi = new BitIterator(res.readLong(), 60);
 			int mi=0;
 			while(bi.hasNext())
 				minutes[mi++] = bi.next();
-			hourly[h] = Arrays.copyOf(minutes, mi);
+			hourlyTable[h] = Arrays.copyOf(minutes, mi);
 		}
+		return hourlyTable;
 	}
 	
 	private static class BitIterator implements Iterator<Integer> {
