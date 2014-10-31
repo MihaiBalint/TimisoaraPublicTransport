@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public abstract class BPInputStream implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -116,6 +117,8 @@ public abstract class BPInputStream implements Serializable {
 		}
 		@Override
 		public Integer next() {
+			if (!hasNext())
+				throw new NoSuchElementException();
 			this.count++;
 			return this.count;
 		}
@@ -125,6 +128,7 @@ public abstract class BPInputStream implements Serializable {
 		}
 		@Override
 		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 	}
 }
