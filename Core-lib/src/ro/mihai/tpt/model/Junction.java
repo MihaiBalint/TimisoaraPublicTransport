@@ -4,25 +4,23 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import ro.mihai.util.BPInputStream;
 import ro.mihai.util.BPMemoryOutputStream;
 import ro.mihai.util.BPOutputStream;
 
 public class Junction extends PersistentEntity implements Serializable {
-	private static AtomicInteger ids = new AtomicInteger(0);
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private Set<Station> stations;
 	
-	public Junction(String name, City city) {
-		this(ids.getAndIncrement(), -1, city);
+	protected Junction(int id, String name) {
+		this(id, -1, null);
 		this.name = name;
 	}
 	
-	public Junction(int id, long resId, City city) {
+	private Junction(int id, long resId, City city) {
 		super(resId, city);
 		this.id = id;
 		this.stations = new HashSet<Station>();

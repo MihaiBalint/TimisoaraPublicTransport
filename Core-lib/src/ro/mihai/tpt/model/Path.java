@@ -46,7 +46,7 @@ public class Path extends PersistentEntity implements Serializable {
 		this.estimatesByPath = new ArrayList<Estimate>();
 	}
 	
-	public Path(Line line, int id, String extId, String name) {
+	Path(Line line, int id, String extId, String name) {
 		this(line, id, -1, null);
 		this.name = name;
 		this.extId = extId;

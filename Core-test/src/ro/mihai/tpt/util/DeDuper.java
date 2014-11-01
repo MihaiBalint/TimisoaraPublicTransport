@@ -20,6 +20,15 @@ import ro.mihai.tpt.model.Station;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class DeDuper {
+	
+	private static class SimpleJunction extends Junction {
+		private static final long serialVersionUID = 1L;
+
+		SimpleJunction(String name) {
+			super(0, name);
+			// at this point junction IDs are not recorded anywhere
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
@@ -99,7 +108,7 @@ public class DeDuper {
 					String juName = selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help); 
 					Junction j = juMap.get(juName);
 					if (null==j) {
-						j = new Junction(juName, null);
+						j = new SimpleJunction(juName);
 						juMap.put(juName, j);
 					}
 					st.setJunction(j);
@@ -299,7 +308,7 @@ public class DeDuper {
 		} catch(NumberFormatException e) {
 			name = out.trim();
 		}
-		Junction merged = new Junction(name, null);
+		Junction merged = new SimpleJunction(name);
 		merged.getStations().addAll(stations);
 		for(Junction j:opts)
 			if (nonEmpty(j.getName()))

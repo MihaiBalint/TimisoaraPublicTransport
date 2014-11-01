@@ -32,15 +32,14 @@ public class City implements Serializable {
 	private Map<String, Station> stations;
 	private Map<String, Line> lineNameMap;
 	private ArrayList<Path> pathIdMap;
-	
-	private Map<Integer, Junction> junctionMap;
+	private ArrayList<Junction> junctionMap;
 	
 	private BPInputStream in;
 	
 	public City() {
 		this.lineNameMap = new HashMap<String, Line>();
 		this.pathIdMap = new ArrayList<Path>();
-		this.junctionMap = new HashMap<Integer, Junction>();
+		this.junctionMap = new ArrayList<Junction>();
 	}
 	
 	public Collection<Line> getLines() {
@@ -64,12 +63,6 @@ public class City implements Serializable {
 			this.stations.put(s.getId(), s);
 	}
 
-	public void setJunctions(List<Junction> junctions) {
-		this.junctionMap = new HashMap<Integer, Junction>();
-		for(Junction j:junctions)
-			this.junctionMap.put(j.getId(), j);
-	}
-	
 	private Line newLine(String name) {
 		Line l = new Line(name);
 		lineNameMap.put(name, l);
@@ -88,7 +81,17 @@ public class City implements Serializable {
 		pathIdMap.add(p);
 		return p;
 	}
+
+	public Junction newJunction(String name) {
+		return newJunction(junctionMap.size(), name);
+	}
 	
+	public Junction newJunction(int junctionId, String name) {
+		Junction junction = new Junction(junctionId, name);
+		setAt(junctionMap, junctionId, junction);
+		return junction;
+	}
+
 	protected Junction getJunctionById(int id) {
 		return junctionMap.get(id);
 	}
@@ -98,7 +101,7 @@ public class City implements Serializable {
 	}
 	
 	public Collection<Junction> getJunctions() {
-		return junctionMap.values();
+		return junctionMap;
 	}
 	
 	private int fakePaths = 0;
@@ -172,7 +175,7 @@ public class City implements Serializable {
 		os.writeEntityCollection(lineNameMap.values(), lazyRes);
 		os.writeEntityCollection(pathIdMap, lazyRes);
 		os.writeEntityCollection(stations.values(), lazyRes);
-		os.writeEntityCollection(junctionMap.values(), lazyRes);
+		os.writeEntityCollection(junctionMap, lazyRes);
 
 		os.writeLazyBlock(lazyRes);
 		
@@ -182,6 +185,13 @@ public class City implements Serializable {
 	
 	public BPInputStream getDetachableInputStream() {
 		return in;
+	}
+	
+	private static <T> void setAt(List<T> list, int index, T item) {
+		while(list.size() <= index)
+			list.add(null);
+		assert(list.get(index) == null);
+		list.set(index, item);
 	}
 	
 	public void loadFromStream(BPInputStream in, IMonitor mon, int dbEntries) throws IOException {
@@ -213,10 +223,7 @@ public class City implements Serializable {
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
 			Path p = PersistentEntity.loadEagerPath(in, this);
-			
-			while(pathIdMap.size() <= p.getId())
-				pathIdMap.add(null);
-			pathIdMap.set(p.getId(), p);
+			setAt(pathIdMap, p.getId(), p);
 			mon.workComplete();
 		}
 		
@@ -232,8 +239,8 @@ public class City implements Serializable {
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
-			Junction s = PersistentEntity.loadEagerJunction(in, this);
-			junctionMap.put(s.getId(), s);
+			Junction j = PersistentEntity.loadEagerJunction(in, this);
+			setAt(junctionMap, j.getId(), j);
 			mon.workComplete();
 		}
 		assert mon.getMax() == monitorCount: "Max: "+(monitorCount)+"!="+mon.getMax();

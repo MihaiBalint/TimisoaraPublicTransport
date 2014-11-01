@@ -57,7 +57,7 @@ public class V3Generator extends TestCase {
 				String jName = nonEmpty(row[6]) ? row[6].trim() : st.getShortName();
 				Junction j = jMap.get(jName);
 				if(null==j) {
-					j = new Junction(jName, c);
+					j = c.newJunction(jName);
 					jMap.put(jName, j);
 				}
 				st.setJunction(j);
@@ -81,7 +81,6 @@ public class V3Generator extends TestCase {
 			st.addPath(p);
 		}
 		c.setStations(new ArrayList<Station>(stMap.values()));
-		c.setJunctions(new ArrayList<Junction>(jMap.values()));
 		
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("33").getPaths().size());
@@ -167,6 +166,7 @@ public class V3Generator extends TestCase {
 		return new String[]{niceNameWithPara.substring(0,lpi), niceNameWithPara.substring(lpi+1, lcpi)};
 	}
 	
+	@SuppressWarnings("unused")
 	private static void printCSV(City city) throws IOException {
 		PrintStream csv = new PrintStream(new FileOutputStream("linestations2.csv"));
 		csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
