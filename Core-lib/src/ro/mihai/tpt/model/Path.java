@@ -1,6 +1,6 @@
 /*
     TimisoaraPublicTransport - display public transport information on your device
-    Copyright (C) 2011-2013  Mihai Balint
+    Copyright (C) 2011-2014  Mihai Balint
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
