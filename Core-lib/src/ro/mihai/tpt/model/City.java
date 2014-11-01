@@ -77,8 +77,12 @@ public class City implements Serializable {
 	}
 
 	public Path newPath(Line line, String extId, String name) {
-		Path p = new Path(line, pathIdMap.size(), extId, name);
-		pathIdMap.add(p);
+		return newPath(line, pathIdMap.size(), extId, name);
+	}
+	
+	public Path newPath(Line line, int pathId, String extId, String name) {
+		Path p = new Path(line, pathId, extId, name);
+		setAt(pathIdMap, pathId, p);
 		return p;
 	}
 
