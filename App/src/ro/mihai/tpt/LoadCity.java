@@ -18,11 +18,9 @@
 package ro.mihai.tpt;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.model.City;
-import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.utils.AndroidCityLoader;
 import ro.mihai.tpt.utils.AppPreferences;
 import ro.mihai.tpt.utils.StartActivity;
@@ -75,7 +73,6 @@ public class LoadCity extends Activity implements Runnable, IMonitor {
         } catch(IOException e) {
         	setStatus("Err: "+e.getMessage());
         	city = new City();
-        	city.setStations(new ArrayList<Station>());
         } 
 	}    
 	

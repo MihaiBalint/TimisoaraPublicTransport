@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +39,11 @@ public class V3Generator extends TestCase {
 		
 		rd.readNext(); // ignore header row
 		while(null!=(row=rd.readNext())) {
+			// row structure: 
+			// 0:LineExtID, 1:RawLineName,
+			// 2:StationExtID, 3:RawStationName, 4:StationNiceName (PathName), 5:StationShortName,
+			// 6:JunctionName,7:StationLat, 8:StationLng,
+			// 9:Invalid if true
 			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
 				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
 				|| (row.length>9 && row[9].equalsIgnoreCase("true")) // ignore invalid rows 
@@ -50,7 +54,7 @@ public class V3Generator extends TestCase {
 			String[] nnp = nonEmpty(row[4]) ? parsePara(row[4].trim()) : new String[]{"",""};
 			
 			if(null==st) {
-				st = new Station(row[2].trim(), row[3].trim());
+				st = c.newStation(row[2].trim(), row[3].trim());
 				st.setNiceName(nnp[0]);
 				st.setShortName(nonEmpty(row[5]) ? row[5].trim() : "");
 				
@@ -80,7 +84,6 @@ public class V3Generator extends TestCase {
 			p.concatenate(st, new HourlyPlan());
 			st.addPath(p);
 		}
-		c.setStations(new ArrayList<Station>(stMap.values()));
 		
 		assertEquals(2,c.getLine("Tv9").getPaths().size());
 		assertEquals(2,c.getLine("33").getPaths().size());

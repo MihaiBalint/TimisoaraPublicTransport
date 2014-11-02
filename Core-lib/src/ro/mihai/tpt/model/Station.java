@@ -30,19 +30,18 @@ import ro.mihai.util.Formatting;
 
 public class Station extends PersistentEntity implements INamedEntity, Serializable {
 	private static final long serialVersionUID = 1L;
-	private String name, id;
+	private int id;
+	private String extId, name, shortName, niceName, lat, lng;
 	private List<Path> paths;
 	private Junction junction;
-	private String lat, lng;
-	private String niceName, shortName;
 	
-	private Station(String id, long resId, City city) {
+	private Station(int id, long resId, City city) {
 		super(resId, city);
 		this.id = id;
 		this.paths = new ArrayList<Path>(2);
 	}
 
-	public Station(String id, String name) {
+	protected Station(int id, String extId, String name) {
 		this(id,-1, null);
 		this.paths = new ArrayList<Path>(2);
 		this.name = name;
@@ -61,8 +60,12 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		return Formatting.join(", ", lineNameSet);
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
+	}
+
+	public String getExtId() {
+		return extId;
 	}
 	
 	public void addPath(Path p) {
@@ -181,13 +184,11 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	
 	@Override
 	public void saveEager(BPOutputStream eager) throws IOException {
-		// eager station resources
-		eager.writeString(id);
+		eager.writeObjectId(id);
 	}
 	
 	public static Station loadEager(BPInputStream eager, int resId, City city) throws IOException {
-		String id = eager.readString();
-		return new Station(id, resId, city);
+		return new Station(eager.readObjectId(), resId, city);
 	}
 	
 	public int distanceTo(Station b) {

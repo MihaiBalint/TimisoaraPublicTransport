@@ -21,7 +21,7 @@ public class NamedEntityCollection {
 
 	public static String sortedIDs(Collection<? extends INamedEntity> entities) {
 		ArrayList<String> ids = new ArrayList<String>();
-		for(INamedEntity s : entities) ids.add(s.getId());
+		for(INamedEntity s : entities) ids.add(s.getExtId());
 		Collections.sort(ids);
 		
 		StringBuilder b = new StringBuilder();

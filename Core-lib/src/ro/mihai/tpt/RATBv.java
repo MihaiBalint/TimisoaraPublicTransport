@@ -40,33 +40,33 @@ public class RATBv {
 		// 
 		City c = new City();
 		
-		Station d1Start = new Station("1", "Livada Postei");
-		Station d1End = new Station("2", "Triaj");
+		Station d1Start = c.newStation("1", "Livada Postei");
+		Station d1End = c.newStation("2", "Triaj");
 		Station[] dir1 = {
 			d1Start,
-			new Station("3", "Dramatic"),
-			new Station("4", "Patria"),
-			new Station("5", "Hidro A"),
-			new Station("6", "Toamnei"),
-			new Station("7", "IUS"),
-			new Station("8", "Vlahuta"),
-			new Station("9", "Autogara 3"),
-			new Station("10", "RAT Brasov"),
-			new Station("11", "Baza MTTC"),
+			c.newStation("3", "Dramatic"),
+			c.newStation("4", "Patria"),
+			c.newStation("5", "Hidro A"),
+			c.newStation("6", "Toamnei"),
+			c.newStation("7", "IUS"),
+			c.newStation("8", "Vlahuta"),
+			c.newStation("9", "Autogara 3"),
+			c.newStation("10", "RAT Brasov"),
+			c.newStation("11", "Baza MTTC"),
 			d1End,
 		};
 		Station[] dir2 = {
 			d1End,
-			new Station("12", "Baza MTTC"),
-			new Station("13", "RAT Brasov"),
-			new Station("14", "Autogara 3"),
-			new Station("15", "Vlahuta"),
-			new Station("16", "IUS"),
-			new Station("17", "CEC"),
-			new Station("18", "Liceul Mesota"),
-			new Station("19", "Camera de Comert"),
-			new Station("20", "Sanitas"),
-			new Station("21", "Primarie"),
+			c.newStation("12", "Baza MTTC"),
+			c.newStation("13", "RAT Brasov"),
+			c.newStation("14", "Autogara 3"),
+			c.newStation("15", "Vlahuta"),
+			c.newStation("16", "IUS"),
+			c.newStation("17", "CEC"),
+			c.newStation("18", "Liceul Mesota"),
+			c.newStation("19", "Camera de Comert"),
+			c.newStation("20", "Sanitas"),
+			c.newStation("21", "Primarie"),
 			d1Start
 		};
 
@@ -76,7 +76,6 @@ public class RATBv {
 		for (Station s: allStations) {
 			s.setNiceName(s.getName());
 		}
-		c.setStations(allStations);
 		
 		
 		Line l = c.getOrCreateLine("1");

@@ -50,6 +50,10 @@ public abstract class BPInputStream implements Serializable {
 		}
 	}	
 	
+	public synchronized int readObjectId() throws IOException {
+		return readInt();
+	}
+	
 	public synchronized int readInt() throws IOException {
 		int result = ensureStream().readInt();
 		position+=4;

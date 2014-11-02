@@ -29,7 +29,7 @@ import ro.mihai.util.IMonitor;
 
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Map<String, Station> stations;
+	private ArrayList<Station> stations;
 	private Map<String, Line> lineNameMap;
 	private ArrayList<Path> pathIdMap;
 	private ArrayList<Junction> junctionMap;
@@ -40,6 +40,7 @@ public class City implements Serializable {
 		this.lineNameMap = new HashMap<String, Line>();
 		this.pathIdMap = new ArrayList<Path>();
 		this.junctionMap = new ArrayList<Junction>();
+		this.stations = new ArrayList<Station>();
 	}
 	
 	public Collection<Line> getLines() {
@@ -57,12 +58,6 @@ public class City implements Serializable {
 		return names;
 	}
 	
-	public void setStations(List<Station> stations) {
-		this.stations = new HashMap<String, Station>();
-		for(Station s:stations)
-			this.stations.put(s.getId(), s);
-	}
-
 	private Line newLine(String name) {
 		Line l = new Line(name);
 		lineNameMap.put(name, l);
@@ -75,13 +70,24 @@ public class City implements Serializable {
 			l = newLine(name);
 		return l;
 	}
-
-	public Path newPath(Line line, String extId, String name) {
-		return newPath(line, pathIdMap.size(), extId, name);
+	
+	public Station newStation(String extId, String name) {
+		return newStation(stations.size(), extId, name);
+		
+	}
+	public Station newStation(int stationId, String extId, String name) {
+		Station s = new Station(stationId, extId, name);
+		setAt(stations, stationId, s);
+		return s;
 	}
 	
-	public Path newPath(Line line, int pathId, String extId, String name) {
-		Path p = new Path(line, pathId, extId, name);
+
+	public Path newPath(Line line, String extId, String name) {
+		return newPath(pathIdMap.size(), line, extId, name);
+	}
+	
+	public Path newPath(int pathId, Line line, String extId, String name) {
+		Path p = new Path(pathId, line, extId, name);
 		setAt(pathIdMap, pathId, p);
 		return p;
 	}
@@ -99,9 +105,13 @@ public class City implements Serializable {
 	protected Junction getJunctionById(int id) {
 		return junctionMap.get(id);
 	}
+
+	protected Station getStationById(int id) {
+		return stations.get(id);
+	}
 	
 	public Collection<Station> getStations() {
-		return stations.values();
+		return stations;
 	}
 	
 	public Collection<Junction> getJunctions() {
@@ -130,10 +140,6 @@ public class City implements Serializable {
 		if(null==p) 
 			throw new IOException();
 		return p;
-	}
-	
-	public Station getStation(String id) {
-		return stations.get(id);
 	}
 	
 	public String linesAndStationsToString() {
@@ -178,7 +184,7 @@ public class City implements Serializable {
 
 		os.writeEntityCollection(lineNameMap.values(), lazyRes);
 		os.writeEntityCollection(pathIdMap, lazyRes);
-		os.writeEntityCollection(stations.values(), lazyRes);
+		os.writeEntityCollection(stations, lazyRes);
 		os.writeEntityCollection(junctionMap, lazyRes);
 
 		os.writeLazyBlock(lazyRes);
@@ -231,12 +237,11 @@ public class City implements Serializable {
 			mon.workComplete();
 		}
 		
-		stations = new HashMap<String, Station>();
 		it = in.readEntityCollection();
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
 			Station s = PersistentEntity.loadEagerStation(in, this);
-			stations.put(s.getId(), s);
+			setAt(stations, s.getId(), s);
 			mon.workComplete();
 		}
 

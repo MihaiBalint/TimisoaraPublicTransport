@@ -29,6 +29,15 @@ public class DeDuper {
 			// at this point junction IDs are not recorded anywhere
 		}
 	}
+	
+	private static class SimpleStation extends Station {
+		private static final long serialVersionUID = 1L;
+
+		SimpleStation(String extId, String name) {
+			super(0, extId, name);
+			// at this point station IDs are not recorded anywhere
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
@@ -83,7 +92,7 @@ public class DeDuper {
 				Station st = stMap.get(row[2]);
 				boolean newStation = false;
 				if(null==st) {
-					st = new Station(row[2], row[3]);
+					st = new SimpleStation(row[2], row[3]);
 					stMap.put(row[2], st);
 					traceMap.put(row[2], "<"+row[1]+"/"+row[2]+">");
 					newStation = true;
@@ -96,16 +105,16 @@ public class DeDuper {
 					String stDir = pi>=0 ? row[4].substring(pi).trim() : "";
 					row[4] = stDir;
 					if (newStation) 
-						st.setNiceName(selectName("Please select the nicest name for "+row[3]+" "+row[1]+row[4], st.getId(), help.getNiceName(st.getId())));
+						st.setNiceName(selectName("Please select the nicest name for "+row[3]+" "+row[1]+row[4], st.getExtId(), help.getNiceName(st.getExtId())));
 				}
 				if(nonEmpty(row[5])) {
 					if (newStation) 
-						st.setShortName(selectName("Please select the shortest name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help.getShort(st.getId())));
+						st.setShortName(selectName("Please select the shortest name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getExtId(), help.getShort(st.getExtId())));
 				}
 				if (newStation) {
 					if(!nonEmpty(row[6])) 
 						row[6]=nonEmpty(row[5])?row[5]:"";
-					String juName = selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getId(), help); 
+					String juName = selectJunction("Please select the junction name for "+st.getNicestNamePossible()+" "+row[1]+"("+row[4]+")", st.getExtId(), help); 
 					Junction j = juMap.get(juName);
 					if (null==j) {
 						j = new SimpleJunction(juName);
@@ -318,14 +327,14 @@ public class DeDuper {
 	}
 	
 	private static void selectCoords(String msg, Station st, Helper help) {
-		List<Helper.Coords> opts = new ArrayList<Helper.Coords>(help.getCoords(st.getId()));
+		List<Helper.Coords> opts = new ArrayList<Helper.Coords>(help.getCoords(st.getExtId()));
 		Helper.Coords c;
 		if (opts.size()==1) {
 			c = opts.get(0);
 			st.setCoords(c.getLat().trim(), c.getLng().trim());
 			return;
 		}
-		Set<Helper.Coords> xml = help.getXMLCoords(st.getId());
+		Set<Helper.Coords> xml = help.getXMLCoords(st.getExtId());
 		
 		String message = msg+" #"+st.getId();
 		for(int i=0;i<opts.size();i++) {

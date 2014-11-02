@@ -32,15 +32,15 @@ public class Junction extends PersistentEntity implements Serializable {
 	private String name;
 	private Set<Station> stations;
 	
-	protected Junction(int id, String name) {
-		this(id, -1, null);
-		this.name = name;
-	}
-	
 	private Junction(int id, long resId, City city) {
 		super(resId, city);
 		this.id = id;
 		this.stations = new HashSet<Station>();
+	}
+	
+	protected Junction(int id, String name) {
+		this(id, -1, null);
+		this.name = name;
 	}
 	
 	public int getId() {
@@ -68,9 +68,7 @@ public class Junction extends PersistentEntity implements Serializable {
 
 		int stationCount = res.readInt();
 		for(int j=0;j<stationCount;j++) {
-			String stationId = res.readString();
-			
-			Station s = city.getStation(stationId);
+			Station s = city.getStationById(res.readObjectId());
 			stations.add(s);
 		}
 	}
@@ -83,18 +81,17 @@ public class Junction extends PersistentEntity implements Serializable {
 		
 		lazy.writeInt(stations.size());
 		for(Station s:stations) {
-			lazy.writeString(s.getId());
+			lazy.writeObjectId(s.getId());
 		}
 	}
 	
 	@Override
 	public void saveEager(BPOutputStream eager) throws IOException {
-		eager.writeInt(id); 
+		eager.writeObjectId(id); 
 	}
 	
 	public static Junction loadEager(BPInputStream eager, int resId, City city) throws IOException {
-		int id = eager.readInt();
-		return new Junction(id, resId, city);
+		return new Junction(eager.readObjectId(), resId, city);
 	}
 	
 }

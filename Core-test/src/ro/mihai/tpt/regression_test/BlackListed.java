@@ -16,7 +16,7 @@ public class BlackListed implements INamedEntity {
 	}
 
 	@Override
-	public String getId() {
+	public String getExtId() {
 		return id;
 	}
 
@@ -27,7 +27,7 @@ public class BlackListed implements INamedEntity {
 	
 	public static <T extends INamedEntity> boolean isIdListed(INamedEntity entity, Collection<T> list) {
 		for(T b : list)
-			if (entity.getId().equals(b.getId())) return true;
+			if (entity.getExtId().equals(b.getExtId())) return true;
 		return false;
 	}
 

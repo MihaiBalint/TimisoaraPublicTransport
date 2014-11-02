@@ -38,7 +38,7 @@ public class Path extends PersistentEntity implements Serializable {
 	
 	private List<Estimate> estimatesByPath;
 	
-	private Path(Line line, int id, long resId, City city) {
+	private Path(int id, long resId, City city, Line line) {
 		super(resId, city);
 		this.id = id;
 		this.line = line;
@@ -46,8 +46,8 @@ public class Path extends PersistentEntity implements Serializable {
 		this.estimatesByPath = new ArrayList<Estimate>();
 	}
 	
-	protected Path(Line line, int id, String extId, String name) {
-		this(line, id, -1, null);
+	protected Path(int id, Line line, String extId, String name) {
+		this(id, -1, null, line);
 		this.name = name;
 		this.extId = extId;
 	}
@@ -150,13 +150,22 @@ public class Path extends PersistentEntity implements Serializable {
 		return times;
 	}
 
+	@Override
+	public void saveEagerAndLazy(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
+		super.saveEagerAndLazy(eager, lazy);
+		
+		eager.writeInt(getEstimatesByPath().size());
+		for(Estimate e:getEstimatesByPath())
+			e.getPlan().saveEagerAndLazy(eager, lazy);
+	}
+
 	private HourlyPlan[] eagerPlans;
 	static Path loadEager(BPInputStream eager, int resId, City city) throws IOException {
-		int pathId = eager.readInt();
-		String lineName = eager.readString();
-		Line line = city.getLineByName(lineName);
-		Path path = new Path(line, pathId, resId, city);
+		int pathId = eager.readObjectId();
+		Line line = city.getLineByName(eager.readString());
+		Path path = new Path(pathId, resId, city, line);
 		line.addEagerPath(path);
+		
 		int planCount = eager.readInt();
 		path.eagerPlans = new HourlyPlan[planCount];
 		for (int i=0;i<planCount;i++)
@@ -165,19 +174,11 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 	
 	@Override
-	public void saveEagerAndLazy(BPOutputStream eager, BPMemoryOutputStream lazy) throws IOException {
-		super.saveEagerAndLazy(eager, lazy);
-		eager.writeInt(getEstimatesByPath().size());
-		for(Estimate e:getEstimatesByPath())
-			e.getPlan().saveEagerAndLazy(eager, lazy);
-	}
-
-	@Override
 	protected void saveEager(BPOutputStream eager) throws IOException {
 		// eager path resources
 		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
 		
-		eager.writeInt(id);
+		eager.writeObjectId(id);
 		eager.writeString(getLineName());
 	}
 
@@ -191,9 +192,7 @@ public class Path extends PersistentEntity implements Serializable {
 		assert stationCount == eagerPlans.length;
 		
 		for(int j=0;j<stationCount;j++) {
-			String stationId = res.readString();
-			
-			Station s = city.getStation(stationId);
+			Station s = city.getStationById(res.readObjectId());
 			concatenate(s, eagerPlans[j]);
 		}
 	}
@@ -207,7 +206,7 @@ public class Path extends PersistentEntity implements Serializable {
 		
 		lazy.writeInt(getEstimatesByPath().size());
 		for(Estimate e:getEstimatesByPath()) { 
-			lazy.writeString(e.getStation().getId());
+			lazy.writeObjectId(e.getStation().getId());
 		}
 	}	
 

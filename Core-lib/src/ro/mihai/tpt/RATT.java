@@ -40,8 +40,8 @@ public class RATT {
 	// ?id_traseu=...&id_statie=...
 	private static final String timesOflinesInStation = "afis_msg.php";
 	
-	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon) throws IOException {
-		return new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
+	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon, City c) throws IOException {
+		return new StationReader(new URL(prefs.getBaseUrl()+stationList), c).readAll(mon);
 	}
 	
 	public static String[] downloadTimes(IPrefs prefs, String pathId, String stationId) throws IOException {
@@ -58,8 +58,7 @@ public class RATT {
 	public static City downloadCity(IPrefs prefs, IMonitor mon) throws IOException {
 		City c = new City();
 		mon.setMax(1200);
-		List<Station> stations = new StationReader(new URL(prefs.getBaseUrl()+stationList)).readAll(mon);
-		c.setStations(stations);
+		List<Station> stations = new StationReader(new URL(prefs.getBaseUrl()+stationList), c).readAll(mon);
 		int cnt = 0;
 		for(Station s : stations) { 
 			new LineReader(c,s, new URL(prefs.getBaseUrl()+linesInStationList+"?"+stationIdParamName+"="+s.getId())).readAll(new NullMonitor());
@@ -75,9 +74,14 @@ public class RATT {
 	public static void addLatLongCoords(City c, InputStream in) throws IOException {
 		StationsXMLReader rd = new StationsXMLReader(new FormattedTextReader(in));
 		String[] stCoords;
+		
+		HashMap<String, Station> stationExtIdMap = new HashMap<String, Station>();
+		for(Station s:c.getStations())
+			stationExtIdMap.put(s.getExtId(), s);
+		
 		while(null != (stCoords = rd.readStationCoords())) {
 			// coords = {name, id, lat,lng}
-			Station s = c.getStation(stCoords[1]);
+			Station s = stationExtIdMap.get(stCoords[1]);
 			if(s==null) {
 				System.out.println(stCoords[1]+" - "+stCoords[0]+": "+stCoords[2]+"x"+stCoords[3]);
 				continue;
@@ -92,11 +96,12 @@ public class RATT {
 	}
 	
 	public static class StationReader extends OptValBuilder<Station> {
-		public StationReader(FormattedTextReader in) { super(in); }
-		public StationReader(URL url) throws IOException { super(url); }
+		private City c; 
+		public StationReader(FormattedTextReader in, City c) { super(in); this.c = c; }
+		public StationReader(URL url, City c) throws IOException { super(url); this.c = c; }
 		
 		protected Station create(String val, String opt) {
-			Station s = new Station(val,opt); 
+			Station s = c.newStation(val, opt); 
 			return s; 
 		}
 	}

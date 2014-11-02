@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import ro.mihai.util.LineKind;
 public class CityTest {
 	private City c;
 	private List<String> app_lines;
+	private HashMap<String, Station> stationExtIdMap;
 
 	@Before
 	public void setUp() throws IOException {
@@ -28,6 +30,14 @@ public class CityTest {
 		app_lines = new ArrayList<String>();
 		for(LineKind kind : LineKind.values())
 			app_lines.addAll(Arrays.asList(kind.getLineNames()));
+		
+		stationExtIdMap = new HashMap<String, Station>();
+		for(Station s:c.getStations())
+			stationExtIdMap.put(s.getExtId(), s);
+	}
+	
+	private Station getStationByExtId(String extId) {
+		return stationExtIdMap.get(extId);
 	}
 	
 	@Test
@@ -59,8 +69,8 @@ public class CityTest {
 	@Test
 	public void test_line_33_arta_connections() {
 		Line l33 = c.getLine("33");
-		Station a1 = c.getStation("2690");
-		Station a2 = c.getStation("2669");
+		Station a1 = getStationByExtId("2690");
+		Station a2 = getStationByExtId("2669");
 		
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
@@ -78,8 +88,8 @@ public class CityTest {
 	@Test
 	public void test_line_E1_arta_connections() {
 		Line lE1 = c.getLine("E1");
-		Station a1 = c.getStation("2690");
-		Station a2 = c.getStation("2669");
+		Station a1 = getStationByExtId("2690");
+		Station a2 = getStationByExtId("2669");
 		
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
@@ -96,8 +106,8 @@ public class CityTest {
 
 	@Test
 	public void test_arta_connections() {
-		Station a1 = c.getStation("2690");
-		Station a2 = c.getStation("2669");
+		Station a1 = getStationByExtId("2690");
+		Station a2 = getStationByExtId("2669");
 		
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
@@ -207,7 +217,7 @@ public class CityTest {
 	
 	public void assertLineInStation(String stationName, String lineName) {
 		HashSet<Line> lines = new HashSet<Line>();
-		Station st = c.getStation(stationName);
+		Station st = getStationByExtId(stationName);
 		for(Path p:st.getPaths())
 				lines.add(p.getLine());
 		assertTrue(lines.contains(c.getLine(lineName)));
@@ -217,13 +227,13 @@ public class CityTest {
 	public void test_known_distance() {
 		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getEstimatesByPath().get(0).getStation();
 		
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("4640")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("3105")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("3102")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("3163")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("2799")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("5300")));
-		assertTrue(s33.getJunction().getStations().contains(c.getStation("3200")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("4640")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3105")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3102")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3163")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("2799")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("5300")));
+		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3200")));
 		assertEquals(7,s33.getJunction().getStations().size());
 
 		assertLineInStation("4640", "Tv1");
@@ -232,23 +242,23 @@ public class CityTest {
 		assertLineInStation("3163", "Tv1");
 		assertLineInStation("3163", "Tv2");
 		assertLineInStation("3163", "Tv6");
-		assertTrue(c.getStation("4640").distanceTo(c.getStation("3163")) < 40); // 33
+		assertTrue(getStationByExtId("4640").distanceTo(getStationByExtId("3163")) < 40); // 33
 		
 		assertLineInStation("2799", "33");
 		assertLineInStation("5300", "E3");		
-		assertTrue(c.getStation("2799").distanceTo(c.getStation("5300")) < 230); // 221
+		assertTrue(getStationByExtId("2799").distanceTo(getStationByExtId("5300")) < 230); // 221
 		
 		assertLineInStation("2799", "33");
 		assertLineInStation("3200", "E3");
-		assertTrue(c.getStation("2799").distanceTo(c.getStation("3200")) < 10); // 4
+		assertTrue(getStationByExtId("2799").distanceTo(getStationByExtId("3200")) < 10); // 4
 		
 		assertLineInStation("5300", "E3");
 		assertLineInStation("3200", "E3");
-		assertTrue(c.getStation("5300").distanceTo(c.getStation("3200")) < 230); // 224
+		assertTrue(getStationByExtId("5300").distanceTo(getStationByExtId("3200")) < 230); // 224
 
 		assertLineInStation("4640", "Tv1");
 		assertLineInStation("2799", "33");
-		assertTrue(c.getStation("4640").distanceTo(c.getStation("2799")) < 120); // 112
+		assertTrue(getStationByExtId("4640").distanceTo(getStationByExtId("2799")) < 120); // 112
 	}
 	
 	@Test

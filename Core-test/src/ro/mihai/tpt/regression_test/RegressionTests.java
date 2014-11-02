@@ -56,10 +56,10 @@ public class RegressionTests {
 		
 		for(T s : expected) 
 			if (!BlackListed.isIdListed(s, bl_expected)) 
-				expectedMap.put(s.getId(),s);
+				expectedMap.put(s.getExtId(),s);
 		for(T s : actual) 
 			if (!BlackListed.isIdListed(s, bl_actual)) 
-				actualMap.put(s.getId(),s);
+				actualMap.put(s.getExtId(),s);
 		
 		// are expected but not actual
 		Collection<T> onlyExpected = new ArrayList<T>();
@@ -77,7 +77,7 @@ public class RegressionTests {
 			if (expectedMap.containsKey(a.getKey())) {
 				T e = expectedMap.get(a.getKey());
 				if(!a.getValue().getName().trim().equals(e.getName().trim()))
-					renamed.add(e.getId());
+					renamed.add(e.getExtId());
 				continue;
 			}
 			onlyActual.add(a.getValue());
@@ -87,12 +87,12 @@ public class RegressionTests {
 		if(!onlyExpected.isEmpty()) {
 			summary += "\nExpected but not found: ";
 			for(T e:onlyExpected)
-				summary += "["+e.getId()+" "+e.getName()+"] ";
+				summary += "["+e.getExtId()+" "+e.getName()+"] ";
 		}
 		if(!onlyActual.isEmpty()) {
 			summary += "\nFound but not expected: ";
 			for(T e:onlyActual)
-				summary += "["+e.getId()+" "+e.getName()+"] ";
+				summary += "["+e.getExtId()+" "+e.getName()+"] ";
 		}
 		if(!renamed.isEmpty()) {
 			summary += "\nFound renamed: ";

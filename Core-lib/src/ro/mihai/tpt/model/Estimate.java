@@ -108,7 +108,7 @@ public class Estimate implements Serializable {
 		try {
 			if(ec<3) {
 				String extLineId = path.getExtId();
-				String extStationId = station.getId();
+				String extStationId = station.getExtId();
 				String[] t = RATT.downloadTimes(prefs, extLineId, extStationId);
 				prefs.getAnalyticsCollector().record(t[0], t[1], t[2], extLineId, extStationId);
 				putTime(t[0], t[1], t[2]);

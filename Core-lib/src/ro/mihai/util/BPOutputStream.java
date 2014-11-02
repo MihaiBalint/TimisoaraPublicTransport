@@ -44,6 +44,10 @@ public class BPOutputStream {
 		stream.writeInt(b.length); stream.write(b);
 	}
 	
+	public void writeObjectId(int objectId) throws IOException {
+		stream.writeInt(objectId);
+	}
+	
 	public void writeInt(int data) throws IOException {
 		stream.writeInt(data);
 	}

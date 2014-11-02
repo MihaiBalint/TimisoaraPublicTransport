@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,23 +42,23 @@ public class RemoteGenerator extends TestCase {
 		return new JSONObject(builder.toString());
 	}
 	
-	public Map<String, Station> getStations() throws IOException {
-		JSONObject json = getJSON("stops?stop_id&name&short_name&lat&lng");
+	public ArrayList<Station> getStations(City c) throws IOException {
+		JSONObject json = getJSON("stops?stop_id&stop_extid&name&short_name&lat&lng");
 		assertEquals("success", json.get("status"));
 		JSONArray stationsJSON = json.getJSONArray("stops");
-		Map<String, Station> stMap = new HashMap<String, Station>();
+		ArrayList<Station> stations = new ArrayList<Station>(stationsJSON.length());
 		
 		for (int i=0;i<stationsJSON.length();i++) {
 			JSONObject station = stationsJSON.getJSONObject(i);
-			String 
-				stationId=station.getString("stop_id").trim(), stationName=station.getString("name").trim();
-			Station st = new Station(stationId, stationName);
+			int stationId = station.getInt("stop_id");
+			String stationName=station.getString("name").trim();
+			Station st = c.newStation(stationId, station.getString("stop_extid").trim(), stationName);
 			st.setNiceName(stationName);
 			st.setShortName(station.getString("short_name").trim());
 			st.setCoords(station.getString("lat").trim(), station.getString("lng").trim());
-			stMap.put(stationId, st);
+			stations.set(stationId, st);
 		}
-		return stMap;
+		return stations;
 	}
 	
 	public ArrayList<Junction> getJunctions(City c) throws IOException {
@@ -76,14 +74,14 @@ public class RemoteGenerator extends TestCase {
 		return junctions;
 	}
 	
-	public void linkJunctionStations(ArrayList<Junction> junctions, Map<String, Station> stMap) throws IOException {
+	public void linkJunctionStations(ArrayList<Junction> junctions, ArrayList<Station> stations) throws IOException {
 		for (Junction junction : junctions) {
 			JSONObject json = getJSON("junctions/"+junction.getId()+"/stops?stop_id");
 			assertEquals("success", json.get("status"));
 			JSONArray junctionStationsJSON = json.getJSONArray("junctions");
 			for (int i=0;i<junctionStationsJSON.length();i++) {
 				JSONObject junctionStation = junctionStationsJSON.getJSONObject(i);
-				Station st = stMap.get(junctionStation.getString("stop_od"));
+				Station st = stations.get(junctionStation.getInt("stop_od"));
 				st.setJunction(junction);
 				junction.addStation(st);
 				
@@ -94,12 +92,10 @@ public class RemoteGenerator extends TestCase {
 	public void testGenerator() throws Exception {
 		City c = new City();
 		
-		Map<String, Station> stMap = getStations();
+		ArrayList<Station> stMap = getStations(c);
 		ArrayList<Junction> jMap = getJunctions(c);
 		linkJunctionStations(jMap, stMap);
 		
-		c.setStations(new ArrayList<Station>(stMap.values()));
-
 		// SAVE
 		String fileName = "citylines.dat";
 		FileOutputStream fos = new FileOutputStream(fileName); 
