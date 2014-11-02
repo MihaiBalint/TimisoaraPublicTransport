@@ -228,8 +228,8 @@ public class AppPreferences implements IPrefs {
     		for(Path p : favoritePaths)
     			if (p.getLineName().equals(line))
     				continue MOSTUSED;
-    		Line cityLine = c.getLine(line);
-    		if (cityLine.isFake())
+    		Line cityLine = c.getLineByName(line);
+    		if (cityLine == null)
     			continue;
 			favoritePaths.add(cityLine.getFirstPath());
 			if (favoritePaths.size() >= max)

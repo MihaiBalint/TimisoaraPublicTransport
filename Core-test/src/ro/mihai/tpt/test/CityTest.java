@@ -44,7 +44,7 @@ public class CityTest {
 	public void test_city_has_all_kinds() {
 		String missingLines = "";
 		for(String line : app_lines)
-			if (c.getLine(line) == null || c.getLine(line).isFake())
+			if (c.getLineByName(line) == null || c.getLineByName(line).isFake())
 				missingLines += "City does not have line "+line+"\n"; 
 		assertEquals("", missingLines);
 	}
@@ -68,7 +68,7 @@ public class CityTest {
 	
 	@Test
 	public void test_line_33_arta_connections() {
-		Line l33 = c.getLine("33");
+		Line l33 = c.getLineByName("33");
 		Station a1 = getStationByExtId("2690");
 		Station a2 = getStationByExtId("2669");
 		
@@ -87,7 +87,7 @@ public class CityTest {
 
 	@Test
 	public void test_line_E1_arta_connections() {
-		Line lE1 = c.getLine("E1");
+		Line lE1 = c.getLineByName("E1");
 		Station a1 = getStationByExtId("2690");
 		Station a2 = getStationByExtId("2669");
 		
@@ -136,7 +136,7 @@ public class CityTest {
 	
 	private void assertKind(LineKind kind) {
 		for(String lineName : kind.getLineNames())
-			assertEquals(c.getLine(lineName).getKind(), kind);
+			assertEquals(c.getLineByName(lineName).getKind(), kind);
 		
 		for(Line l : c.getLines()) 
 			if (!kind.contains(l.getName()))
@@ -150,7 +150,7 @@ public class CityTest {
 
 	@Test
 	public void test_Tv9() {
-		Line tv9 = c.getLine("Tv9");
+		Line tv9 = c.getLineByName("Tv9");
 		assertTrue(tv9.getKind().isTram());
 		assertTrue(tv9.getPaths().size()>0);
 		for(Path p : tv9.getPaths())
@@ -220,12 +220,12 @@ public class CityTest {
 		Station st = getStationByExtId(stationName);
 		for(Path p:st.getPaths())
 				lines.add(p.getLine());
-		assertTrue(lines.contains(c.getLine(lineName)));
+		assertTrue(lines.contains(c.getLineByName(lineName)));
 	}
 
 	@Test
 	public void test_known_distance() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getEstimatesByPath().get(0).getStation();
+		Station s33 = c.getLineByName("33").getPath("Pod C. Sagului").getEstimatesByPath().get(0).getStation();
 		
 		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("4640")));
 		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3105")));
@@ -263,7 +263,7 @@ public class CityTest {
 	
 	@Test
 	public void test_known_distance_Arta_textila() {
-		Station s33 = c.getLine("33").getPath("Pod C. Sagului").getEstimatesByPath().get(4).getStation();
+		Station s33 = c.getLineByName("33").getPath("Pod C. Sagului").getEstimatesByPath().get(4).getStation();
 		for(Station s : s33.getJunction().getStations()) {
 			System.out.println(""+s.getId()+":"+s.getNiceName());
 		}

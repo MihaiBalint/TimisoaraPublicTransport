@@ -17,9 +17,6 @@
 */
 package ro.mihai.tpt.retired_test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
@@ -41,13 +38,7 @@ public class TestCityData extends TestCase {
 		//City c = RATT.downloadCity(prefs, new TestMonitor());
 		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache(prefs);
 		
-		ArrayList<String> names = new ArrayList<String>();
-		for(Line s : c.getLines()) names.add(s.getName());
-		Collections.sort(names);
-		
-		
-		for(String name : names) {
-			Line l = c.getLine(name);
+		for(Line l : c.getLinesSorted()) {
 			String safeName = l.getName().replace("-", "_");
 			System.out.println("\tpublic void testLine_"+safeName+"_StationCount() {");
 			System.out.println("\t\tassertEquals("+l.getStations().size()+", c.getLine(\""+l.getName()+"\").getStations().size());");

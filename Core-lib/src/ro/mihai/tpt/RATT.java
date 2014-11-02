@@ -123,7 +123,9 @@ public class RATT {
 		protected Line create(String val, String opt) {
 			if (opt.startsWith(" [0]  ") || opt.startsWith(" [1]  "))
 				opt = opt.substring(6);
-			Line l = c.getOrCreateLine(opt);
+			Line l = c.getLineByName(opt);
+			if (null==l)
+				l = c.newLine(opt);
 			Path p;
 			if (l.getPaths().isEmpty()) {
 				p = c.newPath(l, val, "");

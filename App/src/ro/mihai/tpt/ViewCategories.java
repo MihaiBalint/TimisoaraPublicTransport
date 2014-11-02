@@ -20,6 +20,7 @@ package ro.mihai.tpt;
 import java.util.Iterator;
 
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
@@ -128,7 +129,13 @@ public abstract class ViewCategories extends CityActivity {
 			return this.lineNameIterator.hasNext();
 		}
 		public Path next() {
-			return city.getLine(lineNameIterator.next()).getFirstPath();
+			String lineName = lineNameIterator.next();
+			Line l = city.getLineByName(lineName);
+			if (l == null) {
+				l = city.newLine(lineName);
+				l.addPath(city.newPath(l, "FAKE", "FAKE-"+lineName));
+			}
+			return l.getFirstPath();
 		}
 		public void remove() {
 			throw new UnsupportedOperationException();

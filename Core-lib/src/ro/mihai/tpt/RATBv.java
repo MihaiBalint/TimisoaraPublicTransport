@@ -78,7 +78,7 @@ public class RATBv {
 		}
 		
 		
-		Line l = c.getOrCreateLine("1");
+		Line l = c.newLine("1");
 
 		assert l.getPath("Livada Postei - Triaj") == null;
 		Path p1 = c.newPath(l, "insert_RATBv_route_id_here(or not)", "Livada Postei - Triaj");

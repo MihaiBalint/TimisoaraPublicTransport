@@ -74,7 +74,10 @@ public class V3Generator extends TestCase {
 				
 				stMap.put(row[2], st);
 			}
-			Line l = c.getOrCreateLine(row[1].trim());
+			Line l = c.getLineByName(row[1].trim());
+			if (null==l)
+				l = c.newLine(row[1].trim());
+
 			Path p = l.getPath(nnp[1]);
 			if (null==p) {
 				p = c.newPath(l, row[0].trim(), nnp[1]);
@@ -85,8 +88,8 @@ public class V3Generator extends TestCase {
 			st.addPath(p);
 		}
 		
-		assertEquals(2,c.getLine("Tv9").getPaths().size());
-		assertEquals(2,c.getLine("33").getPaths().size());
+		assertEquals(2,c.getLineByName("Tv9").getPaths().size());
+		assertEquals(2,c.getLineByName("33").getPaths().size());
 		
 		
 		/* * /
@@ -126,16 +129,16 @@ public class V3Generator extends TestCase {
 			for(Path p:l.getPaths())
 				assertEquals(l.getName(), p.getLineName());
 
-		assertEquals(c.getLine("33").getPaths().size(), c1.getLine("33").getPaths().size());
-		assertEquals(c.getLine("33").getSortedPathNames(), c1.getLine("33").getSortedPathNames());
-		assertEquals(2,c.getLine("33").getPaths().size());
+		assertEquals(c.getLineByName("33").getPaths().size(), c1.getLineByName("33").getPaths().size());
+		assertEquals(c.getLineByName("33").getSortedPathNames(), c1.getLineByName("33").getSortedPathNames());
+		assertEquals(2,c.getLineByName("33").getPaths().size());
 
-		assertEquals(c.getLine("32").getPaths().size(), c1.getLine("32").getPaths().size());
-		assertEquals(c.getLine("32").getSortedPathNames(), c1.getLine("32").getSortedPathNames());
-		assertEquals(2,c.getLine("32").getPaths().size());
+		assertEquals(c.getLineByName("32").getPaths().size(), c1.getLineByName("32").getPaths().size());
+		assertEquals(c.getLineByName("32").getSortedPathNames(), c1.getLineByName("32").getSortedPathNames());
+		assertEquals(2,c.getLineByName("32").getPaths().size());
 
-		assertEquals(c.getLine("Tv9").getPaths().size(), c1.getLine("Tv9").getPaths().size());
-		assertEquals(2,c.getLine("Tv9").getPaths().size());
+		assertEquals(c.getLineByName("Tv9").getPaths().size(), c1.getLineByName("Tv9").getPaths().size());
+		assertEquals(2,c.getLineByName("Tv9").getPaths().size());
 		
 		assertPaths(c,"generated");
 		assertPaths(c1,"saved");
@@ -174,8 +177,7 @@ public class V3Generator extends TestCase {
 		PrintStream csv = new PrintStream(new FileOutputStream("linestations2.csv"));
 		csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
 		
-		for(String ln : city.getLineNamesSorted()) {
-			Line l = city.getLine(ln);
+		for(Line l : city.getLinesSorted()) {
 			for(Path p:l.getPaths()) {
 				for(Estimate e : p.getEstimatesByPath()) {
 					Station s = e.getStation();

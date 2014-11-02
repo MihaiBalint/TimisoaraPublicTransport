@@ -30,8 +30,8 @@ public class RegressionLineTests extends TestCase {
 	}
 	
 	public void disabled_testLine_StationCount() {
-		Line expected = cExpected.getLine(lineName); 
-		Line actual = cActual.getLine(lineName);
+		Line expected = cExpected.getLineByName(lineName); 
+		Line actual = cActual.getLineByName(lineName);
 		
 		assertEquals("",
 			expected.getStations().size(), 
@@ -40,8 +40,8 @@ public class RegressionLineTests extends TestCase {
 	}
 	
 	public void testLine_Stations() {
-		Line expected = cExpected.getLine(lineName); 
-		Line actual = cActual.getLine(lineName);
+		Line expected = cExpected.getLineByName(lineName); 
+		Line actual = cActual.getLineByName(lineName);
 
 		String diff = RegressionTests.diffEntities(expected.getStations(), actual.getStations(),
 				blExpectedLineStations(lineName), blActualLineStations(lineName)); 

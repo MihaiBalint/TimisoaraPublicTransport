@@ -29,48 +29,70 @@ import ro.mihai.util.IMonitor;
 
 public class City implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private ArrayList<Line> lines;
+	private TreeMap<String, Line> orderedLineNameMap;
+	private ArrayList<Path> paths;
 	private ArrayList<Station> stations;
-	private Map<String, Line> lineNameMap;
-	private ArrayList<Path> pathIdMap;
-	private ArrayList<Junction> junctionMap;
+	private ArrayList<Junction> junctions;
 	
 	private BPInputStream in;
 	
 	public City() {
-		this.lineNameMap = new HashMap<String, Line>();
-		this.pathIdMap = new ArrayList<Path>();
-		this.junctionMap = new ArrayList<Junction>();
+		this.lines = new ArrayList<Line>();
+		this.orderedLineNameMap = new TreeMap<String, Line>();
+		
+		this.paths = new ArrayList<Path>();
+		this.junctions = new ArrayList<Junction>();
 		this.stations = new ArrayList<Station>();
 	}
 	
 	public Collection<Line> getLines() {
-		return lineNameMap.values();
-	}
-	
-	public Collection<Path> getPaths() {
-		return pathIdMap;
+		return lines;
 	}
 	
 	public Collection<String> getLineNamesSorted() {
-		ArrayList<String> names = new ArrayList<String>();
-		for(Line s : lineNameMap.values()) names.add(s.getName());
-		Collections.sort(names);
-		return names;
+		return orderedLineNameMap.keySet();
+	}
+
+	public Collection<Line> getLinesSorted() {
+		return orderedLineNameMap.values();
+	}
+
+	public Collection<Path> getPaths() {
+		return paths;
+	}
+
+	public Collection<Station> getStations() {
+		return stations;
 	}
 	
-	private Line newLine(String name) {
-		Line l = new Line(name);
-		lineNameMap.put(name, l);
+	public Collection<Junction> getJunctions() {
+		return junctions;
+	}
+	
+	
+	
+	public Line newLine(String name) {
+		return newLine(lines.size(), name);
+	}
+	
+	public Line newLine(int lineId, String name) {
+		Line l = new Line(lineId, name);
+		setAt(lines, lineId, l);
+		orderedLineNameMap.put(name, l);
 		return l;
 	}
 
-	public Line getOrCreateLine(String name) {
-		Line l = lineNameMap.get(name);
-		if(null==l) 
-			l = newLine(name);
-		return l;
+	public Path newPath(Line line, String extId, String name) {
+		return newPath(paths.size(), line, extId, name);
 	}
 	
+	public Path newPath(int pathId, Line line, String extId, String name) {
+		Path p = new Path(pathId, line, extId, name);
+		setAt(paths, pathId, p);
+		return p;
+	}
+
 	public Station newStation(String extId, String name) {
 		return newStation(stations.size(), extId, name);
 		
@@ -80,71 +102,46 @@ public class City implements Serializable {
 		setAt(stations, stationId, s);
 		return s;
 	}
-	
-
-	public Path newPath(Line line, String extId, String name) {
-		return newPath(pathIdMap.size(), line, extId, name);
-	}
-	
-	public Path newPath(int pathId, Line line, String extId, String name) {
-		Path p = new Path(pathId, line, extId, name);
-		setAt(pathIdMap, pathId, p);
-		return p;
-	}
 
 	public Junction newJunction(String name) {
-		return newJunction(junctionMap.size(), name);
+		return newJunction(junctions.size(), name);
 	}
 	
 	public Junction newJunction(int junctionId, String name) {
 		Junction junction = new Junction(junctionId, name);
-		setAt(junctionMap, junctionId, junction);
+		setAt(junctions, junctionId, junction);
 		return junction;
 	}
 
+	protected Line getLineById(int lineId) throws IOException {
+		Line l = lines.get(lineId);
+		if(null==l) 
+			throw new IOException();
+		return l;
+	}
+	
+	public Line getLineByName(String lineName) {
+		return orderedLineNameMap.get(lineName);
+	}
+	
+	protected Path getPathById(int pathId) throws IOException {
+		Path p = paths.get(pathId);
+		if(null==p) 
+			throw new IOException();
+		return p;
+	}
+	
 	protected Junction getJunctionById(int id) {
-		return junctionMap.get(id);
+		return junctions.get(id);
 	}
 
 	protected Station getStationById(int id) {
 		return stations.get(id);
 	}
 	
-	public Collection<Station> getStations() {
-		return stations;
-	}
-	
-	public Collection<Junction> getJunctions() {
-		return junctionMap;
-	}
-	
-	private int fakePaths = 0;
-	public Line getLine(String name) {
-		Line l = lineNameMap.get(name);
-		if(l != null)
-			return l;
-		fakePaths++;
-		l = newLine(name);
-		l.addPath(newPath(l, "F"+fakePaths, ""));
-		return l;
-	}
-	
-	public Line getLineByName(String lineName) throws IOException {
-		Line l = lineNameMap.get(lineName);
-		if(null==l) throw new IOException();
-		return l;
-	}
-	
-	public Path getPathById(int pathId) throws IOException {
-		Path p = pathIdMap.get(pathId);
-		if(null==p) 
-			throw new IOException();
-		return p;
-	}
-	
 	public String linesAndStationsToString() {
 		StringBuilder b = new StringBuilder();
-		for(Line l:lineNameMap.values()) {
+		for(Line l:lines) {
 			b.append(l.getName());
 			if(l.getPaths().size() == 1) {
 				b.append(" - ");
@@ -182,10 +179,10 @@ public class City implements Serializable {
 
 		BPMemoryOutputStream lazyRes = BPMemoryOutputStream.usingByteArray();
 
-		os.writeEntityCollection(lineNameMap.values(), lazyRes);
-		os.writeEntityCollection(pathIdMap, lazyRes);
+		os.writeEntityCollection(lines, lazyRes);
+		os.writeEntityCollection(paths, lazyRes);
 		os.writeEntityCollection(stations, lazyRes);
-		os.writeEntityCollection(junctionMap, lazyRes);
+		os.writeEntityCollection(junctions, lazyRes);
 
 		os.writeLazyBlock(lazyRes);
 		
@@ -195,13 +192,6 @@ public class City implements Serializable {
 	
 	public BPInputStream getDetachableInputStream() {
 		return in;
-	}
-	
-	private static <T> void setAt(List<T> list, int index, T item) {
-		while(list.size() <= index)
-			list.add(null);
-		assert(list.get(index) == null);
-		list.set(index, item);
 	}
 	
 	public void loadFromStream(BPInputStream in, IMonitor mon, int dbEntries) throws IOException {
@@ -225,7 +215,8 @@ public class City implements Serializable {
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
 			Line l = PersistentEntity.loadEagerLine(in, this);
-			lineNameMap.put(l.getName(), l);
+			setAt(lines, l.getId(), l);
+			orderedLineNameMap.put(l.getName(), l);
 			mon.workComplete();
 		}
 
@@ -233,7 +224,7 @@ public class City implements Serializable {
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
 			Path p = PersistentEntity.loadEagerPath(in, this);
-			setAt(pathIdMap, p.getId(), p);
+			setAt(paths, p.getId(), p);
 			mon.workComplete();
 		}
 		
@@ -249,11 +240,18 @@ public class City implements Serializable {
 		while (it.hasNext()) {
 			it.next(); monitorCount++;
 			Junction j = PersistentEntity.loadEagerJunction(in, this);
-			setAt(junctionMap, j.getId(), j);
+			setAt(junctions, j.getId(), j);
 			mon.workComplete();
 		}
 		assert mon.getMax() == monitorCount: "Max: "+(monitorCount)+"!="+mon.getMax();
 
 		in.mark(in.skipToLazyBlock());
+	}
+
+	private static <T> void setAt(List<T> list, int index, T item) {
+		while(list.size() <= index)
+			list.add(null);
+		assert(list.get(index) == null);
+		list.set(index, item);
 	}
 }

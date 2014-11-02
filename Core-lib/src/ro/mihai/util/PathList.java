@@ -38,7 +38,9 @@ public class PathList {
 		int sep = pathCode.indexOf("-");
 		if (sep<=0)
 			return null;
-		Line line = c.getLine(pathCode.substring(0, sep));
+		Line line = c.getLineByName(pathCode.substring(0, sep));
+		if (line == null) 
+			return null;
 		Path path = line.getPath(pathCode.substring(sep+1));
 		return path;
 	}

@@ -36,20 +36,22 @@ import ro.mihai.util.LineKind;
 
 public class Line extends PersistentEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private int id;
 	private String name;
 	private Set<Path> paths;
 	private Map<String,Path> pathNames;
 	private Path first;
 	
-	private Line(String name, long resId, City city) {
+	protected Line(int id, String name) {
+		this(id, name,-1,null);
+	}
+	
+	private Line(int id, String name, long resId, City city) {
 		super(resId, city);
+		this.id = id;
 		this.name = name;
 		this.paths = new HashSet<Path>();
 		this.pathNames = new HashMap<String, Path>();
-	}
-	
-	public Line(String name) {
-		this(name,-1,null);
 	}
 	
 	public List<String> getSortedPathNames() {
@@ -138,6 +140,10 @@ public class Line extends PersistentEntity implements Serializable {
 		return name;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	public boolean isFake() {
 		for (Path p: paths)
 			if (p.isFake())
@@ -162,12 +168,12 @@ public class Line extends PersistentEntity implements Serializable {
 	@Override
 	public void saveEager(BPOutputStream eager) throws IOException {
 		// eager line resources
+		eager.writeObjectId(id);
 		eager.writeString(name);
 	}
 
 	public static Line loadEager(BPInputStream eager, int resId, City city) throws IOException {
-		String name = eager.readString();
-		return new Line(name, resId, city);
+		return new Line(eager.readObjectId(), eager.readString(), resId, city);
 	}
 }
 

@@ -162,7 +162,7 @@ public class Path extends PersistentEntity implements Serializable {
 	private HourlyPlan[] eagerPlans;
 	static Path loadEager(BPInputStream eager, int resId, City city) throws IOException {
 		int pathId = eager.readObjectId();
-		Line line = city.getLineByName(eager.readString());
+		Line line = city.getLineById(eager.readObjectId());
 		Path path = new Path(pathId, resId, city, line);
 		line.addEagerPath(path);
 		
@@ -179,7 +179,7 @@ public class Path extends PersistentEntity implements Serializable {
 		assert line.getPaths().contains(this) : line+" does not contain "+this.toString();
 		
 		eager.writeObjectId(id);
-		eager.writeString(getLineName());
+		eager.writeObjectId(line.getId());
 	}
 
 	@Override
