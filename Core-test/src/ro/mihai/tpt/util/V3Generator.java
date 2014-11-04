@@ -104,6 +104,46 @@ public class V3Generator extends TestCase {
 		
 		printCSV(c);
 		/* */
+		Path planPath = c.getLineByName("33b").getPath("Metro");
+		HourlyPlan plan = planPath.getEstimateByPath(0).getPlan(); // Mocioni / Sinaia
+		plan.setHourSchedule( 5, new int[]{38, 52});
+		plan.setHourSchedule( 6, new int[]{18, 27, 38});
+		plan.setHourSchedule( 7, new int[]{ 8, 27, 58});
+		plan.setHourSchedule( 8, new int[]{18, 38});
+		plan.setHourSchedule( 9, new int[]{ 5, 30});
+		plan.setHourSchedule(10, new int[]{ 0, 30});
+		plan.setHourSchedule(11, new int[]{ 0, 30});
+		plan.setHourSchedule(12, new int[]{ 0, 30});
+		plan.setHourSchedule(13, new int[]{ 0, 25, 43});
+		plan.setHourSchedule(14, new int[]{ 5, 22, 45});
+		plan.setHourSchedule(15, new int[]{ 5, 25, 45});
+		plan.setHourSchedule(16, new int[]{ 5, 25, 45});
+		plan.setHourSchedule(17, new int[]{ 1, 35});
+		plan.setHourSchedule(18, new int[]{ 9, 39});
+		plan.setHourSchedule(19, new int[]{ 9, 39});
+		plan.setHourSchedule(20, new int[]{ 9, 39});
+		plan.setHourSchedule(21, new int[]{ 9, 39});
+		plan.setHourSchedule(22, new int[]{ 9, 27, 56});
+		
+		plan = planPath.getEstimateByPath(1).getPlan(); // Brancoveanu
+		plan.setHourSchedule( 5, new int[]{40, 54});
+		plan.setHourSchedule( 6, new int[]{20, 29, 40});
+		plan.setHourSchedule( 7, new int[]{10, 29});
+		plan.setHourSchedule( 8, new int[]{ 0, 20, 40});
+		plan.setHourSchedule( 9, new int[]{ 7, 32});
+		plan.setHourSchedule(10, new int[]{ 2, 32});
+		plan.setHourSchedule(11, new int[]{ 2, 32});
+		plan.setHourSchedule(12, new int[]{ 2, 32});
+		plan.setHourSchedule(13, new int[]{ 2, 27, 45});
+		plan.setHourSchedule(14, new int[]{ 7, 24, 47});
+		plan.setHourSchedule(15, new int[]{ 7, 27, 47});
+		plan.setHourSchedule(16, new int[]{ 7, 27, 47});
+		plan.setHourSchedule(17, new int[]{ 3, 37});
+		plan.setHourSchedule(18, new int[]{11, 41});
+		plan.setHourSchedule(19, new int[]{11, 41});
+		plan.setHourSchedule(20, new int[]{11, 41});
+		plan.setHourSchedule(21, new int[]{11, 41});
+		plan.setHourSchedule(22, new int[]{11, 29, 58});
 		
 		String fileName = "citylines.dat";
 		FileOutputStream fos = new FileOutputStream(fileName); 
@@ -139,6 +179,10 @@ public class V3Generator extends TestCase {
 
 		assertEquals(c.getLineByName("Tv9").getPaths().size(), c1.getLineByName("Tv9").getPaths().size());
 		assertEquals(2,c.getLineByName("Tv9").getPaths().size());
+		assertScheduleEquals("33b", "Metro", 0, 12, c, c1);
+		assertScheduleEquals("33b", "Metro", 0, 19, c, c1);
+		assertScheduleEquals("33b", "Metro", 1, 11, c, c1);
+		assertScheduleEquals("33b", "Metro", 1, 22, c, c1);
 		
 		assertPaths(c,"generated");
 		assertPaths(c1,"saved");
@@ -157,6 +201,13 @@ public class V3Generator extends TestCase {
 		}
 	}
 	
+	private void assertScheduleEquals(String lineName, String pathName, int stopIndex, int hour, City actual, City expected) {
+		HourlyPlan expectedPlan = expected.getLineByName(lineName).getPath(pathName).getEstimateByPath(stopIndex).getPlan();
+		HourlyPlan actualPlan = actual.getLineByName(lineName).getPath(pathName).getEstimateByPath(stopIndex).getPlan();
+		assertEquals(actualPlan.getHourSchedule(hour).length, expectedPlan.getHourSchedule(hour).length);
+		for(int i=0;i<actualPlan.getHourSchedule(hour).length;i++)
+			assertEquals(actualPlan.getHourSchedule(hour)[i], expectedPlan.getHourSchedule(hour)[i]);
+	}
 	
 	
 	private static boolean nonEmpty(String s) {
