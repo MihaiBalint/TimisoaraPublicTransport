@@ -5,7 +5,7 @@ import contextlib
 import psycopg2
 import os
 
-_schema_version = 2
+_schema_version = 3
 _schema_template = "tpt%.4d"
 _schema_name = _schema_template % _schema_version
 
@@ -70,7 +70,7 @@ def _create_ids_table(cursor):
         "hash varchar(128) UNIQUE",
         "used boolean",
         "first_seen timestamp with time zone",
-        "last_seen timestamp with time zone",
+        "last_seen timestamp with time zone"
         ]
     _create_table(cursor, "device_ids", ddl)
 
@@ -92,14 +92,33 @@ def _create_times_table(cursor):
     _create_table(cursor, "times_log", ddl)
 
 
+def _create_lines_table(cursor):
+    ddl = [
+        "line_id serial PRIMARY KEY",
+        "title varchar(32)"
+        "vehicle_type integer",
+        "attributes json",
+        "CONSTRAINT related_routes_fk1 FOREIGN KEY (route_id) " \
+            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+        "CONSTRAINT related_routes_fk2 FOREIGN KEY (related_id) " \
+            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
+        ]
+    _create_table(cursor, "lines", ddl)
+
+
 def _create_routes_table(cursor):
     ddl = [
-        "route_id serial PRIMARY KEY",
-        "title varchar(32)",
-        "vehicle_type integer",
-        "is_barred boolean",
-        "route_extid varchar(32)",
-        "route_exttitle varchar(32)"
+        "route_id serial UNIQUE",
+        "line_id integer",
+        "direction varchar(512)",
+        "attributes json",
+        "external_attributes json",
+        "PRIMARY KEY(line_id, direction)",
+        "CONSTRAINT routes_fk1 FOREIGN KEY (line_id) " \
+            "REFERENCES %s.lines (line_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
         ]
     _create_table(cursor, "routes", ddl)
 
@@ -108,11 +127,10 @@ def _create_stops_table(cursor):
     ddl = [
         "stop_id serial PRIMARY KEY",
         "title varchar(512)",
-        "short_title varchar(512)",
         "gps_pos point",
         "is_station boolean",
-        "stop_extid varchar(32)",
-        "stop_exttitle varchar(512)",
+        "attributes json",
+        "external_attributes json"
         ]
     _create_table(cursor, "stops", ddl)
 
@@ -135,14 +153,33 @@ def _create_route_stops_table(cursor):
     _create_table(cursor, "route_stops", ddl)
 
 
+def _create_schedules_table(cursor):
+    ddl = [
+        "route_schedules_id serial UNIQUE",
+        "route_stop_id integer",
+        "gross_applicability integer",
+        "hour smallint",
+        "minutes smallint[]",
+        "attributes json",
+        "CONSTRAINT route_schedules_fk1 FOREIGN KEY (route_stop_id) " \
+            "REFERENCES %s.route_stops (route_stop_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+        "PRIMARY KEY(route_stop_id, gross_applicability, hour)"
+        ]
+    _create_table(cursor, "route_schedules", ddl)
+
+
 def create_database(connection):
     with contextlib.closing(connection.cursor()) as cursor:
         _create_tpt_schema(cursor)
         _create_ids_table(cursor)
         _create_times_table(cursor)
+
+        _create_lines_table(cursor)
         _create_routes_table(cursor)
         _create_stops_table(cursor)
         _create_route_stops_table(cursor)
+        _create_schedules_table(cursor)
 
 
 def drop_database(connection):
