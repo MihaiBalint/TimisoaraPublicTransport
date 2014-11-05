@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import contextlib
+import json
 import psycopg2
 import os
 
@@ -98,12 +99,6 @@ def _create_lines_table(cursor):
         "title varchar(32)"
         "vehicle_type integer",
         "attributes json",
-        "CONSTRAINT related_routes_fk1 FOREIGN KEY (route_id) " \
-            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
-        "CONSTRAINT related_routes_fk2 FOREIGN KEY (related_id) " \
-            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
         ]
     _create_table(cursor, "lines", ddl)
 
@@ -115,15 +110,17 @@ def _create_routes_table(cursor):
         "direction varchar(512)",
         "attributes json",
         "external_attributes json",
-        "PRIMARY KEY(line_id, direction)",
         "CONSTRAINT routes_fk1 FOREIGN KEY (line_id) " \
             "REFERENCES %s.lines (line_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
+            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+        "PRIMARY KEY(line_id, direction)"
         ]
     _create_table(cursor, "routes", ddl)
 
 
 def _create_stops_table(cursor):
+    # Stores actual vehicle stations as well as
+    # the waypoints of the phisical path
     ddl = [
         "stop_id serial PRIMARY KEY",
         "title varchar(512)",
@@ -238,13 +235,16 @@ def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
     cursor.execute(sql % _schema_name, (device_id, e1, e2, et, rid, sid))
 
 
-def insert_stop(cursor, title, shorter, lat, lng, ext_id, ext_title):
-    sql = "insert into %s.stops (title, short_title, gps_pos, " \
-        "is_station, stop_extid, stop_exttitle) " \
-        "values (%%s, %%s, point(%%s, %%s), true, %%s, %%s) " \
-        "returning stop_id;"
-    cursor.execute(sql % _schema_name, (title, shorter, lat, lng,
-                                        ext_id, ext_title))
+def insert_stop(cursor, title, lat, lng, **kvargs):
+    eattrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+                             if k.startswith("ext_")))
+    attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+                            if not k.startswith("ext_")))
+    sql = "insert into %s.stops (title, gps_pos, is_station, " \
+          "attributes, external_attributes) " \
+          "values (%%s, point(%%s, %%s), true, %%s, %%s) " \
+          "returning stop_id;"
+    cursor.execute(sql % _schema_name, (title, lat, lng, attrs, eattrs))
     return cursor.fetchone()[0]
 
 
@@ -254,33 +254,51 @@ def find_stop(cursor, stop_id):
     return cursor.fetchone()
 
 
-def insert_route(cursor, title, vehicle_type, is_barred, ext_id, ext_title):
-    sql = "insert into %s.routes (title, vehicle_type, is_barred, " \
-        "route_extid, route_exttitle) values (%%s, %%s, %%s, %%s, %%s) " \
+def insert_line(cursor, title, vehicle_type, **kvargs):
+    attrs = json.dumps(kvargs)
+    sql = "insert into %s.lines (title, vehicle_type, attributes) " \
+          "values (%%s, %%s, %%s) " \
+          "returning line_id;"
+    cursor.execute(sql % _schema_name, (title, vehicle_type, attrs))
+    return cursor.fetchone()[0]
+
+
+def find_line(cursor, line_id):
+    sql = "select * from %s.lines where line_id=%%s;"
+    cursor.execute(sql % _schema_name, (line_id, ))
+    return cursor.fetchone()
+
+
+def insert_route(cursor, line_id, direction, **kvargs):
+    eattrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+                             if k.startswith("ext_")))
+    attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+                            if not k.startswith("ext_")))
+    sql = "insert into %s.routes (line_id, direction, " \
+        "attributes, external_attributes) values (%%s, %%s, %%s, %%s) " \
         "returning route_id;"
-    cursor.execute(sql % _schema_name, (title, vehicle_type, is_barred,
-                                        ext_id, ext_title))
+    cursor.execute(sql % _schema_name, (line_id, direction, attrs, eattrs))
     return cursor.fetchone()[0]
 
 
 def find_route(cursor, route_id):
-    sql = "select * from %s.routes where route_id=%%s;"
-    cursor.execute(sql % _schema_name, (route_id, ))
+    sql = "select * from {0}.routes where route_id=%%s;"
+    cursor.execute(sql.format(_schema_name), (route_id, ))
     return cursor.fetchone()
 
 
 def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
-    sql = "insert into %s.route_stops (route_id, stop_id, stop_index, " \
+    sql = "insert into {0}.route_stops (route_id, stop_id, stop_index, " \
         "is_enabled) values (%%s, %%s, %%s, %%s) " \
         "returning route_stop_id;"
-    cursor.execute(sql % _schema_name, (route_id, stop_id, stop_index,
-                                        is_enabled))
+    cursor.execute(sql.format(_schema_name),
+                   (route_id, stop_id, stop_index, is_enabled))
     return cursor.fetchone()[0]
 
 
 def find_route_stations(cursor, route_id):
-    sql = "select s.stop_id, rs.stop_index, s.title, s.short_title, " \
-        "s.gps_pos, s.stop_extid, s.stop_exttitle, rs.is_enabled " \
+    sql = "select s.stop_id, rs.stop_index, s.title, s.gps_pos, " \
+        "s.attrubutes, s.external_attributes, rs.is_enabled " \
         "from {0}.stops as s, {0}.route_stops as rs where s.is_station and " \
         "s.stop_id=rs.stop_id and rs.route_id=%s order by rs.stop_index;"
     cursor.execute(sql.format(_schema_name), (route_id, ))
