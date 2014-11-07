@@ -197,15 +197,16 @@ def insert_new_device(cursor, used=False):
 
 
 def insert_device_sig(cursor, entry_id, device_sig, device_hash):
-    sql = "update %s.device_ids set (sig, hash) = (%%s, %%s) " \
-        "where device_id=%%s;"
-    cursor.execute(sql % _schema_name, (device_sig, device_hash, entry_id))
+    sql = "update {0}.device_ids set (sig, hash) = (%s, %s) " \
+        "where device_id=%s;"
+    cursor.execute(sql.format(_schema_name),
+                   (device_sig, device_hash, entry_id))
 
 
 def update_device_activity(cursor, device_hash):
-    sql = "update %s.device_ids set last_seen = now() " \
-        "where hash=%%s returning device_id;"
-    cursor.execute(sql % _schema_name, (device_hash, ))
+    sql = "update {0}.device_ids set last_seen = now() " \
+        "where hash=%s returning device_id;"
+    cursor.execute(sql.format(_schema_name), (device_hash, ))
     result = cursor.fetchone()
     if result is None:
         raise ItemNotFoundException(
@@ -214,25 +215,25 @@ def update_device_activity(cursor, device_hash):
 
 
 def use_free_device_hash(cursor):
-    sql = "select device_id, hash from %s.device_ids where used=false " \
+    sql = "select device_id, hash from {0}.device_ids where used=false " \
         "order by device_id limit 1 for update;"
-    cursor.execute(sql % _schema_name)
+    cursor.execute(sql.format(_schema_name))
     result = cursor.fetchone()
     if result is None:
         return None
     device_id, device_hash = result
-    sql = "update %s.device_ids set (used, first_seen) = " \
-        "(true, now()) where device_id=%%s;"
-    cursor.execute(sql % _schema_name, (device_id,))
+    sql = "update {0}.device_ids set (used, first_seen) = " \
+        "(true, now()) where device_id=%s;"
+    cursor.execute(sql.format(_schema_name), (device_id,))
     cursor.connection.commit()
     return device_hash
 
 
 def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
-    sql = "insert into %s.times_log (device_id, reported, estimate1, " \
+    sql = "insert into {0}.times_log (device_id, reported, estimate1, " \
         "estimate2, est_timestamp, route_id, station_id) " \
-        "values (%%s, now(), %%s, %%s, %%s, %%s, %%s);"
-    cursor.execute(sql % _schema_name, (device_id, e1, e2, et, rid, sid))
+        "values (%s, now(), %s, %s, %s, %s, %s);"
+    cursor.execute(sql.format(_schema_name), (device_id, e1, e2, et, rid, sid))
 
 
 def insert_stop(cursor, title, lat, lng, **kvargs):
@@ -240,11 +241,11 @@ def insert_stop(cursor, title, lat, lng, **kvargs):
                              if k.startswith("ext_")))
     attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
                             if not k.startswith("ext_")))
-    sql = "insert into %s.stops (title, gps_pos, is_station, " \
+    sql = "insert into {0}.stops (title, gps_pos, is_station, " \
           "attributes, external_attributes) " \
-          "values (%%s, point(%%s, %%s), true, %%s, %%s) " \
+          "values (%s, point(%s, %s), true, %s, %s) " \
           "returning stop_id;"
-    cursor.execute(sql % _schema_name, (title, lat, lng, attrs, eattrs))
+    cursor.execute(sql.format(_schema_name), (title, lat, lng, attrs, eattrs))
     return cursor.fetchone()[0]
 
 
@@ -257,9 +258,9 @@ def find_stop(cursor, stop_id):
 def insert_line(cursor, title, vehicle_type, **kvargs):
     attrs = json.dumps(kvargs)
     sql = "insert into %s.lines (title, vehicle_type, attributes) " \
-          "values (%%s, %%s, %%s) " \
+          "values (%s, %s, %s) " \
           "returning line_id;"
-    cursor.execute(sql % _schema_name, (title, vehicle_type, attrs))
+    cursor.execute(sql.format(_schema_name), (title, vehicle_type, attrs))
     return cursor.fetchone()[0]
 
 
@@ -270,7 +271,7 @@ def find_line(cursor, line_id):
 
 
 def find_line_routes(cursor, line_id):
-    sql = "select * from {0}.routes where line_id=%%s;"
+    sql = "select * from {0}.routes where line_id=%s;"
     cursor.execute(sql.format(_schema_name), (line_id, ))
     return cursor.fetchall()
 
@@ -280,22 +281,23 @@ def insert_route(cursor, line_id, direction, **kvargs):
                              if k.startswith("ext_")))
     attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
                             if not k.startswith("ext_")))
-    sql = "insert into %s.routes (line_id, direction, " \
-        "attributes, external_attributes) values (%%s, %%s, %%s, %%s) " \
+    sql = "insert into {0}.routes (line_id, direction, " \
+        "attributes, external_attributes) values (%s, %s, %s, %s) " \
         "returning route_id;"
-    cursor.execute(sql % _schema_name, (line_id, direction, attrs, eattrs))
+    cursor.execute(sql.format(_schema_name),
+                   (line_id, direction, attrs, eattrs))
     return cursor.fetchone()[0]
 
 
 def find_route(cursor, route_id):
-    sql = "select * from {0}.routes where route_id=%%s;"
+    sql = "select * from {0}.routes where route_id=%s;"
     cursor.execute(sql.format(_schema_name), (route_id, ))
     return cursor.fetchone()
 
 
 def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
     sql = "insert into {0}.route_stops (route_id, stop_id, stop_index, " \
-        "is_enabled) values (%%s, %%s, %%s, %%s) " \
+        "is_enabled) values (%s, %s, %s, %s) " \
         "returning route_stop_id;"
     cursor.execute(sql.format(_schema_name),
                    (route_id, stop_id, stop_index, is_enabled))
