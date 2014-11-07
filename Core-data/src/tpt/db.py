@@ -186,13 +186,13 @@ def drop_database(connection):
 
 def insert_new_device(cursor, used=False):
     if used:
-        sql = "insert into %s.device_ids (used, first_seen) " \
+        sql = "insert into {0}.device_ids (used, first_seen) " \
             "values (true, now()) returning device_id;"
     else:
-        sql = "insert into %s.device_ids (used) values (false) " \
+        sql = "insert into {0}.device_ids (used) values (false) " \
             "returning device_id;"
 
-    cursor.execute(sql % _schema_name)
+    cursor.execute(sql.format(_schema_name))
     return cursor.fetchone()[0]
 
 
@@ -249,8 +249,8 @@ def insert_stop(cursor, title, lat, lng, **kvargs):
 
 
 def find_stop(cursor, stop_id):
-    sql = "select * from %s.stops where stop_id=%%s;"
-    cursor.execute(sql % _schema_name, (stop_id, ))
+    sql = "select * from {0}.stops where stop_id=%s;"
+    cursor.execute(sql.format(_schema_name), (stop_id, ))
     return cursor.fetchone()
 
 
@@ -264,9 +264,15 @@ def insert_line(cursor, title, vehicle_type, **kvargs):
 
 
 def find_line(cursor, line_id):
-    sql = "select * from %s.lines where line_id=%%s;"
-    cursor.execute(sql % _schema_name, (line_id, ))
+    sql = "select * from {0}.lines where line_id=%s;"
+    cursor.execute(sql.format(_schema_name), (line_id, ))
     return cursor.fetchone()
+
+
+def find_line_routes(cursor, line_id):
+    sql = "select * from {0}.routes where line_id=%%s;"
+    cursor.execute(sql.format(_schema_name), (line_id, ))
+    return cursor.fetchall()
 
 
 def insert_route(cursor, line_id, direction, **kvargs):
@@ -305,26 +311,33 @@ def find_route_stations(cursor, route_id):
     return cursor.fetchall()
 
 
-def find_active_routes_by_type(cursor, city_id, vehicle_type):
-    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
-        "where r.vehicle_type=%s and rs.is_enabled and " \
-        "rs.route_id=r.route_id order by r.title;"
+def find_active_lines_by_type(cursor, city_id, vehicle_type):
+    sql = "select distinct l.* from {0}.lines " \
+          "join {0}.routes as r on l.line_id=r.line_id " \
+          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
+          "where r.vehicle_type=%s and rs.is_enabled " \
+          "order by r.title;"
     cursor.execute(sql.format(_schema_name), (vehicle_type, ))
     return cursor.fetchall()
 
 
 def find_all_active_route(cursor):
-    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
-        "where rs.is_enabled and rs.route_id=r.route_id order by r.title;"
+    sql = "select distinct l.* from {0}.lines " \
+          "join {0}.routes as r on l.line_id=r.line_id " \
+          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
+          "where rs.is_enabled " \
+          "order by r.title;"
     cursor.execute(sql.format(_schema_name))
     return cursor.fetchall()
 
 
-def find_favorite_routes(cursor):
-    sql = "select distinct r.* from {0}.route_stops as rs, {0}.routes as r " \
-        "where rs.is_enabled and rs.route_id=r.route_id and " \
-        "r.title=any(Array['4','E1','5','E2','2','6','8','7']) " \
-        "order by r.title;"
+def find_favorite_lines(cursor):
+    sql = "select distinct l.* from {0}.lines " \
+          "join {0}.routes as r on l.line_id=r.line_id " \
+          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
+          "where l.title=any(Array['4','E1','5','E2','2','6','8','7'])" \
+          " and rs.is_enabled " \
+          "order by r.title;"
     cursor.execute(sql.format(_schema_name))
     return cursor.fetchall()
 
