@@ -60,8 +60,8 @@ def _create_tpt_schema(cursor):
 def _create_table(cursor, table_name, ddl):
     if exists_table(cursor, _schema_name, table_name):
         return
-    cursor.execute("CREATE TABLE %s.%s(%s);" %
-                   (_schema_name, table_name, ", ".join(ddl)))
+    cursor.execute("CREATE TABLE {0}.{1}({2});".format(
+        _schema_name, table_name, ", ".join(ddl)))
 
 
 def _create_ids_table(cursor):
@@ -87,8 +87,8 @@ def _create_times_table(cursor):
         "route_id varchar(32)",
         "station_id varchar(32)",
         "CONSTRAINT log_fk1 FOREIGN KEY (device_id) " \
-            "REFERENCES %s.device_ids (device_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name
+            "REFERENCES {0}.device_ids (device_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE".format(_schema_name)
         ]
     _create_table(cursor, "times_log", ddl)
 
@@ -96,7 +96,7 @@ def _create_times_table(cursor):
 def _create_lines_table(cursor):
     ddl = [
         "line_id serial PRIMARY KEY",
-        "title varchar(32)"
+        "title varchar(32)",
         "vehicle_type integer",
         "attributes json",
         ]
@@ -111,8 +111,8 @@ def _create_routes_table(cursor):
         "attributes json",
         "external_attributes json",
         "CONSTRAINT routes_fk1 FOREIGN KEY (line_id) " \
-            "REFERENCES %s.lines (line_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+            "REFERENCES {0}.lines (line_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE".format(_schema_name),
         "PRIMARY KEY(line_id, direction)"
         ]
     _create_table(cursor, "routes", ddl)
@@ -140,11 +140,11 @@ def _create_route_stops_table(cursor):
         "stop_index integer",
         "is_enabled boolean",
         "CONSTRAINT route_stops_fk1 FOREIGN KEY (route_id) " \
-            "REFERENCES %s.routes (route_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+            "REFERENCES {0}.routes (route_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE".format(_schema_name),
         "CONSTRAINT route_stops_fk2 FOREIGN KEY (stop_id) " \
-            "REFERENCES %s.stops (stop_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+            "REFERENCES {0}.stops (stop_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE".format(_schema_name),
         "PRIMARY KEY(route_id, stop_id, stop_index)"
         ]
     _create_table(cursor, "route_stops", ddl)
@@ -159,8 +159,8 @@ def _create_schedules_table(cursor):
         "minutes smallint[]",
         "attributes json",
         "CONSTRAINT route_schedules_fk1 FOREIGN KEY (route_stop_id) " \
-            "REFERENCES %s.route_stops (route_stop_id) MATCH SIMPLE " \
-            "ON UPDATE CASCADE ON DELETE CASCADE" % _schema_name,
+            "REFERENCES {0}.route_stops (route_stop_id) MATCH SIMPLE " \
+            "ON UPDATE CASCADE ON DELETE CASCADE".format(_schema_name),
         "PRIMARY KEY(route_stop_id, gross_applicability, hour)"
         ]
     _create_table(cursor, "route_schedules", ddl)
@@ -237,9 +237,9 @@ def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
 
 
 def insert_stop(cursor, title, lat, lng, **kvargs):
-    eattrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+    eattrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                              if k.startswith("ext_")))
-    attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+    attrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                             if not k.startswith("ext_")))
     sql = "insert into {0}.stops (title, gps_pos, is_station, " \
           "attributes, external_attributes) " \
@@ -257,7 +257,7 @@ def find_stop(cursor, stop_id):
 
 def insert_line(cursor, title, vehicle_type, **kvargs):
     attrs = json.dumps(kvargs)
-    sql = "insert into %s.lines (title, vehicle_type, attributes) " \
+    sql = "insert into {0}.lines (title, vehicle_type, attributes) " \
           "values (%s, %s, %s) " \
           "returning line_id;"
     cursor.execute(sql.format(_schema_name), (title, vehicle_type, attrs))
@@ -277,9 +277,9 @@ def find_line_routes(cursor, line_id):
 
 
 def insert_route(cursor, line_id, direction, **kvargs):
-    eattrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+    eattrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                              if k.startswith("ext_")))
-    attrs = json.dumps(dict((k, v) for k, v in kvargs.itetitems()
+    attrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                             if not k.startswith("ext_")))
     sql = "insert into {0}.routes (line_id, direction, " \
         "attributes, external_attributes) values (%s, %s, %s, %s) " \
@@ -350,16 +350,18 @@ class PreviousDataNotFound(Exception):
 
 def _migrate_data(cursor, previous_schema):
     _create_tpt_schema(cursor)
-    cursor.execute("alter table %s.device_ids set schema %s;" % (
+    cursor.execute(
+        "alter table {0}.device_ids set schema {1};".format(
             previous_schema, _schema_name))
     cursor.execute(
-        "create view %s.device_ids as select * from %s.device_ids;" %
-        (previous_schema, _schema_name))
-    cursor.execute("alter table %s.times_log set schema %s;" % (
+        "create view {0}.device_ids as select * from {1}.device_ids;".format(
             previous_schema, _schema_name))
     cursor.execute(
-        "create view %s.times_log as select * from %s.times_log;" %
-        (previous_schema, _schema_name))
+        "alter table {0}.times_log set schema {1};".format(
+            previous_schema, _schema_name))
+    cursor.execute(
+        "create view {0}.times_log as select * from {1}.times_log;".format(
+            previous_schema, _schema_name))
 
 
 def migrate_database(connection):

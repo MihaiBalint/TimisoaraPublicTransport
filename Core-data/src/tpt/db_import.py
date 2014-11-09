@@ -40,8 +40,11 @@ def _insert_stop(cursor, stop_extid, ext_title, title, shorter, junction,
         lat = float(-1.0)
         lng = float(-1.0)
 
-    return tpt.db.insert_stop(cursor, title, shorter, lat, lng,
-                              stop_extid, ext_title)
+    return tpt.db.insert_stop(
+        cursor, title, lat, lng,
+        short_title=shorter,
+        ext_stopid=stop_extid,
+        ext_title=ext_title)
 
 
 def _compare_route(cursor, route_id, route_extid, ext_title, direction):
