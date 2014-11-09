@@ -17,17 +17,21 @@ def _compare_stop(cursor, stop_id, stop_extid, ext_title, title, shorter,
 
     existing = tpt.db.find_stop(cursor, stop_id)
     if existing[1] != title:
-        print("Found stop with same extid and different title")
-    if existing[2] != shorter:
-        print("Found stop with same extid and different short_title")
-    if existing[5][0] != lat:
-        print("Found stop with same extid but different lat")
-    if existing[5][1] != lng:
-        print("Found stop with same extid but different lng")
-    if existing[4] == False:
-        print("Found stop with same extid but with is_station=False")
-    if existing[6] != ext_title:
-        print("Found stop with same extid and different ext_title")
+        print("Found stop with same ext_stopid and different title")
+    if existing[2][0] != lat:
+        print("Found stop with same ext_stopid but different lat")
+    if existing[2][1] != lng:
+        print("Found stop with same ext_stopid but different lng")
+    if existing[3] == False:
+        print("Found stop with same ext_stopid but with is_station=False")
+    attr = existing[4]
+    if attr["short_title"] != shorter:
+        print("Found stop with same ext_stopid and different short_title")
+    eattr = existing[5]
+    if eattr["ext_stopid"] != stop_extid:
+        print("Found stop with same ext_stopid and different ext_stopid?!")
+    if eattr["ext_title"] != ext_title:
+        print("Found stop with same ext_stopid and different ext_title")
     return stop_id
 
 
@@ -48,13 +52,14 @@ def _insert_stop(cursor, stop_extid, ext_title, title, shorter, junction,
 
 
 def _compare_route(cursor, route_id, route_extid, ext_title, direction):
-    existing = tpt.db.find_route(cursor, route_id)
-    if existing[5] != ext_title:
-        print("Found route with same extid_direction and different ext_title")
+    existing_route = tpt.db.find_route(cursor, route_id)
+    existing_line = tpt.db.find_line(cursor, existing_route[1])
+    if existing_line[3]["ext_title"] != ext_title:
+        print("Found routes with same extid_direction and diff line_ext_title")
     return route_id
 
 
-def _insert_route(cursor, route_extid, ext_title, direction):
+def _insert_line(cursor, ext_title):
     trams = set(["Tv1", "Tv2", "Tv4", "Tv5", "Tv6", "Tv7", "Tv8", "Tv9"])
     trolleys = set(["Tb11", "Tb14", "Tb15", "Tb16", "Tb17", "Tb18", "Tb19"])
     metro = set(["M30", "M35", "M36", "M43", "M44", "M45"])
@@ -82,10 +87,10 @@ def _insert_route(cursor, route_extid, ext_title, direction):
         vehicle_type = 2
         title = ext_title
         print("Unknown vehicle {0} adding as bus.".format(ext_title))
-
     title = title if title[-1] != "b" else title[:-1]
-    return tpt.db.insert_route(cursor, title, vehicle_type,
-                               ext_title in barred, route_extid, ext_title)
+    return tpt.db.insert_line(cursor, title, vehicle_type,
+                              is_barred=ext_title in barred,
+                              ext_title=ext_title)
 
 
 def _insert_route_stop(cursor, route_id, stop_id, stop_index, is_invalid):
@@ -99,6 +104,7 @@ def _insert_route_stop(cursor, route_id, stop_id, stop_index, is_invalid):
 def import_big_csv(data, cursor):
     route_dict = {}
     stop_dict = {}
+    line_dict = {}
     route_stop_index = 0
     for row in csv.reader(data, delimiter=',', quotechar='"'):
         if len(row) == 0 or (len(row) == 1 and len(row[0].strip()) == 0):
@@ -131,9 +137,16 @@ def import_big_csv(data, cursor):
                 cursor, route_dict[route_key], route_extid, row[1].strip(),
                 route_dir)
         else:
+            ext_linetitle = row[1].strip()
+            if ext_linetitle in line_dict:
+                line_id = line_dict[ext_linetitle]
+            else:
+                line_id = _insert_line(cursor, ext_linetitle)
+                line_dict[ext_linetitle] = line_id
             route_stop_index = 0
-            route_id = _insert_route(
-                cursor, route_extid, row[1].strip(), route_dir)
+            route_id = tpt.db.insert_route(cursor, line_id, route_dir,
+                                           ext_routeid=route_extid)
+
             route_dict[route_key] = route_id
 
         _insert_route_stop(cursor, route_id, stop_id, route_stop_index,

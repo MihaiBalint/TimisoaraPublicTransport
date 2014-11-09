@@ -52,24 +52,25 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
             self.assertEqual(self._get_stop_count(cursor), 1)
             stop = tpt.db.find_stop(cursor, 1)
             self.assertEqual(stop[1], "Gara de Nord")
-            self.assertEqual(stop[5], "3106")
-            self.assertEqual(stop[6], "Gara de Nord 2tb")
+            self.assertEqual(stop[5]["ext_stopid"], "3106")
+            self.assertEqual(stop[5]["ext_title"], "Gara de Nord 2tb")
 
             self.assertEqual(self._get_route_count(cursor), 1)
             route = tpt.db.find_route(cursor, 1)
-            self.assertEqual(route[1], "3")
-            self.assertEqual(route[2], 2)
-            self.assertEqual(route[3], False)
-            self.assertEqual(route[4], "1207")
-            self.assertEqual(route[5], "3")
+            line = tpt.db.find_line(cursor, route[1])
+            self.assertEqual(line[1], "3")
+            self.assertEqual(line[2], 2)
+            self.assertEqual(line[3]["is_barred"], False)
+            self.assertEqual(line[3]["ext_title"], "3")
+            self.assertEqual(route[4]["ext_routeid"], "1207")
 
             stations = tpt.db.find_route_stations(cursor, 1)
             self.assertEquals(len(stations), 1)
             self.assertEquals(stations[0][0], 1)
             self.assertEquals(stations[0][1], 0)
             self.assertEquals(stations[0][2], "Gara de Nord")
-            self.assertEquals(stations[0][5], "3106")
-            self.assertEquals(stations[0][7], True)
+            self.assertEquals(stations[0][5]["ext_stopid"], "3106")
+            self.assertEquals(stations[0][6], True)
 
     def test_import_duplicate_line_csv(self):
         data = """1207,"3",3106,"Gara de Nord 2tb","Gara de Nord (FZB)","Gara","Gara de Nord","45.750569","21.207921","","dup script","03.04.13","maps.google"
@@ -80,7 +81,9 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
             self.assertEqual(self._get_route_count(cursor), 1)
             route = tpt.db.find_route(cursor, 1)
-            self.assertEqual(route[1], "3")
+            line = tpt.db.find_line(cursor, route[1])
+            self.assertEqual(route[2], "FZB")
+            self.assertEqual(line[1], "3")
 
     def test_import_plain_csv(self):
         data = """
@@ -94,11 +97,11 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
             stop = tpt.db.find_stop(cursor, 1)
             self.assertEqual(stop[1], "B-dul Dambovita / Dep. Tramvaie")
-            self.assertEqual(stop[5], "3620")
+            self.assertEqual(stop[5]["ext_stopid"], "3620")
 
             stop = tpt.db.find_stop(cursor, 3)
-            self.assertEqual(stop[2], "Pacii")
-            self.assertEqual(stop[5], "6040")
+            self.assertEqual(stop[5]["ext_title"], "Pacii")
+            self.assertEqual(stop[5]["ext_stopid"], "6040")
 
             self.assertEqual(self._get_route_count(cursor), 1)
 

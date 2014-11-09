@@ -270,12 +270,6 @@ def find_line(cursor, line_id):
     return cursor.fetchone()
 
 
-def find_line_routes(cursor, line_id):
-    sql = "select * from {0}.routes where line_id=%s;"
-    cursor.execute(sql.format(_schema_name), (line_id, ))
-    return cursor.fetchall()
-
-
 def insert_route(cursor, line_id, direction, **kvargs):
     eattrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                              if k.startswith("ext_")))
@@ -306,7 +300,7 @@ def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
 
 def find_route_stations(cursor, route_id):
     sql = "select s.stop_id, rs.stop_index, s.title, s.gps_pos, " \
-        "s.attrubutes, s.external_attributes, rs.is_enabled " \
+        "s.attributes, s.external_attributes, rs.is_enabled " \
         "from {0}.stops as s, {0}.route_stops as rs where s.is_station and " \
         "s.stop_id=rs.stop_id and rs.route_id=%s order by rs.stop_index;"
     cursor.execute(sql.format(_schema_name), (route_id, ))
