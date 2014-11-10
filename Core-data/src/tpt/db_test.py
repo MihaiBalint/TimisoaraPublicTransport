@@ -106,6 +106,15 @@ class DatabaseCreation(DatabaseSetup, unittest.TestCase):
             now = datetime.datetime.now(last_seen.tzinfo)
             self.assertTrue((now - last_seen).total_seconds() <= 2)
 
+    def test_update_non_existant_device_activity(self):
+        tpt.db.create_database(self.conn)
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            try:
+                tpt.db.update_device_activity(cursor, "ZOMG!")
+                self.fail()
+            except tpt.db.ItemNotFoundException:
+                pass
+
     def test_insert_estimate(self):
         tpt.db.create_database(self.conn)
         with contextlib.closing(self.conn.cursor()) as cursor:

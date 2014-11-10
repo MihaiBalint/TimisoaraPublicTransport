@@ -28,8 +28,6 @@ def _compare_stop(cursor, stop_id, stop_extid, ext_title, title, shorter,
     if attr["short_title"] != shorter:
         print("Found stop with same ext_stopid and different short_title")
     eattr = existing[5]
-    if eattr["ext_stopid"] != stop_extid:
-        print("Found stop with same ext_stopid and different ext_stopid?!")
     if eattr["ext_title"] != ext_title:
         print("Found stop with same ext_stopid and different ext_title")
     return stop_id

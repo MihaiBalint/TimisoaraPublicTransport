@@ -74,7 +74,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_import_duplicate_line_csv(self):
         data = """1207,"3",3106,"Gara de Nord 2tb","Gara de Nord (FZB)","Gara","Gara de Nord","45.750569","21.207921","","dup script","03.04.13","maps.google"
-1207,"33",3106,"Gara de Nord 2tb1","Gara de Nord1 (FZB)","Gara1","Gara1 de Nord","45.450569","21.307921","","dup script","03.04.13","maps.google" """
+1207,"33",3106,"Gara de Nord 2tb1","Gara de Nord1 (FZB)","Gara1","Gara1 de Nord","x","x","","dup script","03.04.13","maps.google" """
         with contextlib.closing(self.conn.cursor()) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 1)
@@ -90,6 +90,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 1207,"3",3620,"Dambovita_4","B-dul Dambovita / Dep. Tramvaie (FZB)","Dambovita","Dambovita","45.739824","21.195948","","dup script","03.04.13","maps.goog"
 1207,"3",2920,"Opre Gogu_2","Strada Ardealului / Strada Martir Opre Gogu (FZB)","Opre Gogu","","45.736488","21.188501","","dup script","03.04.13","maps.goog"
 1207,"3",6040,"Pacii","Strada Pacii (FZB)","Pacii","","45.732995","21.182858","","dup script","03.04.13","maps.go"
+
 """
         with contextlib.closing(self.conn.cursor()) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
@@ -107,3 +108,15 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
             stations = tpt.db.find_route_stations(cursor, 1)
             self.assertEquals(len(stations), 3)
+
+    def test_queries(self):
+        data = """
+1266,"Tv4",3540,"Tv_Torontal 1","Calea Torontalului (Ciarda Rosie)","Torontalului","Torontalului / Dacia / Miresei","45.769007","21.219849","","dup script","15.07.11","x"
+1266,"Tv4",3542,"Tv_M.Basarab 1","Bulevardul Cetatii / Pizeria San Marzano (Ciarda Rosie)","Cetatii","San Marzano","45.767849","21.216772","","dup script","15.07.11","x"
+1266,"Tv4",3544,"Tv_Amforei 1","Strada Amforei (Ciarda Rosie)","Amforei","Amforei","45.765498","21.213076","","dup script","15.07.11","x"
+
+"""
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
+            self.assertEqual(self._get_stop_count(cursor), 3)
+            
