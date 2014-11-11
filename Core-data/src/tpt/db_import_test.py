@@ -145,3 +145,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
             lines = tpt.db.find_favorite_lines(cursor)
             self.assertEqual(len(lines), 1)
             self.assertEqual(lines[0][1], "4")
+
+
+if __name__ == '__main__':
+    unittest.main()
