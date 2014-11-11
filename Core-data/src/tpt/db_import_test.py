@@ -15,8 +15,15 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
     def setUp(self):
         super(RouteStopImport, self).setUp()
         tpt.db.create_database(self.conn)
+        self.conn.commit()
+        self.tram_data = """
+1266,"Tv4",3540,"Tv_Torontal 1","Calea Torontalului (Ciarda Rosie)","Torontalului","Torontalului / Dacia / Miresei","45.769007","21.219849","","dup script","15.07.11","x"
+1266,"Tv4",3542,"Tv_M.Basarab 1","Bulevardul Cetatii / Pizeria San Marzano (Ciarda Rosie)","Cetatii","San Marzano","45.767849","21.216772","","dup script","15.07.11","x"
+1266,"Tv4",3544,"Tv_Amforei 1","Strada Amforei (Ciarda Rosie)","Amforei","Amforei","45.765498","21.213076","","dup script","15.07.11","x"
+"""
 
     def tearDown(self):
+        self.conn.rollback()
         super(RouteStopImport, self).tearDown()
 
     def _get_stop_count(self, cursor):
@@ -109,14 +116,32 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
             stations = tpt.db.find_route_stations(cursor, 1)
             self.assertEquals(len(stations), 3)
 
-    def test_queries(self):
-        data = """
-1266,"Tv4",3540,"Tv_Torontal 1","Calea Torontalului (Ciarda Rosie)","Torontalului","Torontalului / Dacia / Miresei","45.769007","21.219849","","dup script","15.07.11","x"
-1266,"Tv4",3542,"Tv_M.Basarab 1","Bulevardul Cetatii / Pizeria San Marzano (Ciarda Rosie)","Cetatii","San Marzano","45.767849","21.216772","","dup script","15.07.11","x"
-1266,"Tv4",3544,"Tv_Amforei 1","Strada Amforei (Ciarda Rosie)","Amforei","Amforei","45.765498","21.213076","","dup script","15.07.11","x"
-
-"""
+    def test_active_lines_by_type(self):
+        data = self.tram_data
         with contextlib.closing(self.conn.cursor()) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 3)
-            
+            lines = tpt.db.find_active_lines_by_type(cursor, None, 0)
+
+            self.assertEqual(len(lines), 1)
+            self.assertEqual(lines[0][1], "4")
+            self.assertEqual(lines[0][2], 0)
+            self.assertEqual(lines[0][3]["ext_title"], "Tv4")
+
+    def test_active_lines(self):
+        data = self.tram_data
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
+            self.assertEqual(self._get_stop_count(cursor), 3)
+            lines = tpt.db.find_all_active_lines(cursor)
+            self.assertEqual(len(lines), 1)
+            self.assertEqual(lines[0][1], "4")
+
+    def test_favorite_lines(self):
+        data = self.tram_data
+        with contextlib.closing(self.conn.cursor()) as cursor:
+            tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
+            self.assertEqual(self._get_stop_count(cursor), 3)
+            lines = tpt.db.find_favorite_lines(cursor)
+            self.assertEqual(len(lines), 1)
+            self.assertEqual(lines[0][1], "4")

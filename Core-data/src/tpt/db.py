@@ -308,32 +308,33 @@ def find_route_stations(cursor, route_id):
 
 
 def find_active_lines_by_type(cursor, city_id, vehicle_type):
-    sql = "select distinct l.* from {0}.lines " \
-          "join {0}.routes as r on l.line_id=r.line_id " \
-          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
-          "where r.vehicle_type=%s and rs.is_enabled " \
-          "order by r.title;"
+    sql = "select l.* from {0}.lines as l " \
+          "where (select count(rs.route_stop_id) from {0}.routes as r" \
+          " join {0}.route_stops as rs using (route_id)" \
+          " where r.line_id=l.line_id and rs.is_enabled) > 0 " \
+          "and l.vehicle_type=%s " \
+          "order by l.title;"
     cursor.execute(sql.format(_schema_name), (vehicle_type, ))
     return cursor.fetchall()
 
 
-def find_all_active_route(cursor):
-    sql = "select distinct l.* from {0}.lines " \
-          "join {0}.routes as r on l.line_id=r.line_id " \
-          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
-          "where rs.is_enabled " \
-          "order by r.title;"
+def find_all_active_lines(cursor):
+    sql = "select l.* from {0}.lines as l " \
+          "where (select count(rs.route_stop_id) from {0}.routes as r" \
+          " join {0}.route_stops as rs using (route_id)" \
+          " where r.line_id=l.line_id and rs.is_enabled) > 0 " \
+          "order by l.title;"
     cursor.execute(sql.format(_schema_name))
     return cursor.fetchall()
 
 
 def find_favorite_lines(cursor):
-    sql = "select distinct l.* from {0}.lines " \
-          "join {0}.routes as r on l.line_id=r.line_id " \
-          "join {0}.route_stops as rs on r.route_id=rs.route_id " \
-          "where l.title=any(Array['4','E1','5','E2','2','6','8','7'])" \
-          " and rs.is_enabled " \
-          "order by r.title;"
+    sql = "select l.* from {0}.lines as l " \
+          "where (select count(rs.route_stop_id) from {0}.routes as r" \
+          " join {0}.route_stops as rs using (route_id)" \
+          " where r.line_id=l.line_id and rs.is_enabled) > 0 " \
+          "and l.title=any(Array['4','E1','5','E2','2','6','8','7']) " \
+          "order by l.title;"
     cursor.execute(sql.format(_schema_name))
     return cursor.fetchall()
 
@@ -368,6 +369,3 @@ def migrate_database(connection):
             raise PreviousDataNotFound("Missing schema: %s " % previous_schema)
         _migrate_data(cursor, previous_schema)
     create_database(connection)
-
-if __name__ == '__main__':
-    pass
