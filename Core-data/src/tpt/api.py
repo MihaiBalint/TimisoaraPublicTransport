@@ -11,15 +11,18 @@ import tpt.db
 import tpt.tools
 
 
-def not_found_response(extras={}):
-    resp = {
-        "status": "error",
-        "message": "Not Found: " + request.url,
-    }
+def build_response(status="success", message=None, code=200, extras={}):
+    resp = {"status": status}
+    if message is not None:
+        resp["message"] = message
     resp.update(extras)
     resp = jsonify(resp)
-    resp.status_code = 404
+    resp.status_code = code
     return resp
+
+
+def not_found_response(extras={}):
+    return build_response("error", "Not Found: " + request.url, 404, extras)
 
 
 @app.errorhandler(404)
@@ -30,12 +33,7 @@ def not_found(error=None):
 
 @app.route('/', methods=["GET", "POST"])
 def do_api_root():
-    resp = jsonify({
-        "status": "success",
-        "message": "Welcome\n",
-    })
-    resp.status_code = 200
-    return resp
+    return build_response(message="Welcome\n")
 
 
 @app.route('/generate_device_id', methods=["GET", "POST"])
@@ -85,18 +83,27 @@ def _get_fields():
 
 
 def _map_routes(cursor, fields, routes):
-    route_map = ["route_id", "title", "vehicle_type", "is_barred",
-                 "route_extid", "route_exttitle"]
-    departure = "departure"
-    destination = "destination"
     for route in routes:
-        item_dict = dict((k, v) for k, v in zip(route_map, route)
-                         if k in fields)
+        item_dict = {}
+        line = tpt.db.find_line(cursor, route[1])
+        item_dict.update(line[3])
+        item_dict.update({
+            "title": line[1],
+            "vehicle_type": line[2]
+        })
+
+        item_dict.update(route[3])
+        item_dict.update(route[4])
+
         stations = tpt.db.find_route_stations(cursor, route[0])
-        if departure in fields:
-            item_dict[departure] = stations[0][2]
-        if destination in fields:
-            item_dict[destination] = stations[-1][2]
+        # TODO find better way for getting a departure name
+        item_dict.update({
+            "route_id": route[0],
+            "destination": route[2],
+            "departure": stations[0][2]
+        })
+        item_dict = dict((k, v) for k, v in item_dict.iteritems()
+                         if k in fields)
         yield item_dict
 
 
@@ -119,13 +126,12 @@ def _do_any_routes(route_gen):
             # TODO: paginate routes
             routes = list(_map_routes(
                 cursor, _get_fields(), route_gen(cursor)))
-            return jsonify({
-                "status": "success",
-                "routes": routes})
+            return build_response(extras={"routes": routes})
     except tpt.db.ItemNotFoundException, e:
         app.logger.info(e.message)
         return not_found_response({"routes": []})
     except:
+        # TODO log exception
         raise
     finally:
         conn.close()
@@ -140,13 +146,15 @@ def _mock_route_stops(fields):
     return jsonify(result)
 
 
+@app.route('/v1/routes', methods=["GET"])
+def do_routes():
+    return _do_any_routes(tpt.db.find_all_active_routes)
+
+
 @app.route('/v1/routes/<route_id>', methods=["GET"])
-def do_routes(route_id):
+def do_routes_with_id(route_id):
     def routes_gen(cursor):
-        if route_id:
-            return [tpt.db.find_route(cursor, route_id)]
-        else:
-            return tpt.db.find_all_active_routes(cursor)
+        return [tpt.db.find_route(cursor, route_id)]
     return _do_any_routes(routes_gen)
 
 
@@ -183,28 +191,27 @@ def do_favorite_routes(city_id):
 
 @app.route('/v1/routes/<route_id>/stops', methods=["GET"])
 def do_route_stops(route_id):
-    result = []
-    status = "success"
     conn = tpt.db.open_connection()
     try:
         with contextlib.closing(conn.cursor()) as cursor:
             # TODO: paginate stops
-            stops = tpt.db.find_route_stations(cursor, route_id)
-            result = list(_map_stops(cursor, _get_fields(), stops))
+            stops = list(_map_stops(
+                cursor, _get_fields(),
+                tpt.db.find_route_stations(cursor, route_id)))
+            return build_response(extras={"stops": stops})
+    except tpt.db.ItemNotFoundException, e:
+        app.logger.info(e.message)
+        return not_found_response({"stops": []})
     except:
-        status = "error"
+        # TODO log exception
         raise
     finally:
         conn.close()
-    return jsonify({
-            "status": status,
-            "stops": result})
 
 
 @app.route('/v1/routes/<route_id>/eta', methods=["GET"])
 def get_route_eta(route_id):
-    result = {"status": "error", "message": "Not implemented"}
-    return jsonify(result)
+    return build_response("error", "Not implemented")
 
 
 @app.route('/v1/eta/<route_ext_id>/<stop_ext_id>', methods=["GET"])
@@ -213,7 +220,7 @@ def get_eta(route_ext_id, stop_ext_id):
     resp = urllib2.urlopen(url.format(route_ext_id, stop_ext_id))
     content = resp.read()
     s1 = content.split("Sosire1:")[1].split("<br> Sosire2:")[0]
-    return jsonify({"eta": s1})
+    return build_response(extras={"eta": s1})
 
 
 app.wsgi_app = ProxyFix(app.wsgi_app)

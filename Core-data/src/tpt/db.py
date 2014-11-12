@@ -3,8 +3,10 @@ from __future__ import print_function
 
 import contextlib
 import json
-import psycopg2
 import os
+import psycopg2
+import psycopg2.extensions
+import re
 
 _schema_version = 3
 _schema_template = "tpt%.4d"
@@ -13,6 +15,16 @@ _schema_name = _schema_template % _schema_version
 
 class ItemNotFoundException(Exception):
     pass
+
+
+def _cast_point(value, cursor):
+    if value is None:
+        return None
+    match = re.match(r"\(([^)]+),([^)]+)\)", value)
+    if match:
+        return (float(match.group(1)), float(match.group(2)))
+    else:
+        raise ValueError("cast failed for: {0}".format(value))
 
 
 def open_connection():
@@ -28,8 +40,15 @@ def open_connection():
     db = os.environ.get("POSTGRES_DB", "py_db")
     user = os.environ.get("POSTGRES_USER", "py_user")
     password = os.environ.get("POSTGRES_PASS", "py_pass")
-    return psycopg2.connect(host=host, database=db, port=port,
+    conn = psycopg2.connect(host=host, database=db, port=port,
                             user=user, password=password)
+    with contextlib.closing(conn.cursor()) as cursor:
+        cursor.execute("SELECT NULL::point")
+        point_oid = cursor.description[0][1]
+        point_type = psycopg2.extensions.new_type(
+            (point_oid,), "POINT", _cast_point)
+        psycopg2.extensions.register_type(point_type)
+    return conn
 
 
 def exists_schema(cursor, schema_name):

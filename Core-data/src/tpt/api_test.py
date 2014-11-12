@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+import contextlib
 import json
+import os.path
 import sys
 import unittest
 
@@ -18,6 +20,7 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         self.conn.commit()
         tpt.signed_ids_test.gpg_key_setUp()
         self.app = tpt.api.app.test_client()
+        self.sample_city_data = os.path.join("test-data", "linestations.csv")
 
     def tearDown(self):
         self.conn.rollback()
@@ -83,12 +86,32 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         response = self.app.post('/post_times_bundle', data=data)
         self.assertIn(response.data, "Not saved, thank you anyway\n")
 
-    def test_get_routes(self):
+    def test_get_route(self):
+        with contextlib.closing(self.conn.cursor()) as cursor, \
+             open(self.sample_city_data, "rb") as csvfile:
+            tpt.db_import.import_big_csv(csvfile, cursor)
+            self.conn.commit()
+        response = self.app.get('/v1/routes/1')
+        resp_json = json.loads(response.data)
+        self.assertEqual(resp_json["status"], "success")
+        self.assertEqual(len(resp_json["routes"]), 1)
+
+    def test_get_non_existing_route(self):
         response = self.app.get('/v1/routes/1111')
         resp_json = json.loads(response.data)
         self.assertEqual(resp_json["status"], "error")
         self.assertEqual(len(resp_json["routes"]), 0)
         self.assertIn("Not Found", resp_json["message"])
+
+    def test_get_all_routes(self):
+        with contextlib.closing(self.conn.cursor()) as cursor, \
+             open(self.sample_city_data, "rb") as csvfile:
+            tpt.db_import.import_big_csv(csvfile, cursor)
+            self.conn.commit()
+        response = self.app.get('/v1/routes')
+        resp_json = json.loads(response.data)
+        self.assertEqual(resp_json["status"], "success")
+        self.assertTrue(len(resp_json["routes"]) > 0)
 
 
 if __name__ == '__main__':
