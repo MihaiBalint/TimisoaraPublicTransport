@@ -11,20 +11,31 @@ import tpt.db
 import tpt.tools
 
 
-@app.errorhandler(404)
-def not_found(error=None):
-    message = {
-        'status': 404,
-        'message': 'Not Found: ' + request.url,
-        }
-    resp = jsonify(message)
+def not_found_response(extras={}):
+    resp = {
+        "status": "error",
+        "message": "Not Found: " + request.url,
+    }
+    resp.update(extras)
+    resp = jsonify(resp)
     resp.status_code = 404
     return resp
 
 
+@app.errorhandler(404)
+def not_found(error=None):
+    err = {"error_code": error.code} if error is not None else {}
+    return not_found_response(err)
+
+
 @app.route('/', methods=["GET", "POST"])
 def do_api_root():
-    return 'Welcome\n'
+    resp = jsonify({
+        "status": "success",
+        "message": "Welcome\n",
+    })
+    resp.status_code = 200
+    return resp
 
 
 @app.route('/generate_device_id', methods=["GET", "POST"])
@@ -102,22 +113,22 @@ def _map_stops(cursor, fields, stops):
 
 
 def _do_any_routes(route_gen):
-    result = []
-    status = "success"
     conn = tpt.db.open_connection()
     try:
         with contextlib.closing(conn.cursor()) as cursor:
             # TODO: paginate routes
-            result = list(_map_routes(
-                    cursor, _get_fields(), route_gen(cursor)))
+            routes = list(_map_routes(
+                cursor, _get_fields(), route_gen(cursor)))
+            return jsonify({
+                "status": "success",
+                "routes": routes})
+    except tpt.db.ItemNotFoundException, e:
+        app.logger.info(e.message)
+        return not_found_response({"routes": []})
     except:
-        status = "error"
         raise
     finally:
         conn.close()
-    return jsonify({
-            "status": status,
-            "routes": result})
 
 
 def _mock_route_stops(fields):

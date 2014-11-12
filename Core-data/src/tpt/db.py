@@ -286,7 +286,11 @@ def insert_route(cursor, line_id, direction, **kvargs):
 def find_route(cursor, route_id):
     sql = "select * from {0}.routes where route_id=%s;"
     cursor.execute(sql.format(_schema_name), (route_id, ))
-    return cursor.fetchone()
+    result = cursor.fetchone()
+    if result is None:
+        raise ItemNotFoundException(
+            "Route not found: {0}.".format(route_id))
+    return result
 
 
 def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):

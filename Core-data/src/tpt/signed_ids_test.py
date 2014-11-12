@@ -7,8 +7,12 @@ import unittest
 import tpt.signed_ids
 
 
+def setup_gpg(path):
+    os.environ["GNUPGHOME"] = path
+
+    
 def gpg_key_setUp():
-    os.environ["GNUPGHOME"] = os.path.join(os.getcwd(), "test-data", "gnupg")
+    setup_gpg(os.path.join(os.getcwd(), "test-data", "gnupg"))
 
 
 def gpg_key_tearDown():
