@@ -78,7 +78,11 @@ def do_post_times_bundle():
 
 
 def _get_fields():
-    fields = request.args.get('fields', "").split(",")
+    fields = []
+    if "fields" in request.args:
+        fields = request.args.get('fields', "").split(",")
+    else:
+        fields = request.args.keys()
     return tuple(f.strip() for f in fields if f.strip())
 
 

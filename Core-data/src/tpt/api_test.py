@@ -86,6 +86,22 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         response = self.app.post('/post_times_bundle', data=data)
         self.assertIn(response.data, "Not saved, thank you anyway\n")
 
+    def test_get_route_with_fields(self):
+        with contextlib.closing(self.conn.cursor()) as cursor, \
+             open(self.sample_city_data, "rb") as csvfile:
+            tpt.db_import.import_big_csv(csvfile, cursor)
+            self.conn.commit()
+        response = self.app.get('/v1/routes/2?route_id&title&direction')
+        resp_json = json.loads(response.data)
+        self.assertEqual(resp_json["status"], "success")
+        self.assertEqual(len(resp_json["routes"]), 1)
+        route = resp_json["routes"][0]
+        self.assertIn("route_id", route)
+        self.assertIn("title", route)
+        self.assertNotIn("direction", route)
+        self.assertEqual(len(route), 2)
+        
+
     def test_get_route(self):
         with contextlib.closing(self.conn.cursor()) as cursor, \
              open(self.sample_city_data, "rb") as csvfile:
@@ -95,6 +111,7 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         resp_json = json.loads(response.data)
         self.assertEqual(resp_json["status"], "success")
         self.assertEqual(len(resp_json["routes"]), 1)
+        self.assertEqual(len(resp_json["routes"][0]), 0)
 
     def test_get_non_existing_route(self):
         response = self.app.get('/v1/routes/1111')
