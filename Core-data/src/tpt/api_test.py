@@ -100,7 +100,6 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         self.assertIn("title", route)
         self.assertNotIn("direction", route)
         self.assertEqual(len(route), 2)
-        
 
     def test_get_route(self):
         with contextlib.closing(self.conn.cursor()) as cursor, \
@@ -130,6 +129,21 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         self.assertEqual(resp_json["status"], "success")
         self.assertTrue(len(resp_json["routes"]) > 0)
 
+    def test_get_route_stops(self):
+        with contextlib.closing(self.conn.cursor()) as cursor, \
+             open(self.sample_city_data, "rb") as csvfile:
+            tpt.db_import.import_big_csv(csvfile, cursor)
+            self.conn.commit()
+        response = self.app.get('/v1/routes/1/stops?stop_id&title&stop_index')
+        resp_json = json.loads(response.data)
+        self.assertEqual(resp_json["status"], "success")
+        self.assertTrue(len(resp_json["stops"]) > 0)
+        stop = resp_json["stops"][0]
+        self.assertIn("stop_id", stop)
+        self.assertIn("title", stop)
+        self.assertIn("stop_index", stop)
+        self.assertNotIn("short_title", stop)
+        self.assertEqual(len(stop), 3)
 
 if __name__ == '__main__':
     unittest.main()

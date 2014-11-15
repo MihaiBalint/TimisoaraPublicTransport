@@ -106,21 +106,27 @@ def _map_routes(cursor, fields, routes):
             "destination": route[2],
             "departure": stations[0][2]
         })
-        item_dict = dict((k, v) for k, v in item_dict.iteritems()
-                         if k in fields)
-        yield item_dict
+        yield dict((k, v) for k, v in item_dict.iteritems()
+                   if k in fields)
 
 
 def _map_stops(cursor, fields, stops):
-    stop_map = ["stop_id", "stop_index", "title", "short_title", "gps_pos",
-                "stop_extid", "stop_exttitle", "is_enabled"]
-    next_eta = "next_eta"
     for stop in stops:
-        item_dict = dict((k, v) for k, v in zip(stop_map, stop)
-                         if k in fields)
-        if next_eta in fields:
-            item_dict[next_eta] = "--"
-        yield item_dict
+        item_dict = {}
+        eattrs = stop[5]
+        attrs = stop[4]
+        item_dict.update(eattrs)
+        item_dict.update(attrs)
+        item_dict.update({
+            "stop_id": stop[0],
+            "stop_index": stop[1],
+            "title": stop[2],
+            "gps_pos": stop[3],
+            "is_enabled": stop[6],
+            "next_eta": "--"
+        })
+        yield dict((k, v) for k, v in item_dict.iteritems()
+                   if k in fields)
 
 
 def _do_any_routes(route_gen):
