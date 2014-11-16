@@ -86,11 +86,48 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         response = self.app.post('/post_times_bundle', data=data)
         self.assertIn(response.data, "Not saved, thank you anyway\n")
 
-    def test_get_route_with_fields(self):
-        with contextlib.closing(self.conn.cursor()) as cursor, \
-             open(self.sample_city_data, "rb") as csvfile:
+
+class APIQueryTests(tpt.db_test.DatabaseSetup, unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        tpt.db_test.patch_schema()
+        sample_city_data = os.path.join("test-data", "linestations.csv")
+        conn = tpt.db.open_connection()
+        tpt.db.create_database(conn)
+        conn.commit()
+        with contextlib.closing(conn.cursor()) as cursor, \
+             open(sample_city_data, "rb") as csvfile:
             tpt.db_import.import_big_csv(csvfile, cursor)
-            self.conn.commit()
+            conn.commit()
+
+    @classmethod
+    def tearDownClass(cls):
+        conn = tpt.db.open_connection()
+        tpt.db.drop_database(conn)
+        conn.commit()
+        conn.close()
+
+    def setUp(self):
+        super(APIQueryTests, self).setUp()
+        self.app = tpt.api.app.test_client()
+
+    def tearDown(self):
+        self.conn.rollback()
+
+    def test_get_route_stops(self):
+        response = self.app.get('/v1/routes/1/stops?stop_id&title&stop_index')
+        resp_json = json.loads(response.data)
+        self.assertEqual(resp_json["status"], "success")
+        self.assertTrue(len(resp_json["stops"]) > 0)
+        stop = resp_json["stops"][0]
+        self.assertIn("stop_id", stop)
+        self.assertIn("title", stop)
+        self.assertIn("stop_index", stop)
+        self.assertNotIn("short_title", stop)
+        self.assertEqual(len(stop), 3)
+
+    def test_get_route_with_fields(self):
         response = self.app.get('/v1/routes/2?route_id&title&direction')
         resp_json = json.loads(response.data)
         self.assertEqual(resp_json["status"], "success")
@@ -102,10 +139,6 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         self.assertEqual(len(route), 2)
 
     def test_get_route(self):
-        with contextlib.closing(self.conn.cursor()) as cursor, \
-             open(self.sample_city_data, "rb") as csvfile:
-            tpt.db_import.import_big_csv(csvfile, cursor)
-            self.conn.commit()
         response = self.app.get('/v1/routes/1')
         resp_json = json.loads(response.data)
         self.assertEqual(resp_json["status"], "success")
@@ -120,30 +153,11 @@ class APITests(tpt.db_test.DatabaseSetup, unittest.TestCase):
         self.assertIn("Not Found", resp_json["message"])
 
     def test_get_all_routes(self):
-        with contextlib.closing(self.conn.cursor()) as cursor, \
-             open(self.sample_city_data, "rb") as csvfile:
-            tpt.db_import.import_big_csv(csvfile, cursor)
-            self.conn.commit()
         response = self.app.get('/v1/routes')
         resp_json = json.loads(response.data)
         self.assertEqual(resp_json["status"], "success")
         self.assertTrue(len(resp_json["routes"]) > 0)
 
-    def test_get_route_stops(self):
-        with contextlib.closing(self.conn.cursor()) as cursor, \
-             open(self.sample_city_data, "rb") as csvfile:
-            tpt.db_import.import_big_csv(csvfile, cursor)
-            self.conn.commit()
-        response = self.app.get('/v1/routes/1/stops?stop_id&title&stop_index')
-        resp_json = json.loads(response.data)
-        self.assertEqual(resp_json["status"], "success")
-        self.assertTrue(len(resp_json["stops"]) > 0)
-        stop = resp_json["stops"][0]
-        self.assertIn("stop_id", stop)
-        self.assertIn("title", stop)
-        self.assertIn("stop_index", stop)
-        self.assertNotIn("short_title", stop)
-        self.assertEqual(len(stop), 3)
 
 if __name__ == '__main__':
     unittest.main()

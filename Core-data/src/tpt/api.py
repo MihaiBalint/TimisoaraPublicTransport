@@ -110,7 +110,7 @@ def _map_routes(cursor, fields, routes):
                    if k in fields)
 
 
-def _map_stops(cursor, fields, stops):
+def _map_route_stops(cursor, fields, stops):
     for stop in stops:
         item_dict = {}
         eattrs = stop[5]
@@ -205,7 +205,7 @@ def do_route_stops(route_id):
     try:
         with contextlib.closing(conn.cursor()) as cursor:
             # TODO: paginate stops
-            stops = list(_map_stops(
+            stops = list(_map_route_stops(
                 cursor, _get_fields(),
                 tpt.db.find_route_stations(cursor, route_id)))
             return build_response(extras={"stops": stops})

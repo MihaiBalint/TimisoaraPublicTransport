@@ -8,9 +8,9 @@ import unittest
 import tpt.db
 
 
-def patch_schema(version=2):
+def patch_schema(version=2, suffix="testing"):
     tpt.db._schema_version = version
-    tpt.db._schema_template = "tpt_testing%.4d"
+    tpt.db._schema_template = "tpt_{0}%.4d".format(suffix)
     test_schema = tpt.db._schema_template % tpt.db._schema_version
     tpt.db._schema_name = test_schema
     return test_schema
