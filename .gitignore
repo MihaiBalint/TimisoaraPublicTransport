@@ -11,7 +11,7 @@
 # generated files
 bin/
 gen/
-gnupg/
+Core-data/test-data/gnupg/random_seed
 
 # Local configuration file (sdk path, etc)
 local.properties
