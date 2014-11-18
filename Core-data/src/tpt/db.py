@@ -321,12 +321,24 @@ def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
     return cursor.fetchone()[0]
 
 
-def find_route_stations(cursor, route_id):
-    sql = "select s.stop_id, rs.stop_index, s.title, s.gps_pos, " \
-        "s.attributes, s.external_attributes, rs.is_enabled " \
-        "from {0}.stops as s, {0}.route_stops as rs where s.is_station and " \
-        "s.stop_id=rs.stop_id and rs.route_id=%s order by rs.stop_index;"
-    cursor.execute(sql.format(_schema_name), (route_id, ))
+def find_route_stations(cursor, route_id, fields):
+    fmap = {
+        "route_stop_id": "rs.route_stop_id as route_stop_id",
+        "stop_index": "rs.stop_index as stop_index",
+        "stop_id": "s.stop_id as stop_id",
+        "title": "s.title as title",
+        "gps_pos": "s.gps_pos as gps_pos",
+        "attributes": "s.attributes as attributes",
+        "external_attributes": "s.external_attributes as external_attributes",
+        "is_enabled": "rs.is_enabled as is_enabled"
+    }
+    what = ", ".join(dbname for fname, dbname in fmap.iteritems()
+                     if fname in fields)
+    sql = "select {1} " \
+        "from {0}.stops as s " \
+        "join {0}.route_stops as rs using (stop_id) " \
+        "where s.is_station and rs.route_id=%s order by rs.stop_index;"
+    cursor.execute(sql.format(_schema_name, what), (route_id, ))
     return cursor.fetchall()
 
 

@@ -111,6 +111,7 @@ def _map_routes(cursor, fields, routes):
 
 
 def _map_route_stops(cursor, fields, stops):
+    import ipdb; ipdb.set_trace()
     for stop in stops:
         item_dict = {}
         eattrs = stop[5]
@@ -135,7 +136,7 @@ def _do_any_routes(route_gen):
         with contextlib.closing(conn.cursor()) as cursor:
             # TODO: paginate routes
             routes = list(_map_routes(
-                cursor, _get_fields(), route_gen(cursor)))
+                cursor, _get_fields(), **route_gen(cursor)))
             return build_response(extras={"routes": routes})
     except tpt.db.ItemNotFoundException, e:
         app.logger.info(e.message)
@@ -158,7 +159,11 @@ def _mock_route_stops(fields):
 
 @app.route('/v1/routes', methods=["GET"])
 def do_routes():
-    return _do_any_routes(tpt.db.find_all_active_routes)
+    def routes_gen(cursor):
+        lines = tpt.db.find_all_active_lines(cursor)
+        for l in lines:
+            pass
+    return _do_any_routes(routes_gen)
 
 
 @app.route('/v1/routes/<route_id>', methods=["GET"])
@@ -207,7 +212,7 @@ def do_route_stops(route_id):
             # TODO: paginate stops
             stops = list(_map_route_stops(
                 cursor, _get_fields(),
-                tpt.db.find_route_stations(cursor, route_id)))
+                tpt.db.find_route_stations(cursor, route_id, _get_fields())))
             return build_response(extras={"stops": stops})
     except tpt.db.ItemNotFoundException, e:
         app.logger.info(e.message)
