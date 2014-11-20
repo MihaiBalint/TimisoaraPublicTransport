@@ -6,6 +6,7 @@ import json
 import os
 import psycopg2
 import psycopg2.extensions
+import psycopg2.extras
 import re
 
 _schema_version = 3
@@ -49,6 +50,12 @@ def open_connection():
             (point_oid,), "POINT", _cast_point)
         psycopg2.extensions.register_type(point_type)
     return conn
+
+
+def open_connection_cursor():
+    conn = open_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return conn, cursor
 
 
 def exists_schema(cursor, schema_name):
@@ -255,6 +262,15 @@ def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
     cursor.execute(sql.format(_schema_name), (device_id, e1, e2, et, rid, sid))
 
 
+def _map_fields(fields, fmap):
+    fields = set(fields)
+    fields.update(k for k in fmap
+                  if k == "external_attributes" or k.startswith("attributes"))
+    return ", ".join("{0} as {1}".format(dbname, fname)
+                     for fname, dbname in fmap.iteritems()
+                     if fname in fields)
+
+
 def insert_stop(cursor, title, lat, lng, **kvargs):
     eattrs = json.dumps(dict((k, v) for k, v in kvargs.iteritems()
                              if k.startswith("ext_")))
@@ -302,9 +318,19 @@ def insert_route(cursor, line_id, direction, **kvargs):
     return cursor.fetchone()[0]
 
 
-def find_route(cursor, route_id):
-    sql = "select * from {0}.routes where route_id=%s;"
-    cursor.execute(sql.format(_schema_name), (route_id, ))
+def find_route(cursor, route_id, fields):
+    what = _map_fields(fields, {
+        "route_id": "r.route_id",
+        "line_id": "r.line_id",
+        "direction": "r.direction",
+        "attributes": "r.attributes",
+        "external_attributes": "r.external_attributes",
+        "title": "l.title",
+        "vehicle_type": "l.vehicle_type",
+        "attributes1": "l.attributes"
+    })
+    sql = "select {1} from {0}.routes where route_id=%s;"
+    cursor.execute(sql.format(_schema_name, what), (route_id, ))
     result = cursor.fetchone()
     if result is None:
         raise ItemNotFoundException(
@@ -322,18 +348,16 @@ def insert_route_stop(cursor, route_id, stop_id, stop_index, is_enabled):
 
 
 def find_route_stations(cursor, route_id, fields):
-    fmap = {
-        "route_stop_id": "rs.route_stop_id as route_stop_id",
-        "stop_index": "rs.stop_index as stop_index",
-        "stop_id": "s.stop_id as stop_id",
-        "title": "s.title as title",
-        "gps_pos": "s.gps_pos as gps_pos",
-        "attributes": "s.attributes as attributes",
-        "external_attributes": "s.external_attributes as external_attributes",
-        "is_enabled": "rs.is_enabled as is_enabled"
-    }
-    what = ", ".join(dbname for fname, dbname in fmap.iteritems()
-                     if fname in fields)
+    what = _map_fields(fields, {
+        "route_stop_id": "rs.route_stop_id",
+        "stop_index": "rs.stop_index",
+        "stop_id": "s.stop_id",
+        "title": "s.title",
+        "gps_pos": "s.gps_pos",
+        "attributes": "s.attributes",
+        "external_attributes": "s.external_attributes",
+        "is_enabled": "rs.is_enabled"
+    })
     sql = "select {1} " \
         "from {0}.stops as s " \
         "join {0}.route_stops as rs using (stop_id) " \

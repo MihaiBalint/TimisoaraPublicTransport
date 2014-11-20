@@ -32,8 +32,7 @@ def exception_response(extras={}):
 @contextlib.contextmanager
 def create_db_cursor():
     try:
-        conn = tpt.db.open_connection()
-        cursor = conn.cursor()
+        conn, cursor = tpt.db.open_connection_cursor()
         try:
             yield cursor
             conn.commit()
@@ -118,33 +117,28 @@ def _map_routes(cursor, fields, routes):
                    if k in fields)
 
 
-def _map_route_stops(cursor, fields, stops):
-    import ipdb; ipdb.set_trace()
-    for stop in stops:
-        item_dict = {}
-        eattrs = stop[5]
-        attrs = stop[4]
-        item_dict.update(eattrs)
-        item_dict.update(attrs)
-        item_dict.update({
-            "stop_id": stop[0],
-            "stop_index": stop[1],
-            "title": stop[2],
-            "gps_pos": stop[3],
-            "is_enabled": stop[6],
-            "next_eta": "--"
-        })
-        yield dict((k, v) for k, v in item_dict.iteritems()
-                   if k in fields)
+def _filter_fields(cursor, fields, items):
+    for item in items:
+        item_dict = dict(item)
+        eattrs = item_dict.pop("external_attributes", {})
+        attrs = item_dict.pop("attributes", {})
+        final_dict = dict((k, v) for k, v in eattrs.iteritems()
+                          if k in fields)
+        final_dict.update((k, v) for k, v in attrs.iteritems()
+                          if k in fields)
+        final_dict.update(item_dict)
+        yield final_dict
 
 
 def _do_any_routes(route_gen):
     with create_db_cursor() as cursor:
         with not_found_handler():
             # TODO: paginate routes
-            routes = list(_map_routes(
-                cursor, _get_fields(), route_gen(cursor)))
-            return build_response(extras={"routes": routes})
+            fields = _get_fields()
+            routes = route_gen(cursor, fields)
+            return build_response(extras={
+                "routes": list(_filter_fields(cursor, fields, routes))
+            })
         return not_found_response({"routes": []})
     return exception_response({"routes": []})
 
@@ -209,11 +203,12 @@ def do_favorite_routes(city_id):
 def do_route_stops(route_id):
     with create_db_cursor() as cursor:
         with not_found_handler():
-            # TODO: paginate stops
-            stops = list(_map_route_stops(
-                cursor, _get_fields(),
-                tpt.db.find_route_stations(cursor, route_id, _get_fields())))
-            return build_response(extras={"stops": stops})
+            # TODO: maybe paginate stops
+            fields = _get_fields()
+            stops = tpt.db.find_route_stations(cursor, route_id, fields)
+            return build_response(extras={
+                "stops": list(_filter_fields(cursor, fields, stops))
+            })
         return not_found_response({"stops": []})
     return exception_response({"stops": []})
 
