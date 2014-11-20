@@ -50,8 +50,10 @@ def _insert_stop(cursor, stop_extid, ext_title, title, shorter, junction,
 
 
 def _compare_route(cursor, route_id, route_extid, ext_title, direction):
-    existing_route = tpt.db.find_route(cursor, route_id)
-    existing_line = tpt.db.find_line(cursor, existing_route[1])
+    existing_route = tpt.db.find_route(cursor, route_id, ["line_id"])
+    import ipdb; ipdb.set_trace()
+    existing_line = tpt.db.find_line(cursor, existing_route["line_id"],
+                                     ["ext_title"])
     if existing_line[3]["ext_title"] != ext_title:
         print("Found routes with same extid_direction and diff line_ext_title")
     return route_id

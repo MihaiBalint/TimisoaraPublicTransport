@@ -92,40 +92,16 @@ def _get_fields():
     return tuple(f.strip() for f in fields if f.strip())
 
 
-def _map_routes(cursor, fields, routes):
-    for route in routes:
-        item_dict = {}
-        line = tpt.db.find_line(cursor, route[1])
-        item_dict.update(line[3])
-        item_dict.update({
-            "title": line[1],
-            "vehicle_type": line[2]
-        })
-
-        item_dict.update(route[3])
-        item_dict.update(route[4])
-
-        stations = tpt.db.find_route_stations(cursor, route[0], (
-            "route_stop_id", "stop_index", "stop_id"))
-        # TODO find better way for getting a departure name
-        item_dict.update({
-            "route_id": route[0],
-            "destination": route[2],
-            "departure": stations[0][2]
-        })
-        yield dict((k, v) for k, v in item_dict.iteritems()
-                   if k in fields)
-
-
 def _filter_fields(cursor, fields, items):
     for item in items:
         item_dict = dict(item)
-        eattrs = item_dict.pop("external_attributes", {})
-        attrs = item_dict.pop("attributes", {})
-        final_dict = dict((k, v) for k, v in eattrs.iteritems()
-                          if k in fields)
-        final_dict.update((k, v) for k, v in attrs.iteritems()
-                          if k in fields)
+        final_dict = {}
+        akeys = sorted(int(k[10:]) for k in item_dict
+                       if k.startswith("attributes"))
+        for k in reversed(akeys):
+            attrs = item_dict.pop("attributes{0}".format(k), {})
+            final_dict.update((k, v) for k, v in attrs.iteritems()
+                              if k in fields)
         final_dict.update(item_dict)
         yield final_dict
 
@@ -163,14 +139,14 @@ def do_routes():
 
 @app.route('/v1/routes/<route_id>', methods=["GET"])
 def do_routes_with_id(route_id):
-    def routes_gen(cursor):
-        return [tpt.db.find_route(cursor, route_id)]
+    def routes_gen(cursor, fields):
+        return [tpt.db.find_route_join_line(cursor, route_id, fields)]
     return _do_any_routes(routes_gen)
 
 
 @app.route('/v1/cities/<city_id>/tram/routes', methods=["GET"])
 def do_tram_routes(city_id):
-    def routes_gen(cursor):
+    def routes_gen(cursor, fields):
         return tpt.db.find_active_routes_by_type(cursor, city_id, 0)
     return _do_any_routes(routes_gen)
 
@@ -184,7 +160,7 @@ def do_trollebus_routes(city_id):
 
 @app.route('/v1/cities/<city_id>/any_bus/routes', methods=["GET"])
 def do_any_bus_routes(city_id):
-    def routes_gen(cursor):
+    def routes_gen(cursor, fields):
         buses = tpt.db.find_active_routes_by_type(cursor, city_id, 2)
         express = tpt.db.find_active_routes_by_type(cursor, city_id, 3)
         metro = tpt.db.find_active_routes_by_type(cursor, city_id, 4)
@@ -194,7 +170,7 @@ def do_any_bus_routes(city_id):
 
 @app.route('/v1/cities/<city_id>/favorite/routes', methods=["GET"])
 def do_favorite_routes(city_id):
-    def routes_gen(cursor):
+    def routes_gen(cursor, fields):
         return tpt.db.find_favorite_routes(cursor)
     return _do_any_routes(routes_gen)
 

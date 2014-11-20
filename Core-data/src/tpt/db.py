@@ -58,6 +58,11 @@ def open_connection_cursor():
     return conn, cursor
 
 
+@contextlib.contextmanager
+def db_cursor(connection):
+    return connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+
 def exists_schema(cursor, schema_name):
     schema_exists = (
         "SELECT EXISTS(SELECT schema_name "
@@ -264,8 +269,7 @@ def insert_estimate(cursor, device_id, e1, e2, et, rid, sid):
 
 def _map_fields(fields, fmap):
     fields = set(fields)
-    fields.update(k for k in fmap
-                  if k == "external_attributes" or k.startswith("attributes"))
+    fields.update(k for k in fmap if k.startswith("attributes"))
     return ", ".join("{0} as {1}".format(dbname, fname)
                      for fname, dbname in fmap.iteritems()
                      if fname in fields)
@@ -299,9 +303,15 @@ def insert_line(cursor, title, vehicle_type, **kvargs):
     return cursor.fetchone()[0]
 
 
-def find_line(cursor, line_id):
-    sql = "select * from {0}.lines where line_id=%s;"
-    cursor.execute(sql.format(_schema_name), (line_id, ))
+def find_line(cursor, line_id, fields):
+    what = _map_fields(fields, {
+        "line_id": "l.line_id",
+        "title": "l.title",
+        "vehicle_type": "l.vehicle_type",
+        "attributes0": "l.attributes"
+    })
+    sql = "select {1} from {0}.lines where line_id=%s;"
+    cursor.execute(sql.format(_schema_name, what), (line_id, ))
     return cursor.fetchone()
 
 
@@ -323,13 +333,32 @@ def find_route(cursor, route_id, fields):
         "route_id": "r.route_id",
         "line_id": "r.line_id",
         "direction": "r.direction",
-        "attributes": "r.attributes",
-        "external_attributes": "r.external_attributes",
+        "attributes0": "r.attributes",
+        "attributes1": "r.external_attributes"
+    })
+    sql = "select {1} from {0}.routes as r where route_id=%s;"
+    cursor.execute(sql.format(_schema_name, what), (route_id, ))
+    result = cursor.fetchone()
+    if result is None:
+        raise ItemNotFoundException(
+            "Route not found: {0}.".format(route_id))
+    return result
+
+
+def find_route_join_line(cursor, route_id, fields):
+    what = _map_fields(fields, {
+        "route_id": "r.route_id",
+        "line_id": "r.line_id",
+        "direction": "r.direction",
+        "attributes0": "r.attributes",
+        "attributes1": "r.external_attributes",
         "title": "l.title",
         "vehicle_type": "l.vehicle_type",
-        "attributes1": "l.attributes"
+        "attributes2": "l.attributes"
     })
-    sql = "select {1} from {0}.routes where route_id=%s;"
+    sql = "select {1} from {0}.routes as r " \
+          "join {0}.lines using (line_id) as l" \
+          "where route_id=%s;"
     cursor.execute(sql.format(_schema_name, what), (route_id, ))
     result = cursor.fetchone()
     if result is None:
@@ -354,8 +383,8 @@ def find_route_stations(cursor, route_id, fields):
         "stop_id": "s.stop_id",
         "title": "s.title",
         "gps_pos": "s.gps_pos",
-        "attributes": "s.attributes",
-        "external_attributes": "s.external_attributes",
+        "attributes0": "s.attributes",
+        "attributes1": "s.external_attributes",
         "is_enabled": "rs.is_enabled"
     })
     sql = "select {1} " \

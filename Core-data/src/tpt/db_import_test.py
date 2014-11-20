@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-import contextlib
 import StringIO
 import unittest
 
+import tpt.db
 import tpt.db_import
 
 import tpt.db_test
@@ -38,7 +38,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_import_empty_csv(self):
         data = ""
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 0)
             self.assertEqual(self._get_route_count(cursor), 0)
@@ -46,7 +46,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
     def test_import_malformed_csv(self):
         data1 = ""","",,""," ","","","","","","dup script","29.11.11","x" """
         data2 = """"LineID","LineName","StationID","RawStationName","FriendlyStationName","ShortStationName","JunctionName","Lat","Long","Invalid","Verified","Verification Date","Goodle Maps Link","Info comments" """
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data1), cursor)
             tpt.db_import.import_big_csv(StringIO.StringIO(data2), cursor)
             self.assertEqual(self._get_stop_count(cursor), 0)
@@ -54,7 +54,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_import_single_line_csv(self):
         data = """1207,"3",3106,"Gara de Nord 2tb","Gara de Nord (FZB)","Gara","Gara de Nord","45.750569","21.207921","","dup script","03.04.13","maps.google" """
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 1)
             stop = tpt.db.find_stop(cursor, 1)
@@ -82,7 +82,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
     def test_import_duplicate_line_csv(self):
         data = """1207,"3",3106,"Gara de Nord 2tb","Gara de Nord (FZB)","Gara","Gara de Nord","45.750569","21.207921","","dup script","03.04.13","maps.google"
 1207,"33",3106,"Gara de Nord 2tb1","Gara de Nord1 (FZB)","Gara1","Gara1 de Nord","x","x","","dup script","03.04.13","maps.google" """
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 1)
 
@@ -99,7 +99,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 1207,"3",6040,"Pacii","Strada Pacii (FZB)","Pacii","","45.732995","21.182858","","dup script","03.04.13","maps.go"
 
 """
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 3)
 
@@ -118,7 +118,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_active_lines_by_type(self):
         data = self.tram_data
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 3)
             lines = tpt.db.find_active_lines_by_type(cursor, None, 0)
@@ -130,7 +130,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_active_lines(self):
         data = self.tram_data
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 3)
             lines = tpt.db.find_all_active_lines(cursor)
@@ -139,7 +139,7 @@ class RouteStopImport(tpt.db_test.DatabaseSetup, unittest.TestCase):
 
     def test_favorite_lines(self):
         data = self.tram_data
-        with contextlib.closing(self.conn.cursor()) as cursor:
+        with tpt.db.db_cursor(self.conn) as cursor:
             tpt.db_import.import_big_csv(StringIO.StringIO(data), cursor)
             self.assertEqual(self._get_stop_count(cursor), 3)
             lines = tpt.db.find_favorite_lines(cursor)
