@@ -4,7 +4,9 @@ MarkupSafe>=0.23
 Werkzeug>=0.9.6
 itsdangerous>=0.24
 wsgiref>=0.1.2
+Fabric==1.8.0
 argparse>=1.2.1
 gunicorn>=18.0
 psycopg2>=2.4.5
-
+python-digitalocean>=1.0.8
+termcolor>=1.1.0
