@@ -16,6 +16,7 @@ Core-data/test-data/gnupg/random_seed
 # Local configuration file (sdk path, etc)
 local.properties
 .coverage*
+.digitalocean.json
 
 # Keystore
 keystore/
