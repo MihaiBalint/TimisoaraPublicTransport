@@ -112,8 +112,8 @@ public class CityTest {
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
 		
-		assertEquals("33, E1, E33", a1.getLineNames());
-		assertEquals("33, E1, E33", a2.getLineNames());
+		assertEquals("33, 33b, E1, E33", a1.getLineNames());
+		assertEquals("33, 33b, E1, E33", a2.getLineNames());
 	}
 	
 	@Test

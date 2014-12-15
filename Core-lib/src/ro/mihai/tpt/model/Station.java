@@ -45,6 +45,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		this(id,-1, null);
 		this.paths = new ArrayList<Path>(2);
 		this.name = name;
+		this.extId = extId;
 	}
 	
 	@Override
@@ -65,6 +66,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	}
 
 	public String getExtId() {
+		ensureLoaded();
 		return extId;
 	}
 	
@@ -144,6 +146,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 	
 	@Override
 	protected void loadLazyResources(BPInputStream lazy) throws IOException {
+		this.extId = lazy.readString();
 		this.name = lazy.readString();
 		this.niceName = lazy.readString();
 		this.shortName = lazy.readString();
@@ -164,6 +167,7 @@ public class Station extends PersistentEntity implements INamedEntity, Serializa
 		ensureLoaded();
 		
 		// lazy station resources
+		res.writeString(getExtId());
 		res.writeString(getName());
 		res.writeString(getNiceName());
 		res.writeString(getShortName());

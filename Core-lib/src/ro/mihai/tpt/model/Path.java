@@ -58,6 +58,7 @@ public class Path extends PersistentEntity implements Serializable {
 	}
 	
 	public String getExtId() {
+		ensureLoaded();
 		return extId;
 	}
 
@@ -200,7 +201,7 @@ public class Path extends PersistentEntity implements Serializable {
 	@Override
 	protected void saveLazyResources(BPMemoryOutputStream lazy) throws IOException {
 		// lazy path resources
-		lazy.writeString(extId);
+		lazy.writeString(getExtId());
 		lazy.writeString(getName());
 		lazy.writeString(getNiceName());
 		

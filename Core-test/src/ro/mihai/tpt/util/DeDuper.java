@@ -38,12 +38,19 @@ public class DeDuper {
 			// at this point station IDs are not recorded anywhere
 		}
 	}
+	
+	private static boolean skipRow(String[] row) {
+		return (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
+				|| (row[0].trim().isEmpty() && row[1].trim().isEmpty() && row[2].trim().isEmpty()) // more empty rows
+				|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
+				|| (row.length>9 && row[9].equalsIgnoreCase("true")); // ignore invalid rows			
+	}
 
 	public static void main(String[] args) throws Exception {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
 		// InputStream inp = new URL(csvURL).openStream();
 		// String fileName = "linestations-20111129-3.csv";
-		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20140729.csv";
+		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20141215.csv";
 		InputStream inp = new FileInputStream(fileName);
 		Helper help = new Helper(fileName);
 		
@@ -72,10 +79,7 @@ public class DeDuper {
 			CSVReader rd = new CSVReader(new InputStreamReader(inp));
 			String[] row;
 			while(null!=(row=rd.readNext())) {
-				if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
-					|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
-					|| (row.length>9 && row[9].equalsIgnoreCase("true")) // ignore invalid rows 
-				) {
+				if(skipRow(row)) {
 					data.add(row);
 					continue;
 				} 
@@ -157,10 +161,7 @@ public class DeDuper {
 		//csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
 		
 		for(String[] row:data) {
-			if( (row.length==1 && row[0].trim().isEmpty()) // ignore empty rows 
-					|| (row.length>0 && row[0].equalsIgnoreCase("LineID")) // ignore intermediate headers	
-					|| (row.length>9 && row[9].equalsIgnoreCase("true")) // ignore invalid rows 
-				) {
+			if(skipRow(row)) {
 				String r = "";
 				for(String c : row)
 					r+="\""+c+"\",";
@@ -169,7 +170,6 @@ public class DeDuper {
 				csv.println(r);
 			} else {
 				Station st = stMap.get(row[2]);
-				
 				row[4] = st.getNiceName()!=null ? st.getNiceName()+" "+row[4] : row[4]; // friendly
 				row[5] = st.getShortName()!=null ? st.getShortName() : ""; // short
 				row[6] = st.getJunction()!=null ? st.getJunctionName() : ""; // junction
