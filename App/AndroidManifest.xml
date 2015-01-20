@@ -20,7 +20,7 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ro.mihai.tpt"
-      android:versionName="3.6" android:versionCode="36"
+      android:versionName="3.7" android:versionCode="37"
       android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
