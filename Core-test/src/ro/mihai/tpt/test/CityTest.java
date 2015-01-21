@@ -112,8 +112,8 @@ public class CityTest {
 		assertEquals("Arta Textila", a1.getNicestNamePossible().trim());
 		assertEquals("Arta Textila", a2.getNicestNamePossible().trim());
 		
-		assertEquals("33, 33b, E1, E33", a1.getLineNames());
-		assertEquals("33, 33b, E1, E33", a2.getLineNames());
+		assertEquals("33, 33b, E1, E8", a1.getLineNames());
+		assertEquals("33, 33b, E1, E8", a2.getLineNames());
 	}
 	
 	@Test
@@ -196,6 +196,7 @@ public class CityTest {
 			if(s.getLat().trim().isEmpty() || s.getLng().trim().isEmpty()) 
 				errors += s.getId()+" "+s.getNiceName()+" Lat:"+s.getLat()+" Lng:"+s.getLng()+"\n";
 		}
+		// FIXME: known to fail because of incomplete data
 		assertEquals("Following stations are missing coords:", "", errors);
 	}
 
@@ -227,6 +228,7 @@ public class CityTest {
 	public void test_known_distance() {
 		Station s33 = c.getLineByName("33").getPath("Pod C. Sagului").getEstimatesByPath().get(0).getStation();
 		
+		// FIXME: known to fail old data
 		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("4640")));
 		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3105")));
 		assertTrue(s33.getJunction().getStations().contains(getStationByExtId("3102")));
@@ -311,6 +313,7 @@ public class CityTest {
 				}
 			}
 		System.out.println("Average dist between stations is: "+(dsum/dcount));
+		// FIXME: known to fail
 		assertEquals("Following junctions have stations that are too far appart:", "", ep1000+e1000+e500);
 	}
 
@@ -339,6 +342,7 @@ public class CityTest {
 				else if (d<300)
 					e300 += err;
 			}
+		// FIXME: known to fail
 		assertEquals("Following stations should be connected by a junction:", "", e225+e300);
 	}
 }
