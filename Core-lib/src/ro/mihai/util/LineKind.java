@@ -17,7 +17,10 @@
 */
 package ro.mihai.util;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ro.mihai.tpt.model.Line;
 
@@ -27,7 +30,7 @@ public enum LineKind {
 	BUS("3","13","21","22","28","29","32","33","33b","40","46"),
 	EXPRESS("E1","E2","E3","E4","E4b","E6","E7", "E8"),
 	METRO("M30","M35", "M44","M45");
-	
+	private static Set<String> convexLines = new HashSet<String>(Arrays.asList(new String[]{"Tv7", "Tv6"}));
 	private final String[] names;
 	
 	private LineKind(String... names) {
@@ -47,6 +50,14 @@ public enum LineKind {
 	public boolean isBusExpress() { return this==EXPRESS; }
 	public boolean isBusMetro() { return this==METRO; }
 	public boolean isBusAny() { return this==METRO || this==EXPRESS || this==BUS; }
+	
+	public static boolean isRouteConvex(Line line) {
+		return convexLines.contains(line.getName());
+	}
+	
+	public static boolean isLineBarred(Line line) {
+		return line.getName().endsWith("b");
+	}
 	
 	public String[] getLineNames() {
 		return names;

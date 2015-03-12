@@ -18,8 +18,10 @@
 package ro.mihai.tpt;
 
 import ro.mihai.tpt.conf.TravelOpportunity;
+import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
+import ro.mihai.util.LineKind;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,21 +49,26 @@ public class PathView {
 	
 	public static View fillPathView(View pathView, Resources res, 
 			TravelOpportunity path, View.OnClickListener clickListener, boolean isOddItem) {
-		TextView lineKind = (TextView)pathView.findViewById(R.id.LineKind);
-		lineKind.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
-		lineKind.setText(LineKindAndroidEx.getShortLabelId(path.getLineKind()));
+		
+		Line pathLine = path.getPath().getLine();
+		LineKind lineKind = pathLine.getKind();
+		
+		TextView lineKindLabel = (TextView)pathView.findViewById(R.id.LineKind);
+		lineKindLabel.setTextColor(res.getColor(LineKindAndroidEx.getColorId(lineKind)));
+		lineKindLabel.setText(LineKindAndroidEx.getShortLabelId(lineKind));
 		
 		TextView lineName = (TextView)pathView.findViewById(R.id.LineName);
-		lineName.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
-		lineName.setText(path.getLineNameLabel());
+		lineName.setTextColor(res.getColor(LineKindAndroidEx.getColorId(lineKind)));
+		lineName.setText(LineKindAndroidEx.getLineNameLabel(pathLine));
 
-		pathView.findViewById(R.id.LineBarredKind).setVisibility(path.isLineBarred() ? View.VISIBLE : View.GONE);
+		pathView.findViewById(R.id.LineBarredKind).setVisibility(
+				pathLine.isBarred() ? View.VISIBLE : View.GONE);
 		
 		TextView lineDirection1 = (TextView)pathView.findViewById(R.id.StationLabel);
 		lineDirection1.setText(path.getDepartureStationName());
 		
 		TextView estimateTime = (TextView)pathView.findViewById(R.id.StationTime);
-		estimateTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(path.getLineKind())));
+		estimateTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(lineKind)));
 		
 		TextView lineDirection2 = (TextView)pathView.findViewById(R.id.DestinationStationLabel);
 		lineDirection2.setText(path.getDestinationStationName());

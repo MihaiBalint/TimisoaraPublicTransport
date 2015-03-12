@@ -85,6 +85,14 @@ public class Line extends PersistentEntity implements Serializable {
 		return LineKind.getKind(this);
 	}
 	
+	public boolean isBarred() {
+		return LineKind.isLineBarred(this);
+	}
+	
+	public boolean isRouteConvex() {
+		return LineKind.isRouteConvex(this);
+	}
+	
 	public Path getPath(String name) {
 		ensureLoaded();		
 		return pathNames.get(name);

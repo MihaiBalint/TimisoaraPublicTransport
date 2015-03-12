@@ -330,7 +330,7 @@ public class ViewTimes extends CityActivity {
 		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
 
 		timesRow.findViewById(R.id.LineBarredKind).setVisibility(
-				LineKindAndroidEx.isLineBarred(connectingLine) ? View.VISIBLE : View.GONE);
+				connectingLine.isBarred() ? View.VISIBLE : View.GONE);
 
 		TextView lineDirectionLabel = (TextView)timesRow.findViewById(R.id.LineDirection);
 		lineDirectionLabel.setText(connectingPath.getNiceName());

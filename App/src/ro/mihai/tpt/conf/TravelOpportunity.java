@@ -64,7 +64,7 @@ public class TravelOpportunity {
 		return path.getLine().getKind();
 	}
 	public boolean isLineBarred() {
-		return LineKindAndroidEx.isLineBarred(path.getLine());
+		return path.getLine().isBarred();
 	}
 	
 	public String getLineNameLabel() {
@@ -88,7 +88,7 @@ public class TravelOpportunity {
 	}
 	
 	public String getDestinationStationName() {
-		if (path.getLineName().equals("Tv7"))
+		if (path.getLine().isRouteConvex())
 			return path.getNiceName();
 		if (!disembarkOpportunities.isEmpty())
 			return disembarkOpportunities.get(disembarkOpportunities.size()-1).getNiceName();

@@ -104,8 +104,4 @@ public enum LineKindAndroidEx {
 			lineName = lineName.substring(0, lineName.length()-1);
 		return lineName;
 	}
-
-	public static boolean isLineBarred(Line line) {
-		return line.getName().endsWith("b");
-	}
 }
