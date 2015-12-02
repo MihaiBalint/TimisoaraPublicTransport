@@ -20,6 +20,7 @@ package ro.mihai.tpt.test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,9 +32,16 @@ public class RATTTest {
 
 	@Test
 	public void testGetLine() throws IOException {
-		String[] result = RATT.downloadTimes2(null, "1106", "Tv_P-ta Maria 3");
+		String[] result = RATT.downloadTimes2(null, "Tv1", "1106", "Tv_P-ta Maria 3");
 		assertNotNull(result);
 		assertTrue(result.length > 0);
 		assertTrue(result[0].length() > 0);
+	}
+
+	@Test
+	public void testGetLines() throws IOException {
+		Enumeration<RATT.Est> result = RATT.downloadTimes2(null, "Tv1", "1106");
+		assertNotNull(result);
+		assertTrue(result.hasMoreElements());
 	}
 }

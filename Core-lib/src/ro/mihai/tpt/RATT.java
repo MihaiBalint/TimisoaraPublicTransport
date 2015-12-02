@@ -29,23 +29,12 @@ public class RATT {
 	public static final int CITY_DB_ENTRIES = 823;
 	public static final String root = "http://www.ratt.ro/txt/";
 	
-	private static final String stationIdParamName = "id_statie"; 
-	private static final String lineIdParamName = "id_traseu";
-	
-	private static final String stationList = "select_statie.php";
-	
-	// ?stationIdParamName=...
-	private static final String linesInStationList = "select_traseu.php";
-	
-	// ?id_traseu=...&id_statie=...
-	private static final String timesOflinesInStation = "afis_msg.php";
-	
 	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon, City c) throws IOException {
-		return new StationReader(new URL(prefs.getBaseUrl()+stationList), c).readAll(mon);
+		return new StationReader(new URL(prefs.getBaseUrl()+"select_statie.php"), c).readAll(mon);
 	}
-	
+
 	public static String[] downloadTimes(IPrefs prefs, String pathId, String stationId) throws IOException {
-		URL url = new URL(prefs.getBaseUrl()+timesOflinesInStation+"?"+lineIdParamName+"="+pathId+"&"+stationIdParamName+"="+stationId);
+		URL url = new URL(prefs.getBaseUrl()+"afis_msg.php?id_traseu="+pathId+"&id_statie="+stationId);
 		FormattedTextReader rd = new FormattedTextReader(url.openStream());
 		String lineName = rd.readString("Linia: </font>", "<");
 		String timestamp = rd.readString("<br><br>", "<");
@@ -58,10 +47,10 @@ public class RATT {
 	public static City downloadCity(IPrefs prefs, IMonitor mon) throws IOException {
 		City c = new City();
 		mon.setMax(1200);
-		List<Station> stations = new StationReader(new URL(prefs.getBaseUrl()+stationList), c).readAll(mon);
+		List<Station> stations = new StationReader(new URL(prefs.getBaseUrl()+"select_statie.php"), c).readAll(mon);
 		int cnt = 0;
 		for(Station s : stations) { 
-			new LineReader(c,s, new URL(prefs.getBaseUrl()+linesInStationList+"?"+stationIdParamName+"="+s.getId())).readAll(new NullMonitor());
+			new LineReader(c,s, new URL(prefs.getBaseUrl()+"select_traseu.php?id_statie="+s.getId())).readAll(new NullMonitor());
 			cnt++;
 			if((cnt % 10)==0)
 				System.out.println(cnt + "/" + stations.size());
@@ -137,4 +126,104 @@ public class RATT {
 			return l; 
 		}
 	}
+
+	public static class Est {
+		public String lineName, pathFrom, pathTo, stopCrypticName, stopEst;
+		public int stopNo;
+		
+		public Est(String lineName, String pathFrom, String pathTo, String stopCrypticName, int stopNo, String stopEst) {
+			this.lineName = lineName;
+			this.pathFrom = pathFrom;
+			this.pathTo = pathTo;
+			this.stopCrypticName = stopCrypticName;
+			this.stopNo = stopNo;
+			this.stopEst = stopEst;
+		}
+	}
+	public static class EstimateIterator implements Enumeration<Est> {
+		private FormattedTextReader rd;
+		private String lineName, pathFrom, pathTo;
+		private int stopNo;
+		private Est currentStop;
+		
+		public EstimateIterator(FormattedTextReader rd, String lineName) {
+			this.rd = rd;
+			this.lineName = lineName;
+			this.currentStop = null;
+			nextStop();
+		}
+
+		@Override
+		public boolean hasMoreElements() {
+			return currentStop != null;
+		}
+
+		@Override
+		public Est nextElement() {
+			Est stop = currentStop;
+			nextStop();
+			return stop;
+		}
+		
+		private boolean nextPath() {
+			try {
+				String pathFrom = rd.readString("<b>", "--->");
+				String pathTo = rd.readString("--->", "</b></td>");
+				if (pathFrom == null || pathTo == null) 
+					return false;
+				this.pathFrom = pathFrom.trim();
+				this.pathTo = pathTo.trim();
+				return true;
+			} catch (IOException e) {
+				return false;
+			}
+		}
+		
+		private boolean nextStop() {
+			try {
+				if (currentStop == null || currentStop.stopCrypticName.equalsIgnoreCase(pathTo)) {
+					stopNo = 0;
+					if (!nextPath()) 
+						throw new IOException();
+				}
+				if (!rd.skipAfter("<b>"+lineName+"</b></td>", true))
+					throw new IOException("File format error");
+				String stopCrypticName = rd.readString("<b>", "</b></td>");
+				String stopEst = rd.readString("<b>", "</b></td>");
+				if (stopCrypticName == null || stopEst == null)
+					throw new IOException("File format error");
+				currentStop = new Est(lineName, pathFrom, pathTo, stopCrypticName.trim(), stopNo, stopEst.trim());
+				stopNo += 1;
+				return true;
+			} catch (IOException e) {
+				this.currentStop = null;
+				return false;
+			}
+		}
+		
+	}
+	
+	public static Enumeration<Est> downloadTimes2(IPrefs prefs, String lineName, String pathId) throws IOException {
+		URL url = new URL("http://86.122.170.105:61978/html/timpi/sens0.php?param1="+pathId);
+		FormattedTextReader rd = new FormattedTextReader(url.openStream());
+		if (!rd.skipAfter("<table", true))
+			throw new IOException("'File format error");
+		return new EstimateIterator(rd, lineName);
+	}
+	
+	
+	public static String[] downloadTimes2(IPrefs prefs, String lineName, String pathId, String stationId) throws IOException {
+		URL url = new URL("http://86.122.170.105:61978/html/timpi/sens0.php?param1="+pathId);
+		FormattedTextReader rd = new FormattedTextReader(url.openStream());
+		if (!rd.skipAfter("<table", true))
+			throw new IOException("'File format error");
+		Enumeration<Est> est = new EstimateIterator(rd, lineName);
+		while(est.hasMoreElements()) {
+			Est e = est.nextElement();
+			if (stationId.equals(e.stopCrypticName))
+				return new String[]{e.stopEst, "", "", lineName};
+		}
+		return new String[]{""};
+	}
+	
 }
