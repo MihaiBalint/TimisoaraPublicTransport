@@ -61,17 +61,23 @@ public class RATTTest {
 		private City c;
 		
 		public FullCityTest(String line, City c) {
-			super("testGetLines");
+			super("testLine_Stations");
 			this.lineName = line;
 			this.c = c;
 		}
+		
+		@Override
+		public String getName() {
+			return super.getName().replaceFirst("Line_", "_"+lineName+"_");
+		}
 
-		public void testGetLines() throws IOException {
-			Enumeration<RATT.Est> result = RATT.downloadTimes2(null, lineName, "1106");
+		public void testLine_Stations() throws IOException {
+			Line l = c.getLineByName(lineName);
+			
+			Enumeration<RATT.Est> result = RATT.downloadTimes2(null, lineName, l.getFirstPath().getExtId());
 			assertNotNull(result);
 			assertTrue(result.hasMoreElements());
 			
-			Line l = c.getLineByName(lineName);
 			Path path = null;
 			RATT.Est est = result.nextElement();
 			for (Path p: l.getPaths()) {
@@ -104,10 +110,10 @@ public class RATTTest {
 		TestSuite suite = new TestSuite();
 		suite.addTest(new JUnit4TestAdapter(BasicTest.class));
 		
-		String lineName = "Tv1";
-		TestSuite lineSuite = new TestSuite(lineName);
-		lineSuite.addTest(new FullCityTest(lineName, c));
-		suite.addTest(lineSuite);
+		for(Line l: c.getLines()) {
+			String lineName = l.getName();
+			suite.addTest(new FullCityTest(lineName, c));
+		}
 		
 		return suite;
 	}
