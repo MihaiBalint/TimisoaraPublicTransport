@@ -22,55 +22,94 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.Enumeration;
 
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.AllTests;
 
 import ro.mihai.tpt.JavaCityLoader;
 import ro.mihai.tpt.RATT;
 import ro.mihai.tpt.model.City;
+import ro.mihai.tpt.model.Estimate;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.model.Station;
 import ro.mihai.tpt.util.TestPrefs;
 
+
+@RunWith(AllTests.class)
 public class RATTTest {
-
-	@Test
-	public void testGetLine() throws IOException {
-		String[] result = RATT.downloadTimes2(null, "Tv1", "1106", "Tv_P-ta Maria 3");
-		assertNotNull(result);
-		assertTrue(result.length > 0);
-		assertTrue(result[0].length() > 0);
+	
+	public static class BasicTest {
+		@Test
+		public void testGetLine() throws IOException {
+			String[] result = RATT.downloadTimes2(null, "Tv1", "1106", "Tv_P-ta Maria 3");
+			assertNotNull(result);
+			assertTrue(result.length > 0);
+			assertTrue(result[0].length() > 0);
+		}
 	}
 
-	@Test
-	public void testGetLines() throws IOException {
-		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache(new TestPrefs());
-		String lineName = "Tv1";
-
-		Enumeration<RATT.Est> result = RATT.downloadTimes2(null, lineName, "1106");
-		assertNotNull(result);
-		assertTrue(result.hasMoreElements());
+	public static class FullCityTest extends TestCase {
+		private String lineName;
+		private City c;
 		
-		Line l = c.getLineByName(lineName);
-		Path path = null;
-		RATT.Est est = result.nextElement();
-		for (Path p: l.getPaths()) {
-			String from = p.getEstimateByPath(0).getStation().getName();
-			if (from.equals(est.pathFrom)) {
-				path = p;
-				break;
-			}
+		public FullCityTest(String line, City c) {
+			super("testGetLines");
+			this.lineName = line;
+			this.c = c;
 		}
-		assertNotNull(path);
 
-		while (result.hasMoreElements()) {
-			RATT.Est e = result.nextElement();
-			Station s = path.getEstimateByPath(e.stopNo).getStation();
-			assertEquals(e.stopCrypticName, s.getName());
-			if (e.pathFrom != est.pathFrom)
-				break;
+		public void testGetLines() throws IOException {
+			Enumeration<RATT.Est> result = RATT.downloadTimes2(null, lineName, "1106");
+			assertNotNull(result);
+			assertTrue(result.hasMoreElements());
+			
+			Line l = c.getLineByName(lineName);
+			Path path = null;
+			RATT.Est est = result.nextElement();
+			for (Path p: l.getPaths()) {
+				String from = p.getEstimateByPath(0).getStation().getName();
+				if (from.equals(est.pathFrom)) {
+					path = p;
+					break;
+				}
+			}
+			assertNotNull(path);
+			String cityStops = "";
+			for(Estimate e :path.getEstimatesByPath()) 
+				cityStops += e.getStation().getName() + "\n";
+			
+			String ratt2Stops = est.stopCrypticName + "\n";;
+			while (result.hasMoreElements()) {
+				RATT.Est e = result.nextElement();
+				if (e.pathFrom != est.pathFrom)
+					break;
+				ratt2Stops += e.stopCrypticName + "\n";
+			}
+			
+			assertEquals(cityStops, ratt2Stops);
+			
 		}
 	}
+	
+	public static TestSuite suite() throws IOException {
+		City c = JavaCityLoader.loadCachedCityOrDownloadAndCache(new TestPrefs());
+		TestSuite suite = new TestSuite();
+		suite.addTest(new JUnit4TestAdapter(BasicTest.class));
+		
+		String lineName = "Tv1";
+		TestSuite lineSuite = new TestSuite(lineName);
+		lineSuite.addTest(new FullCityTest(lineName, c));
+		suite.addTest(lineSuite);
+		
+		return suite;
+	}
+
 }
