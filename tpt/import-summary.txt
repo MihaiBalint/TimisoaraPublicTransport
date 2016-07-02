@@ -1,0 +1,78 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* TODOs
+* TODOs-requirements
+* build.xml
+* docs/
+* docs/select line.png
+* docs/update times.png
+* docs/updated times.png
+* labs-res/
+* labs-res/micalacean/
+* labs-res/micalacean/a-0-a.png
+* labs-res/micalacean/a-0-a.psd
+* labs-res/micalacean/a-1-a.png
+* labs-res/micalacean/a-1-a.psd
+* labs-res/micalacean/a-2-a.png
+* labs-res/micalacean/a-2-a.psd
+* labs-res/micalacean/a-2-b.psd
+* labs-res/micalacean/app-256.png
+* labs-res/micalacean/arrow-right.png
+* labs-res/micalacean/btn_arrow_right_high.png
+* labs-res/micalacean/btn_arrow_right_sel.png
+* labs-res/micalacean/btn_menu_light_high.png
+* labs-res/micalacean/btn_menu_light_sel.png
+* labs-res/micalacean/btn_plus_high.png
+* labs-res/micalacean/btn_plus_sel.png
+* labs-res/micalacean/btn_update_high.png
+* labs-res/micalacean/btn_update_sel.png
+* labs-res/micalacean/bullet-with-lines.png
+* labs-res/micalacean/bullet.png
+* labs-res/micalacean/bus-256.png
+* labs-res/micalacean/more-dots.png
+* labs-res/micalacean/path-bullet64.xcf
+* labs-res/micalacean/path-line64.xcf
+* labs-res/micalacean/play-icon-512.png
+* labs-res/micalacean/spear-right.png
+* labs-res/micalacean/star_empty.png
+* labs-res/micalacean/star_full.png
+* labs-res/micalacean/star_shine.png
+* labs-res/micalacean/tram-256.png
+* labs-res/micalacean/troleu-256.png
+* proguard-project.txt
+* proguard.cfg
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+In TPT-Core-lib:
+* src/ => tPTCorelib/src/main/java/
+In TimisoaraPublicTransport:
+* AndroidManifest.xml => timisoaraPublicTransport/src/main/AndroidManifest.xml
+* assets/ => timisoaraPublicTransport/src/main/assets
+* res/ => timisoaraPublicTransport/src/main/res/
+* src/ => timisoaraPublicTransport/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

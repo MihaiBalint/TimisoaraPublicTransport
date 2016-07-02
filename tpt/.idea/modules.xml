@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/corelib/tPTCorelib.iml" filepath="$PROJECT_DIR$/corelib/tPTCorelib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/timisoaraPublicTransport/timisoaraPublicTransport.iml" filepath="$PROJECT_DIR$/timisoaraPublicTransport/timisoaraPublicTransport.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tpt.iml" filepath="$PROJECT_DIR$/tpt.iml" />
+    </modules>
+  </component>
+</project>
