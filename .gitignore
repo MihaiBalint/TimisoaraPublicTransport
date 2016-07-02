@@ -38,8 +38,8 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/libraries
+tpt/.idea/workspace.xml
+tpt/.idea/libraries
 
 # Keystore
 keystore/
