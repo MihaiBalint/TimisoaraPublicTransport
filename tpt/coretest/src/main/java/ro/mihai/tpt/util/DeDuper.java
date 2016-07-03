@@ -17,7 +17,7 @@ import java.util.Set;
 import ro.mihai.tpt.model.Junction;
 import ro.mihai.tpt.model.Station;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
 
 public class DeDuper {
 	
@@ -50,7 +50,7 @@ public class DeDuper {
 		//String csvURL = "https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=0AtCtEmR70abcdG5ZaWRpRnI5dTFlUXN3U3Y0c0N2Wmc&single=true&gid=0&output=csv";
 		// InputStream inp = new URL(csvURL).openStream();
 		// String fileName = "linestations-20111129-3.csv";
-		String fileName = "Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20150312.csv";
+		String fileName = "coretest/Lines Stations and Junctions - Timisoara Public Transport - Denumiri-20150312.csv";
 		InputStream inp = new FileInputStream(fileName);
 		Helper help = new Helper(fileName);
 		
@@ -157,7 +157,7 @@ public class DeDuper {
 				}
 			}
 		
-		PrintStream csv = new PrintStream(new FileOutputStream("linestations.csv"));
+		PrintStream csv = new PrintStream(new FileOutputStream("coretest/linestations.csv"));
 		//csv.println("LineID, LineName, StationID, RawStationName, FriendlyStationName, ShortStationName, JunctionName, Lat, Long, Invalid, Verified, Verification Date, Goodle Maps Link");
 		
 		for(String[] row:data) {

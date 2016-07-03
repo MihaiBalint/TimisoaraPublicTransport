@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import ro.mihai.util.FormattedTextReader;
 import ro.mihai.util.StationsXMLReader;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
 
 public class Helper {
 	private HashMap<String,Set<String>> names = new HashMap<String, Set<String>>();
@@ -48,7 +48,7 @@ public class Helper {
 		}
 		rd.close();
 		
-		StationsXMLReader crd = new StationsXMLReader(new FormattedTextReader(new FileInputStream("stations.xml")));
+		StationsXMLReader crd = new StationsXMLReader(new FormattedTextReader(new FileInputStream("coretest/stations.xml")));
 		while(null!=(row=crd.readStationCoords())) 
 			add(stXMLCoords,row[1],new Coords(row[2],row[3]));
 		crd.close();
@@ -85,7 +85,7 @@ public class Helper {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		Helper h = new Helper("linestations-20111127.csv");
+		Helper h = new Helper("coretest/linestations-20111127.csv");
 		System.out.println(h);
 	}
 	

@@ -20,7 +20,7 @@ import ro.mihai.tpt.model.Station;
 import ro.mihai.util.DetachableStream;
 import ro.mihai.util.NullMonitor;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
 
 import junit.framework.TestCase;
 
@@ -29,7 +29,7 @@ public class V3Generator extends TestCase {
 	public void testGenerator() throws Exception {
 		// InputStream inp = new FileInputStream("Lines Stations and Junctions - Timisoara Public Transport.csv");
 		// InputStream inp = new FileInputStream("linestations3.csv");
-		InputStream inp = new FileInputStream("linestations.csv");
+		InputStream inp = new FileInputStream("coretest/linestations.csv");
 		CSVReader rd = new CSVReader(new InputStreamReader(inp));
 		String[] row;
 		City c = new City();

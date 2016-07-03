@@ -9,6 +9,7 @@
           <set>
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt" />
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/corelib" />
+            <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/coretest" />
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/timisoaraPublicTransport" />
           </set>
         </option>
@@ -16,6 +17,7 @@
           <set>
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt" />
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/corelib" />
+            <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/coretest" />
             <option value="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/timisoaraPublicTransport" />
           </set>
         </option>
