@@ -132,7 +132,7 @@ LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,Ju
 2566,22,2977,A.Saguna 1tb,Pod Mitropolit Andrei Saguna (Apateu),Andrei Saguna,Andrei Saguna,45.748001,21.225647,TRUE,dup script,05.11.15,"http://maps.google.com/maps?q=Pod%20Mitropolit%20Andrei%20Saguna@45.748001,21.225647",
 2566,22,2976,I.C.Bratianu,Bd. I.C. Bratianu / Centru (Apateu),Centru,Centru,45.753355,21.228979,TRUE,dup script,05.11.15,"http://maps.google.com/maps?q=Bd.%20I.C.%20Bratianu%20/%20Centru@45.753355,21.228979",
 2566,22,8180,Prefectura 4,Prefectura Judetului Timis / Consulatul Republicii Moldova (Apateu),Prefectura,Prefectura,45.755539,21.238369,TRUE,dup script,05.11.15,"http://maps.google.com/maps?q=Prefectura%20Judetului%20Timis%20/%20Consulatul%20Republicii%20Moldova@45.755539,21.238369",
-2566,22,6200,T.Grozavescu p,Strada Traian Grozavescu / Posta Mare (FZB),Posta Mare,Posta Mare,45.754499,21.234286,"
+2566,22,6200,T.Grozavescu p,Strada Traian Grozavescu / Posta Mare (Albastrelelor),Posta Mare,Posta Mare,45.754499,21.234286,"
 ",dup script,05.11.15,"http://maps.google.com/maps?q=Strada%20Traian%20Grozavescu%20/%20Posta%20Mare@45.754499,21.234286",
 2566,22,9222,Parcul Copiilor_,Parcul Copiilor (Albastrelelor),Parcul Copiilor,,45.751335,21.233665,,dup script,05.11.15,"http://maps.google.com/maps?q=Parcul%20Copiilor@45.751335,21.233665",
 2566,22,2838,Pestalozzi_,Strada Pestalozzi / New Hotel Timisoara (Albastrelelor),Pestalozzi,,45.753993,21.240588,,dup script,05.11.15,"http://maps.google.com/maps?q=Strada%20Pestalozzi%20/%20New%20Hotel%20Timisoara@45.753993,21.240588",
@@ -851,7 +851,7 @@ LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,Ju
 ,,,,,,,,,,,,,
 LineID,LineName,StationID,RawStationName,FriendlyStationName,ShortStationName,JunctionName,Lat,Long,Invalid,Verified,Verification Date,Goodle Maps Link,
 1206,Tb16,6200,T.Grozavescu p,Strada Traian Grozavescu / Posta Mare (Bulevardul Sudului),Posta Mare,Posta Mare,45.754499,21.234286,,dup script,05.11.15,"http://maps.google.com/maps?q=Strada%20Traian%20Grozavescu%20/%20Posta%20Mare@45.754499,21.234286",
-1206,Tb15,9220,P-ta Huniade,Bd. I.C.Bratianu / Centru (Bulevardul Sudului),Centru,Centru,45.753448,21.229035,,dup script,05.11.15,"http://maps.google.com/maps?q=Bd.%20I.C.Bratianu%20/%20Centru@45.753448,21.229035",
+1206,Tb16,9220,P-ta Huniade,Bd. I.C.Bratianu / Centru (Bulevardul Sudului),Centru,Centru,45.753448,21.229035,,dup script,05.11.15,"http://maps.google.com/maps?q=Bd.%20I.C.Bratianu%20/%20Centru@45.753448,21.229035",
 1206,Tb16,8320,I.C.Bratianu,Bd. I.C. Bratianu / Hotel Continental (Bulevardul Sudului),I.C.Bratianu,,45.753266,21.231101,TRUE,dup script,05.11.15,"http://maps.google.com/maps?q=Bulevardul%20I.C.%20Bratianu@45.753266,21.231101",
 1206,Tb16,8300,Pod A.Saguna2,Pod Mitropolit Andrei Saguna / Parcul Catedralei (Bulevardul Sudului),Pod A. Saguna / Parc Catedrala,Catedrala,45.749261,21.225538,,dup script,05.11.15,"http://maps.google.com/maps?q=Pod%20Mitropolit%20Andrei%20Saguna%20/%20Parcul%20Catedralei@45.749261,21.225538",
 1206,Tb16,3741,Fac Electro_,Facultatea de electrotehnica (Bulevardul Sudului),Facultatea de electro.,Facultatea de electro.,45.747825,21.225814,,dup script,05.11.15,"http://maps.google.com/maps?q=Facultatea%20de%20electrotehnica@45.747825,21.225814",
