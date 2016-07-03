@@ -29,7 +29,8 @@ public class V3Generator extends TestCase {
 	public void testGenerator() throws Exception {
 		// InputStream inp = new FileInputStream("Lines Stations and Junctions - Timisoara Public Transport.csv");
 		// InputStream inp = new FileInputStream("linestations3.csv");
-		InputStream inp = new FileInputStream("coretest/linestations.csv");
+		System.out.println("Working Directory = " + System.getProperty("user.dir"));
+		InputStream inp = new FileInputStream("linestations.csv");
 		CSVReader rd = new CSVReader(new InputStreamReader(inp));
 		String[] row;
 		City c = new City();
