@@ -29,7 +29,7 @@ public enum LineKind {
 	TROLLEY("Tb11","Tb14","Tb15","Tb16","Tb17","Tb18"), 
 	BUS("3","13","21","22","28","29","32","33","33b","40","46"),
 	EXPRESS("E1","E2","E3","E4","E4b","E6","E7", "E8"),
-	METRO("M30","M35", "M44","M45");
+	METRO("M11", "M14","M35", "M44");
 	private static Set<String> convexLines = new HashSet<String>(Arrays.asList(new String[]{"Tv7", "Tv6"}));
 	private final String[] names;
 	
