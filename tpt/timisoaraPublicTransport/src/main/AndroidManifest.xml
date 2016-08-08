@@ -2,7 +2,7 @@
 <!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
-    Copyright (C) 2011-2012  Mihai Balint
+    Copyright (C) 2011-2016  Mihai Balint
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="ro.mihai.tpt"
-      android:versionName="3.8" android:versionCode="38"
+      android:versionName="3.9" android:versionCode="39"
       android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>

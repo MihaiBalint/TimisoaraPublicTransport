@@ -16,14 +16,14 @@
 	<string name="pref_base_download_url_dialog">Choose URL</string>
 	
     <string-array name="pref_base_download_url_entries">
-        <item>http://www.ratt.ro/txt/</item>
-        <item>http://82.77.146.19/txt/</item>
+        <item>http://ratt-txt.aeliptus.com/txt/</item>
+        <item>http://ratt-txt-alt.aeliptus.com/txt/</item>
     </string-array>
 
-	<string name="pref_base_download_url_default">http://www.ratt.ro/txt/</string>
+	<string name="pref_base_download_url_default">http://ratt-txt.aeliptus.com/txt/</string>
     <string-array name="pref_base_download_url_entryvalues">
-        <item>http://www.ratt.ro/txt/</item>
-        <item>http://82.77.146.19/txt/</item>
+        <item>http://ratt-txt.aeliptus.com/txt/</item>
+        <item>http://ratt-txt-alt.aeliptus.com/txt/</item>
     </string-array>
     
 	<string name="pref_analytics_enabled_title">Help improve estimates</string>

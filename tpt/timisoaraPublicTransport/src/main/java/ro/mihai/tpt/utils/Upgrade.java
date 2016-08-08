@@ -17,10 +17,7 @@
 */
 package ro.mihai.tpt.utils;
 
-import ro.mihai.tpt.R;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 public class Upgrade {
@@ -49,28 +46,6 @@ public class Upgrade {
 	}
 	
 	private void upgrade23to24(final AppPreferences prefs) {
-		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int which) {
-		        switch (which) {
-		        case DialogInterface.BUTTON_POSITIVE:
-		        	prefs.setAnalyticsEnabled(true);
-					prefs.setCurrentVersion(24);
-		            break;
-		        case DialogInterface.BUTTON_NEGATIVE:
-		        	prefs.setAnalyticsEnabled(false);
-					prefs.setCurrentVersion(24);
-		            break;
-		        }
-		    }
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder
-			.setMessage(R.string.upgrade_analytics_message)
-			.setTitle(R.string.upgrade_analytics_title)
-			.setPositiveButton(R.string.lblAffirmative, listener)
-		    .setNegativeButton(R.string.lblNegative, listener)
-		    .show();
-		
+		prefs.setCurrentVersion(24);
 	}
 }

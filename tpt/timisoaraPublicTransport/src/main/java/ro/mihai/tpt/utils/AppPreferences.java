@@ -46,7 +46,6 @@ public class AppPreferences implements IPrefs {
 	
 	private String pref_device_id;
 	private String pref_base_download_url; 
-	private String pref_analytics_enabled;
 	private String pref_analytics_cache;
 	private String pref_current_version;
 	private String pref_favorite_paths;
@@ -56,7 +55,6 @@ public class AppPreferences implements IPrefs {
 		this.ctx = ctx;
 		pref_device_id = ctx.getString(R.string.pref_device_id);
 		pref_base_download_url = ctx.getString(R.string.pref_base_download_url);
-		pref_analytics_enabled = ctx.getString(R.string.pref_analytics_enabled);
 		pref_analytics_cache = ctx.getString(R.string.pref_analytics_cache);
 		pref_current_version = ctx.getString(R.string.pref_current_version);
 		pref_favorite_paths = ctx.getString(R.string.pref_favorite_paths);
@@ -99,19 +97,9 @@ public class AppPreferences implements IPrefs {
 			.commit();
 	}
 	
-	public void setAnalyticsEnabled(boolean enabled) {
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		sharedPref.edit()
-			.putBoolean(pref_analytics_enabled, enabled)
-			.commit();
-	}
-
 	public Achievements getTopAchieve() {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-		if (sharedPref.getBoolean(pref_analytics_enabled, false)) {
-			return Achievements.Contributor;
-		} 
-		return Achievements.None;
+		return Achievements.Contributor;
 	}
 	
 	public String getAchieveUserName() {
@@ -131,12 +119,8 @@ public class AppPreferences implements IPrefs {
 	public synchronized IAnalyticsService getAnalyticsService() {
 		if (service == null) {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
-			if (sharedPref.getBoolean(pref_analytics_enabled, true)) {
-				String agent = "App."+getAppVersion();
-				service = new AnalyticsService(ctx.getString(R.string.pref_analytics_url), agent);
-			} else {
-				service = new NoAnalyticsService();
-			}
+			String agent = "App."+getAppVersion();
+			service = new AnalyticsService(ctx.getString(R.string.pref_analytics_url), agent);
 		}
 		return service;
 	}

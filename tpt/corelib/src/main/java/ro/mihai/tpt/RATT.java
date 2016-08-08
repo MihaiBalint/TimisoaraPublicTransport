@@ -27,8 +27,7 @@ import ro.mihai.util.*;
 
 public class RATT {
 	public static final int CITY_DB_ENTRIES = 875;
-	public static final String root = "http://www.ratt.ro/txt/";
-	
+
 	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon, City c) throws IOException {
 		return new StationReader(new URL(prefs.getBaseUrl()+"select_statie.php"), c).readAll(mon);
 	}
@@ -200,30 +199,39 @@ public class RATT {
 				return false;
 			}
 		}
-		
+	}
+
+
+	private static NetDataCache<String, List<Est>> cache = null;
+
+	public static List<Est> downloadTimes2(IPrefs prefs, final String lineName, final String pathId) throws IOException {
+		if (cache == null)
+			cache = new NetDataCache<String, List<Est>>();
+
+		return cache.get(pathId, new NetDataCache.OnMiss<String, List<Est>>() {
+			@Override
+			public List<Est> get(String key) throws IOException {
+				URL url = new URL("http://ratt-txt-aalt.aeliptus.com:61978/html/timpi/sens0.php?param1="+pathId);
+				FormattedTextReader rd = new FormattedTextReader(url.openStream());
+				if (!rd.skipAfter("<table", true))
+					throw new IOException("'File format error");
+				ArrayList<Est> elems = new ArrayList<Est>();
+				EstimateIterator e = new EstimateIterator(rd, lineName);
+				while(e.hasMoreElements()) {
+					elems.add(e.nextElement());
+				}
+				return elems;
+			}
+		});
 	}
 	
-	public static Enumeration<Est> downloadTimes2(IPrefs prefs, String lineName, String pathId) throws IOException {
-		URL url = new URL("http://86.122.170.105:61978/html/timpi/sens0.php?param1="+pathId);
-		FormattedTextReader rd = new FormattedTextReader(url.openStream());
-		if (!rd.skipAfter("<table", true))
-			throw new IOException("'File format error");
-		return new EstimateIterator(rd, lineName);
-	}
 	
-	
-	public static String[] downloadTimes2(IPrefs prefs, String lineName, String pathId, String stationId) throws IOException {
-		URL url = new URL("http://86.122.170.105:61978/html/timpi/sens0.php?param1="+pathId);
-		FormattedTextReader rd = new FormattedTextReader(url.openStream());
-		if (!rd.skipAfter("<table", true))
-			throw new IOException("'File format error");
-		Enumeration<Est> est = new EstimateIterator(rd, lineName);
-		while(est.hasMoreElements()) {
-			Est e = est.nextElement();
-			if (stationId.equals(e.stopCrypticName))
+	public static String[] downloadTimes2(IPrefs prefs, String lineName, String pathId, String stationCrypticName, String stationId) throws IOException {
+		for(Est e: downloadTimes2(prefs, lineName, pathId)) {
+			if (stationCrypticName.equals(e.stopCrypticName))
 				return new String[]{e.stopEst, "", "", lineName};
 		}
-		return new String[]{""};
+		return downloadTimes(prefs, pathId, stationId);
 	}
 	
 }

@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestCase;
@@ -49,7 +51,7 @@ public class RATTTest {
 	public static class BasicTest {
 		@Test
 		public void testGetLine() throws IOException {
-			String[] result = RATT.downloadTimes2(null, "Tv1", "1106", "Tv_P-ta Maria 3");
+			String[] result = RATT.downloadTimes2(null, "Tv1", "1106", "Tv_P-ta Maria 3", "9999");
 			assertNotNull(result);
 			assertTrue(result.length > 0);
 			assertTrue(result[0].length() > 0);
@@ -74,12 +76,13 @@ public class RATTTest {
 		public void testLine_Stations() throws IOException {
 			Line l = c.getLineByName(lineName);
 			
-			Enumeration<RATT.Est> result = RATT.downloadTimes2(null, lineName, l.getFirstPath().getExtId());
-			assertNotNull(result);
-			assertTrue(result.hasMoreElements());
+			List<RATT.Est> resultList = RATT.downloadTimes2(null, lineName, l.getFirstPath().getExtId());
+			assertNotNull(resultList);
+			assertFalse(resultList.isEmpty());
+			Iterator<RATT.Est> result = resultList.iterator();
 			
 			Path path = null;
-			RATT.Est est = result.nextElement();
+			RATT.Est est = result.next();
 			for (Path p: l.getPaths()) {
 				String from = p.getEstimateByPath(0).getStation().getName();
 				if (from.equals(est.pathFrom)) {
@@ -93,8 +96,8 @@ public class RATTTest {
 				cityStops += e.getStation().getName() + "\n";
 			
 			String ratt2Stops = est.stopCrypticName + "\n";;
-			while (result.hasMoreElements()) {
-				RATT.Est e = result.nextElement();
+			while (result.hasNext()) {
+				RATT.Est e = result.next();
 				if (e.pathFrom != est.pathFrom)
 					break;
 				ratt2Stops += e.stopCrypticName + "\n";
