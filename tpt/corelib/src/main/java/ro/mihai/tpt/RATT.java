@@ -191,6 +191,8 @@ public class RATT {
 				String stopEst = rd.readString("<b>", "</b></td>");
 				if (stopCrypticName == null || stopEst == null)
 					throw new IOException("File format error");
+				if ("&gt;&gt;".equals(stopEst.trim()))
+					stopEst = ">>";
 				currentStop = new Est(lineName, pathFrom, pathTo, stopCrypticName.trim(), stopNo, stopEst.trim());
 				stopNo += 1;
 				return true;
