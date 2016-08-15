@@ -35,18 +35,20 @@ public class PathListViewAdapter implements ListAdapter {
 
     private Activity context;
     private City city;
+	private MapKind mapKind;
     private ArrayList<Path> paths;
 	
-    public PathListViewAdapter(Activity context, City city, Iterator<Path> pathIterator) {
+    public PathListViewAdapter(Activity context, City city, MapKind mapKind, Iterator<Path> pathIterator) {
     	this.context = context;
     	this.city = city;
+		this.mapKind = mapKind;
     	paths = new ArrayList<Path>();
     	while (pathIterator.hasNext())
     		paths.add(pathIterator.next());
     }
     
 	public int getCount() {
-		return paths.size();
+		return 1 + paths.size();
 	}
 
 	public boolean isEmpty() {
@@ -54,7 +56,7 @@ public class PathListViewAdapter implements ListAdapter {
 	}
 
 	public Object getItem(int position) {
-		return paths.get(position);
+		return position == 0 ? "map": paths.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -63,24 +65,41 @@ public class PathListViewAdapter implements ListAdapter {
 	}
 
 	public int getItemViewType(int position) {
-		return 0;
+		return position==0 ? 0 : 1;
 	}
 	public int getViewTypeCount() {
-		return 1;
+		return 2;
 	}
 
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View pathView = convertView;
-
-		if (pathView == null) {
-			pathView = PathView.createPathView(context.getLayoutInflater(), null); 
-		}
-		Path path = paths.get(position);
-		boolean isOddItem = (position % 2) != 0;
-		OnClickListener onClick = new SelectPath(ViewTimes.class, path); 
-		return PathView.fillPathView(pathView, parent.getResources(), path, onClick, isOddItem);
+        if (position==0) {
+            return this.getMapView(convertView, parent);
+        } else {
+            return this.getPathView(
+                    convertView, parent, paths.get(position - 1), (position % 2) != 1);
+        }
 	}
+
+    private View getPathView(View convertView, ViewGroup parent, Path path, boolean isOddItem) {
+        View pathView = convertView;
+
+        if (pathView == null) {
+            pathView = PathView.createPathView(context.getLayoutInflater(), null);
+        }
+        OnClickListener onClick = new SelectPath(ViewTimes.class, path);
+        return PathView.fillPathView(pathView, parent.getResources(), path, onClick, isOddItem);
+    }
+
+    private View getMapView(View convertView, ViewGroup parent) {
+        View mapView = convertView;
+
+        if (mapView == null) {
+            mapView = PathView.createMapView(context.getLayoutInflater(), null);
+        }
+        PathView.fillMapView(mapView, parent.getResources(), this.mapKind);
+        return mapView;
+    }
 
 	public void registerDataSetObserver(DataSetObserver observer) {
 		// TODO Auto-generated method stub

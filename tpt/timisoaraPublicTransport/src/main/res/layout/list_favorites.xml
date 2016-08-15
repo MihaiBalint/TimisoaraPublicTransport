@@ -27,7 +27,7 @@
     <include
         layout="@layout/frag_title"
         />
-	<ListView 
+    <ListView
 		android:id="@+id/favorite_content" 
 		android:layout_width="fill_parent"
 		android:layout_height="0dp"
@@ -36,22 +36,6 @@
 		android:divider="@android:color/transparent"
   		android:dividerHeight="0.0sp"
 	    />
-    	<!-- 
-	<TextView
-		android:text="(c) 2011-2013 Various authors"
-		android:background="#A0402020"
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-   		android:textSize="12sp"
-		android:gravity="center"/>
-	<TextView
-		android:text="Press menu to see credits."
-		android:background="#A0402020"
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-   		android:textSize="12sp"
-		android:gravity="center"/>
-	-->
     <include
         layout="@layout/frag_vehicle_types"
         />

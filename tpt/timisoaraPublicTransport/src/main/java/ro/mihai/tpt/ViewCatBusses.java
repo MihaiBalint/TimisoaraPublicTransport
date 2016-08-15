@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Path;
+import ro.mihai.tpt.utils.MapKind;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.ArrayIterator;
 import ro.mihai.util.LineKind;
@@ -40,5 +41,10 @@ public class ViewCatBusses extends ViewCategories {
 	@Override
 	protected OnClickListener getCategoryClickListener(StartActivity activity) {
 		return activity.replaceOnClick();
+	}
+
+	@Override
+	protected MapKind getMapKind() {
+		return MapKind.BUS;
 	}
 }

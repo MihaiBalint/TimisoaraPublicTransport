@@ -21,11 +21,13 @@ import ro.mihai.tpt.conf.TravelOpportunity;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.LineKindAndroidEx;
+import ro.mihai.tpt.utils.MapKind;
 import ro.mihai.util.LineKind;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PathView {
@@ -84,4 +86,15 @@ public class PathView {
 	public static void addDepartureClickListener(View pathView, View.OnClickListener clickListener) {
 		pathView.findViewById(R.id.DepartureStation).setOnClickListener(clickListener); 
 	}
+
+	public static View createMapView(LayoutInflater inflater, ViewGroup parent) {
+		return inflater.inflate(R.layout.frag_map, parent, false);
+	}
+
+    public static View fillMapView(View mapView, Resources res, MapKind mapKind) {
+        ImageView img = (ImageView) mapView.findViewById(R.id.collapsedMapButtom);
+        img.setImageResource(mapKind.collapsedId);
+        img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        return mapView;
+    }
 }

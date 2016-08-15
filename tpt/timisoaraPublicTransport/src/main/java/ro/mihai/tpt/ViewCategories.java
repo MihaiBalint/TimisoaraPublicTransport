@@ -24,6 +24,7 @@ import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
 import ro.mihai.tpt.utils.CityActivity;
 import ro.mihai.tpt.utils.CityNotLoadedException;
+import ro.mihai.tpt.utils.MapKind;
 import ro.mihai.tpt.utils.PathListViewAdapter;
 import ro.mihai.tpt.utils.StartActivity;
 import ro.mihai.util.LineKind;
@@ -42,6 +43,9 @@ public abstract class ViewCategories extends CityActivity {
 	protected OnClickListener getCategoryClickListener(StartActivity activity) {
 		return activity.startOnClick();
 	}
+	protected MapKind getMapKind() {
+        return MapKind.ELECTRIC;
+    }
 	
 	/** Called when the activity is first created. */
     @Override
@@ -79,7 +83,8 @@ public abstract class ViewCategories extends CityActivity {
     
     protected final void createContent(City city) {
     	ListView favoritesView = (ListView)findViewById(R.id.favorite_content);
-    	favoritesView.setAdapter(new PathListViewAdapter(this, city, getLinePathIterator(city)));
+    	favoritesView.setAdapter(new PathListViewAdapter(
+                this, city, getMapKind(), getLinePathIterator(city)));
     }
     
     
