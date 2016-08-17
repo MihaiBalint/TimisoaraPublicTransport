@@ -57,6 +57,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -274,6 +275,9 @@ public class ViewTimes extends CityActivity {
 		timesRow.setOnClickListener(new ShowStationConnections(stop));
 		LineKindAndroidEx kind = LineKindAndroidEx.getAndroidEx(path.getLineKind());
 
+        ImageView connImg = (ImageView)timesRow.findViewById(R.id.ConnKindImg);
+        connImg.setVisibility(stop.hasChangeOportunities() ? View.VISIBLE : View.GONE);
+
 		TextView stationLabel = (TextView)timesRow.findViewById(R.id.StationLabel);
 		stationLabel.setText(est.getStation().getNicestNamePossible());
 		
@@ -324,9 +328,14 @@ public class ViewTimes extends CityActivity {
 		Path connectingPath = est.getPath();
 		Line connectingLine = connectingPath.getLine();
 		Resources res = getResources();
-		
+
+		LineKindAndroidEx connectingKind = LineKindAndroidEx.getAndroidEx(connectingLine.getKind());
+
+		ImageView lineKindImg = (ImageView)timesRow.findViewById(R.id.LineKindImg);
+		lineKindImg.setImageResource(connectingKind.dark_icon);
+
 		TextView lineNameLabel = (TextView)timesRow.findViewById(R.id.LineName);
-		lineNameLabel.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
+		lineNameLabel.setTextColor(res.getColor(connectingKind.colorId));
 		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
 
 		timesRow.findViewById(R.id.LineBarredKind).setVisibility(
@@ -336,7 +345,7 @@ public class ViewTimes extends CityActivity {
 		lineDirectionLabel.setText(connectingPath.getNiceName());
 
 		TextView stationTime = (TextView)timesRow.findViewById(R.id.StationTime);
-		stationTime.setTextColor(res.getColor(LineKindAndroidEx.getColorId(connectingLine.getKind())));
+		stationTime.setTextColor(res.getColor(connectingKind.colorId));
 		stationTime.setText(est.isBoarding() 
 				? getResources().getString(EstimateVehicleStatusEx.Boarding.descriptionId)
 				: est.estimateTimeString());

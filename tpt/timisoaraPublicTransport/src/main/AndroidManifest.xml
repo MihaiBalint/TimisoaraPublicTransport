@@ -22,9 +22,9 @@
       package="ro.mihai.tpt"
       android:versionName="4.0" android:versionCode="40"
       android:installLocation="auto">
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="17"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
 	<supports-screens
 		android:resizeable="true"
 		android:smallScreens="true"
@@ -38,6 +38,7 @@
 	    android:label="@string/app_name"
 	    android:testOnly="false"
 	    android:allowBackup="true">
+		<meta-data android:name="android.webkit.WebView.MetricsOptOut" android:value="true" />
         <activity android:name="ro.mihai.tpt.LoadCity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -53,6 +54,7 @@
         <activity android:name="ro.mihai.tpt.ViewCredits" />
         <activity android:name="ro.mihai.tpt.ViewUserCredits" />
         <activity android:name="ro.mihai.tpt.Preferences" />
+		<activity android:name="ro.mihai.tpt.ViewMap" />
         <service android:name=".data.DataService"
             android:permission="android.permission.INTERNET"
 			android:icon="@drawable/icon"

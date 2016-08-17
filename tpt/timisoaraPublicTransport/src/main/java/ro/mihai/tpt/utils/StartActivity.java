@@ -47,7 +47,12 @@ public class StartActivity {
 		AndroidSharedObjects.instance().setLinePath(p);
 		return this;
 	}
-	
+
+	public StartActivity addMap(MapKind mapKind) {
+		AndroidSharedObjects.instance().setMapKind(mapKind);
+		return this;
+	}
+
 	public void replace() {
 		parent.startActivityForResult(new Intent(parent, activity), CityActivity.REQUEST_CODE_REPLACE);
 	}

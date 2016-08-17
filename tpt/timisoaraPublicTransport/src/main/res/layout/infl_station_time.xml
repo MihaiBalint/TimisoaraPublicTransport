@@ -114,6 +114,16 @@
 				android:textSize="14sp"
 		        />
    		</LinearLayout>
-	    	    
    	</LinearLayout>
+	<ImageView android:id="@+id/ConnKindImg"
+		android:src="@drawable/btn_multi_dark"
+		android:layout_width="20sp"
+		android:layout_height="20sp"
+		android:layout_gravity="top"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="5dp"
+		android:scaleType="fitCenter"
+		android:contentDescription="@string/lblExampleLineKind"
+		android:visibility="visible"
+		/>
 </LinearLayout>

@@ -23,6 +23,7 @@ import ro.mihai.tpt.model.*;
 public class AndroidSharedObjects {
 	private City city;
 	private Path linePath;
+    private MapKind mapKind;
 	private TravelOpportunity pathSelection;
 	
 	public City getCity() throws CityNotLoadedException {
@@ -55,7 +56,16 @@ public class AndroidSharedObjects {
 		this.linePath = pathSelection.getPath();
 		this.pathSelection = pathSelection;
 	}
-	
+
+	public MapKind getMapKind() {
+        if (this.mapKind == null)
+            this.mapKind = MapKind.ELECTRIC;
+        return mapKind;
+    }
+    public void setMapKind(MapKind mapKind) {
+        this.mapKind = mapKind;
+    }
+
 	
 	private static AndroidSharedObjects shared = new AndroidSharedObjects();
 	

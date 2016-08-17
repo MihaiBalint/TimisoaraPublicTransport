@@ -17,19 +17,44 @@
 */
 package ro.mihai.tpt.utils;
 
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import ro.mihai.tpt.R;
 
 /**
  * Created by Mihai Balint on 8/15/16.
  */
 public enum MapKind {
-    BUS(R.drawable.map_bus_collapsed, R.drawable.map_bus_expanded),
-    ELECTRIC(R.drawable.map_electric_collapsed, R.drawable.map_electric_expanded);
+    BUS(R.drawable.map_bus_collapsed, "map_bus.html", 75, 850, 550),
+    ELECTRIC(R.drawable.map_electric_collapsed, "map_electric.html", 75, 550, 800);
 
-    public final int collapsedId, expandedId;
+    public final int collapsedId;
+    private final String expanded_html;
+    private final int scale;
+    private final int scrollX;
+    private final int scrollY;
 
-    private MapKind(int collapsedId, int expandedId) {
+    private MapKind(int collapsedId, String expanded_html, int scale, int scrollX, int scrollY) {
         this.collapsedId = collapsedId;
-        this.expandedId = expandedId;
+        this.expanded_html = expanded_html;
+        this.scale = scale;
+        this.scrollX = scrollX;
+        this.scrollY = scrollY;
+    }
+
+    private class MapWebViewClient extends WebViewClient {
+        public void onPageFinished(WebView web, String url) {
+            web.setInitialScale(scale);
+            web.scrollTo(scrollX, scrollY);
+        }
+    }
+
+    public void setupWebView(WebView web) {
+        web.setWebViewClient(new MapWebViewClient());
+        web.setInitialScale(scale);
+        web.getSettings().setBuiltInZoomControls(true);
+        web.scrollTo(scrollX, scrollY);
+        web.loadUrl("file:///android_asset/" + expanded_html);
     }
 }

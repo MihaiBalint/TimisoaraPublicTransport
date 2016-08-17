@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ro.mihai.tpt.PathView;
+import ro.mihai.tpt.ViewMap;
 import ro.mihai.tpt.ViewTimes;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Path;
@@ -73,7 +74,7 @@ public class PathListViewAdapter implements ListAdapter {
 
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-        if (position==0) {
+        if (position == 0) {
             return this.getMapView(convertView, parent);
         } else {
             return this.getPathView(
@@ -97,7 +98,8 @@ public class PathListViewAdapter implements ListAdapter {
         if (mapView == null) {
             mapView = PathView.createMapView(context.getLayoutInflater(), null);
         }
-        PathView.fillMapView(mapView, parent.getResources(), this.mapKind);
+        OnClickListener onClick = new SelectMap(ViewMap.class, mapKind);
+        PathView.fillMapView(mapView, parent.getResources(), this.mapKind, onClick);
         return mapView;
     }
 
@@ -138,5 +140,22 @@ public class PathListViewAdapter implements ListAdapter {
 	    		.start();
 	    }
 		
-	} 
+	}
+
+    public class SelectMap implements OnClickListener {
+        private MapKind mapKind;
+        private Class<?> activity;
+
+        public SelectMap(Class<?> activity, MapKind mapKind) {
+            this.mapKind = mapKind;
+            this.activity = activity;
+        }
+
+        public void onClick(View v) {
+            new StartActivity(context, activity)
+                .addCity(city)
+                .addMap(mapKind)
+                .start();
+        }
+    }
 }

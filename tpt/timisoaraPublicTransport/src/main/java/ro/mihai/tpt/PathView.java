@@ -91,8 +91,9 @@ public class PathView {
 		return inflater.inflate(R.layout.frag_map, parent, false);
 	}
 
-    public static View fillMapView(View mapView, Resources res, MapKind mapKind) {
+    public static View fillMapView(View mapView, Resources res, MapKind mapKind, View.OnClickListener onClick) {
         ImageView img = (ImageView) mapView.findViewById(R.id.collapsedMapButtom);
+		img.setOnClickListener(onClick);
         img.setImageResource(mapKind.collapsedId);
         img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return mapView;

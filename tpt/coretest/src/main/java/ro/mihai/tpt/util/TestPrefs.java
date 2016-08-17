@@ -8,9 +8,9 @@ import ro.mihai.util.IPrefs;
 
 public class TestPrefs implements IPrefs {
 
-	@Override
+    @Override
 	public String getBaseUrl() {
-		return RATT.root;
+		return "http://ratt-txt.aeliptus.com/txt/";
 	}
 
 	@Override

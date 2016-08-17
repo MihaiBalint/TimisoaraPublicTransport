@@ -28,31 +28,36 @@ public enum LineKindAndroidEx {
 			R.string.lblTrams, R.string.lblShortTrams, 
 			R.color.vehicle_tram,
 			R.drawable.line_top_blue, R.drawable.line_middle_blue,
-			R.drawable.line_bottom_blue, R.drawable.line_bullet_blue
+			R.drawable.line_bottom_blue, R.drawable.line_bullet_blue,
+			R.drawable.btn_tram_dark
 			), 
 	TROLLEY(LineKind.TROLLEY, 
 			R.string.lblTrolleys, R.string.lblShortTrolleys, 
 			R.color.vehicle_trolley,
 			R.drawable.line_top_purple, R.drawable.line_middle_purple,
-			R.drawable.line_bottom_purple, R.drawable.line_bullet_purple
-			), 
+			R.drawable.line_bottom_purple, R.drawable.line_bullet_purple,
+			R.drawable.btn_trolleybus_dark
+			),
 	BUS(LineKind.BUS, 
 			R.string.lblBus, R.string.lblShortBus, 
 			R.color.vehicle_bus,
 			R.drawable.line_top_red, R.drawable.line_middle_red,
-			R.drawable.line_bottom_red, R.drawable.line_bullet_red
-			), 
+			R.drawable.line_bottom_red, R.drawable.line_bullet_red,
+			R.drawable.btn_bus_dark
+			),
 	EXPRESS(LineKind.EXPRESS, 
 			R.string.lblExpress, R.string.lblShortExpress, 
 			R.color.vehicle_express,
 			R.drawable.line_top_green, R.drawable.line_middle_green,
-			R.drawable.line_bottom_green, R.drawable.line_bullet_green
-			), 
+			R.drawable.line_bottom_green, R.drawable.line_bullet_green,
+			R.drawable.btn_bus_dark
+			),
 	METRO(LineKind.METRO, 
 			R.string.lblMetro, R.string.lblShortMetro, 
 			R.color.vehicle_metro,
 			R.drawable.line_top_orange, R.drawable.line_middle_orange,
-			R.drawable.line_bottom_orange, R.drawable.line_bullet_orange
+			R.drawable.line_bottom_orange, R.drawable.line_bullet_orange,
+			R.drawable.btn_bus_dark
 			);
 
 	public static String[] MOST_USED = {"33", "40", "Tb14", "Tv2", "Tv4", "Tb15"};
@@ -61,9 +66,10 @@ public enum LineKindAndroidEx {
 	public final int colorId;
 	
 	public final int line_top, line_middle, line_bottom, line_bullet;
-	
+	public final int dark_icon;
+
 	private LineKindAndroidEx(LineKind originalKind, int labelId, int shortLabelId, int colorId,
-			int line_top, int line_middle, int line_bottom, int line_bullet) {
+			int line_top, int line_middle, int line_bottom, int line_bullet, int dark_icon) {
 		this.originalKind = originalKind;
 		this.labelId = labelId;
 		this.shortLabelId = shortLabelId;
@@ -73,6 +79,7 @@ public enum LineKindAndroidEx {
 		this.line_middle = line_middle;
 		this.line_bottom = line_bottom;
 		this.line_bullet = line_bullet;
+		this.dark_icon = dark_icon;
 	}
 
 	public static LineKindAndroidEx getAndroidEx(LineKind kind) {

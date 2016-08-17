@@ -75,5 +75,19 @@ public class ChangeOpportunity {
 			}
 		}
 	}
+
+	public boolean hasChangeOportunities() {
+		Station station = disembark.getStation();
+		for(Path p : station.getPaths()) {
+			Iterator<Estimate> it = p.getEstimatesByPath().iterator();
+			while(it.hasNext()) {
+				Estimate e = it.next();
+				if (e.getStation() == station && e!=disembark && it.hasNext())
+					return true;
+			}
+		}
+		return false;
+	}
+
 	
 }

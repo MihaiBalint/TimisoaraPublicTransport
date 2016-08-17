@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*
     TimisoaraPublicTransport - display public transport information on your device
-    Copyright (C) 2014  Mihai Balint
+    Copyright (C) 2011  Mihai Balint
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +17,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
-package ro.mihai.util;
-
-import ro.mihai.tpt.analytics.Collector;
-import ro.mihai.tpt.analytics.IAnalyticsService;
-
-public interface IPrefs {
-	String DEFAULT_DEVICE_ID = "NONE";
-	
-	String getBaseUrl();
-	Collector getAnalyticsCollector();
-	IAnalyticsService getAnalyticsService();
-	
-	String getDeviceId();
-	void setDeviceId(String deviceId);
-	
-	String addCachedAnalytics(String analytics);
-	void setCachedAnalytics(String analytics);
-}
+ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#E6E6E6"
+    android:orientation="vertical" >
+    
+    <include
+        layout="@layout/frag_title_back"
+        />
+	<WebView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/map_expanded_view"
+		android:layout_gravity="center_horizontal" />
+</LinearLayout>
