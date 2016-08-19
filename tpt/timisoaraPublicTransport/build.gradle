@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "ro.mihai.tpt"
-        minSdkVersion 7
+        minSdkVersion 9
         targetSdkVersion 23
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_5
@@ -36,4 +36,10 @@ android {
 
 dependencies {
     compile project(':corelib')
+    compile 'com.google.android.gms:play-services-auth:9.4.0'
+    compile 'com.google.firebase:firebase-auth:9.4.0'
+    compile 'com.google.firebase:firebase-messaging:9.4.0'
 }
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

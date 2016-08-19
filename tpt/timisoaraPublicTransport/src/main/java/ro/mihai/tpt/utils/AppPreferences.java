@@ -26,6 +26,9 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import ro.mihai.tpt.R;
 import ro.mihai.tpt.analytics.AnalyticsService;
 import ro.mihai.tpt.analytics.Collector;
@@ -110,6 +113,13 @@ public class AppPreferences implements IPrefs {
 	
 	public void setAchieveUserName(String name) {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		String oldName = sharedPref.getString(pref_achieve_name, "");
+
+		FirebaseMessaging fcm = FirebaseMessaging.getInstance();
+		if (!oldName.isEmpty())
+			fcm.unsubscribeFromTopic(oldName);
+		fcm.subscribeToTopic(name);
+
 		sharedPref.edit()
 			.putString(pref_achieve_name, name)
 			.commit();

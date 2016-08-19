@@ -24,16 +24,16 @@ import ro.mihai.tpt.ViewUserCredits;
 import ro.mihai.tpt.data.Achievements;
 import ro.mihai.tpt.model.City;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CityActivity extends Activity {
+public class CityActivity extends FragmentActivity {
 	private City city = null;
 	private AppPreferences prefs = null;
 	

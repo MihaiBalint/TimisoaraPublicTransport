@@ -24,7 +24,7 @@
       android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17" />
+	<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="17" />
 	<supports-screens
 		android:resizeable="true"
 		android:smallScreens="true"
@@ -64,6 +64,22 @@
 				<action android:name="ro.mihai.tpt.UPDATE_STATIONS" />
 			</intent-filter>
 		</service>
+
+        <service
+            android:name=".data.NotificationsService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".data.NotificationsIdService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <receiver android:name="ro.mihai.tpt.WidgetStation" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

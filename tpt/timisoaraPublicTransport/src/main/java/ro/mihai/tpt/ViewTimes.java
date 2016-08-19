@@ -336,7 +336,7 @@ public class ViewTimes extends CityActivity {
 
 		TextView lineNameLabel = (TextView)timesRow.findViewById(R.id.LineName);
 		lineNameLabel.setTextColor(res.getColor(connectingKind.colorId));
-		lineNameLabel.setText(LineKindAndroidEx.getLineNameLabel(connectingLine));
+		lineNameLabel.setText(LineKindAndroidEx.getLongerLineNameLabel(connectingLine));
 
 		timesRow.findViewById(R.id.LineBarredKind).setVisibility(
 				connectingLine.isBarred() ? View.VISIBLE : View.GONE);
