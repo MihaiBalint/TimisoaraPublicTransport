@@ -26,8 +26,8 @@ import ro.mihai.tpt.R;
  * Created by Mihai Balint on 8/15/16.
  */
 public enum MapKind {
-    BUS(R.drawable.map_bus_collapsed, "map_bus.html", 75, 850, 550),
-    ELECTRIC(R.drawable.map_electric_collapsed, "map_electric.html", 75, 550, 800);
+    BUS(R.drawable.map_bus_collapsed, "map_bus.html", 35, 0, 0),
+    ELECTRIC(R.drawable.map_electric_collapsed, "map_electric.html", 35, 0, 0);
 
     public final int collapsedId;
     private final String expanded_html;
