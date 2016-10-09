@@ -91,4 +91,18 @@ public class Formatting {
 			value = "0"+value;
 		return sign+value;
 	}
+
+    public static String topicSlug(String dirty) {
+        for (String bad: dirty.split("[a-zA-Z0-9-_\\.~%]+")) {
+            for (char badChar: bad.toCharArray()) {
+                dirty = dirty.replace(badChar, '-');
+            }
+        }
+        String slug = dirty;
+        do {
+            dirty = slug;
+            slug = dirty.replaceAll("--", "-");
+        } while (slug.length() < dirty.length());
+        return slug;
+    }
 }

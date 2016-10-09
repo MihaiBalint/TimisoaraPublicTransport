@@ -38,6 +38,7 @@ import ro.mihai.tpt.data.Achievements;
 import ro.mihai.tpt.model.City;
 import ro.mihai.tpt.model.Line;
 import ro.mihai.tpt.model.Path;
+import ro.mihai.util.Formatting;
 import ro.mihai.util.IPrefs;
 import ro.mihai.util.PathList;
 
@@ -117,8 +118,8 @@ public class AppPreferences implements IPrefs {
 
 		FirebaseMessaging fcm = FirebaseMessaging.getInstance();
 		if (!oldName.isEmpty())
-			fcm.unsubscribeFromTopic(oldName);
-		fcm.subscribeToTopic(name);
+			fcm.unsubscribeFromTopic(Formatting.topicSlug(oldName));
+		fcm.subscribeToTopic(Formatting.topicSlug(name));
 
 		sharedPref.edit()
 			.putString(pref_achieve_name, name)

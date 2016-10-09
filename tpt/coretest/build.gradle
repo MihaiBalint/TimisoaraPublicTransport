@@ -6,4 +6,7 @@ dependencies {
     compile 'com.opencsv:opencsv:3.3'
     compile 'junit:junit:4.12'
     compile 'org.json:json:20160212'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }

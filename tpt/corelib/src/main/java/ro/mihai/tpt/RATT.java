@@ -26,7 +26,7 @@ import ro.mihai.tpt.model.*;
 import ro.mihai.util.*;
 
 public class RATT {
-	public static final int CITY_DB_ENTRIES = 875;
+	public static final int CITY_DB_ENTRIES = 877;
 
 	public static List<Station> downloadStations(IPrefs prefs, IMonitor mon, City c) throws IOException {
 		return new StationReader(new URL(prefs.getBaseUrl()+"select_statie.php"), c).readAll(mon);

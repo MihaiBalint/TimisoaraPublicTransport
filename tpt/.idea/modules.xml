@@ -5,7 +5,7 @@
       <module fileurl="file://$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/corelib/corelib.iml" filepath="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/corelib/corelib.iml" />
       <module fileurl="file://$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/coretest/coretest.iml" filepath="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/coretest/coretest.iml" />
       <module fileurl="file://$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/timisoaraPublicTransport/timisoaraPublicTransport.iml" filepath="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/timisoaraPublicTransport/timisoaraPublicTransport.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tpt.iml" filepath="$PROJECT_DIR$/tpt.iml" />
+      <module fileurl="file://$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/tpt.iml" filepath="$USER_HOME$/workspace-priv/Development/TimisoaraPublicTransport/tpt/tpt.iml" />
     </modules>
   </component>
 </project>

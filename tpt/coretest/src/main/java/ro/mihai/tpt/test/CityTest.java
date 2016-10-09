@@ -135,8 +135,11 @@ public class CityTest {
 	}
 	
 	private void assertKind(LineKind kind) {
-		for(String lineName : kind.getLineNames())
-			assertEquals(c.getLineByName(lineName).getKind(), kind);
+		for(String lineName : kind.getLineNames()) {
+			String err = "Missing in city: " + kind.name() + " " + lineName;
+			assertNotNull(err, c.getLineByName(lineName));
+			assertEquals(err, c.getLineByName(lineName).getKind(), kind);
+		}
 		
 		for(Line l : c.getLines()) 
 			if (!kind.contains(l.getName()))

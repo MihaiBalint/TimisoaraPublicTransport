@@ -7,6 +7,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import ro.mihai.tpt.utils.AppPreferences;
+import ro.mihai.util.Formatting;
 
 /**
  * Created by Mihai Balint on 8/19/16.
@@ -26,10 +27,18 @@ public class NotificationsIdService extends FirebaseInstanceIdService {
         String token = FirebaseInstanceId.getInstance().getToken();
         // TODO: send token to server
 
+        FirebaseMessaging fcm = FirebaseMessaging.getInstance();
+        fcm.subscribeToTopic(GLOBAL);
         AppPreferences pref = new AppPreferences(this);
         String name = pref.getAchieveUserName();
-        if (!name.isEmpty())
-            FirebaseMessaging.getInstance().subscribeToTopic(pref.getAchieveUserName());
-        FirebaseMessaging.getInstance().subscribeToTopic(GLOBAL);
+        if (!name.isEmpty()) {
+            try {
+                // Try and fix old mistakes
+                fcm.unsubscribeFromTopic(pref.getAchieveUserName());
+            } catch(Throwable t) {
+                // Just ignore it
+            }
+            fcm.subscribeToTopic(Formatting.topicSlug(pref.getAchieveUserName()));
+        }
     }
 }
